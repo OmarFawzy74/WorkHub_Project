@@ -4,7 +4,12 @@ import category from "../../../DB/models/category_model.js";
 export const getAllCategories = async (req, res) => {
     try {
         const allCategories = await category.find();
-        res.status(200).send(allCategories);
+        if(allCategories.length !== 0) {
+            res.status(200).send(allCategories);
+        }
+        else {
+            res.status(200).send("No categories found!");
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");

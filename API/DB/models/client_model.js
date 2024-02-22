@@ -3,17 +3,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const clientSchema = new Schema({
-    clientId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
     clientName: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    clientUsername: {
         type: String,
         required: true,
     },
@@ -39,8 +29,8 @@ const clientSchema = new Schema({
         required: true,
     },
     clientLastLogin: {
-        type: String,
-        required: true,
+        type: Date,
+        required: false,
     },
 },{
     timestamps: true

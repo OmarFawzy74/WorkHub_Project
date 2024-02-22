@@ -12,11 +12,6 @@ const freelancerSchema = new Schema ({
         type: String,
         required: true
     },
-    freelancerUsername: {
-        type: String,
-        required: true,
-        unique: true
-    },
     freelancerEmail: {
         type: String,
         required: true,
