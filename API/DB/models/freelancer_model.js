@@ -45,7 +45,7 @@ const freelancerSchema = new Schema ({
     freelancerLastLogin: {
         type: String,
         required: true,
-    },
+    }
 },{
     timestamps: true
 });
