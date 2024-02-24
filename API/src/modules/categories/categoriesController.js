@@ -4,12 +4,11 @@ import category from "../../../DB/models/category_model.js";
 export const getAllCategories = async (req, res) => {
     try {
         const allCategories = await category.find();
+
         if(allCategories.length !== 0) {
-            res.status(200).send(allCategories);
+            return res.status(200).send(allCategories);
         }
-        else {
-            res.status(200).send("No categories found!");
-        }
+        res.status(200).send("No categories found!");
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
@@ -18,12 +17,18 @@ export const getAllCategories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
     try {
-        const newCategory = new category({
-            ...req.body,
-        });
+        const categoryName = {categoryName: req.body.categoryName};
+        const data = await client.find(categoryName);
 
-        await newCategory.save();
-        res.status(200).send("Category has been created successfuly.");
+        if(data.length === 0){
+            const newCategory = new category({
+                ...req.body,
+            });
+    
+            await newCategory.save();
+            return res.status(200).send("Category has been created successfuly.");
+        }
+        res.status(200).send("Category is already exists.");
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
@@ -33,13 +38,11 @@ export const addCategory = async (req, res) => {
 export const updateCategory = async (req, res) => {
     try {
         const categoryId = req.params.id;
-
         const categoryToUpdate = await category.findById(categoryId);
 
         if(categoryToUpdate) {
-            const filter = { _id: categoryId }; // specify the condition to match the document
-            const update = { $set: { categoryName: req.body.categoryName, categoryDesc: req.body.categoryDesc} }; // specify the update operation
-
+            const filter = { _id: categoryId };
+            const update = { $set: { categoryName: req.body.categoryName, categoryDesc: req.body.categoryDesc} };
             await category.updateOne(filter, update);
             res.status(200).send("Category has been updated successfuly.");
         }

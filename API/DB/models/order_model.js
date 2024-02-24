@@ -3,24 +3,21 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-    serviceId: {
-        type: Number,
-        required: true
-    },
     orderImage_url: {
         type: String,
         required: false,
     },
     freelancerId: {
-        type: Number,
+        type: String,
         required: true
     },
     clientId: {
-        type: Number,
+        type: String,
         required: true
     },
     orderTitle: {
         type: String,
+        required: true,
     },
     orderPrice: {
         type: Number,

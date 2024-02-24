@@ -5,10 +5,9 @@ export const objectIdValidation = (value, helper) => {
     return helper.message("Invalid ObjectId");
 }
 
-
 export const validation = (Schema) => {
     return (req, res, next) => {
-        const data = { ...req.body, ...req.query};
+        const data = {...req.body, ...req.query}
         const validationResult = Schema.validate(data, {
             abortEarly: false,
         });
@@ -24,23 +23,34 @@ export const validation = (Schema) => {
     }
 }
 
-// export const validateParams = (schema) => {
-//     return (req, res, next) => {
-//         if(typeof req.params.id === 'string') {
-//             req.params.id = parseInt(req.params.id);
+export const validateParams = () => {
+    return (req, res, next) => {
+        if(req.params.id !== ':id'){
+            if(typeof req.params.id === 'string') {
+                const id = req.params.id;
+                const idCount = id.length;
+                console.log(id);
+                if(idCount >= 24) {
+                    return next();
+                }
+                else {
+                    return res.status(400).send("Id should not be less than 24 digits");
+                }
+            }
+            else{
+                return res.status(400).send("Id should be string");
+            } 
+        }
+        else {
+            console.log(req.params.id);
+            return res.status(400).send("Id is required");
+        }
+    }
+}
 
-//             const data = req.params;
-//             const validationResult = schema.validate(data);
-            
-//             if (validationResult.error) {
-//                 return res.status(400).json({
-//                     error: validationResult.error.details[0].message,
-//                 });
-//             }
-//         }
-//         else{
 
-//         }
-//         next();
-//     }
-// }
+const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,}$/;
+
+export const validatePassword = (password) => {
+  return passwordPattern.test(password);
+}

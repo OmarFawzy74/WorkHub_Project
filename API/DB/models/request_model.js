@@ -4,16 +4,21 @@ const { Schema } = mongoose;
 
 const requestSchema = new Schema({
     freelancerId: {
-        type: Number,
+        type: String,
         required: true,
     },
     clientId: {
-        type: Number,
+        type: String,
+        required: true,
+    },
+    serviceId: {
+        type: String,
         required: true,
     },
     requestStatus: {
         type: String,
-        required: true,
+        required: false,
+        default: "pending"
     },
 },{
     timestamps: true
