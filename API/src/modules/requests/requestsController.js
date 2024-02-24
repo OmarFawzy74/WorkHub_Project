@@ -1,6 +1,15 @@
 
 import request from "../../../DB/models/request_model.js";
 
+//Unfinished Tasks
+
+// 2. Check Authentication
+// 3. Check Authorization
+// Check Freelancer ID
+// Check Client ID
+// Check Service ID
+// Check If Status Accepted Add It Orders
+
 export const getAllRequests = async (req, res) => {
     try {
         const allRequests = await request.find();
@@ -33,7 +42,6 @@ export const addRequest = async (req, res) => {
 export const updateRequest = async (req, res) => {
     try {
         const requestId = req.params.id;
-
         const requestToUpdate = await request.findById(requestId);
 
         if(requestToUpdate) {

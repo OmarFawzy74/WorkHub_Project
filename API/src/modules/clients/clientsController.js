@@ -8,6 +8,7 @@ import { validatePassword } from "../../middleware/val.middleware.js";
 // 1. Add Last Login Time
 // 2. Check Authentication
 // 3. Check Authorization
+// 4. Change Update Schema
 
 export const getAllClients = async (req, res) => {
     try {
