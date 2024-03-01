@@ -20,7 +20,7 @@ router.put("/updateClient/:id", validation(updateClientSchema), validateParams()
 router.delete("/deleteClient/:id", validateParams(), asyncHandler(deleteClient));
 
 router.post('/user/client/signup/:role', valMiddleware(validations.sigupSchema), signup)
-router.post('/user/client/login/:role', valMiddleware(validations.loginSchema), login);
+router.post('/login/:role', valMiddleware(validations.loginSchema), login);
 router.get('/user/client/allclients', auth(endPoint.allClients), allClients);
 
 export default router;

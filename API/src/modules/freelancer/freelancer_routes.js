@@ -10,10 +10,10 @@ import { uploadImage, allFreelancer, createInforForFreelancer, getFreelancerInfo
 
 const router = express.Router();
 
-router.post('/user/freelancer/signup/:role', valMiddleware(validations.sigupSchema), signup);
-router.post('/user/freelancer/login/:role', valMiddleware(validations.loginSchema), login);
+router.post('/signup/:role', valMiddleware(validations.sigupSchema), signup);
+router.post('/login/:role', valMiddleware(validations.loginSchema), login);
 router.patch('/user/freelancer/pic', auth(endPoint.uploadImage), uploadImage)
-router.get('/user/freelancer/allfreelancers', auth(endPoint.allfreelacer), allFreelancer)
+router.get('/getAllFreelancers', auth(endPoint.allfreelacer), allFreelancer)
 router.post('/user/freelancer/createInfo', auth(endPoint.createInformation), createInforForFreelancer)
 router.get('/user/freelancer/getAllInfoAboutFreelancer/:id', auth(endPoint.getAllInfoAboutFreelancer), getFreelancerInfo);
 

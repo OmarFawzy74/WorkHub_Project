@@ -6,7 +6,7 @@ import ClientModel from "./DB/models/client_model.js"
 import FreelancerModel from "./DB/models/freelancer_model.js"
 
 const generateToken = async (userId, role) => {
-    return jwt.sign({ userId, role }, process.env.TOKENSECRETkEY, { expiresIn: '1h' });
+    return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
 }
 
 const login = async (req, res) => {

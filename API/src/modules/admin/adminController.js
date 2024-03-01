@@ -28,7 +28,7 @@ const signupForAdmin = async (req, res) => {
         await newAdmin.save();
 
         // Generate token for the new admin
-        const token = jwt.sign({ userId: newAdmin._id }, process.env.TOKENSECRETkEY, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: newAdmin._id }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
 
         // Send response with token
         res.status(200).json({ message: 'Admin added successfully', token });
