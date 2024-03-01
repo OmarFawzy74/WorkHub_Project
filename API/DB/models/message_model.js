@@ -4,11 +4,12 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema({
     conversationId: {
-        type: Number,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "conversation"
     },
     userId: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     conversationDesc: {

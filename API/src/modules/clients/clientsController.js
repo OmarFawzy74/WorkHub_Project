@@ -2,14 +2,15 @@
 import client from "../../../DB/models/client_model.js";
 import bcrypt from "bcrypt";
 import { validatePassword } from "../../middleware/val.middleware.js";
+import ClientModel from "../../../DB/models/client_model.js"
 
 // Unfinished Tasks
 
 // 1. Add Last Login Time
 // 2. Check Authentication
 // 3. Check Authorization
-// 4. Change Update Schema
 
+// Get All Clients
 export const getAllClients = async (req, res) => {
     try {
         const allClients = await client.find();
@@ -25,6 +26,7 @@ export const getAllClients = async (req, res) => {
     }
 }
 
+// Add Client
 export const addClient = async (req, res) => {
     try {
         const email = {clientEmail: req.body.clientEmail};
@@ -56,20 +58,23 @@ export const addClient = async (req, res) => {
     }
 }
 
+// Update Client
 export const updateClient = async (req, res) => {
     try {
         const clientId = req.params.id;
+        console.log(clientId);
         const clientToUpdate = await client.findById(clientId);
 
         if(clientToUpdate) {
             const email = {clientEmail: req.body.clientEmail};
             const data = await client.find(email);
+            console.log(data);
 
             var condition = data.length === 0;
 
-            if(!condition) {
-                condition = data[0].clientEmail === req.body.clientEmail;
-            }
+            // if(!condition) {
+            //     condition = data[0].clientEmail === req.body.clientEmail;
+            // }
 
             if(condition) {
                 const passwordInput = req.body.clientPassword;
@@ -110,6 +115,7 @@ export const updateClient = async (req, res) => {
     }
 }
 
+// Delete Client
 export const deleteClient = async (req, res) => {
     try {
         const clientId = req.params.id
@@ -128,3 +134,21 @@ export const deleteClient = async (req, res) => {
         res.status(500).send("Somthing went wrong!");
     }
 }
+
+
+const allClients = async (req, res) => {
+    try {
+        const clients = await ClientModel.find({});
+
+        if (!clients || clients.length === 0) {
+            return res.status(404).json({ message: "No clients found" });
+        }
+
+        return res.status(200).json({ message: "Clients found", clients });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export default allClients

@@ -3,21 +3,17 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const freelancerSchema = new Schema ({
-    freelancerId: {
-        type: Number,
-        required: true,
-        unique: true
-    },
-    freelancerName: {
-        type: String,
-        required: true
-    },
-    freelancerEmail: {
+   username: {
         type: String,
         required: true,
         unique: true
     },
-    freelancerPassword: {
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
         type: String,
         required: true
     },
@@ -27,19 +23,23 @@ const freelancerSchema = new Schema ({
     },
     freelancerPhoneNumber: {
         type: Number,
-        required: true
+        
     },
     freelancerCountry: {
         type: String,
-        required: true,
+       
     },
     freelancerDesc: {
         type: String,
-        required: true,
+       
     },
     freelancerLastLogin: {
         type: String,
-        required: true,
+       
+    },
+    role: {
+        type: String,
+        default: 'freelancer'
     }
 },{
     timestamps: true

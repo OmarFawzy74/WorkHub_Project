@@ -40,13 +40,14 @@ const serviceSchema = new Schema({
         required: true
     },
     freelancerId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
-        unique: true
+        ref: "freelancer"
     },
     categoryId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "category"
     },
     deliveryTime: {
         type: String,

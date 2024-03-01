@@ -1,15 +1,17 @@
 
 import request from "../../../DB/models/request_model.js";
+import { addOrder } from "../orders/ordersController.js";
 
 //Unfinished Tasks
 
-// 2. Check Authentication
-// 3. Check Authorization
-// Check Freelancer ID
-// Check Client ID
-// Check Service ID
-// Check If Status Accepted Add It Orders
+// 1. Check Authentication
+// 2. Check Authorization
+// 3. Check Freelancer ID
+// 4. Check Client ID
+// 5. Check Service ID
+// 6. Check If Status Accepted Add It to Orders
 
+// Get All Requests
 export const getAllRequests = async (req, res) => {
     try {
         const allRequests = await request.find();
@@ -25,8 +27,18 @@ export const getAllRequests = async (req, res) => {
     }
 }
 
+// Add Request
 export const addRequest = async (req, res) => {
     try {
+        const filter = [{clienId: req.body.clientId}, {freelancerId: req.body.freelancerId}, {serviceId: req.body.serviceId}];
+        const data = await client.find(filter);
+
+        if(data[0]) {
+            if(data[0].requestStatus === "pending") {
+                return res.status(200).send("Request has already been sent.");
+            }
+        }
+
         const newRequest = new request({
             ...req.body,
         });
@@ -39,27 +51,41 @@ export const addRequest = async (req, res) => {
     }
 }
 
-export const updateRequest = async (req, res) => {
+// Update Request Status
+export const updateRequestStatus = async (req, res) => {
     try {
         const requestId = req.params.id;
         const requestToUpdate = await request.findById(requestId);
 
         if(requestToUpdate) {
-            const filter = { _id: requestId }; // specify the condition to match the document
-            const update = { $set: { freelancerId: req.body.freelancerId, clientId: req.body.clientId, requestStatus: req.body.requestStatus, serviceId: req.body.serviceId} }; // specify the update operation
+            const filter = { _id: requestId };
+            const update = { $set: { requestStatus: req.body.requestStatus} };
+            const process = await request.updateOne(filter, update);
 
-            await request.updateOne(filter, update);
-            res.status(200).send("Request has been updated successfuly.");
+            if(process) {
+                if(req.body.requestStatus === "approved") {
+                    const freelancerId = req.body.freelancerId;
+                    const clientId = req.body.clientId;
+                    const serviceId = req.body.serviceId;
+                    const serviceData = await request.findById(serviceId);
+
+                    addOrder();
+                    return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
+                }
+                else {
+                    return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
+                }
+            }
+            res.status(400).send("Request status update failed");
         }
-        else {
-            res.status(200).send("There is no request with such id to update.");
-        }
+        res.status(404).send("Request not found!");
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
     }
 }
 
+// Delete Request
 export const deleteRequest = async (req, res) => {
     try {
         const requestId = req.params.id

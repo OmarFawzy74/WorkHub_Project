@@ -9,6 +9,7 @@ import order from "../../../DB/models/order_model.js";
 // 2. Check Client Id
 // 3. Check Order Price
 
+// Get All Orders
 export const getAllOrders = async (req, res) => {
     try {
         const allOrders = await order.find();
@@ -24,6 +25,7 @@ export const getAllOrders = async (req, res) => {
     }
 }
 
+// Add Order
 export const addOrder = async (req, res) => {
     try {
         const newOrder = new order({
@@ -38,6 +40,7 @@ export const addOrder = async (req, res) => {
     }
 }
 
+// Update Order
 export const updateOrder = async (req, res) => {
     try {
         const orderId = req.params.id;
@@ -58,6 +61,7 @@ export const updateOrder = async (req, res) => {
     }
 }
 
+// Delete Order
 export const deleteOrder = async (req, res) => {
     try {
         const orderId = req.params.id

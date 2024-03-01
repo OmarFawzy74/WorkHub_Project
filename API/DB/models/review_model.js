@@ -4,13 +4,14 @@ const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
     serviceId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "service"
     },
     clientId: {
         type: Number,
         required: true,
-        unique: true
+        ref: "client"
     },
     rating: {
         type: Number,

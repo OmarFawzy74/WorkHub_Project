@@ -3,35 +3,39 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const clientSchema = new Schema({
-    clientName: {
+    username: {
         type: String,
         required: true,
     },
-    clientEmail: {
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    clientPassword: {
+    password: {
         type: String,
         required: true,
     },
     clientImage_url: {
         type: String,
-        required: false,
+       
     },
     clientDesc: {
         type: String,
-        required: true
+        
     },
     clientCountry: {
         type: String,
-        required: true,
+        
     },
     clientLastLogin: {
-        type: Date,
-        required: false,
+        type: String,
+      
     },
+    role: {
+        type: String,
+        default: 'client'
+    }
 },{
     timestamps: true
 });

@@ -4,11 +4,12 @@ const { Schema } = mongoose;
 
 const postSchema = new Schema({
     communityId: {
-        type: Number,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "community"
     },
     posterId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: false,
     },
     posterType: {

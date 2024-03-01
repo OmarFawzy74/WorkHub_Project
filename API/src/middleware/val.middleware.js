@@ -54,3 +54,24 @@ const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$
 export const validatePassword = (password) => {
   return passwordPattern.test(password);
 }
+
+const valMiddleware = (schema) => {
+    return (req, res, next) => {
+        const validationErrors = [];
+        const validationResult = schema.body.validate(req.body, { abortEarly: false });
+
+        if (validationResult.error) {
+            validationResult.error.details.forEach((errorDetail) => {
+                validationErrors.push(errorDetail.message);
+            });
+        }
+
+        if (validationErrors.length > 0) {
+            return res.status(400).json({ message: 'Validation failed', errors: validationErrors });
+        }
+
+        next();
+    };
+};
+
+export default valMiddleware

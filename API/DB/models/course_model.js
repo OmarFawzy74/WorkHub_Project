@@ -4,12 +4,14 @@ const { Schema } = mongoose;
 
 const courseSchema = new Schema ({
     categoryId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "category"
     },
     proffId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "proffesor"
     },
     courseTitle: {
         type: String,

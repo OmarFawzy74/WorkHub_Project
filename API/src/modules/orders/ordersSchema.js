@@ -7,4 +7,6 @@ export const orderSchema = Joi.object({
     clientId: Joi.string().required(),
     orderTitle: Joi.string().required(),
     orderPrice: Joi.number().required(),
+    requestId: Joi.string().required(),
+    serviceId : Joi.string().required()
 });

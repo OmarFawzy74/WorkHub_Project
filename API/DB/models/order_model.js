@@ -7,13 +7,25 @@ const orderSchema = new Schema({
         type: String,
         required: false,
     },
+    requestId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "request"
+    },
     freelancerId: {
-        type: String,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "freelancer"
     },
     clientId: {
-        type: String,
-        required: true
+        type:  mongoose.Types.ObjectId,
+        required: true,
+        ref: "client"
+    },
+    serviceId: {
+        type:  mongoose.Types.ObjectId,
+        required: true,
+        ref: "service"
     },
     orderTitle: {
         type: String,

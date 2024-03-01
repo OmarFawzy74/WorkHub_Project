@@ -4,12 +4,14 @@ const { Schema } = mongoose;
 
 const conversationSchema = new Schema({
     freelancerId: {
-        type: Number,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "freelancer"
     },
     clientId: {
-        type: Number,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "client"
     },
     readByFreelancer: {
         type: Boolean,

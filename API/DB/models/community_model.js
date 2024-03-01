@@ -8,15 +8,17 @@ const communitySchema = new Schema ({
         required: true
     },
     categoryId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "category"
     },
     postsIds: {
-        type: [Number],
+        type: [mongoose.Types.ObjectId],
         required: true,
+        ref: "post"
     },
     memberId: {
-        type: Number,
+        type: mongoose.Types.ObjectId,
         required: true,
     },
     memberType: {

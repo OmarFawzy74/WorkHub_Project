@@ -4,16 +4,19 @@ const { Schema } = mongoose;
 
 const requestSchema = new Schema({
     freelancerId: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "freelancer"
     },
     clientId: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "client"
     },
     serviceId: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true,
+        ref: "service"
     },
     requestStatus: {
         type: String,

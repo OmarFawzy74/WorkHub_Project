@@ -4,8 +4,9 @@ const { Schema } = mongoose;
 
 const proffSchema = new Schema({
     courseId: {
-        type: Number,
-        required: true
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "course"
     },
     proffName: {
         type: Number,
