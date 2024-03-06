@@ -13,3 +13,4 @@ export const updateProfessorsSchema = Joi.object({
     proffTitle:Joi.string(),
     ProffDesc:Joi.string()
 });
+
