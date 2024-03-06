@@ -16,15 +16,27 @@ const adminSchema = new Schema ({
         type: String,
         required: true
     },
-    adminActivityStatus: {
+    image_url: {
         type: String,
+        required: false
     },
-    adminLastLogin: {
+    activityStatus: {
+        type: String,
+        default: 'offline',
+        required: false
+    },
+    lastLogin: {
         type: Date,
+        required: false
     },
     role: {
         type: String,
-        default: 'admin'
+        default: 'admin',
+        required: false
+    },
+    token: {
+        type: String,
+        required: false
     }
 },{
     timestamps: true

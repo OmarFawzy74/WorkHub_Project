@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 // import AdminModel from "./DB/models/admin_model.js"
 import ClientModel from "./DB/models/client_model.js"
 import FreelancerModel from "./DB/models/freelancer_model.js"
+import AdminModel from './DB/models/admin_model.js';
 
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
@@ -13,6 +14,12 @@ const signup = async (req, res) => {
   try {
     const { role } = req.params;
     const { username, email, password } = req.body;
+
+    const adminEmail = await AdminModel.findOne({ email });
+
+    if(adminEmail) {
+      return res.status(400).json({ message: "This Email is already registerd" });
+    }
 
     // Validate role
     if (!['client', 'freelancer'].includes(role)) {
@@ -48,13 +55,22 @@ const signup = async (req, res) => {
         break;
     }
 
-    // Save the new user to the database
     await newUser.save();
 
-    // Generate token for the new user
     const token = generateToken(newUser._id, role);
+    const filter = { _id: newUser._id };
+    const update = { $set: { token: token } }
+    let query;
 
-    // Respond with token and success message
+    switch (role) {
+      case 'client':
+        query = await ClientModel.updateOne(filter, update);
+        break;
+      case 'freelancer':
+        query = await FreelancerModel.updateOne(filter, update);
+        break;
+    }
+
     return res.status(201).json({ message: 'User created successfully', token });
   } catch (error) {
     console.error('Error:', error);

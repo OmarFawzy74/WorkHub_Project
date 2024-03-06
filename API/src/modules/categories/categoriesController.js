@@ -20,7 +20,7 @@ export const getAllCategories = async (req, res) => {
 export const addCategory = async (req, res) => {
     try {
         const categoryName = {categoryName: req.body.categoryName};
-        const data = await client.find(categoryName);
+        const data = await category.find(categoryName);
 
         if(data.length === 0){
             const newCategory = new category({

@@ -7,27 +7,30 @@ const communitySchema = new Schema ({
         type: String,
         required: true
     },
-    categoryId: {
-        type: mongoose.Types.ObjectId,
+    communityCategory: {
+        type: Schema.Types.ObjectId,
         required: true,
         ref: "category"
     },
-    postsIds: {
-        type: [mongoose.Types.ObjectId],
-        required: true,
+    communityPosts: {
+        type: [Schema.Types.ObjectId],
+        required: false,
         ref: "post"
     },
-    memberId: {
-        type: mongoose.Types.ObjectId,
-        required: true,
+    clientMembers: {
+        type: [Schema.Types.ObjectId],
+        required: false,
+        ref: "client"
     },
-    memberType: {
-        type: String,
-        required: true,
+    freelancerMembers: {
+        type: [Schema.Types.ObjectId],
+        required: false,
+        ref: "freelancer"
     },
     membersCount: {
         type: Number,
-        required: true,
+        required: false,
+        default: 0
     }
 },{
     timestamps: true

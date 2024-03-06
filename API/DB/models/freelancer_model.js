@@ -17,29 +17,38 @@ const freelancerSchema = new Schema ({
         type: String,
         required: true
     },
-    freelancerImage_url: {
+    image_url: {
         type: String,
         required: false
     },
     freelancerPhoneNumber: {
         type: Number,
-        
+        required: false
     },
     freelancerCountry: {
         type: String,
-       
+        required: false
     },
     freelancerDesc: {
         type: String,
-       
+        required: false
     },
-    freelancerLastLogin: {
+    activityStatus: {
         type: String,
-       
+        default: 'offline',
+        required: false
+    },
+    lastLogin: {
+        type: Date,
+        required: false
     },
     role: {
         type: String,
         default: 'freelancer'
+    },
+    token: {
+        type: String,
+        required: false
     }
 },{
     timestamps: true

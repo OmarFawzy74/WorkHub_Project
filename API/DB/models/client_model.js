@@ -28,13 +28,22 @@ const clientSchema = new Schema({
         type: String,
         
     },
-    clientLastLogin: {
+    lastLogin: {
+        type: Date,
+        required: false
+    },
+    activityStatus: {
         type: String,
-      
+        default: 'offline',
+        required: false
     },
     role: {
         type: String,
         default: 'client'
+    },
+    token: {
+        type: String,
+        required: false
     }
 },{
     timestamps: true

@@ -10,7 +10,7 @@ const postSchema = new Schema({
     },
     posterId: {
         type: mongoose.Types.ObjectId,
-        required: false,
+        required: true,
     },
     posterType: {
         type: String,

@@ -1,50 +1,63 @@
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import AdminModel from "./DB/models/admin_model.js";
+import ClientModel from "./DB/models/client_model.js";
+import FreelancerModel from "./DB/models/freelancer_model.js";
 
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt'
-import AdminModel from "./DB/models/admin_model.js"
-import ClientModel from "./DB/models/client_model.js"
-import FreelancerModel from "./DB/models/freelancer_model.js"
+export const generateToken = async (userId, role) => {
+  return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY);
+  // return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
+};
 
-const generateToken = async (userId, role) => {
-    return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
-}
+// Model Update line 47
 
 const login = async (req, res) => {
-    try {
-        const { role } = req.params;
-        const { email, password} = req.body;
-        let user;
+  try {
+    const { email, password } = req.body;
+    let user;
 
-        switch (role) {
-            case 'admin':
-                user = await AdminModel.findOne({ email });
-                break;
-            case 'client':
-                user = await ClientModel.findOne({ email });
-                break;
-            case 'freelancer':
-                user = await FreelancerModel.findOne({ email });
-                break;
-            default:
-                return res.status(400).json({ message: "Role undefined" });
-        }
-
+    user = await AdminModel.findOne({ email: email });
+    if (!user) {
+      user = await ClientModel.findOne({ email: email });
+      if (!user) {
+        user = await FreelancerModel.findOne({ email: email });
         if (!user) {
-            return res.status(401).json({ message: "User not found" });
+          return res.status(400).json({ msg: "Wrong email or password" });
         }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid password' });
-        }
-
-        const token = await generateToken(user._id, role);
-        res.status(200).json({ message: "Sign in successful", token });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+      }
     }
-}
 
-export default login
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ msg: "Wrong email or password" });
+    }
+
+    const token = await generateToken(user._id, user.role);
+    const filter = { _id: user._id };
+    const update = {
+      $set: { lastLogin: new Date(), activityStatus: "online", token: token },
+    };
+    let process;
+
+    switch (user.role) {
+      case "admin":
+        process = await AdminModel.updateOne(filter, update);
+        break;
+      case "client":
+        process = await ClientModel.updateOne(filter, update);
+        break;
+      case "freelancer":
+        process = await FreelancerModel.updateOne(filter, update);
+        break;
+      default:
+        return res.status(400).json({ msg: "Role undefined" });
+    }
+
+    res.status(200).json({ msg: "Sign in successful", token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export default login;

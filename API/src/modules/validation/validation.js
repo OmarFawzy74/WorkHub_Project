@@ -1,28 +1,23 @@
 
 import Joi from 'joi';
 
-const validations = {
-    sigupSchema: {
-        body:Joi.object().required().keys({
-            username:Joi.string().min(5).required(),
-            email: Joi.string().email().required().messages({
-                "any.required": "cutsom ***** error",
-              }),
-            password: Joi.string().min(5).required(),
+export const sigupSchema = Joi.object({
+    username: Joi.string(),
+    email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    password: Joi.string().min(8).max(20).pattern(new RegExp("^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9]).{8,}$")),
+});
 
-        }),
 
-    },
-    loginSchema: {
-        body:Joi.object().required().keys({
-            email: Joi.string().email().required().messages({
-                "any.required": "cutsom ***** error",
-              }),
-            password:Joi.string().required().min(5),
-            
-          
-        })
-    }
-}
+export const loginSchema = Joi.object({
+    email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    password: Joi.string().min(8).max(20).pattern(new RegExp("^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9]).{8,}$")),
+});
 
-export default validations
+
+export const updatePasswordSchema = Joi.object({
+    password: Joi.string().min(8).max(20).pattern(new RegExp("^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9]).{8,}$")),
+    newPassword: Joi.string().min(8).max(20).pattern(new RegExp("^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9]).{8,}$")),
+    confirmNewPassword: Joi.string().min(8).max(20).pattern(new RegExp("^(?=.?[A-Z])(?=.?[a-z])(?=.*?[0-9]).{8,}$")),
+});

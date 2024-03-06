@@ -55,10 +55,11 @@ export const validatePassword = (password) => {
   return passwordPattern.test(password);
 }
 
-const valMiddleware = (schema) => {
+const valMiddleware = (Schema) => {
     return (req, res, next) => {
         const validationErrors = [];
-        const validationResult = schema.body.validate(req.body, { abortEarly: false });
+        const data = {...req.body}
+        const validationResult = Schema.validate(data, { abortEarly: false });
 
         if (validationResult.error) {
             validationResult.error.details.forEach((errorDetail) => {

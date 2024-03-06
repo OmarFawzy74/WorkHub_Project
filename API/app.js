@@ -13,6 +13,7 @@ import categoriesRoute from './src/modules/categories/categoriesRoutes.js'
 import clientsRoute from './src/modules/clients/clientsRoutes.js'
 import ordersRoute from './src/modules/orders/ordersRoutes.js'
 import requestsRoute from './src/modules/requests/requestsRoutes.js'
+import communitiesRoutes from './src/modules/communities/communitiesRoutes.js'
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/orders", ordersRoute);
 app.use("/api/requests", requestsRoute);
 app.use("/api/freelancers", freelancersRoutes);
 app.use("/api/admins", adminRoutes);
+app.use("/api/communities", communitiesRoutes);
 
 // app.use(freelncerRoutes,adminRoutes,clientRoutes);
 
