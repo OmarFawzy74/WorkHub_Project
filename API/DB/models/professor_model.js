@@ -9,8 +9,7 @@ const proffSchema = new Schema({
         ref: "course"
     },
     proffName: {
-        type: Number,
-        required: false,
+        type: String,
     },
     proffTitle: {
         type: String,
@@ -22,7 +21,6 @@ const proffSchema = new Schema({
     },
     ProffDesc: {
         type: String,
-        required: false
     }
 },{
     timestamps: true
