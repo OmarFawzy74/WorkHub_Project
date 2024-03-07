@@ -1,10 +1,6 @@
 
 import professors from "../../../DB/models/professors_model.js";
 
-// Unfinished Tasks
-
-// 1. Check Authentication
-// 2. Check Authorization
 
 // Get All Professors
 export const getAllProfessors = async (req, res) => {
@@ -32,9 +28,10 @@ export const addProfessors = async (req, res) => {
         ...req.body,
     })
     await newProfessor.save();
-    return res.status(200).json({ msg: "Professors has been created successfuly.", newProfessor });
 
+    return res.status(200).json({ msg: "Professors has been created successfuly.", newProfessor });
 }
+
 // Update professor
 export const updateProfessor = async (req, res) => {
 
@@ -47,8 +44,6 @@ export const updateProfessor = async (req, res) => {
   
     const updatedProfessor = await professors.findByIdAndUpdate(proffId, req.body, { new: true });
     return res.status(200).json({ msg: "Professors has been updated successfuly.", updatedProfessor });
-
-
 }
 
 // Delete Professors

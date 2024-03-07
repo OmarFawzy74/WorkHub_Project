@@ -3,13 +3,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
-    serviceId: {
+    client: {
         type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "service"
-    },
-    clientId: {
-        type: Number,
         required: true,
         ref: "client"
     },

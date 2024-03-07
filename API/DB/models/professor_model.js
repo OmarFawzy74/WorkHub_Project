@@ -3,11 +3,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const proffSchema = new Schema({
-    courseId: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "course"
-    },
     proffName: {
         type: String,
     },

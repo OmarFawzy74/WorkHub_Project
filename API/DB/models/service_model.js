@@ -15,9 +15,9 @@ const serviceSchema = new Schema({
         type: Number,
         default: 0
     },
-    rating: {
-        type: Number,
-        required: true
+    ClientRating: {
+        type: [mongoose.Types.ObjectId],
+        ref: "client"
     },
     servicePrice: {
         type: Number,
@@ -25,26 +25,24 @@ const serviceSchema = new Schema({
     },
     serviceCover_url: {
         type: String,
-        required: true
     },
     serviceImages_url: {
         type: [String],
-        required: false
     },
     serviceShortTitle: {
         type: String,
         required: true
     },
-    serviceShortDesc: {
+    serviceDesc: {
         type: String,
         required: true
     },
-    freelancerId: {
+    freelancer: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "freelancer"
     },
-    categoryId: {
+    serviceCategory: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "category"
@@ -60,6 +58,10 @@ const serviceSchema = new Schema({
     sales: {
         type: Number,
         default: 0
+    },
+    reviews: {
+        type: [mongoose.Types.ObjectId],
+        ref: "review"
     }
 },{
     timestamps: true

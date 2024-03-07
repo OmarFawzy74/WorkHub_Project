@@ -1,10 +1,10 @@
 
 import express from "express";
-import login from '../../../login.js'
-import logout from '../../../logout.js'
-import valMiddleware, { validateParams } from '../../middleware/val.middleware.js'
-import { loginSchema, sigupSchema, updatePasswordSchema } from '../validation/validation.js'
-import { addAdmin, deleteAdmin, getAllAdmins, updateAdminInfo, updateAdminPassword } from './adminController.js'
+import login from '../../../login.js';
+import logout from '../../../logout.js';
+import valMiddleware, { validateParams } from '../../middleware/val.middleware.js';
+import { loginSchema, sigupSchema, updatePasswordSchema } from '../validation/validation.js';
+import { addAdmin, deleteAdmin, getAllAdmins, updateAdminInfo, updateAdminPassword } from './adminController.js';
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { updateInfoSchema } from "./adminSchema.js";
 import auth from "../../middleware/auth.middleware.js";
