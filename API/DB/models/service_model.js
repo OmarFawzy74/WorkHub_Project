@@ -11,14 +11,6 @@ const serviceSchema = new Schema({
         type: String,
         required: true
     },
-    totalRating: {
-        type: Number,
-        default: 0
-    },
-    ClientRating: {
-        type: [mongoose.Types.ObjectId],
-        ref: "client"
-    },
     servicePrice: {
         type: Number,
         required: true
@@ -55,6 +47,10 @@ const serviceSchema = new Schema({
         type: [String],
         required: true
     },
+    orders: {
+        type: [mongoose.Types.ObjectId],
+        ref: "order"
+    },
     sales: {
         type: Number,
         default: 0
@@ -62,6 +58,10 @@ const serviceSchema = new Schema({
     reviews: {
         type: [mongoose.Types.ObjectId],
         ref: "review"
+    },
+    totalRating: {
+        type: Number,
+        default: 0
     }
 },{
     timestamps: true

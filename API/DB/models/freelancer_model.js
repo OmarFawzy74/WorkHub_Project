@@ -3,10 +3,9 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const freelancerSchema = new Schema ({
-   username: {
+    name: {
         type: String,
         required: true,
-        unique: true
     },
     email: {
         type: String,
@@ -21,15 +20,15 @@ const freelancerSchema = new Schema ({
         type: String,
         required: false
     },
-    freelancerPhoneNumber: {
-        type: Number,
-        required: false
-    },
-    freelancerCountry: {
+    phoneNumber: {
         type: String,
         required: false
     },
-    freelancerDesc: {
+    country: {
+        type: String,
+        required: false
+    },
+    desc: {
         type: String,
         required: false
     },

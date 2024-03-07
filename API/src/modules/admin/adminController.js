@@ -1,6 +1,7 @@
 
 import bcrypt from 'bcrypt'
 import AdminModel from '../../../DB/models/admin_model.js'
+import { validatePassword } from '../../middleware/val.middleware.js';
 
 // Get All Admins
 export const getAllAdmins = async (req, res) => {
@@ -94,17 +95,6 @@ export const updateAdminPassword = async (req, res) => {
         const adminToUpdate = await AdminModel.findById(adminId);
 
         if(adminToUpdate) {
-            const adminEmail = {email: req.body.email};
-            const adminData = await AdminModel.find(adminEmail);
-            console.log(adminData);
-
-            let condition = adminData.length === 0;
-
-            if(!condition) {
-                condition = adminData[0].email === req.body.email;
-            }
-
-            if(condition) {
                 if(adminData.includes(req.body.password)) {
                     const passwordInput = req.body.adminPassword;
                     const adminPassword = data[0].adminPassword;
@@ -138,8 +128,6 @@ export const updateAdminPassword = async (req, res) => {
                 const update = { $set: { username: req.body.username, email: req.body.email, image_url: req.body.image_url } }
                 await AdminModel.updateOne(filter, update);
                 return res.status(200).send("Admin has been updated successfuly.");
-            }
-            return res.status(400).send("You cannot use this email.");
         }
         res.status(200).send("There is no Admin with such id to update.");
     } catch (error) {

@@ -9,7 +9,6 @@ export const generateToken = async (userId, role) => {
   // return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
 };
 
-// Model Update line 47
 
 const login = async (req, res) => {
   try {

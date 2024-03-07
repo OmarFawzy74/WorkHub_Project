@@ -7,13 +7,13 @@ import FreelancerModel from "./DB/models/freelancer_model.js"
 import AdminModel from './DB/models/admin_model.js';
 
 const generateToken = (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY, { expiresIn: '1h' });
+  return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY);
 };
 
 const signup = async (req, res) => {
   try {
     const { role } = req.params;
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const adminEmail = await AdminModel.findOne({ email });
 
@@ -42,16 +42,16 @@ const signup = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));
 
     // Create a new user instance based on the role
     let newUser;
     switch (role) {
       case 'client':
-        newUser = new ClientModel({ username, email, password: hashedPassword });
+        newUser = new ClientModel({ name, email, password: hashedPassword });
         break;
       case 'freelancer':
-        newUser = new FreelancerModel({ username, email, password: hashedPassword });
+        newUser = new FreelancerModel({ name, email, password: hashedPassword });
         break;
     }
 
@@ -59,7 +59,7 @@ const signup = async (req, res) => {
 
     const token = generateToken(newUser._id, role);
     const filter = { _id: newUser._id };
-    const update = { $set: { token: token } }
+    const update = { $set: { token: token, activityStatus: "online" } }
     let query;
 
     switch (role) {
