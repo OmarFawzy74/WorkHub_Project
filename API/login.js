@@ -26,7 +26,7 @@ const login = async (req, res) => {
       }
     }
 
-    if(user.activityStatus === "online" || user.lastLogin === undefined) {
+    if(user.activityStatus === "online" && user.lastLogin === undefined) {
       return res.status(400).json({ msg: "Already loged in" });
     }
 

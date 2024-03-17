@@ -19,7 +19,7 @@ const logout = async (req, res) => {
         }
 
         const filter = { _id: id };
-        const update = { $set: { activityStatus: "offline", token: "null" } }
+        const update = { $set: { activityStatus: "offline", token: "null"} }
 
         let user;
 
