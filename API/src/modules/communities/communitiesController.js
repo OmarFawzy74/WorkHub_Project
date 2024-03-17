@@ -1,12 +1,7 @@
 
 import community from "../../../DB/models/community_model.js";
 
-// Unfinished Tasks
-
-// 1. Check Authentication
-// 2. Check Authorization
-
-// Get All Community
+// Get All Communities
 export const getAllCommunities = async (req, res) => {
     try {
         const allCommunities = await community.find().populate('communityCategory');
@@ -83,20 +78,3 @@ export const deleteCommunity = async (req, res) => {
         res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
-
-const allCommunity = async (req, res) => {
-    try {
-        const community = await CommunityModel.find({});
-
-        if (!community || community.length === 0) {
-            return res.status(404).json({ msg:"No communitys found" });
-        }
-
-        return res.status(200).json({ msg:"Communitys found", community });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ msg:"Internal server error" });
-    }
-};
-
-export default allCommunity

@@ -15,11 +15,9 @@ const router = express.Router();
 router.get('/getAllAdmins', auth(endPoints.admin), getAllAdmins);
 router.post('/addAdmin', valMiddleware(sigupSchema), addAdmin);
 router.post('/login', valMiddleware(loginSchema), login);
-
-router.put("/logout/:id", validateParams(), auth(endPoints.admin), asyncHandler(logout));
-
 router.put("/updateAdminInfo/:id", validateParams(), valMiddleware(updateInfoSchema), auth(endPoints.admin), asyncHandler(updateAdminInfo));
 router.put("/updateAdminPassword/:id", validateParams(), valMiddleware(updatePasswordSchema), auth(endPoints.admin), asyncHandler(updateAdminPassword));
+router.put("/logout/:id", validateParams(), auth(endPoints.admin), asyncHandler(logout));
 router.delete("/deleteAdmin/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteAdmin));
 
 export default router;

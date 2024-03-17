@@ -3,8 +3,6 @@ import order from "../../../DB/models/order_model.js";
 
 //Unfinished Tasks
 
-// 2. Check Authentication
-// 3. Check Authorization
 // 1. Check Freelancer Id
 // 2. Check Client Id
 // 3. Check Order Price

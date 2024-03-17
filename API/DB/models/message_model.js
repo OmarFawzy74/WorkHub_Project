@@ -3,16 +3,20 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const messageSchema = new Schema({
-    conversationId: {
+    conversation: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "conversation"
     },
-    userId: {
+    senderId: {
         type: mongoose.Types.ObjectId,
         required: true
     },
-    conversationDesc: {
+    senderType: {
+        type: String,
+        required: true
+    },
+    messageContent: {
         type: String,
         required: true
     }

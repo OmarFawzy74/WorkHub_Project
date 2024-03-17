@@ -16,17 +16,9 @@ const clientSchema = new Schema({
         type: String,
         required: true,
     },
-    clientImage_url: {
+    image_url: {
         type: String,
        
-    },
-    clientDesc: {
-        type: String,
-        
-    },
-    clientCountry: {
-        type: String,
-        
     },
     lastLogin: {
         type: Date,

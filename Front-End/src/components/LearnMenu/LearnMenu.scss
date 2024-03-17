@@ -1,0 +1,32 @@
+.learnMenuContainer {
+    
+    .learnMenu {
+        border-bottom: 1px solid #1DBF73;
+        position: relative;
+        left: 105px;
+        width: 1300px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 300;
+        color: gray;
+        background-color: #fff;
+        padding: 0 30px;
+    }
+
+    .learnMenuLink {
+        text-decoration: none;
+        color: #404145;
+        font-weight: 500;
+        font-size: 16px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .learnCards {
+        margin-left: 20px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        padding: 50px 100px;
+        row-gap: 70px;
+      }
+}

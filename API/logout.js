@@ -5,9 +5,22 @@ import freelancer_model from "./DB/models/freelancer_model.js";
 const logout = async (req, res) => {
     try {
         const id = req.params.id
-        const data = await admin_model.findById(id);
+        let data;
+
+        data = await admin_model.findById(id);
+        if (!data) {
+          data = await client_model.findById(id);
+          if (!data) {
+            data = await freelancer_model.findById(id);
+            if (!data) {
+              return res.status(400).json({ msg: "User not found" });
+            }
+          }
+        }
+
         const filter = { _id: id };
         const update = { $set: { activityStatus: "offline", token: "null" } }
+
         let user;
 
         if(data){
@@ -28,7 +41,7 @@ const logout = async (req, res) => {
                 return res.status(200).json({ msg: "loged out successfuly."});
             }
         }
-        res.status(400).json({ msg: "logout Failed."});
+        res.status(400).json({ msg: "Invalid id"});
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");

@@ -26,6 +26,10 @@ const login = async (req, res) => {
       }
     }
 
+    if(user.activityStatus === "online" || user.lastLogin === undefined) {
+      return res.status(400).json({ msg: "Already loged in" });
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ msg: "Wrong email or password" });

@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const proffSchema = new Schema({
     proffName: {
         type: String,
+        required: true
     },
     proffTitle: {
         type: String,
@@ -12,7 +13,6 @@ const proffSchema = new Schema({
     },
     proffImage_url: {
         type: String,
-        required: true
     },
     ProffDesc: {
         type: String,

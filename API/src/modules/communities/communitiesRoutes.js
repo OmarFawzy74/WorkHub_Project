@@ -14,9 +14,4 @@ router.post("/addCommunity", validation(communitySchema), auth(endPoints.admin),
 router.put("/updateCommunity/:id", validation(updateCommunitySchema), validateParams(), auth(endPoints.admin), asyncHandler(updateCommunity));
 router.delete("/deleteCommunity/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteCommunity));
 
-// router.post('/signup/:role', valMiddleware(validations.sigupSchema), signup)
-// router.post('/login/:role', valMiddleware(validations.loginSchema), login);
-
-// router.get('/user/community/allcommunitys', auth(endPoint.allCommunity), allCommunity);
-
 export default router;

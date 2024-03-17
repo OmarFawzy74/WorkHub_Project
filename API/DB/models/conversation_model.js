@@ -3,27 +3,24 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const conversationSchema = new Schema({
-    freelancerId: {
+    freelancer: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "freelancer"
     },
-    clientId: {
+    client: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "client"
     },
     readByFreelancer: {
         type: Boolean,
-        required: true
     },
     readByClient: {
         type: Boolean,
-        required: true
     },
     lastMessage: {
         type: String,
-        required: false
     }
 },{
     timestamps: true

@@ -3,7 +3,6 @@ import FreelancerModel from "../../../DB/models/freelancer_model.js";
 import { validatePassword } from '../../middleware/val.middleware.js';
 import bcrypt from 'bcrypt'
 
-
 // Get All Freelancers
 export const getAllFreelancers = async (req,res) => {
   try {
@@ -21,85 +20,6 @@ export const getAllFreelancers = async (req,res) => {
 // Get A Freelancer
 // Freelancer Photo
 // medicine.image_url = "http://" + req.hostname + ":4000/" + medicine.image_url;
-
-// Upload Image
-export const uploadImage = async (req, res) => {
-  try {
-      if (!req.files || !req.files[0]) {
-          console.log('No files found');
-          return res.status(400).json({ msg: 'No files uploaded' });
-      }
-
-      console.log(req.files[0]);
-
-      const imageUrl = `${req.protocol}://${req.headers.host}/${req.files[0].destination}/${req.files[0].filename}`;
-
-      const freelancer = await FreelancerModel.findOneAndUpdate(
-          { _id: req.user.id },
-          { freelancerImage_url: imageUrl },
-       
-      );
-
-      if (freelancer) {
-          console.log('Freelancer updated:', freelancer);
-          return res.status(200).json({ msg: 'Freelancer image updated successfully', imageUrl });
-      } else {
-          console.log('Invalid freelancer ID:', req.user.id);
-          return res.status(400).json({ msg: 'Invalid freelancer ID' });
-      }
-  } catch (error) {
-      console.error('Error:', error);
-      return res.status(500).json({ msg: 'Internal server error', error: error.msg });
-  }
-};
-
-export const createInforForFreelancer = async (req, res) => {
-  try {
-      const freelancerId = req.user.id;
-      if (!freelancerId) {
-          return res.status(400).json({ msg: 'You must log in first to create profile' });
-      }
-
-      // Await the findById() method to get the actual document
-      const existFreelancer = await FreelancerModel.findById(freelancerId);
-      if (!existFreelancer) {
-          return res.status(400).json({ msg: 'Freelancer not found' });
-      }
-
-      const { freelancerPhoneNumber, freelancerCountry, freelancerDesc } = req.body;
-
-      // Use findByIdAndUpdate() to update the document
-      const newInfo = await FreelancerModel.findByIdAndUpdate(
-          freelancerId,
-          { freelancerPhoneNumber, freelancerCountry, freelancerDesc },
-       
-      );
-
-      return res.status(200).json({ msg: 'Created info correct', newInfo });
-  } catch (error) {
-      console.error('Error creating freelancer info:', error);
-      return res.status(500).json({ msg: 'Internal server error' });
-  }
-};
-
-export const getFreelancerInfo = async (req, res) => {
-  try {
-    const freelancerId = req.params.id;
-
-    // Query the database to find the freelancer by ID
-    const freelancer = await FreelancerModel.findById(freelancerId);
-
-    if (!freelancer) {
-        return res.status(404).json({ msg: 'Freelancer not found' });
-    }
-
-    // Return the freelancer information
-    res.status(200).json({ freelancer });
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: 'Internal server error' });
-}
-};
 
 // Delete Freelancer
 export const deleteFreelancer = async (req, res) => {
@@ -127,10 +47,10 @@ export const updateFreelancerInfo = async (req, res) => {
       let update;
       console.log(req);
       if(!req.file) {
-        update = { $set: { name: req.body.name, email: req.body.email, image_url: req.body.image_url, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country } }
+        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country } }
       }
       else {
-        update = { $set: { name: req.body.name, email: req.body.email, image_url: req.body.image_url, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country, image_url: req.file.filename } }
+        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country, image_url: req.file.filename } }
       }
 
       const freelancerId = req.params.id;

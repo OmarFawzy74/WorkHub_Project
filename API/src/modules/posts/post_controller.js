@@ -1,7 +1,8 @@
-const ClientModel = require("../../../DB/models/client_model");
-const FreelancerModel = require("../../../DB/models/freelancer_model");
-const Postmodel = require("../../../DB/models/post_model");
-const sendEmail = require("../../../common/email");
+
+import ClientModel from "../../../DB/models/client_model.js"
+import FreelancerModel from "../../../DB/models/freelancer_model.js"
+import Postmodel from "../../../DB/models/post_model.js"
+// import sendEmail from "../../../common/email"
 
 
 // const populateList=[{
@@ -9,7 +10,7 @@ const sendEmail = require("../../../common/email");
 //     select:"email username freelancerImage_url"
 // }]
 
-const createPost = async (req, res) => {
+export const createPost = async (req, res) => {
     try {
         let imagesUrl = [];
         if (req.files && req.files.length > 0) {
@@ -73,7 +74,7 @@ const createPost = async (req, res) => {
     }
 };
 
-const getPost=async(req,res)=>{
+export const getPost = async(req,res)=>{
     try {
         const{id}=req.params
         const post = await Postmodel.findById({_id:id})
@@ -93,7 +94,7 @@ const getPost=async(req,res)=>{
    
 
 }
-const getAllPosts=async(req,res)=>{
+export const getAllPosts = async(req,res)=>{
     try{
 
         const posts=await Postmodel.find();
@@ -115,7 +116,7 @@ const getAllPosts=async(req,res)=>{
 }
 
 
-const createLikeToPost = async (req, res) => {
+export const createLikeToPost = async (req, res) => {
    
         const { id } = req.params;
 
@@ -163,7 +164,7 @@ const createLikeToPost = async (req, res) => {
 };
 
 
-const updatePost = async (req, res) => {
+export const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
         const { caption } = req.body;
@@ -188,7 +189,7 @@ const updatePost = async (req, res) => {
     }
 };
 
-const createComment = async (req, res) => {
+export const createComment = async (req, res) => {
     const { id } = req.params;
     const { desc, tagslist  } = req.body;
 
@@ -245,19 +246,4 @@ const createComment = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
-}
-
-    
-
-
-
-
-
-module.exports = {
-    createPost,
-    getPost,
-    getAllPosts,
-    createLikeToPost,
-    updatePost,
-    createComment
 }
