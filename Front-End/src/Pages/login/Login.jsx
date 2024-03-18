@@ -40,9 +40,8 @@ function Login() {
       password: freelancerLogin.password,
     }).then((resp) => {
         setFreelancerLogin({ ...freelancerLogin, loading: false, err: [] });
-        setAuthUser(resp.data);
+        setAuthUser(resp.data.userData);
         navigate("/gigs");
-        console.log("success");
       }).catch((errors) => {
         console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");
