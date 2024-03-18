@@ -44,7 +44,7 @@ function Login() {
         navigate("/gigs");
         console.log("success");
       }).catch((errors) => {
-        console.log("error");
+        console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");
         setFreelancerLogin({ ...freelancerLogin, loading: false, err: errors.response.data.errors });
       })
