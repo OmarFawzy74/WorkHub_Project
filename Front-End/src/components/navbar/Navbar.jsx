@@ -73,7 +73,11 @@ const Navbar = () => {
           </div>
 
           <span><img className="languageIcon" src= {!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"}/> English</span>
-          {!currentUser?.isSeller && <Link className='link' to="/login">Sign in</Link>}
+
+          {currentUser.id == 3 ? <Link className='link' to="/login">Sign in</Link> : null}
+
+
+          {/* {!currentUser?.isSeller && <Link className='link' to="/login">Sign in</Link>} */}
           {!currentUser?.isSeller && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
           {currentUser?.isSeller && (
             <div className="user" onClick={() => setOpen(!open)}>
