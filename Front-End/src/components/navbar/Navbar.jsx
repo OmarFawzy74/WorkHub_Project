@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./Navbar.scss"
 import { Link, useLocation } from 'react-router-dom'
+import { getAuthUser } from '../../localStorage/storage';
 
 const Navbar = () => {
 
@@ -43,11 +44,17 @@ const Navbar = () => {
   }, []);
 
 
+  const user = getAuthUser()
+  // console.log(user.activityStatus);
+  
+
   const currentUser = {
-    id: 1,
-    username: "Mana",
-    isSeller: false
+    id: user._id,
+    name: user.name,
+    type: user.role,
+    activity: user.activityStatus
   }
+
 
   return (
     <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} >
@@ -73,7 +80,10 @@ const Navbar = () => {
           </div>
 
           <span><img className="languageIcon" src= {!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"}/> English</span>
-          {!currentUser?.isSeller && <Link className='link' to="/login">Sign in</Link>}
+          {/* {!currentUser.activity==="online" && <Link className='link' to="/login">Sign in</Link>} */}
+
+          {currentUser? <Link className='link' to="/login">Sign in</Link> : null}
+
           {!currentUser?.isSeller && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
           {currentUser?.isSeller && (
             <div className="user" onClick={() => setOpen(!open)}>
