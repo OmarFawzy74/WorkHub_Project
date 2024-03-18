@@ -46,7 +46,7 @@ const Navbar = () => {
   const currentUser = {
     id: 1,
     username: "Mana",
-    isSeller: true
+    isSeller: false
   }
 
   return (
