@@ -60,7 +60,22 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
-    res.status(200).json({ msg: "Sign in successful", token , user});
+    let userData;
+    switch (user.role) {
+      case "admin":
+        userData = await AdminModel.findById(filter);
+        break;
+      case "client":
+        process = await ClientModel.findById(filter);
+        break;
+      case "freelancer":
+        process = await FreelancerModel.findById(filter);
+        break;
+      default:
+        return res.status(400).json({ msg: "Role undefined" });
+    }
+
+    res.status(200).json({ msg: "Sign in successful", token , userData});
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });
