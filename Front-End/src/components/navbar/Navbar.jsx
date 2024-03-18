@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import "./Navbar.scss"
 import { Link, useLocation } from 'react-router-dom'
-import { getAuthUser } from '../../localStorage/storage';
+import { getAuthUser, removeAuthUser } from '../../localStorage/storage';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Navbar = () => {
 
@@ -18,11 +20,11 @@ const Navbar = () => {
   const { pathname } = useLocation()
 
   const isActive = () => {
-    window.scrollY > 0 ? setActive(true) : setActive(false);
+    window.scrollY > 10 ? setActive(true) : setActive(false);
   };
 
   const isActiveMenu = () => {
-    window.scrollY > 200 ? setActiveMenu(true) : setActiveMenu(false);
+    window.scrollY > 500 ? setActiveMenu(true) : setActiveMenu(false);
   };
 
   useEffect(() => {
@@ -45,14 +47,37 @@ const Navbar = () => {
 
 
   const user = getAuthUser()
-  // console.log(user.activityStatus);
-  
+  console.log(user);
 
-  const currentUser = {
-    id: user._id,
-    name: user.name,
-    type: user.role,
-    activity: user.activityStatus
+  let currentUser
+
+  if(user == undefined) {
+    currentUser = null
+  }
+  else {
+    currentUser = {
+      id: user._id,
+      name: user.name,
+      type: user.role,
+      activity: user.activityStatus
+    }
+  }
+
+
+  const navigate = useNavigate();
+
+  const userLogout = (e) => {
+    e.preventDefault();
+    const userId = user._id;
+    console.log(userId);
+    axios.put("http://localhost:3000/api/auth/logout/" + userId)
+    .then((resp) => {
+      console.log(resp);
+      removeAuthUser();
+      navigate("/");
+    }).catch((errors) => {
+      console.log(errors);
+    })
   }
 
 
@@ -80,25 +105,18 @@ const Navbar = () => {
           </div>
 
           <span><img className="languageIcon" src= {!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"}/> English</span>
-<<<<<<< HEAD
-
-          {currentUser.id == 3 ? <Link className='link' to="/login">Sign in</Link> : null}
 
 
-          {/* {!currentUser?.isSeller && <Link className='link' to="/login">Sign in</Link>} */}
-=======
-          {/* {!currentUser.activity==="online" && <Link className='link' to="/login">Sign in</Link>} */}
+          {currentUser?.activity !== "online" && <Link className='link' to="/login">Sign in</Link>}
+          {/* {currentUser.activity !== "online" ? <Link className='link' to="/login">Sign in</Link> : null} */}
 
-          {currentUser? <Link className='link' to="/login">Sign in</Link> : null}
-
->>>>>>> a4f3f6effd2d86f793672a5c2fa79cb7e875a6a6
-          {!currentUser?.isSeller && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
-          {currentUser?.isSeller && (
+          {currentUser?.activity !== "online" && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
+          {currentUser && (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src="/img/profile.jpg" />
-              <span>{currentUser?.username}</span>
+              <span>{currentUser?.name}</span>
               {open && <div className="options">
-                {currentUser?.isSeller && (
+                {currentUser?.type == "freelancer" && (
                   <>
                     <Link className='link' to="/mygigs">My Services</Link>
                     <Link className='link' to="/add">Add New Service</Link>
@@ -106,7 +124,7 @@ const Navbar = () => {
                 )}
                 <Link className='link' to="/orders">Orders</Link>
                 <Link className='link' to="/messages">Messages</Link>
-                <Link className='link'>Logout</Link>
+                <Link className='link' onClick={userLogout}>Logout</Link>
               </div>}
             </div>
           )}

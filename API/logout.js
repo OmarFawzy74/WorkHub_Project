@@ -41,7 +41,6 @@ const logout = async (req, res) => {
                 return res.status(200).json({ msg: "loged out successfuly."});
             }
             return res.status(400).json({ msg: "already loged out"});
-
         }
         res.status(400).json({ msg: "Invalid id"});
     } catch (error) {

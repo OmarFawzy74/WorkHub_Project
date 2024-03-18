@@ -15,6 +15,7 @@ import conversationsRoutes from './src/modules/conversations/conversationsRoutes
 import messagesRoutes from './src/modules/messages/messagesRoutes.js'
 import postsRoutes from './src/modules/posts/post_routes.js'
 import professorsRoutes from './src/modules/professors/professorsRoutes.js'
+import authRoutes from './src/modules/auth/authRoutes.js'
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/api/conversations", conversationsRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/professors", professorsRoutes);
+app.use("/api/auth", authRoutes);
 
 // app.use(freelncerRoutes,adminRoutes,clientRoutes);
 

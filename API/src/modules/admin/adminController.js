@@ -22,7 +22,7 @@ export const getAllAdmins = async (req, res) => {
 // Add Admin
 export const addAdmin = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { name, email, password } = req.body;
 
         // Check if admin with given email already exists
         const admin = await AdminModel.findOne({ email });
@@ -35,7 +35,7 @@ export const addAdmin = async (req, res) => {
 
         // Create a new admin instance
         const newAdmin = new AdminModel({
-            username,
+            name,
             email,
             password: hashedPassword
         });
@@ -46,7 +46,7 @@ export const addAdmin = async (req, res) => {
         // Generate token for the new admin
 
         // Send response with token
-        res.status(200).json({ msg: 'Admin added successfully', token });
+        res.status(200).json({ msg: 'Admin added successfully'});
 
     } catch (error) {
         console.error(error);

@@ -12,12 +12,10 @@ import endPoints from "../../middleware/endPoints.js";
 
 const router = express.Router();
 
-router.get('/getAllAdmins', auth(endPoints.admin), getAllAdmins);
+router.get('/getAllAdmins', getAllAdmins); // auth(endPoints.admin)
 router.post('/addAdmin', valMiddleware(sigupSchema), addAdmin);
-router.post('/login', valMiddleware(loginSchema), login);
-router.put("/updateAdminInfo/:id", validateParams(), valMiddleware(updateInfoSchema), auth(endPoints.admin), asyncHandler(updateAdminInfo));
-router.put("/updateAdminPassword/:id", validateParams(), valMiddleware(updatePasswordSchema), auth(endPoints.admin), asyncHandler(updateAdminPassword));
-router.put("/logout/:id", validateParams(), auth(endPoints.admin), asyncHandler(logout));
-router.delete("/deleteAdmin/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteAdmin));
+router.put("/updateAdminInfo/:id", validateParams(), valMiddleware(updateInfoSchema), asyncHandler(updateAdminInfo)); // auth(endPoints.admin)
+router.put("/updateAdminPassword/:id", validateParams(), valMiddleware(updatePasswordSchema), asyncHandler(updateAdminPassword)); // auth(endPoints.admin)
+router.delete("/deleteAdmin/:id", validateParams(), asyncHandler(deleteAdmin)); // auth(endPoints.admin)
 
 export default router;

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const adminSchema = new Schema ({
-    username: {
+    name: {
         type: String,
         required: true
     },

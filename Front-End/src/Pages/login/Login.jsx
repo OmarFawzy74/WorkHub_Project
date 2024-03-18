@@ -25,27 +25,27 @@ function Login() {
   //   }
   // };
 
-  const [freelancerLogin, setFreelancerLogin] = useState({
+  const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
     loading: false,
     err: []
   });
 
-  const freelancerLoginFun = (e) => {
+  const userLoginFun = (e) => {
     e.preventDefault();
-    setFreelancerLogin({ ...freelancerLogin, loading: true, err: [] });
-    axios.post("http://localhost:3000/api/freelancers/login/freelancer", {
-      email: freelancerLogin.email,
-      password: freelancerLogin.password,
+    setUserLogin({ ...userLogin, loading: true, err: [] });
+    axios.post("http://localhost:3000/api/auth/login", {
+      email: userLogin.email,
+      password: userLogin.password,
     }).then((resp) => {
-        setFreelancerLogin({ ...freelancerLogin, loading: false, err: [] });
+        setUserLogin({ ...userLogin, loading: false, err: [] });
         setAuthUser(resp.data.userData);
         navigate("/gigs");
       }).catch((errors) => {
         console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");
-        setFreelancerLogin({ ...freelancerLogin, loading: false, err: errors.response.data.errors });
+        setUserLogin({ ...userLogin, loading: false, err: errors.response.data.errors });
       })
   }
 
@@ -63,17 +63,17 @@ function Login() {
       <div className="loginRight">
         <div className="login">
 
-          <form onSubmit={freelancerLoginFun}>
+          <form onSubmit={userLoginFun}>
             <h1>Sign in to your account</h1>
             <label className="emailLabel" htmlFor="">Email or Username</label>
             <input
               name="username"
               required
               type="email"
-              value={freelancerLogin.email}
+              value={userLogin.email}
               placeholder="Enter your Email"
               autoFocus
-              onChange={(e) => setFreelancerLogin({ ...freelancerLogin, email: e.target.value })}
+              onChange={(e) => setUserLogin({ ...userLogin, email: e.target.value })}
             />
 
             <label className="passLabel" htmlFor="">Password</label>
@@ -82,8 +82,8 @@ function Login() {
               type="password"
               required
               placeholder="Enter your Password"
-              value={freelancerLogin.password}
-              onChange={(e) => setFreelancerLogin({ ...freelancerLogin, password: e.target.value })}
+              value={userLogin.password}
+              onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
             />
             <button type="submit">Login</button>
             {error && error}
