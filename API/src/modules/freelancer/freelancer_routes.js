@@ -14,6 +14,7 @@ import logout from "../../../logout.js";
 
 const router = express.Router();
 
+<<<<<<< HEAD
 router.get('/getAllFreelancers',  getAllFreelancers);
 router.post('/signup/:role', valMiddleware(sigupSchema), signup);
 router.post('/login/:role', valMiddleware(loginSchema), login);
@@ -21,5 +22,14 @@ router.put('/updateFreelancerInfo/:id', validateParams(), valMiddleware(updateIn
 router.put('/updateFreelancerPassword/:id', validateParams(), valMiddleware(updatePasswordSchema),  updateFreelancerPassword);
 router.put("/logout/:id", validateParams(),  asyncHandler(logout));
 router.delete("/deleteFreelancer/:id", validateParams(),  asyncHandler(deleteFreelancer));
+=======
+router.get('/getAllFreelancers', getAllFreelancers);
+router.post('/signup/:role', valMiddleware(sigupSchema), signup);
+router.post('/login/:role', valMiddleware(loginSchema), login);
+router.put('/updateFreelancerInfo/:id', validateParams(), valMiddleware(updateInfoSchema), upload.single('image'), updateFreelancerInfo);
+router.put('/updateFreelancerPassword/:id', validateParams(), valMiddleware(updatePasswordSchema), updateFreelancerPassword);
+router.put("/logout/:id", validateParams(), asyncHandler(logout));
+router.delete("/deleteFreelancer/:id", validateParams(), asyncHandler(deleteFreelancer));
+>>>>>>> c8c75bd8ae3ce37c33c846058f2fe780350bfe79
 
 export default router;

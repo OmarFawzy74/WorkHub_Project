@@ -42,7 +42,7 @@ function Login() {
         setFreelancerLogin({ ...freelancerLogin, loading: false, err: [] });
         setAuthUser(resp.data);
         navigate("/gigs");
-        console.log("success");
+        console.log(resp);
       }).catch((errors) => {
         console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");

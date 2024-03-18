@@ -27,6 +27,10 @@ const login = async (req, res) => {
       }
     }
 
+    if(user.activityStatus === "online") {
+      return res.status(400).json({ msg: "Already loged in" });
+    }
+
     if(user.activityStatus === "online" && user.lastLogin === undefined) {
       return res.status(400).json({ msg: "Already loged in" });
     }
@@ -57,7 +61,26 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
+<<<<<<< HEAD
     res.status(200).json({ msg: "Sign in successful", token , user });
+=======
+    let userData;
+    switch (user.role) {
+      case "admin":
+        userData = await AdminModel.findById(filter);
+        break;
+      case "client":
+        process = await ClientModel.findById(filter);
+        break;
+      case "freelancer":
+        process = await FreelancerModel.findById(filter);
+        break;
+      default:
+        return res.status(400).json({ msg: "Role undefined" });
+    }
+
+    res.status(200).json({ msg: "Sign in successful", token , userData});
+>>>>>>> c8c75bd8ae3ce37c33c846058f2fe780350bfe79
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });
