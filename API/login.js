@@ -26,6 +26,10 @@ const login = async (req, res) => {
       }
     }
 
+    if(user.activityStatus === "online") {
+      return res.status(400).json({ msg: "Already loged in" });
+    }
+
     if(user.activityStatus === "online" && user.lastLogin === undefined) {
       return res.status(400).json({ msg: "Already loged in" });
     }
@@ -56,7 +60,7 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
-    res.status(200).json({ msg: "Sign in successful", token });
+    res.status(200).json({ msg: "Sign in successful", token , user});
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });

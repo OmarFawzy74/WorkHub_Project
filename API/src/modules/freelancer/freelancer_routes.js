@@ -14,12 +14,12 @@ import logout from "../../../logout.js";
 
 const router = express.Router();
 
-router.get('/getAllFreelancers', auth(endPoints.admin), getAllFreelancers);
+router.get('/getAllFreelancers', getAllFreelancers);
 router.post('/signup/:role', valMiddleware(sigupSchema), signup);
 router.post('/login/:role', valMiddleware(loginSchema), login);
-router.put('/updateFreelancerInfo/:id', validateParams(), valMiddleware(updateInfoSchema), auth(endPoints.freelancer), upload.single('image'), updateFreelancerInfo);
-router.put('/updateFreelancerPassword/:id', validateParams(), valMiddleware(updatePasswordSchema), auth(endPoints.freelancer), updateFreelancerPassword);
-router.put("/logout/:id", validateParams(), auth(endPoints.freelancer), asyncHandler(logout));
-router.delete("/deleteFreelancer/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteFreelancer));
+router.put('/updateFreelancerInfo/:id', validateParams(), valMiddleware(updateInfoSchema), upload.single('image'), updateFreelancerInfo);
+router.put('/updateFreelancerPassword/:id', validateParams(), valMiddleware(updatePasswordSchema), updateFreelancerPassword);
+router.put("/logout/:id", validateParams(), asyncHandler(logout));
+router.delete("/deleteFreelancer/:id", validateParams(), asyncHandler(deleteFreelancer));
 
 export default router;
