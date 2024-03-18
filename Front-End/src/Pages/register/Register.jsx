@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Register() {
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     img: "",
@@ -15,6 +15,7 @@ function Register() {
     isSeller: false,
     desc: "",
   });
+
 
   const navigate = useNavigate();
 
@@ -49,7 +50,7 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <div className="left">
           <h1>Create a new account</h1>
-          <label htmlFor="">Username</label>
+          <label htmlFor="">ame</label>
           <input
             name="username"
             type="text"
@@ -68,12 +69,20 @@ function Register() {
           <label htmlFor="">Profile Picture</label>
           <input type="file" onChange={(e) => setFile(e.target.files[0])} />
           <label htmlFor="">Country</label>
-          <select
-            name="country"
-            type="text"
-            placeholder="USA"
-            onChange={handleChange}
-          />
+
+          <select 
+              name="country" 
+              type="text" 
+              required
+              value={user.country}
+              onChange={handleChange}
+          >
+            <option value="Egypt">Egypt</option>
+            <option value="United States">United States</option>
+            <option value="England">England</option>
+            <option value="France">France</option>
+          </select>
+
           <button type="submit">Register</button>
         </div>
         <div className="right">
