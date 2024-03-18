@@ -177,7 +177,7 @@ export const signup = async (req, res) => {
   
       await newUser.save();
   
-      const token = generateToken(newUser._id, role);
+      const token = await generateToken(newUser._id, role);
       const filter = { _id: newUser._id };
       const update = { $set: { token: token, activityStatus: "online" } }
       let query;

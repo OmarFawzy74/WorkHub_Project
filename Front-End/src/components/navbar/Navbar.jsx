@@ -47,7 +47,7 @@ const Navbar = () => {
 
 
   const user = getAuthUser()
-  console.log(user);
+  // console.log(user);
 
   let currentUser
 
