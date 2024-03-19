@@ -134,8 +134,11 @@ export const signup = async (req, res) => {
     try {
       const { role } = req.params;
       const { name, email, password, country, desc, phoneNumber } = req.body;
-      const image_url = req.file.filename;
-      console.log(image_url);
+      let image_url
+  
+      if(req.file) {
+        image_url = req.file.filename;
+      }
 
       const adminEmail = await AdminModel.findOne({ email });
   

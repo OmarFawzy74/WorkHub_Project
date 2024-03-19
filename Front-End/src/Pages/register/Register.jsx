@@ -5,6 +5,7 @@ import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
+import { setAuthUser } from "../../localStorage/storage";
 
 function Register() {
   const [file, setFile] = useState(null);
@@ -21,7 +22,7 @@ function Register() {
     phoneNumber:"",
   });
 
-
+  const navigate = useNavigate();
 
   const image = useRef(null);
 
@@ -29,32 +30,27 @@ function Register() {
     e.preventDefault();
 
     setUser({ ...user, loading: true, err: null });
-    const url = await upload(file);
+    // const url = await upload(file);
 
     // console.log(getAuthUser().id);
 
     const formData = new FormData();
 
-    // formData.append("name", user.name);
-    // formData.append("desc", user.desc);
+    formData.append("name", user.name);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("country", user.country);
     formData.append("image", image.current.files[0]);
-    // formData.append("email", user.email);
-    // formData.append("password", user.password);
-    // formData.append("country", user.country);
-
-    // // console.log("a7a");
+    formData.append("phoneNumber", user.phoneNumber);
+    formData.append("desc", user.desc);
 
 
     axios
-      .post("http://localhost:3000/api/auth/signup/" + user.role, {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        country: user.country,
-        desc: user.desc,
-        phoneNumber: user.phoneNumber,
-        ...formData,
-      })
+    .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
       .then((resp) => {
         // setUser({
         //   ...user,
@@ -68,8 +64,11 @@ function Register() {
         //   role: "",
         // });
         // image.current.value = null;
-        // swal(resp.data.msg, "", "success");
-        console.log(resp);
+        swal("Congratulations you have Joined WorkHub Successfully", "", "success");
+        console.log(resp.data.message);
+        console.log(resp.data.userData);
+        setAuthUser(resp.data.userData);
+        navigate("/gigs");
       })
       .catch((errors) => {
         // setUser({
@@ -84,8 +83,9 @@ function Register() {
         //   role: "",
         // });
         // image.current.value = null;
-        // swal(user.err.msg, "", "error");
+        swal(errors.response.data.message, "", "error");
         console.log(errors);
+        console.log(errors.response.data.message);
       });
   }
 
@@ -95,7 +95,7 @@ function Register() {
 
 
 
-  const navigate = useNavigate();
+
 
   // const handleChange = (e) => {
   //   console.log(e.target.value);
@@ -152,6 +152,7 @@ function Register() {
               name="name"
               type="text"
               placeholder="Fawzy"
+              required
               onChange={(e) =>
                 setUser({ ...user, name: e.target.value })
               }
@@ -161,6 +162,7 @@ function Register() {
               name="email"
               type="email"
               placeholder="email"
+              required
               onChange={(e) =>
                 setUser({ ...user, email: e.target.value })
               } />
@@ -168,6 +170,7 @@ function Register() {
             <input
               name="password"
               type="password"
+              required
               onChange={(e) =>
                 setUser({ ...user, password: e.target.value })
               } />
@@ -180,10 +183,12 @@ function Register() {
               name="country"
               type="text"
               required
-              value={user.country}
               onChange={(e) =>
                 setUser({ ...user, country: e.target.value })
-              }          >
+              }>
+              <option value={""} disabled selected>
+                Select Country
+              </option>
               <option value="Egypt">Egypt</option>
               <option value="United States">United States</option>
               <option value="England">England</option>
@@ -209,6 +214,7 @@ function Register() {
                   name="phoneNumber"
                   type="text"
                   placeholder="+20 1090559824"
+                  required
                   onChange={(e) =>
                     setUser({ ...user, phoneNumber: e.target.value })
                   }
@@ -220,6 +226,7 @@ function Register() {
                   id=""
                   cols="30"
                   rows="10"
+                  required
                   onChange={(e) =>
                     setUser({ ...user, desc: e.target.value })
                   }
