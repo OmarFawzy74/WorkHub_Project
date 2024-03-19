@@ -20,6 +20,10 @@ const clientSchema = new Schema({
         type: String,
        
     },
+    country: {
+        type: String,
+        required: true,
+    },
     lastLogin: {
         type: Date,
         required: false

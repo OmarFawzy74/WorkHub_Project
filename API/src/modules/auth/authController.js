@@ -133,8 +133,10 @@ export const logout = async (req, res) => {
 export const signup = async (req, res) => {
     try {
       const { role } = req.params;
-      const { name, email, password } = req.body;
-  
+      const { name, email, password, country, desc, phoneNumber } = req.body;
+      const image_url = req.file.filename;
+      console.log(image_url);
+
       const adminEmail = await AdminModel.findOne({ email });
   
       if(adminEmail) {
@@ -168,10 +170,10 @@ export const signup = async (req, res) => {
       let newUser;
       switch (role) {
         case 'client':
-          newUser = new ClientModel({ name, email, password: hashedPassword });
+          newUser = new ClientModel({ name, email, password: hashedPassword, country, image_url });
           break;
         case 'freelancer':
-          newUser = new FreelancerModel({ name, email, password: hashedPassword });
+          newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber });
           break;
       }
   

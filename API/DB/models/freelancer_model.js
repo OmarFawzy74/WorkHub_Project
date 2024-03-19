@@ -18,19 +18,17 @@ const freelancerSchema = new Schema ({
     },
     image_url: {
         type: String,
-        required: false
     },
     phoneNumber: {
         type: String,
-        required: false
+        required: true
     },
     country: {
         type: String,
-        required: false
+        required: true
     },
     desc: {
         type: String,
-        required: false
     },
     activityStatus: {
         type: String,
