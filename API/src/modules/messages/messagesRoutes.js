@@ -9,12 +9,11 @@ import auth from '../../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-router.get("/getAllMessages", auth(endPoints.admin), asyncHandler(getAllMessages));
-router.get("/getConversationMessages/:id", auth(endPoints.allUsersExceptAdmin), asyncHandler(getMessagesByConversationId));
-router.post("/addMessage", validation(addMessageSchema), auth(endPoints.allUsersExceptAdmin), asyncHandler(addMessage));
-router.put("/updateMessage/:id", auth(endPoints.allUsersExceptAdmin), asyncHandler(updateMessage));
-router.delete("/deleteMessage/:id", auth(endPoints.allUsersExceptAdmin), asyncHandler(deleteMessage));
-
+router.get("/getAllMessages", asyncHandler(getAllMessages));//auth(endPoints.admin),
+router.get("/getConversationMessages/:id", asyncHandler(getMessagesByConversationId));// auth(endPoints.allUsersExceptAdmin),
+router.post("/addMessage", validation(addMessageSchema), asyncHandler(addMessage));// auth(endPoints.allUsersExceptAdmin),
+router.put("/updateMessage/:id", asyncHandler(updateMessage));//auth(endPoints.allUsersExceptAdmin),
+router.delete("/deleteMessage/:id", asyncHandler(deleteMessage));//auth(endPoints.allUsersExceptAdmin),
 export default router;
 
 // Unfinished Tasks

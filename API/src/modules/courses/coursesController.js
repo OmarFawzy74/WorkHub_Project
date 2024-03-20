@@ -18,7 +18,7 @@ export const getAllCourses = async (req, res) => {
 }
 
 // Add courses
-export const addcourse = async (req, res) => {
+export const addCourse = async (req, res) => {
 
     const courseTitle = { courseTitle: req.body.courseTitle };
     const data = await course.find(courseTitle);
@@ -36,7 +36,7 @@ export const addcourse = async (req, res) => {
 
 }
 // Update course
-export const updatecourse = async (req, res) => {
+export const updateCourse = async (req, res) => {
 
     const courseId = req.params.id;
     const iscourse = await course.findById(courseId);

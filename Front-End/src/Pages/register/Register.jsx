@@ -1,14 +1,11 @@
 import React, { useRef, useState } from "react";
-import upload from "../../utils/upload";
 import "./Register.scss";
-import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
 
 function Register() {
-  const [file, setFile] = useState(null);
   const [user, setUser] = useState({
     err: null,
     loading: false,
@@ -52,18 +49,6 @@ function Register() {
       },
     })
       .then((resp) => {
-        // setUser({
-        //   ...user,
-        //   loading: false,
-        //   err: null,
-        //   name: "",
-        //   desc: "",
-        //   email: "",
-        //   password: "",
-        //   country: "",
-        //   role: "",
-        // });
-        // image.current.value = null;
         swal("Congratulations you have Joined WorkHub Successfully", "", "success");
         console.log(resp.data.message);
         console.log(resp.data.userData);
@@ -71,18 +56,6 @@ function Register() {
         navigate("/gigs");
       })
       .catch((errors) => {
-        // setUser({
-        //   ...user,
-        //   loading: false,
-        //   err: errors,
-        //   name: "",
-        //   desc: "",
-        //   email: "",
-        //   password: "",
-        //   country: "",
-        //   role: "",
-        // });
-        // image.current.value = null;
         swal(errors.response.data.message, "", "error");
         console.log(errors);
         console.log(errors.response.data.message);

@@ -1,4 +1,4 @@
-
+import conversation from "../../../DB/models/conversation_model.js";
 import messageModel from "../../../DB/models/message_model.js";
 import conversationModel from "../../../DB/models/conversation_model.js";
 import freelancerModel from "../../../DB/models/freelancer_model.js";
@@ -39,13 +39,46 @@ export const getMessagesByConversationId = async (req, res) => {
 // Add Message
 export const addMessage = async (req, res) => {
     try {
-        // Check Conversation
 
-        const conversationId = req.body.conversation
+        const freelancerId = req.body.freelancerId;
+        const clientId = req.body.clientId;
 
-        let conversationData = await conversationModel.findById(conversationId);
+        // Check if Freelancer is Exists in Freelancers
 
-        if(conversationData) {
+        // Check if Client is Exists in Clients
+
+        const data = await conversation.findById(freelancerId);
+        
+        let conversationId;
+
+        const newConversation = new conversation({
+            freelancer : req.body.freelancer,
+            client : req.body.client
+        });
+
+        if(data) {
+            if(data.client._id === clientId) {
+                // return res.status(400).json({ msg:"Conversation is already exists!"});
+                conversationId = data._id;
+            }
+            else{
+                await newConversation.save();
+                conversationId = newConversation._id;
+            }
+        }
+        else{
+            await newConversation.save();
+            conversationId = newConversation._id;
+        }
+
+        // res.status(200).json({ msg:"Conversation has been created successfuly." });
+
+
+
+
+        // let conversationData = await conversationModel.findById(conversationId);
+
+        // if(conversationData) {
             const senderId = req.body.senderId;
             let senderData;
 
@@ -64,15 +97,18 @@ export const addMessage = async (req, res) => {
                 senderData = await messageModel.find({ senderId: senderId });
                 
                 const newMessage = new messageModel({
-                    ...req.body,
+                    conversation : conversationId,
+                    senderId : req.body.senderId,
+                    senderType : req.body.senderType,
+                    messageContent : req.body.messageContent
                 });
         
                 await newMessage.save();
                 return res.status(200).json({ msg:"Message has been created successfuly."});
             }
             res.status(400).json({ msg:"Invalid Sender ID" });
-        }
-        res.status(400).json({ msg:"Invalid Conversation ID" });
+        // }
+        // res.status(400).json({ msg:"Invalid Conversation ID" });
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");

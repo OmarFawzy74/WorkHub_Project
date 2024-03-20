@@ -8,10 +8,10 @@ import endPoints from "../../middleware/endPoints.js";
 
 const router = express.Router();
 
-router.get("/", auth(endPoints.allUsers), asyncHandler(serviceController.getAllServices));
-router.get("/:serviceId", auth(endPoints.allUsers), asyncHandler(serviceController.getServiceById));
-router.post("/", auth(endPoints.allUsers), asyncHandler(serviceController.createService));
-router.put("/:id", auth(endPoints.allUsers), asyncHandler(serviceController.updateService));
-router.delete("/:id", auth(endPoints.allUsers), asyncHandler(serviceController.deleteService));
+router.get("/getAllServices", asyncHandler(serviceController.getAllServices)); //auth(endPoints.allUsers)
+router.get("/getServiceById/:id", asyncHandler(serviceController.getServiceById));//auth(endPoints.allUsers)
+router.post("/createService", asyncHandler(serviceController.createService));//auth(endPoints.allUsers)
+router.put("/updateService/:id", asyncHandler(serviceController.updateService));//auth(endPoints.allUsers)
+router.delete("/deleteService/:id", asyncHandler(serviceController.deleteService));//auth(endPoints.allUsers)
 
 export default router;

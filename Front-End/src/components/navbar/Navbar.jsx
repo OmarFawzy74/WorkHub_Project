@@ -116,6 +116,7 @@ const Navbar = () => {
               <img src="/img/profile.jpg" />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
+              <Link className='link' to="/profile">Profile</Link>
                 {currentUser?.type == "freelancer" && (
                   <>
                     <Link className='link' to="/mygigs">My Services</Link>

@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, { Profiler } from 'react'; 
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import Home from './Pages/home/Home';
@@ -20,6 +20,7 @@ import PrivacyPolicy from './Pages/privacy/PrivacyPolicy';
 import ContactUs from './Pages/contactUs/ContactUs';
 import Register from './Pages/register/Register';
 import Learn from './Pages/learn/Learn';
+import Profile from './Pages/profile/Profile';
 
 
 function App() {
@@ -90,6 +91,10 @@ function App() {
       {
         path: "/learn",
         element:<Learn/>
+      },
+      {
+        path: "/profile",
+        element:<Profile />
       },
       ]
     },

@@ -1,7 +1,79 @@
-import React from "react";
 import "./Add.scss";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
+import { setAuthUser } from "../../localStorage/storage";
+
 
 const Add = () => {
+  const [service, setService] = useState({
+    err: null,
+    loading: false,
+    name: "",
+    image:"",
+    desc: "",
+    category: "",
+    price: "",
+    
+
+    
+  });
+
+  const navigate = useNavigate();
+
+  const image = useRef(null);
+
+  const addServiceData = async (e) => {
+    e.preventDefault();
+
+    setService({ ...service, loading: true, err: null });
+
+    const formData = new FormData();
+
+    formData.append("name", service.name);
+    formData.append("email", service.email);
+    formData.append("password", service.password);
+    formData.append("country", service.country);
+    formData.append("image", image.current.files[0]);
+    formData.append("phoneNumber", service.phoneNumber);
+    formData.append("desc", service.desc);
+
+
+    axios
+    .post("http://localhost:3000/api/auth/signup/" + service.role, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((resp) => {
+        // setService({
+        //   ...service,
+        //   loading: false,
+        //   err: null,
+        //   name: "",
+        //   desc: "",
+        //   email: "",
+        //   password: "",
+        //   country: "",
+        //   role: "",
+        // });
+        // image.current.value = null;
+        swal("Congratulations you have Joined WorkHub Successfully", "", "success");
+        console.log(resp.data.message);
+        console.log(resp.data.serviceData);
+        setAuthUser(resp.data.serviceData);
+        navigate("/gigs");
+      })
+      .catch((errors) => {
+        swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        console.log(errors.response.data.message);
+      });
+  }
+
+
+
   return (
     <div className="add">
       <div className="addContainer">

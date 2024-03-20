@@ -16,6 +16,9 @@ import messagesRoutes from './src/modules/messages/messagesRoutes.js'
 import postsRoutes from './src/modules/posts/post_routes.js'
 import professorsRoutes from './src/modules/professors/professorsRoutes.js'
 import authRoutes from './src/modules/auth/authRoutes.js'
+import servicesRoutes from './src/modules/service/service.router.js'
+import reviewsRoutes from './src/modules/reviews/reviewRouter.js'
+import coursesRoutes from './src/modules/courses/coursesRoutes.js'
 
 dotenv.config();
 
@@ -37,6 +40,11 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/professors", professorsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/services", servicesRoutes);
+app.use("/api/reviews", reviewsRoutes);
+app.use("/api/courses", coursesRoutes);
+
+
 
 // app.use(freelncerRoutes,adminRoutes,clientRoutes);
 
