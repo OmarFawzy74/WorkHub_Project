@@ -9,11 +9,11 @@ import endPoints from "../../middleware/endPoints.js";
 
 const router = express.Router();
 
-router.get("/getAllConversations", auth(endPoints.admin), asyncHandler(getAllConversations));
-router.get("/getConversationById/:id", auth(endPoints.admin), asyncHandler(getConversationById));
-router.post("/addConversation", validation(conversationSchema), auth(endPoints.allUsers), asyncHandler(addConversation));
-router.put("/updateConversation/:id", validation(updateConversationSchema), validateParams(), auth(endPoints.allUsers), asyncHandler(updateConversation));
-router.delete("/deleteConversation/:id", validateParams(), auth(endPoints.allUsers), asyncHandler(deleteConversation));
+router.get("/getAllConversations", asyncHandler(getAllConversations)); // auth(endPoints.admin),
+router.get("/getConversationById/:id", asyncHandler(getConversationById)); // auth(endPoints.admin),
+router.post("/addConversation", validation(conversationSchema), asyncHandler(addConversation)); // auth(endPoints.allUsers),
+router.put("/updateConversation/:id", validation(updateConversationSchema), validateParams(), asyncHandler(updateConversation)); // auth(endPoints.allUsers),
+router.delete("/deleteConversation/:id", validateParams(), asyncHandler(deleteConversation)); // auth(endPoints.allUsers),
 
 export default router;
 

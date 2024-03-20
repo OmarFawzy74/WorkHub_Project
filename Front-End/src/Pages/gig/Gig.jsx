@@ -1,8 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Gig.scss"
 import Slider from '../../Pages/gig/Slider';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import swal from "sweetalert";
+import { getAuthUser } from "../../localStorage/storage";
+
+// export let data;
 
 function Gig() {
+  const user = getAuthUser();
+
+  const [freelancer, setFreelancer] = useState({
+    err: null,
+    loading: false,
+    id: "65f77af957b0deb2c7bc3840"
+  });
+
+  // const [conversation, setConversation] = useState({
+  //   err: null,
+  //   loading: false,
+  //   id: "123456"
+  // });
+  
+  const navigate = useNavigate();
+  
+  const message = (e) => {
+    // console.log(e.target.value);
+    const freelancerId = e.target.value;
+    
+    axios
+    .post("http://localhost:3000/api/conversations/addConversation", {
+      freelancer: freelancerId,
+      client: user._id
+    })
+      .then((resp) => {
+        const conversationId = resp.data.newConversationData[0]._id;
+        // console.log(resp.data.newConversationData[0]._id);
+        navigate("/message/" + conversationId);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        navigate("/messages");
+      });
+  }
+
   return (
     <div className="gig">
       <div className="gigContainer">
@@ -59,7 +101,7 @@ function Gig() {
                   <img src="/img/star.png" alt="" />
                   <span>5</span>
                 </div>
-                <button>Contact Me</button>
+                {user?.role=="client" && (<button value={freelancer.id} onClick={message}>Contact Me</button>)}
               </div>
             </div>
             <div className="box">

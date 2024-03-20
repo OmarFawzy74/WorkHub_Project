@@ -33,20 +33,23 @@ export const getConversationById = async (req, res) => {
         res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
+
 // Add Conversation
 export const addConversation = async (req, res) => {
     try {
-        const freelancerId = req.body.freelancerId;
-        const clientId = req.body.clientId;
+        const freelancer = req.body.freelancer;
+        const client = req.body.client;
 
         // Check if Freelancer is Exists in Freelancers
 
         // Check if Client is Exists in Clients
 
-        const data = await conversation.findById(freelancerId);
+        const data = await conversation.findOne({freelancer});
+
+        console.log(data);
 
         if(data) {
-            if(data.client._id === clientId) {
+            if(data.client == client) {
                 return res.status(400).json({ msg:"Conversation is already exists!"});
             }
         }
@@ -56,7 +59,10 @@ export const addConversation = async (req, res) => {
         });
 
         await newConversation.save();
-        res.status(200).json({ msg:"Conversation has been created successfuly." });
+
+        const newConversationData = await conversation.find(newConversation._id).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1});
+
+        res.status(200).json({ msg:"Conversation has been created successfuly.", newConversationData});
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });

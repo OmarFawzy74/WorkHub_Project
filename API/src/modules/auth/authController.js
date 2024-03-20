@@ -128,13 +128,13 @@ export const logout = async (req, res) => {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
     }
-}
+};
 
 export const signup = async (req, res) => {
     try {
       const { role } = req.params;
       const { name, email, password, country, desc, phoneNumber } = req.body;
-      let image_url
+      let image_url;
   
       if(req.file) {
         image_url = req.file.filename;
