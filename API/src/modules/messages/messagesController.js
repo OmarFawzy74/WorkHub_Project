@@ -7,8 +7,8 @@ import clientModel from "../../../DB/models/client_model.js";
 // Get All Messages
 export const getAllMessages = async (req, res) => {
     try {
-        const allMessages = await messageModel.find();
-
+        const allMessages = await messageModel.find().populate("conversation");
+        
         if(allMessages.length !== 0) {
             return res.status(200).json(allMessages);
         }
@@ -40,45 +40,47 @@ export const getMessagesByConversationId = async (req, res) => {
 export const addMessage = async (req, res) => {
     try {
 
-        const freelancerId = req.body.freelancerId;
-        const clientId = req.body.clientId;
+        // const freelancerId = req.body.freelancerId;
+        // const clientId = req.body.clientId;
 
-        // Check if Freelancer is Exists in Freelancers
+        // // Check if Freelancer is Exists in Freelancers
 
-        // Check if Client is Exists in Clients
+        // // Check if Client is Exists in Clients
 
-        const data = await conversation.findById(freelancerId);
+        // const data = await conversation.findById(freelancerId);
         
-        let conversationId;
+        // let conversationId;
 
-        const newConversation = new conversation({
-            freelancer : req.body.freelancer,
-            client : req.body.client
-        });
+        // const newConversation = new conversation({
+        //     freelancer : req.body.freelancer,
+        //     client : req.body.client
+        // });
 
-        if(data) {
-            if(data.client._id === clientId) {
-                // return res.status(400).json({ msg:"Conversation is already exists!"});
-                conversationId = data._id;
-            }
-            else{
-                await newConversation.save();
-                conversationId = newConversation._id;
-            }
-        }
-        else{
-            await newConversation.save();
-            conversationId = newConversation._id;
-        }
+        // if(data) {
+        //     if(data.client._id === clientId) {
+        //         // return res.status(400).json({ msg:"Conversation is already exists!"});
+        //         conversationId = data._id;
+        //     }
+        //     else{
+        //         await newConversation.save();
+        //         conversationId = newConversation._id;
+        //     }
+        // }
+        // else{
+        //     await newConversation.save();
+        //     conversationId = newConversation._id;
+        // }
 
-        // res.status(200).json({ msg:"Conversation has been created successfuly." });
-
-
+        // // res.status(200).json({ msg:"Conversation has been created successfuly." });
 
 
-        // let conversationData = await conversationModel.findById(conversationId);
 
-        // if(conversationData) {
+
+        const conversationId = req.body.conversation;
+
+        let conversationData = await conversationModel.findById(conversationId);
+
+        if(conversationData) {
             const senderId = req.body.senderId;
             let senderData;
 
@@ -107,8 +109,8 @@ export const addMessage = async (req, res) => {
                 return res.status(200).json({ msg:"Message has been created successfuly."});
             }
             res.status(400).json({ msg:"Invalid Sender ID" });
-        // }
-        // res.status(400).json({ msg:"Invalid Conversation ID" });
+        }
+        res.status(400).json({ msg:"Invalid Conversation ID" });
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");

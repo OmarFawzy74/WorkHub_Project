@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Messages.scss";
+import { getAuthUser } from "../../localStorage/storage";
 
 const Messages = () => {
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
+  
+  const user = getAuthUser();
+
 
   const message = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
   maxime cum corporis esse aspernatur laborum dolorum? Animi
@@ -22,7 +21,7 @@ const Messages = () => {
         </div>
         <table>
           <tr>
-            <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
+            <th>{user.role=="freelancer"? "Client" : "Freelancer"}</th>
             <th>Last Message</th>
             <th>Date</th>
             <th>Action</th>
