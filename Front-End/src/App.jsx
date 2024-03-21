@@ -26,8 +26,26 @@ import Profile from './Pages/profile/Profile';
 function App() {
 
   const Layout = ()=>{
+    const scrollHandler = () => {
+      if(window.location.href == "http://localhost:3001/") {
+        if(window.scrollY > 600) {
+          window.scrollTo(0, 660);
+        }
+      }
+      else {
+        window.scrollBy(0, -200);
+      }
+
+      // window.scrollTo(0, 0);
+
+      // console.log(window.location.href);
+
+      // var element = document.getElementById("appScroll");
+      // element.scrollBy(0, -element.scrollHeight);
+    }
+
     return (
-      <div className="app">
+      <div onLoad={scrollHandler} id='appScroll' className="app">
       <Navbar />
       <Outlet />
       <Footer />

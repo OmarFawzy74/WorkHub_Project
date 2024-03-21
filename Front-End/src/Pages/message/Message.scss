@@ -1,7 +1,9 @@
+
 .message {
   justify-content: center;
   margin-bottom: 100px;
   margin-top: 80px;
+  
 
   .messageTitle {
     position: relative;
@@ -89,6 +91,8 @@
       height: 500px !important;
 
       .messages {
+        position: relative;
+        top: 400px;
         padding: 0px 50px;
         display: flex;
         flex-direction: column;

@@ -18,16 +18,26 @@ export const getAllConversations = async (req, res) => {
 }
 
 // Get A Conversation By ID
-export const getConversationById = async (req, res) => {
+export const getConversationsByUserId = async (req, res) => {
     try {
-        const conversationId = req.params.id;
-        const conversationData = await conversation.findById(conversationId).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1});
-        if(conversationData.length !== 0) {
-            res.status(200).json({ conversationData });
+        const userId = req.params.id;
+
+        let freelancer = userId;
+
+        let conversationData = await conversation.find({ freelancer });
+        console.log(conversationData);
+
+        if(!conversationData[0]) {
+            let client = userId;
+            conversationData = await conversation.find({ client });
         }
-        else {
-            res.status(400).json({ msg:"conversation not found!" })
+
+        if(conversationData[0]) {
+            const result = await conversation.findById(conversationData[0]._id).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1});
+            return res.status(200).json({ result });
         }
+
+        res.status(400).json({ msg:"conversation not found!" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });

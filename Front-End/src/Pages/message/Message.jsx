@@ -17,8 +17,8 @@ const Message = () => {
 
   const user = getAuthUser();
 
-  const sendMessage = () => {
-    // e.preventDefault();
+  const sendMessage = (e) => {
+    e.preventDefault();
     axios
       .post("http://localhost:3000/api/messages/addMessage", {
         conversation: id,
@@ -27,18 +27,21 @@ const Message = () => {
         messageContent: message.data
       })
       .then((resp) => {
-        // swal("Congratulations you have Joined WorkHub Successfully", "", "success");
         console.log(resp);
         setMessages({ ...messages, reload: messages.reload + 1});
         setMessage({ ...messages, data: ""});
-        // console.log(resp.data.userData);
-        // setAuthUser(resp.data.userData);
-        // navigate("/gigs");
+        // window.scrollBy(0, -200);
+        // alert(window.scrollX + window.scrollY);
+
+        var elem = document.getElementById("chatScroll");
+        elem.scrollBy(0, 8000);
+        // elem.scrollIntoView()
+        // elem.scroll(0, 1000)
+        // elem.scroll(0, elem.scrollHeight)
+        // elem.scrollTo(0, elem.scrollHeight)
       })
       .catch((errors) => {
-        // swal(errors.response.data.message, "", "error");
         console.log(errors);
-        // console.log(errors.response.data.message);
       });
   }
 
@@ -56,7 +59,11 @@ const Message = () => {
       .then(
         resp => {
           console.log(resp);
+          console.log(resp.data);
           setMessages({ results: resp.data, loading: false, err: null });
+          var elem = document.getElementById("chatScroll");
+          elem.scrollBy(0, elem.scrollHeight);
+          window.scrollTo(0, 200)
         }
       ).catch(err => {
         setMessages({ ...messages, loading: false, err: err.response.data.errors });
@@ -70,7 +77,7 @@ const Message = () => {
           <Link to="/messages">Messages</Link> {'>'} John Doe {'>'}
         </span>
     <div className="chatPage">   
-      <div className="messageContainer">
+      <div id="chatScroll" className="messageContainer">
         <div className="messages">
           {
             messages.loading == false && messages.err == null && messages.results && messages.results.length > 0 && (
