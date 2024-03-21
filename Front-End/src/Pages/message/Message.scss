@@ -89,6 +89,8 @@
       height: 500px !important;
 
       .messages {
+        position: relative;
+        top: 340px;
         padding: 0px 50px;
         display: flex;
         flex-direction: column;
