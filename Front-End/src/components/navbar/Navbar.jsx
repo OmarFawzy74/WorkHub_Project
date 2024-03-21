@@ -98,7 +98,7 @@ const Navbar = () => {
             {openExplore && <div className="exploreOptions">
                 <>
                   <Link className='link' to="/gigs"><span>Marketplace</span></Link>
-                  <Link className='link' to="/">Community</Link>
+                  <Link className='link' to="/community">Community</Link>
                   <Link className='link' to="/learn">Learn</Link>
                 </>
             </div>}

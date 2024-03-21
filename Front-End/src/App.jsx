@@ -21,6 +21,7 @@ import ContactUs from './Pages/contactUs/ContactUs';
 import Register from './Pages/register/Register';
 import Learn from './Pages/learn/Learn';
 import Profile from './Pages/profile/Profile';
+import Community from './Pages/community/Community';
 
 
 function App() {
@@ -95,6 +96,10 @@ function App() {
       {
         path: "/profile",
         element:<Profile />
+      },
+      {
+        path: "/community",
+        element:<Community />
       },
       ]
     },
