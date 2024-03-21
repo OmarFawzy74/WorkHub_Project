@@ -1,0 +1,15 @@
+.sidebar{
+    flex: 3;
+    height: calc(100vh - 50px);
+
+    .sidebarWrapper{
+        .sidebarIcon{
+            width: 30px;
+            height: 30px;
+        }
+        .sidebarListItemText{
+            position: relative;
+            left: 15px;
+        }
+    }
+}
