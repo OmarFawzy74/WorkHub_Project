@@ -17,8 +17,8 @@ const Message = () => {
 
   const user = getAuthUser();
 
-  const sendMessage = (e) => {
-    e.preventDefault();
+  const sendMessage = () => {
+    // e.preventDefault();
     axios
       .post("http://localhost:3000/api/messages/addMessage", {
         conversation: id,
@@ -29,7 +29,8 @@ const Message = () => {
       .then((resp) => {
         // swal("Congratulations you have Joined WorkHub Successfully", "", "success");
         console.log(resp);
-        setMessages({ ...messages, reload: messages.reload + 1, data: "" });
+        setMessages({ ...messages, reload: messages.reload + 1});
+        setMessage({ ...messages, data: ""});
         // console.log(resp.data.userData);
         // setAuthUser(resp.data.userData);
         // navigate("/gigs");
@@ -51,7 +52,6 @@ const Message = () => {
 
 
   useEffect(() => {
-    // setMessages({...messages, loading: false})
     axios.get("http://localhost:3000/api/messages/getConversationMessages/" + id)
       .then(
         resp => {
@@ -75,34 +75,8 @@ const Message = () => {
           {
             messages.loading == false && messages.err == null && messages.results && messages.results.length > 0 && (
               messages.results.map((message) => (
-                // <div className="chatContainer">
-                //   <div className={message.senderType == "client" ? "item owner" : "item"}>
-                //     <img
-                //       src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                //     />
-                //     <p>{message.messageContent}</p>
-                //   </div>
-                // </div>
                 <>
-                  <div className="item">
-                    <img
-                      src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    />
-                    <p>
-                      {message.messageContent}
-                    </p>
-                  </div>
-
-                  <div className="item owner">
-                    <img
-                      src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    />
-                    <p>
-                      {message.messageContent}
-                    </p>
-                  </div>
-
-                  <div className="item">
+                  <div className={message.senderType == "client" ? "item owner" : "item"}>
                     <img
                       src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
                     />
@@ -111,7 +85,6 @@ const Message = () => {
                     </p>
                   </div>
                 </>
-
               ))
             )
           }
