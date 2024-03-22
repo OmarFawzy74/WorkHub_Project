@@ -7,19 +7,21 @@
       padding: 50px 0px;
 
       .action {
-        padding-left: 35px;
+        text-align: left;
+        position: relative;
+        left: 10px;
       }
 
       .date {
-        padding-left: 25px;
+        text-align: left;
+        position: relative;
+        left: 10px;
       }
 
       .userName {
-        padding-left: 10px;
-      }
-
-      .lastMessage {
-        padding-left: 50px;
+        text-align: left;
+        position: relative;
+        left: 10px;
       }
   
       .title {
@@ -68,12 +70,17 @@
           &.active {
             background-color: #1dbf730f;
 
-            .userNameData {
-              text-align: center;
+            .dateData {
+              text-align: left;
             }
 
-            .lastMessageData {
-              padding-left: 50px;
+            .userNameData {
+              text-align: left;
+
+              p {
+                position: relative;
+                left: 10px;
+              }
             }
           }
         }

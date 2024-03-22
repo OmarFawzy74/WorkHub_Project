@@ -1,6 +1,6 @@
-import conversation from "../../../DB/models/conversation_model.js";
-import messageModel from "../../../DB/models/message_model.js";
+
 import conversationModel from "../../../DB/models/conversation_model.js";
+import messageModel from "../../../DB/models/message_model.js";
 import freelancerModel from "../../../DB/models/freelancer_model.js";
 import clientModel from "../../../DB/models/client_model.js";
 
@@ -39,43 +39,6 @@ export const getMessagesByConversationId = async (req, res) => {
 // Add Message
 export const addMessage = async (req, res) => {
     try {
-
-        // const freelancerId = req.body.freelancerId;
-        // const clientId = req.body.clientId;
-
-        // // Check if Freelancer is Exists in Freelancers
-
-        // // Check if Client is Exists in Clients
-
-        // const data = await conversation.findById(freelancerId);
-        
-        // let conversationId;
-
-        // const newConversation = new conversation({
-        //     freelancer : req.body.freelancer,
-        //     client : req.body.client
-        // });
-
-        // if(data) {
-        //     if(data.client._id === clientId) {
-        //         // return res.status(400).json({ msg:"Conversation is already exists!"});
-        //         conversationId = data._id;
-        //     }
-        //     else{
-        //         await newConversation.save();
-        //         conversationId = newConversation._id;
-        //     }
-        // }
-        // else{
-        //     await newConversation.save();
-        //     conversationId = newConversation._id;
-        // }
-
-        // // res.status(200).json({ msg:"Conversation has been created successfuly." });
-
-
-
-
         const conversationId = req.body.conversation;
 
         let conversationData = await conversationModel.findById(conversationId);
@@ -97,15 +60,34 @@ export const addMessage = async (req, res) => {
 
             if(senderData) {
                 senderData = await messageModel.find({ senderId: senderId });
+
+                const d = new Date();
+                const year =  d.getFullYear();
+                const month = d.getMonth() + 1;
+                const day =  d.getDate();
+                const hour = d.getHours();
+                const min = d.getMinutes();
+                const sec = d.getSeconds();
+            
+                const currentDate = year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec;
                 
                 const newMessage = new messageModel({
                     conversation : conversationId,
                     senderId : req.body.senderId,
                     senderType : req.body.senderType,
-                    messageContent : req.body.messageContent
+                    messageContent : req.body.messageContent,
+                    creationDate: currentDate
                 });
         
                 await newMessage.save();
+        
+                const filter = { _id: conversationId };
+                const update = {
+                    $set: { lastMessage: newMessage._id },
+                };
+
+                await conversationModel.updateOne(filter, update);
+
                 return res.status(200).json({ msg:"Message has been created successfuly."});
             }
             res.status(400).json({ msg:"Invalid Sender ID" });

@@ -20,12 +20,19 @@ export const getAllConversations = async (req, res) => {
 // Get A Conversation By ID
 export const getConversationsByUserId = async (req, res) => {
     try {
+        const filter = { lastMessage: undefined };
+
+        await conversation.deleteMany(filter);
+        // res.status(200).json({ msg:"Conversation has been deleted successfuly." });
+
+        // res.status(400).json({ msg:"Conversation deletion failed." });
+
         const userId = req.params.id;
 
         let freelancer = userId;
 
         let conversationData = await conversation.find({ freelancer });
-        console.log(conversationData);
+        // console.log(conversationData);
 
         if(!conversationData[0]) {
             let client = userId;
@@ -33,7 +40,7 @@ export const getConversationsByUserId = async (req, res) => {
         }
 
         if(conversationData[0]) {
-            const result = await conversation.findById(conversationData[0]._id).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1});
+            const result = await conversation.findById(conversationData[0]._id).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
             return res.status(200).json({ result });
         }
 
@@ -56,7 +63,7 @@ export const addConversation = async (req, res) => {
 
         const data = await conversation.findOne({freelancer});
 
-        console.log(data);
+        // console.log(data);
 
         if(data) {
             if(data.client == client) {

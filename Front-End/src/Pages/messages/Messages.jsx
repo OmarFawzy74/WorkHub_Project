@@ -10,6 +10,77 @@ const Messages = () => {
 
   const navigate = useNavigate();
 
+  const processDate = (date) => {
+
+    console.log(date);
+
+    const test = new Date();
+    const testing = test.getTime();
+
+    const date_1 = 1711066665489;
+
+    const date_2 = test.getTime();
+
+    const timeDifference = Math.abs(date_2 - date_1);
+
+    const differenceInMinutes = timeDifference / (1000 * 60);
+
+
+    console.log(differenceInMinutes);
+
+    // const d = new Date();
+    // const year =  d.getFullYear();
+    // const month = d.getMonth() + 1;
+    // const day =  d.getDate();
+    // const hour = d.getHours();
+    // const min = d.getMinutes();
+    // const sec = d.getSeconds();
+
+    // const currentDate = year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec;
+
+    // console.log(currentDate);
+
+    // let messageSec = date.slice(15, 17);
+    // let messageMin = date.slice(12, 14);
+    // let messageHour = date.slice(10, 11);
+    // let messageDay = date.slice(7, 9);
+    // let messageMonth = date.slice(5, 6);
+    // let messageYear = date.slice(0, 4);
+
+    // const messageDate = messageYear + "-" + messageMonth + "-" + messageDay + "T" + messageHour + ":" + messageMin + ":" + messageSec;
+
+    // console.log(messageDate);
+
+    // const diffYear = Math.round(year - messageYear);
+    // const diffMonth = Math.round(month - messageMonth)
+    // const diffDay = Math.round(day - messageDay);
+    // const diffHour = Math.round(hour - messageHour);
+    // const diffMin = Math.round(min - messageMin);
+    // const diffSec = Math.round(sec - messageSec);
+
+    // const diffDate = diffYear + "-" + diffMonth + "-" + diffDay + "T" + diffHour + ":" + diffMin + ":" + diffSec;
+
+    // console.log(diffDate);
+
+    // if(diffYear == 0) {
+    //   if(diffMonth == 0) {
+    //     if(diffDay == 0) {
+    //       if(diffHour == 0) {
+    //         if(diffMin == 0) {
+    //           return diffSec + " sec";
+    //         }
+    //         return diffMin + " min";
+    //       }
+    //       return diffHour + " hour";
+    //     }
+    //     return diffDay + " day";
+    //   }
+    //   return diffMonth + " month";
+    // }
+    // return diffYear + " year";
+  }
+
+
   const [conversations, setConversations] = useState({
     loading: true,
     results: null,
@@ -73,16 +144,16 @@ const Messages = () => {
             conversations.results.length > 0 &&
             conversations.results.map((conversation) => (
               <>
-                <tr className="active">
-                  <td className="userNameData">{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</td>
+                <tr className={conversation.lastMessage.senderId !== user._id ? "active" : null}>
+                  <td className="userNameData"><p>{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</p></td>
                   <td className="lastMessageData">
                     <Link id={conversation._id} onClick={openChat} className="link">
-                      {message.substring(0, 100)}...
+                      {conversation.lastMessage.messageContent.substring(0, 100)}...
                     </Link>
                   </td>
-                  <td>1 hour ago</td>
-                  <td>
-                    <button>Mark as Read</button>
+                  <td className="dateData">{processDate(conversation.lastMessage.creationDate)}</td>
+                  <td className="actionBtn">
+                    {conversation.lastMessage.senderId !== user._id ? <button>Mark as Read</button> : null}
                   </td>
                 </tr>
               </>
@@ -108,7 +179,6 @@ const Messages = () => {
           </tr> */}
           {/* <tr className="active">
             <td>John Doe</td>
-
             <td>
               <Link to="/message/123" className="link">
                 {message.substring(0, 100)}...
@@ -119,6 +189,7 @@ const Messages = () => {
               <button>Mark as Read</button>
             </td>
           </tr>
+
           <tr>
             <td>Elinor Good</td>
             <td>
@@ -128,6 +199,7 @@ const Messages = () => {
             </td>
             <td>1 day ago</td>
           </tr>
+
           <tr>
             <td>Garner David </td>
             <td>

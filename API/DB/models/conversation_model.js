@@ -19,7 +19,8 @@ const conversationSchema = new Schema({
         type: Boolean,
     },
     lastMessage: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref: "message"
     }
 },{
     timestamps: true
