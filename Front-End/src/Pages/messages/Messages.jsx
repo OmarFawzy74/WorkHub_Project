@@ -10,74 +10,41 @@ const Messages = () => {
 
   const navigate = useNavigate();
 
-  const processDate = (date) => {
+  const processDate = (messageTime) => {
 
-    console.log(date);
+    const getDate = new Date();
 
-    const test = new Date();
-    const testing = test.getTime();
+    const currentTime = getDate.getTime();
 
-    const date_1 = 1711066665489;
+    const timeDifference = Math.abs(currentTime - messageTime);
 
-    const date_2 = test.getTime();
-
-    const timeDifference = Math.abs(date_2 - date_1);
-
+    // For example, to get the difference in minutes:
     const differenceInMinutes = timeDifference / (1000 * 60);
 
+    // To get the difference in hours:
+    const differenceInHours = timeDifference / (1000 * 60 * 60);
 
-    console.log(differenceInMinutes);
+    // To get the difference in days:
+    const differenceInDays = timeDifference / (1000 * 60 * 60 * 24);
 
-    // const d = new Date();
-    // const year =  d.getFullYear();
-    // const month = d.getMonth() + 1;
-    // const day =  d.getDate();
-    // const hour = d.getHours();
-    // const min = d.getMinutes();
-    // const sec = d.getSeconds();
+    const differenceInMonths = timeDifference / (1000 * 60 * 60 * 24 * 30);
 
-    // const currentDate = year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec;
+    // To get the difference in seconds:
+    const differenceInSeconds = timeDifference / 1000;
 
-    // console.log(currentDate);
-
-    // let messageSec = date.slice(15, 17);
-    // let messageMin = date.slice(12, 14);
-    // let messageHour = date.slice(10, 11);
-    // let messageDay = date.slice(7, 9);
-    // let messageMonth = date.slice(5, 6);
-    // let messageYear = date.slice(0, 4);
-
-    // const messageDate = messageYear + "-" + messageMonth + "-" + messageDay + "T" + messageHour + ":" + messageMin + ":" + messageSec;
-
-    // console.log(messageDate);
-
-    // const diffYear = Math.round(year - messageYear);
-    // const diffMonth = Math.round(month - messageMonth)
-    // const diffDay = Math.round(day - messageDay);
-    // const diffHour = Math.round(hour - messageHour);
-    // const diffMin = Math.round(min - messageMin);
-    // const diffSec = Math.round(sec - messageSec);
-
-    // const diffDate = diffYear + "-" + diffMonth + "-" + diffDay + "T" + diffHour + ":" + diffMin + ":" + diffSec;
-
-    // console.log(diffDate);
-
-    // if(diffYear == 0) {
-    //   if(diffMonth == 0) {
-    //     if(diffDay == 0) {
-    //       if(diffHour == 0) {
-    //         if(diffMin == 0) {
-    //           return diffSec + " sec";
-    //         }
-    //         return diffMin + " min";
-    //       }
-    //       return diffHour + " hour";
-    //     }
-    //     return diffDay + " day";
-    //   }
-    //   return diffMonth + " month";
-    // }
-    // return diffYear + " year";
+    if(Math.round(differenceInSeconds) >= 60) {
+      if(Math.round(differenceInMinutes) >= 60) {
+        if(Math.round(differenceInHours) >= 24) {
+          if(Math.round(differenceInDays) >= 30) {
+            return Math.round(differenceInMonths) + " month";
+          }
+          return Math.round(differenceInDays) + " day";
+        }
+        return Math.round(differenceInHours) + " hours";
+      }
+      return Math.round(differenceInMinutes) + " min";
+    }
+    return Math.round(differenceInSeconds) + " sec";
   }
 
 

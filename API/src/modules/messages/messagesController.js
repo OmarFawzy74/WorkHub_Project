@@ -61,22 +61,15 @@ export const addMessage = async (req, res) => {
             if(senderData) {
                 senderData = await messageModel.find({ senderId: senderId });
 
-                const d = new Date();
-                const year =  d.getFullYear();
-                const month = d.getMonth() + 1;
-                const day =  d.getDate();
-                const hour = d.getHours();
-                const min = d.getMinutes();
-                const sec = d.getSeconds();
-            
-                const currentDate = year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec;
+                const date = new Date();
+                const time = date.getTime();
                 
                 const newMessage = new messageModel({
                     conversation : conversationId,
                     senderId : req.body.senderId,
                     senderType : req.body.senderType,
                     messageContent : req.body.messageContent,
-                    creationDate: currentDate
+                    creationDate: time
                 });
         
                 await newMessage.save();
