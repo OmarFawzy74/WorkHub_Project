@@ -41,7 +41,7 @@ const serviceSchema = new Schema({
         ref: "category"
     },
     deliveryTime: {
-        type: String,
+        type: Number,
         required: true
     },
     features: {
