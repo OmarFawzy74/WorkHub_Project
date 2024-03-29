@@ -21,7 +21,7 @@ export const createService = async (req, res) => {
     const service = req.body;
     const newService = await Service.create(service);
     res.status(201).json({success:true, message:"here u r ", newService});
-
+    
 };
 
 // Update a service by ID
