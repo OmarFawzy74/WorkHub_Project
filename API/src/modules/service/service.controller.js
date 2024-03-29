@@ -43,7 +43,7 @@ export const createService = async (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
-};
+}
 
 // Update a service by ID
 export const updateService = async (req, res, next) => {
@@ -60,7 +60,6 @@ export const updateService = async (req, res, next) => {
         }))
     }
     res.status(200).json({ success: true, message: "service updated successfully", updatedService });
-
 };
 
 // Delete a service by ID
@@ -129,4 +128,4 @@ export const uploadImages = async (req, res, next) => {
     }
 
     res.status(200).json({ msg:"images uploaded successfuly" });
-};
+}
