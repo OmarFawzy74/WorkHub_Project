@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Post.scss"
 
 const Post = () => {
+  const [like,setLike] = useState(0)
+  const [isLiked,setIsLiked] = useState(false)
+
+  const likeHandler =()=>{
+    setLike(isLiked ? like-1 : like+1)
+    setIsLiked(!isLiked)
+  }
+
   return (
     <div className='post'>
       <div className="postContainer">
@@ -21,8 +29,8 @@ const Post = () => {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img className='likeIcon' src="/img/likeReaction.png"/>
-            <span className="postLikeCounter">100 people like it</span>
+            <img className='likeIcon' src="/img/likeReaction.png" onClick={likeHandler} />
+            <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">
             <span className="postCommentText">9 comments</span>

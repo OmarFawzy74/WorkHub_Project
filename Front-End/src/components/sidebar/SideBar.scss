@@ -33,17 +33,27 @@
                 text-decoration: none !important;
                 color: #1dbf73;
             }
+
+            .sidebarListItem {
+                position: relative;
+                align-items: center;
+                margin-bottom: 20px;
+    
+                .sidebarProfileImg{
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    margin-right: 10px;
+                }
+
+                .sidebarListItemText{
+                    align-items: center;
+                }
+            }
         }
 
-        .sidebarListItem {
-            position: relative;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        // .sidebarListItemText{
-
-        // }
+       
 
 
         .sidebaMenuText{

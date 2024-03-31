@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import "./Share.scss"
 
 const Share = () => {
@@ -6,11 +7,14 @@ const Share = () => {
         <div className='share'>
             <div className="shareContainer">
                 <div className="shareTop">
-                    <img className='shareProfileImg' src="/img/profile.jpg" alt="" />
+                    <Link to="/communityProfile">
+                        <img className='shareProfileImg' src="/img/profile.jpg" alt="" />
+                    </Link>
                     <input
                         placeholder="What's on your mind, Mana?"
                         className='shareInput'
                     />
+
                 </div>
                 <hr className='shareHr' />
                 <div className="shareBottom">
