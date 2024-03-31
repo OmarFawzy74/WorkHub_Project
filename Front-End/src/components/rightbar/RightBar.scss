@@ -8,47 +8,80 @@
         position: sticky;
         top: 91px;
 
-        .imgContainer_1 {
-            display: flex;
+        .imagesContainer{
 
-            .firstImg {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
+            .imgContainer_1 {
+                display: flex;
+    
+                .firstImg {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+    
+                .imgText_1 {
+                    position: relative;
+                    top: 10px;
+                    right: 400px;
+                    font-size: 21px;
+                    font-weight: bold;
+                    color: #16804f;
+                    // white-space: nowrap;
+    
+                }
             }
-
-            .imgText_1 {
-                position: relative;
-                top: 10px;
-                right: 400px;
-                font-size: 21px;
-                font-weight: bold;
-                color: #16804f;
-                // white-space: nowrap;
-
+    
+            .imgContainer_2 {
+                display: flex;
+                margin-top: 40px;
+    
+                .secondImg {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+    
+                .imgText_2 {
+                    position: relative;
+                    top: 10px;
+                    right: 150px;
+                    font-size: 21px;
+                    font-weight: bold;
+                    color: #1dbf73;
+                    white-space: nowrap;
+    
+                }
             }
         }
+    }
+}
 
-        .imgContainer_2 {
-            display: flex;
-            margin-top: 40px;
+.rightbarInfo{
+    width: 100%;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68);
+    box-shadow:  0px 0px 16px -8px rgba(0,0,0,0.68);
+    border-radius: 10px;
+    padding: 15px;
 
-            .secondImg {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
 
-            .imgText_2 {
-                position: relative;
-                top: 10px;
-                right: 150px;
-                font-size: 21px;
-                font-weight: bold;
-                color: #1dbf73;
-                white-space: nowrap;
+    .rightbarTitle{
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
 
-            }
+    .rightbarInfoItem{
+        margin-bottom: 5px;
+
+        .rightbarInfoKey{
+            font-weight: 500;
+            margin-right: 15px;
+            color: #555;
+        }
+
+        .rightbarInfoValue{
+            font-weight: 300;
         }
     }
 }

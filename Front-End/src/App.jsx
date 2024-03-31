@@ -22,6 +22,7 @@ import Register from './Pages/register/Register';
 import Learn from './Pages/learn/Learn';
 import Profile from './Pages/profile/Profile';
 import Community from './Pages/community/Community';
+import CommunityProfile from './Pages/communityProfile/CommunityProfile';
 
 
 function App() {
@@ -118,6 +119,10 @@ function App() {
       {
         path: "/community",
         element:<Community />
+      },
+      {
+        path: "/communityProfile",
+        element:<CommunityProfile />
       },
       ]
     },

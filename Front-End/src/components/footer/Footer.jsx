@@ -41,7 +41,7 @@ function Footer() {
           <div className="item">
             <h2>Community</h2>
             <span>Customer Success Stories</span>
-            <span>Community hub</span>
+            <Link className= 'link' to="/community"><span>Community hub</span></Link>
             <span>Forum</span>
             <span>Events</span>
             <span>Blog</span>
