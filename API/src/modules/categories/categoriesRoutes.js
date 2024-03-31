@@ -9,10 +9,10 @@ import auth from '../../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-router.get("/getAllCategories", auth(endPoints.admin), asyncHandler(getAllCategories));
-router.post("/addCategory", validation(addCategorySchema), auth(endPoints.admin), asyncHandler(addCategory));
-router.put("/updateCategory/:id", auth(endPoints.admin), asyncHandler(updateCategory));
-router.delete("/deleteCategory/:id", auth(endPoints.admin), asyncHandler(deleteCategory));
+router.get("/getAllCategories", asyncHandler(getAllCategories)); //auth(endPoints.admin),
+router.post("/addCategory", validation(addCategorySchema), asyncHandler(addCategory));// auth(endPoints.admin),
+router.put("/updateCategory/:id", asyncHandler(updateCategory));// auth(endPoints.admin),
+router.delete("/deleteCategory/:id", asyncHandler(deleteCategory));// auth(endPoints.admin),
 
 
 export default router;

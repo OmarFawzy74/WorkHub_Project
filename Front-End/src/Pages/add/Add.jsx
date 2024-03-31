@@ -1,123 +1,305 @@
 import "./Add.scss";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
 
-
 const Add = () => {
   const [service, setService] = useState({
     err: null,
     loading: false,
-    name: "",
-    image:"",
-    desc: "",
-    category: "",
-    price: "",
-    
-
-    
+    serviceTitle: "",
+    serviceDesc: "",
+    serviceCategoryId: "",
+    serviceShortTitle: "",
+    serviceShortDesc: "",
+    servicePrice: "",
+    freelancerId: "65fbbb75539bd6d916acc185",
+    revisionNumber: "",
+    deliveryTime: "",
+    coverImage: "",
+    features: [],
+    images: [],
   });
 
   const navigate = useNavigate();
 
-  const image = useRef(null);
+  // const addFeature = () => {
+
+  // }
+
+  const [categories, setCategories] = useState({
+    loading: true,
+    results: null,
+    err: null,
+    status: null,
+    name: "",
+    desc: "",
+    reload: 0,
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/categories/getAllCategories")
+      .then((resp) => {
+        setCategories({ results: resp.data, loading: false, err: null });
+      })
+      .catch((err) => {
+        console.log(err);
+        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+      });
+  }, [categories.reload]);
+
+  const images = useRef(null);
+
+  const coverImage = useRef(null);
+
+  const uploadImages = () => {
+
+    const formData = new FormData();
+    // formData.append("images", images.current.files[0]);
+
+    for (let i = 0; i < images.current.files.length; i++) {
+      formData.append("images", images.current.files[i]);
+    }
+
+    axios
+    .post("http://localhost:3000/api/services/uploadImages", formData)
+    .then((resp) => {
+      // image.current.value = null;
+      // swal(resp.data.message, "", "success");
+      console.log(resp);
+    })
+    .catch((errors) => {
+      // swal(errors.response.data.message, "", "error");
+      console.log(errors);
+      // console.log(errors.response.data.message);
+    });
+  }
+
+
+  const uploadCoverImage = () => {
+
+    const formData = new FormData();
+    formData.append("coverImage", coverImage.current.files[0]);
+
+    // for (let i = 0; i < coverImage.current.files.length; i++) {
+    //   formData.append("images", coverImage.current.files[i]);
+    // }
+
+    axios
+    .post("http://localhost:3000/api/services/uploadCoverImage", formData)
+    .then((resp) => {
+      // image.current.value = null;
+      // swal(resp.data.message, "", "success");
+      console.log(resp);
+    })
+    .catch((errors) => {
+      // swal(errors.response.data.message, "", "error");
+      console.log(errors);
+      // console.log(errors.response.data.message);
+    });
+  }
+
 
   const addServiceData = async (e) => {
     e.preventDefault();
 
     setService({ ...service, loading: true, err: null });
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    formData.append("name", service.name);
-    formData.append("email", service.email);
-    formData.append("password", service.password);
-    formData.append("country", service.country);
-    formData.append("image", image.current.files[0]);
-    formData.append("phoneNumber", service.phoneNumber);
-    formData.append("desc", service.desc);
-
+    // formData.append("images", images.current.files[0]);
+    // formData.append("cover_image", cover_image.current.files[0]);
 
     axios
-    .post("http://localhost:3000/api/auth/signup/" + service.role, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+      .post("http://localhost:3000/api/services/createService", {
+        serviceTitle: service.serviceTitle,
+        serviceShortTitle: service.serviceShortTitle,
+        serviceShortDesc: service.serviceShortDesc,
+        serviceDesc: service.serviceDesc,
+        serviceCategoryId: service.serviceCategoryId,
+        servicePrice: service.servicePrice,
+        freelancerId: service.freelancerId,
+        deliveryTime: service.deliveryTime,
+        revisionNumber: service.revisionNumber,
+        features: service.features
+      })
       .then((resp) => {
-        // setService({
-        //   ...service,
-        //   loading: false,
-        //   err: null,
-        //   name: "",
-        //   desc: "",
-        //   email: "",
-        //   password: "",
-        //   country: "",
-        //   role: "",
-        // });
-        // image.current.value = null;
-        swal("Congratulations you have Joined WorkHub Successfully", "", "success");
-        console.log(resp.data.message);
-        console.log(resp.data.serviceData);
-        setAuthUser(resp.data.serviceData);
-        navigate("/gigs");
+        uploadCoverImage();
+        uploadImages();
+        document.getElementById("serviceFrom").reset();
+        document.getElementById("selectCategory").selectedIndex = 0;
+        swal(resp.data.message, "", "success");
+        console.log(resp);
       })
       .catch((errors) => {
         swal(errors.response.data.message, "", "error");
         console.log(errors);
-        console.log(errors.response.data.message);
       });
-  }
-
-
+  };
 
   return (
     <div className="add">
       <div className="addContainer">
         <h1>Add New Service</h1>
-        <div className="sections">
-          <div className="info">
-            <label htmlFor="">Title</label>
-            <input
-              type="text"
-              placeholder="e.g. I will do something I'm really good at"
-            />
-            <label htmlFor="">Category</label>
-            <select name="cats" id="cats">
-              <option value="design">Design</option>
-              <option value="web">Web Development</option>
-              <option value="animation">Animation</option>
-              <option value="music">Music</option>
-            </select>
-            <label htmlFor="">Cover Image</label>
-            <input type="file" />
-            <label htmlFor="">Upload Images</label>
-            <input type="file" multiple />
-            <label htmlFor="">Description</label>
-            <textarea name="" id="" placeholder="Brief descriptions to introduce your service to customers" cols="0" rows="16"></textarea>
-            <button>Create</button>
+        <form id="serviceFrom" onSubmit={addServiceData}>
+          <div className="sections">
+            <div className="info">
+              <label htmlFor="">Title</label>
+              <input
+                type="text"
+                placeholder="e.g. I will do something I'm really good at"
+                name="serviceTitle"
+                required
+                onChange={(e) =>
+                  setService({ ...service, serviceTitle: e.target.value })
+                }
+              />
+              <label htmlFor="">Category</label>
+
+              <select
+                name="serviceCategoryId"
+                required
+                onChange={(e) =>
+                  setService({ ...service, serviceCategoryId: e.target.value })
+                }
+                id="selectCategory"
+              >
+                <option value={""} disabled selected>
+                  Select Category
+                </option>
+                {categories.loading == false &&
+                  categories.err == null &&
+                  categories.results &&
+                  categories.results.length > 0 &&
+                  categories.results.map((category) => (
+                    <>
+                      <option value={category._id}>
+                        {category.categoryName}
+                      </option>
+                    </>
+                  ))}
+              </select>
+              <label htmlFor="">Cover Image</label>
+              <input required type="file" ref={coverImage} />
+              <label htmlFor="">Upload Images</label>
+              <input required type="file" multiple ref={images} />
+              <label htmlFor="">Description</label>
+              <textarea
+                name="serviceDesc"
+                required
+                onChange={(e) =>
+                  setService({ ...service, serviceDesc: e.target.value })
+                }
+                placeholder="Brief descriptions to introduce your service to customers"
+                cols="0"
+                rows="16"
+              ></textarea>
+              <button type="submit">Create</button>
+            </div>
+            <div className="details">
+              <label htmlFor="">Service Title</label>
+              <input
+                type="text"
+                name="serviceShortTitle"
+                required
+                onChange={(e) =>
+                  setService({ ...service, serviceShortTitle: e.target.value })
+                }
+                placeholder="e.g. One-page web design"
+              />
+              <label htmlFor="">Short Description</label>
+              <textarea
+                name="serviceShortDesc"
+                required
+                onChange={(e) =>
+                  setService({ ...service, serviceShortDesc: e.target.value })
+                }
+                placeholder="Short description of your service"
+                cols="30"
+                rows="10"
+              ></textarea>
+              <label htmlFor="">Delivery Time (e.g. 3 days)</label>
+              <input
+                type="number"
+                name="deliveryTime"
+                required
+                onChange={(e) =>
+                  setService({ ...service, deliveryTime: e.target.value })
+                }
+              />
+              <label htmlFor="">Revision Number</label>
+              <input
+                type="number"
+                name="revisionNumber"
+                required
+                onChange={(e) =>
+                  setService({ ...service, revisionNumber: e.target.value })
+                }
+              />
+              <label htmlFor="">Add Features</label>
+              <input
+                name="feature"
+                required
+                onChange={(e) =>
+                  setService({
+                    ...service,
+                    features: [...service.features, e.target.value],
+                  })
+                }
+                type="text"
+                placeholder="e.g. page design"
+              />
+              <input
+                name="feature"
+                required
+                onChange={(e) =>
+                  setService({
+                    ...service,
+                    features: [...service.features, e.target.value],
+                  })
+                }
+                type="text"
+                placeholder="e.g. file uploading"
+              />
+              <input
+                name="feature"
+                required
+                onChange={(e) =>
+                  setService({
+                    ...service,
+                    features: [...service.features, e.target.value],
+                  })
+                }
+                type="text"
+                placeholder="e.g. setting up a domain"
+              />
+              <input
+                name="feature"
+                required
+                onChange={(e) =>
+                  setService({
+                    ...service,
+                    features: [...service.features, e.target.value],
+                  })
+                }
+                type="text"
+                placeholder="e.g. hosting"
+              />
+              <label htmlFor="">Price</label>
+              <input
+                name="servicePrice"
+                required
+                onChange={(e) =>
+                  setService({ ...service, servicePrice: e.target.value })
+                }
+                type="number"
+              />
+            </div>
           </div>
-          <div className="details">
-            <label htmlFor="">Service Title</label>
-            <input type="text" placeholder="e.g. One-page web design" />
-            <label htmlFor="">Short Description</label>
-            <textarea name="" id="" placeholder="Short description of your service" cols="30" rows="10"></textarea>
-            <label htmlFor="">Delivery Time (e.g. 3 days)</label>
-            <input type="number" />
-            <label htmlFor="">Revision Number</label>
-            <input type="number" />
-            <label htmlFor="">Add Features</label>
-            <input type="text" placeholder="e.g. page design" />
-            <input type="text" placeholder="e.g. file uploading" />
-            <input type="text" placeholder="e.g. setting up a domain" />
-            <input type="text" placeholder="e.g. hosting" />
-            <label htmlFor="">Price</label>
-            <input type="number" />
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   );

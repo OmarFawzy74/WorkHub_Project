@@ -15,6 +15,14 @@ const Message = () => {
     data: "",
   });
 
+  const [messages, setMessages] = useState({
+    loading: true,
+    results: null,
+    err: null,
+    status: null,
+    reload: 0
+  });
+
   const user = getAuthUser();
 
   const sendMessage = (e) => {
@@ -44,14 +52,6 @@ const Message = () => {
         console.log(errors);
       });
   }
-
-  const [messages, setMessages] = useState({
-    loading: true,
-    results: null,
-    err: null,
-    status: null,
-    reload: 0
-  });
 
 
   useEffect(() => {
