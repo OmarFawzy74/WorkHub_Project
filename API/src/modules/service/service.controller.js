@@ -13,35 +13,38 @@ export const getAllServices = async (req, res, next) => {
 };
 
 // Create a new service
-export const createService = async (req, res, next) => {
+export const createService = async (req, res) => {
     try {
-        const isService = await Service.find({ serviceTitle:req.body.serviceTitle });
+        const {serviceTitle, serviceShortDesc, deliveryTime, revisionNumber, freelancerId, serviceShortTitle, serviceCategoryId, serviceDesc, servicePrice, features} = req.body
+
+        const isService = await Service.find({ serviceTitle });
         if (isService.length !== 0) {
-            return next(new Error("Service is already exist", { cause: 401 }));
+            return res.status(404).json({ success: false, message: "Service already exists"});
         }
 
-        console.log(req.files);
+        const newServiceData = {
+            deliveryTime,
+            serviceCategoryId,
+            freelancerId,
+            serviceShortDesc,
+            serviceShortTitle,
+            servicePrice,
+            serviceDesc,
+            serviceTitle,
+            revisionNumber,
+            features
+        };
 
-        let images = req.files;
+        const newService = new Service(newServiceData);
 
-        if(images.length == 0) {
-            return next(new Error("Images are required", { cause: 401 }));
-        }
+        await newService.save();
 
-        // let data = [];
-
-        // images.forEach(image => {
-        //     data.push(image.filename);
-        // });
-
-        // console.log(req.file.filename);
-
-        const service = {...req.body, serviceCover_url: files};
-        console.log(service);
-        const newService = await Service.create(service);
-        res.status(201).json({ success: true, message: "here u r "});
+        res.status(201).json({ success: true, message: "Service created successfully", newService});
     } catch (error) {
+        // console.log(req);
+        console.log(req.body);
         console.log(error);
+        res.status(404).json({ success: false, message: "Server Error"});
     }
 }
 

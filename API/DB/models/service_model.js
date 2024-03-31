@@ -30,12 +30,12 @@ const serviceSchema = new Schema({
         type: String,
         required: true
     },
-    freelancer: {
+    freelancerId: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "freelancer"
     },
-    serviceCategory: {
+    serviceCategoryId: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: "category"
@@ -51,6 +51,10 @@ const serviceSchema = new Schema({
     orders: {
         type: [mongoose.Types.ObjectId],
         ref: "order"
+    },
+    revisionNumber: {
+        type: Number,
+        default: 0
     },
     sales: {
         type: Number,
@@ -69,24 +73,24 @@ const serviceSchema = new Schema({
 });
 
 // Calculate the total rating before saving the document
-serviceSchema.pre('save', async function(next) {
-    try {
-        const reviews = this.reviews || [];
-        const totalReviews = reviews.length;
+// serviceSchema.pre('save', async function(next) {
+//     try {
+//         const reviews = this.reviews || [];
+//         const totalReviews = reviews.length;
 
-        // Calculate the total sum of ratings
-        const totalSum = reviews.reduce((sum, review) => sum + review.rating, 0);
+//         // Calculate the total sum of ratings
+//         const totalSum = reviews.reduce((sum, review) => sum + review.rating, 0);
 
-        // Calculate the average rating
-        const averageRating = totalReviews > 0 ? totalSum / totalReviews : 0;
+//         // Calculate the average rating
+//         const averageRating = totalReviews > 0 ? totalSum / totalReviews : 0;
 
-        // Update the total rating field
-        this.totalRating = averageRating;
+//         // Update the total rating field
+//         this.totalRating = averageRating;
 
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
+//         next();
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 export default mongoose.model("service", serviceSchema);
