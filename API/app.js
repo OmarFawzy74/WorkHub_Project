@@ -44,16 +44,11 @@ app.use("/api/services", servicesRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/courses", coursesRoutes);
 
-
-
-// app.use(freelncerRoutes,adminRoutes,clientRoutes);
-
 // app.all("*", (req, res) => {
 //     return res.status(404).json({ success: false, message: "Page Not Found !!! :(" });
 // });
 
-// app.use(express.static('src/middleware/upload'));
-app.use(express.static('upload'));
+app.use(express.static('./src/middleware/upload'));
 
 app.use((error, req, res, next) => {
     const statusCode = error.cause || 500;
@@ -63,31 +58,6 @@ app.use((error, req, res, next) => {
         stack: error.stack
     });
 });
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, 'uploadImages')
-//     },
-//     filename: function(req, file, cb) {
-  
-//         cb(null, nanoid() + "_" + file.originalname)
-//     }
-//   })
-
-// const upload = multer({dest:'uploadImages', fileFilter, storage});
-// app.use(upload.array('image', 15));
-
-// app.use('/uploadImages',express.static(path.join(__dirname,'uploadImages')));
-// app.use('/uploadImages', express.static(new URL('uploadImages', import.meta.url).pathname));
-
-// function fileFilter (req, file, cb) {
-//     if(file.mimetype==='image/png'||file.mimetype==='image/jpg'||file.mimetype==='image/jpeg') {
-//         cb(null, true)
-//     }
-//     else {
-//         cb('sorry invalid image', false)
-//     }
-// }
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}!`);

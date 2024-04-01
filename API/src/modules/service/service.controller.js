@@ -101,12 +101,15 @@ export const deleteService = async (req, res, next) => {
             return next(new Error("Service not found", { cause: 404 }));
         }
         const filter = { _id: id }
-        // const process = await Service.deleteOne(filter);
+        const process = await Service.deleteOne(filter);
 
         if (process) {
-            // fs.unlinkSync("./middleware/upload/" + data[0].image_url); //delete old image
-            const imagePath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'middleware', 'upload', data.serviceCover_url);
-            fs.unlinkSync(imagePath); //delete old image
+            fs.unlinkSync("./src/middleware/upload/" + data.serviceCover_url); //delete old image
+
+            data.serviceImages_url.forEach((image_url) => {
+                fs.unlinkSync("./src/middleware/upload/" + image_url); //delete old image
+            })
+
             res.status(200).json({ success: true, message: "Service deleted successfully", process });
         }
 
