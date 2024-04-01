@@ -10,11 +10,11 @@ const router = express.Router();
 
 router.get("/getAllServices", asyncHandler(serviceController.getAllServices));
 router.get("/getFreelancerServices/:id", asyncHandler(serviceController.getFreelancerServices));
-router.get("/:serviceId", asyncHandler(serviceController.getServiceById));
+// router.get("/:serviceId", asyncHandler(serviceController.getServiceById));
 router.post("/createService", validation(createService), asyncHandler(serviceController.createService));
-router.post("/uploadCoverImage", upload.single('cover_image'), asyncHandler(serviceController.uploadCoverImage));
-router.post("/uploadImages", upload.array('images'), asyncHandler(serviceController.uploadImages));
-router.put("/:id", validation(updateServiceSchema), asyncHandler(serviceController.updateService));
-router.delete("/:id", asyncHandler(serviceController.deleteService));
+router.put("/uploadCoverImage/:id", upload.single('coverImage'), asyncHandler(serviceController.uploadCoverImage));
+router.put("/uploadImages/:id", upload.array('images'), asyncHandler(serviceController.uploadImages));
+// router.put("/:id", validation(updateServiceSchema), asyncHandler(serviceController.updateService));
+// router.delete("/:id", asyncHandler(serviceController.deleteService));
 
 export default router;

@@ -9,7 +9,7 @@ export const getAllCategories = async (req, res) => {
         if(allCategories.length !== 0) {
             return res.status(200).send(allCategories);
         }
-        res.status(200).send("No categories found!");
+        res.status(404).send("No categories found!");
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
@@ -30,7 +30,7 @@ export const addCategory = async (req, res) => {
             await newCategory.save();
             return res.status(200).send("Category has been created successfuly.");
         }
-        res.status(200).send("Category is already exists.");
+        res.status(404).send("Category is already exists.");
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
@@ -50,7 +50,7 @@ export const updateCategory = async (req, res) => {
             res.status(200).send("Category has been updated successfuly.");
         }
         else {
-            res.status(200).send("There is no category with such id to update.");
+            res.status(404).send("There is no category with such id to update.");
         }
     } catch (error) {
         console.log(error);
@@ -72,7 +72,7 @@ export const deleteCategory = async (req, res) => {
             res.status(200).send("Category has been deleted successfuly.");
         }
         else {
-            res.status(200).send("Category deletion failed.");
+            res.status(404).send("Category deletion failed.");
         }
     } catch (error) {
         console.log(error);

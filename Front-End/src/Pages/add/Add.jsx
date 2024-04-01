@@ -55,7 +55,7 @@ const Add = () => {
 
   const coverImage = useRef(null);
 
-  const uploadImages = () => {
+  const uploadImages = (id) => {
 
     const formData = new FormData();
     // formData.append("images", images.current.files[0]);
@@ -65,7 +65,7 @@ const Add = () => {
     }
 
     axios
-    .post("http://localhost:3000/api/services/uploadImages", formData)
+    .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
     .then((resp) => {
       // image.current.value = null;
       // swal(resp.data.message, "", "success");
@@ -79,7 +79,7 @@ const Add = () => {
   }
 
 
-  const uploadCoverImage = () => {
+  const uploadCoverImage = (id) => {
 
     const formData = new FormData();
     formData.append("coverImage", coverImage.current.files[0]);
@@ -89,7 +89,7 @@ const Add = () => {
     // }
 
     axios
-    .post("http://localhost:3000/api/services/uploadCoverImage", formData)
+    .put("http://localhost:3000/api/services/uploadCoverImage/"  + id, formData)
     .then((resp) => {
       // image.current.value = null;
       // swal(resp.data.message, "", "success");
@@ -127,12 +127,14 @@ const Add = () => {
         features: service.features
       })
       .then((resp) => {
-        uploadCoverImage();
-        uploadImages();
-        document.getElementById("serviceFrom").reset();
-        document.getElementById("selectCategory").selectedIndex = 0;
+        const serviceId = resp.data.newService._id;
+        uploadCoverImage(serviceId);
+        uploadImages(serviceId);
+        // document.getElementById("serviceFrom").reset();
+        // document.getElementById("selectCategory").selectedIndex = 0;
         swal(resp.data.message, "", "success");
         console.log(resp);
+        console.log(service);
       })
       .catch((errors) => {
         swal(errors.response.data.message, "", "error");
