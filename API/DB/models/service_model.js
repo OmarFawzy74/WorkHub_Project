@@ -26,7 +26,7 @@ const serviceSchema = new Schema({
         type: String,
         required: true
     },
-    serviceDesc: {
+    serviceShortDesc: {
         type: String,
         required: true
     },

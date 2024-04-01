@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
-import { setAuthUser } from "../../localStorage/storage";
 
 const Add = () => {
   const [service, setService] = useState({
@@ -65,17 +64,17 @@ const Add = () => {
     }
 
     axios
-    .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
-    .then((resp) => {
-      // image.current.value = null;
-      // swal(resp.data.message, "", "success");
-      console.log(resp);
-    })
-    .catch((errors) => {
-      // swal(errors.response.data.message, "", "error");
-      console.log(errors);
-      // console.log(errors.response.data.message);
-    });
+      .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
+      .then((resp) => {
+        // image.current.value = null;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        // console.log(errors.response.data.message);
+      });
   }
 
 
@@ -89,27 +88,59 @@ const Add = () => {
     // }
 
     axios
-    .put("http://localhost:3000/api/services/uploadCoverImage/"  + id, formData)
-    .then((resp) => {
-      // image.current.value = null;
-      // swal(resp.data.message, "", "success");
-      console.log(resp);
-    })
-    .catch((errors) => {
-      // swal(errors.response.data.message, "", "error");
-      console.log(errors);
-      // console.log(errors.response.data.message);
-    });
+      .put("http://localhost:3000/api/services/uploadCoverImage/" + id, formData)
+      .then((resp) => {
+        // image.current.value = null;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        // console.log(errors.response.data.message);
+      });
   }
+
+  var [featureList, setFeatureList] = useState([{ feature: "" }]);
+  console.log(featureList);
+
+  const handleFeaturesChange = (e, index) => {
+    const { name, value } = e.target;
+    var list = [...featureList];
+    list[index][name] = value;
+    setFeatureList(list);
+  };
+
+  const handleFeaturesArray = () => {
+
+    var array = [];
+
+    featureList.forEach((item) => {
+      array.push(item.feature);
+    });
+
+    return array;
+  
+  };
+
+  const handleFeaturesRemove = (index) => {
+    const list = [...featureList];
+    list.splice(index, 1);
+    setFeatureList(list);
+  };
+
+  const handleFeaturesAdd = () => {
+    setFeatureList([...featureList, { feature: "" }]);
+  };
 
 
   const addServiceData = async (e) => {
     e.preventDefault();
 
+    handleFeaturesArray();
+
     setService({ ...service, loading: true, err: null });
-
     // const formData = new FormData();
-
     // formData.append("images", images.current.files[0]);
     // formData.append("cover_image", cover_image.current.files[0]);
 
@@ -124,7 +155,7 @@ const Add = () => {
         freelancerId: service.freelancerId,
         deliveryTime: service.deliveryTime,
         revisionNumber: service.revisionNumber,
-        features: service.features
+        features: handleFeaturesArray()
       })
       .then((resp) => {
         const serviceId = resp.data.newService._id;
@@ -241,7 +272,47 @@ const Add = () => {
                   setService({ ...service, revisionNumber: e.target.value })
                 }
               />
-              <label htmlFor="">Add Features</label>
+
+
+
+              <div className="form-field">
+                <label htmlFor="service">Add Feature(s)</label>
+                {featureList.map((singleFeature, index) => (
+                  <div key={index} className="features">
+                    <div className="first-division">
+                      <input
+                        className="featureInput"
+                        name="feature"
+                        type="text"
+                        id="service"
+                        value={singleFeature.feature}
+                        onChange={(e) => handleFeaturesChange(e, index)}
+                        required
+                      />
+                      {featureList.length - 1 === index && (
+                        <img
+                          onClick={handleFeaturesAdd} // Corrected event handler
+                          className="add-img"
+                          src="./img/add-image.png"
+                        />
+                      )}
+                    </div>
+                    <div className="second-division">
+                      {featureList.length !== 1 && (
+                        <img
+                          onClick={() => handleFeaturesRemove(index)}
+                          className="remove-img"
+                          src="./img/remove-image.png"
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+
+
+              {/* <label htmlFor="">Add Features</label>
               <input
                 name="feature"
                 required
@@ -289,7 +360,7 @@ const Add = () => {
                 }
                 type="text"
                 placeholder="e.g. hosting"
-              />
+              /> */}
               <label htmlFor="">Price</label>
               <input
                 name="servicePrice"

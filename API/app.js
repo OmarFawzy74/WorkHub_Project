@@ -48,9 +48,12 @@ app.use("/api/courses", coursesRoutes);
 
 // app.use(freelncerRoutes,adminRoutes,clientRoutes);
 
-app.all("*", (req, res) => {
-    return res.status(404).json({ success: false, message: "Page Not Found !!! :(" });
-});
+// app.all("*", (req, res) => {
+//     return res.status(404).json({ success: false, message: "Page Not Found !!! :(" });
+// });
+
+// app.use(express.static('src/middleware/upload'));
+app.use(express.static('upload'));
 
 app.use((error, req, res, next) => {
     const statusCode = error.cause || 500;
