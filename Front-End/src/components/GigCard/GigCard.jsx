@@ -4,13 +4,23 @@ import { Link } from "react-router-dom";
 
 const GigCard = ({ item }) => {
   return (
+<<<<<<< HEAD
     <Link to={"/gig/" + item._id} className="link">
+=======
+    <Link to="/gig/123" className="gigLink">
+>>>>>>> ed27357f60e5344996d88789ebe56e4edec7ca55
       <div className="gigCard">
-        <img src={item.serviceCover_url} alt="" />
-        <div className="info">
+        <img className="gigImg" src={item.serviceCover_url} alt="" />
+        <div className="gigInfo">
           <div className="user">
+<<<<<<< HEAD
             <img src={item.freelancerId.image_url} alt="" />
             <span>{item.freelancerId.name}</span>
+=======
+          <div class="card-badge">WorkHub service</div>
+            <img src={item.serviceCover_url} alt="" />
+            <span>{item.serviceTitle}</span>
+>>>>>>> ed27357f60e5344996d88789ebe56e4edec7ca55
           </div>
           <p>{item.serviceTitle}</p>
           <div className="star">
@@ -20,12 +30,9 @@ const GigCard = ({ item }) => {
         </div>
         <hr />
         <div className="detail">
-          <img src="./img/heart.png" alt="" />
           <div className="price">
-            <span>STARTING AT</span>
             <h2>
-              $ {item.servicePrice}
-              <sup>99</sup>
+             ${item.servicePrice}
             </h2>
           </div>
         </div>

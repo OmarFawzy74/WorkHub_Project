@@ -124,7 +124,7 @@ const Add = () => {
     });
 
     return array;
-  
+
   };
 
   const handleFeaturesRemove = (index) => {
@@ -165,7 +165,19 @@ const Add = () => {
         const serviceId = resp.data.newService._id;
         uploadCoverImage(serviceId);
         uploadImages(serviceId);
-        // document.getElementById("serviceFrom").reset();
+        document.getElementById("serviceFrom").reset();
+        document.getElementById("service").value = "";
+        let list = document.querySelectorAll('#service')
+        for (let i = 0; i < list.length; i++) {
+          list[i].value = "";
+          handleFeaturesRemove(i);
+        }
+        // console.log(list);
+        // window.location.reload();
+        // for (let i = 0; i < featureList.length; i++) {
+        //   handleFeaturesRemove(i);
+        // }
+
         // document.getElementById("selectCategory").selectedIndex = 0;
         swal(resp.data.message, "", "success");
         console.log(resp);
@@ -276,9 +288,6 @@ const Add = () => {
                   setService({ ...service, revisionNumber: e.target.value })
                 }
               />
-
-
-
               <div className="form-field">
                 <label htmlFor="service">Add Feature(s)</label>
                 {featureList.map((singleFeature, index) => (
@@ -313,9 +322,6 @@ const Add = () => {
                   </div>
                 ))}
               </div>
-
-
-
               {/* <label htmlFor="">Add Features</label>
               <input
                 name="feature"
@@ -365,7 +371,7 @@ const Add = () => {
                 type="text"
                 placeholder="e.g. hosting"
               /> */}
-              <label htmlFor="">Price</label>
+              <label htmlFor="">Price($)</label>
               <input
                 name="servicePrice"
                 required

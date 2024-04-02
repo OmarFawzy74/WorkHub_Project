@@ -87,13 +87,6 @@ function Profile() {
     }
 
 
-
-
-
-
-
-
-
     // const handleChange = (e) => {
     //   console.log(e.target.value);
     //   setUser((prev) => {
@@ -214,6 +207,9 @@ function Profile() {
                             {/* )} */}
                         </div>
                     </form>
+                    <div className="right">
+                            <img className='profileImage' src="/img/profile.jpg"/>
+                    </div>
                 </div>
             </div>
             <img className='plus' src='img/plus.jpeg' />

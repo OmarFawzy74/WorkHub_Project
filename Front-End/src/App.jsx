@@ -23,6 +23,7 @@ import Learn from './Pages/learn/Learn';
 import Profile from './Pages/profile/Profile';
 import Community from './Pages/community/Community';
 import CommunityProfile from './Pages/communityProfile/CommunityProfile';
+import Course from './Pages/learn/Course';
 
 
 function App() {
@@ -111,6 +112,10 @@ function App() {
       {
         path: "/learn",
         element:<Learn/>
+      },
+      {
+        path: "/course/:id",
+        element:<Course/>
       },
       {
         path: "/profile",
