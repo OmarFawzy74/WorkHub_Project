@@ -4,9 +4,16 @@ import { gigs } from "../../data";
 import GigCard from "../../components/GigCard/GigCard";
 import axios from "axios";
 import swal from "sweetalert";
+import { Link, useParams } from "react-router-dom";
+import { getAuthUser } from '../../localStorage/storage';
+
 
 
 function Gigs() {
+
+  const user = getAuthUser();
+
+  let { category } = useParams();
 
   const [services, setServices] = useState({
     loading: false,
@@ -48,12 +55,20 @@ function Gigs() {
 
   return (
     <div className="gigs">
-      <div className="gigsCcontainer">
-        <span className="breadcrumbs">Marketplace {'>'} Graphics & Design {'>'}</span>
-        <h1>AI Artists</h1>
-        <p>
-          Explore the boundaries of art and technology with WorkHub's AI artists
-        </p>
+      <div className="gigsContainer">
+        <div className="breadcrumbs">
+          {user == undefined ? <Link className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'}</Link> : null}
+        </div>
+
+        {category !== undefined ?
+          <>
+            <h1 >Web Development</h1>
+            <p>
+              Explore the boundaries of art and technology with WorkHub's AI artists
+            </p>
+          </>
+          : null}
+
         <div className="menu">
           <div className="left">
             <span>Budget</span>

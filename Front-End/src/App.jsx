@@ -70,6 +70,10 @@ function App() {
         element:<Gigs/>
       },
       {
+        path: "/gigs/:category",
+        element:<Gigs/>
+      },
+      {
         path: "/gig/:id",
         element:<Gig/>
       },
