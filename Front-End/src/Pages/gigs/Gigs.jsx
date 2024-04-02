@@ -49,7 +49,7 @@ function Gigs() {
   return (
     <div className="gigs">
       <div className="gigsCcontainer">
-        <span className="breadcrumbs">WorkHub {'>'} Graphics & Design {'>'}</span>
+        <span className="breadcrumbs">Marketplace {'>'} Graphics & Design {'>'}</span>
         <h1>AI Artists</h1>
         <p>
           Explore the boundaries of art and technology with WorkHub's AI artists
