@@ -37,13 +37,14 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", isActiveMenu);
+    if (pathname === "/" || pathname === "/gigs") {
+      window.addEventListener("scroll", isActiveMenu);
 
-    return () => {
-      window.removeEventListener("scroll", isActiveMenu);
-    };
-
-  }, []);
+      return () => {
+        window.removeEventListener("scroll", isActiveMenu);
+      };
+    }
+  }, [pathname]);
 
 
   const user = getAuthUser()
@@ -82,7 +83,9 @@ const Navbar = () => {
 
 
   return (
-    <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} >
+    <div className={active || pathname !== "/" || activeMenu  || pathname == "/gigs" ? "navbar active activeMenu" : "navbar"}>
+
+    {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
       <div className='navbarContainer'>
         <Link to="/" className='link'>
           <div className="logo">
@@ -131,7 +134,10 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" ) && (
+      {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
+
+      {(activeMenu  || pathname == "/gigs" || pathname.startsWith("/gigs/"))  &&  (
+
         <>
           <div className="search">
             <div className="searchInput">
@@ -141,7 +147,7 @@ const Navbar = () => {
             <button>Search</button>
           </div>
           <div className='menu'>
-            <Link className='menuLink' to="/">
+            <Link className='menuLink' to="/gigs/Graphics & Design">
               Graphics & Design
             </Link>
             <Link className='menuLink' to="/">
