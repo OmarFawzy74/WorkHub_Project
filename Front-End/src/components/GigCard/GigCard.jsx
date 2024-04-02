@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 
 const GigCard = ({ item }) => {
   return (
-    <Link to="/gig/123" className="link">
+    <Link to={"/gig/" + item._id} className="link">
       <div className="gigCard">
         <img src={item.serviceCover_url} alt="" />
         <div className="info">
           <div className="user">
-            <img src={item.serviceCover_url} alt="" />
-            <span>{item.serviceTitle}</span>
+            <img src={item.freelancerId.image_url} alt="" />
+            <span>{item.freelancerId.name}</span>
           </div>
-          <p>{item.serviceDesc}</p>
+          <p>{item.serviceTitle}</p>
           <div className="star">
             <img src="./img/star.png" alt="" />
             <span>{item.serviceShortTitle}</span>

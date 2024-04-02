@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.get('/getAllFreelancers',  getAllFreelancers);
 router.put('/updateFreelancerInfo/:id', validateParams(), valMiddleware(updateInfoSchema),  upload.single('image'), updateFreelancerInfo);
+// router.put('/uploadImage/:id', upload.single('image'), uploadImage);
 router.put('/updateFreelancerPassword/:id', validateParams(), valMiddleware(updatePasswordSchema),  updateFreelancerPassword);
 router.delete("/deleteFreelancer/:id", validateParams(),  asyncHandler(deleteFreelancer));
 

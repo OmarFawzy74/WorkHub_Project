@@ -76,6 +76,8 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Role undefined" });
     }
 
+    userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
+
     res.status(200).json({ msg: "Sign in successful" , userData});
   } catch (error) {
     console.error(error);
@@ -205,6 +207,13 @@ export const signup = async (req, res) => {
           userData = await FreelancerModel.findOne({ email });
           break;
       }
+
+
+      userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
+
+      // userData.map((user) => {
+      //   user.image_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;
+      // });
   
       return res.status(201).json({ message: 'User created successfully', userData });
     } catch (error) {
@@ -212,5 +221,54 @@ export const signup = async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+// export const uploadImage = async (req, res) => {
+//   try {
+//     if (!req.files) {
+//       return res.status(404).json({ success: false, message: "images are required" });
+//     }
+
+//     const id = req.params.id;
+
+//     const role = req.params.role;
+
+//     if (id == undefined) {
+//       return res.status(404).json({ success: false, message: "id is required" });
+//     }
+
+//     let existingUser;
+//     switch (role) {
+//       case 'client':
+//         existingUser = await ClientModel.findById(id);
+//         break;
+//       case 'freelancer':
+//         existingUser = await FreelancerModel.findById(id);
+//         break;
+//     }
+
+//     if (!existingUser) {
+//       return res.status(400).json({ message: 'User not found' });
+//     }
+
+//     const cover_url = req.file.filename;
+//     const filter = { _id: id };
+//     const update = { $set: { serviceCover_url: cover_url } };
+
+//     let newUser;
+//     switch (role) {
+//       case 'client':
+//         newUser = await ClientModel.updateOne(filter, update);
+//         break;
+//       case 'freelancer':
+//         newUser = await FreelancerModel.updateOne(filter, update);
+//         break;
+//     }
+
+//     res.status(200).json({ msg: "image uploaded successfuly" });
+//   } catch (error) {
+//       console.log(error);
+//       res.status(500).json({ msg: "Somthing went wrong!" });
+//   }
+// }
 
 export default login

@@ -3,8 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
+import { getAuthUser } from "../../localStorage/storage";
 
 const Add = () => {
+
+  const freelancer = getAuthUser();
+
   const [service, setService] = useState({
     err: null,
     loading: false,
@@ -14,7 +18,7 @@ const Add = () => {
     serviceShortTitle: "",
     serviceShortDesc: "",
     servicePrice: "",
-    freelancerId: "65fbbb75539bd6d916acc185",
+    freelancerId: freelancer._id,
     revisionNumber: "",
     deliveryTime: "",
     coverImage: "",

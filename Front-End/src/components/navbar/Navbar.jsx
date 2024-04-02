@@ -113,7 +113,7 @@ const Navbar = () => {
           {currentUser?.activity !== "online" && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
           {currentUser && (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img src="/img/profile.jpg" />
+              <img src={user.image_url} />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
               <Link className='link' to="/profile">Profile</Link>

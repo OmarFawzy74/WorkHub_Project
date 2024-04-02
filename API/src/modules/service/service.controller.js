@@ -9,10 +9,14 @@ import { fileURLToPath } from 'url';
 // Get all services
 export const getAllServices = async (req, res, next) => {
 
-    const services = await Service.find();
+    const services = await Service.find().populate("freelancerId");
     if (services.length == 0) {
         return next(new Error("No services found", { cause: 404 }));
     }
+
+    services.map((service) => {
+        service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
+    });
 
     services.map((services) => {
         services.serviceCover_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;

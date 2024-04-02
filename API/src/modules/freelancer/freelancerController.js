@@ -127,3 +127,32 @@ export const updateFreelancerPassword = async (req, res) => {
       res.status(500).json({ msg: "Somthing went wrong!" });
   }
 }
+
+// // Upload Freelancer Image
+// export const uploadImage = async (req, res) => {
+//   try {
+//     if (!req.files) {
+//       return res.status(404).send({ success: false, message: "images are required" });
+//     }
+
+//     const id = req.params.id;
+
+//     if (id == undefined) {
+//         return res.status(404).send({ success: false, message: "id is required" });
+//     }
+
+//     const cover_url = req.file.filename;
+
+//     const filter = { _id: id };
+//     const update = { $set: { serviceCover_url: cover_url } };
+
+//     await Service.updateOne(filter, update);
+
+
+//     res.status(200).json({ msg: "image uploaded successfuly" });
+
+//   } catch (error) {
+//       console.log(error);
+//       res.status(500).json({ msg: "Somthing went wrong!" });
+//   }
+// }
