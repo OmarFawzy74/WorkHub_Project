@@ -1,0 +1,193 @@
+.updateProfilePage {
+  background-color: rgb(244, 244, 244);
+  .updateProfileContainer {
+    display: flex;
+    background-color: #ffffff;
+    width: 50%;
+    height: 1000px;
+    margin-left: 360px;
+    border: 1px solid #e9e9e9;
+    padding: 10px;
+    box-shadow: 3px 5px 20px 5px #e9e9e9;
+    border-radius: 20px;
+    margin-bottom: 100px;
+    position: relative;
+    top: 100px;
+
+    .updateProfile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 75px;
+
+      .right{
+          
+        .updateProfileImage{
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+          object-fit: cover;
+          position: absolute;
+          right: 95px;
+          top: 40px;
+          margin: auto;
+          border: 3px solid white;
+        }
+      }
+
+      form {
+        width: 580px;
+        padding: 100px 0px;
+        display: flex;
+        gap: 120px;
+
+        h1 {
+          color: rgb(69, 69, 69);
+          margin-bottom: 20px;
+
+        }
+
+        .left{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          label {
+            color: gray;
+            font-size: 18px;
+          }
+
+          .updateProfilePhoneNo {
+            position: relative;
+            top: 9px;
+          }
+
+          .updateProfilePhoneNoInput {
+            position: relative;
+            top: 9px;
+          }
+
+          .updateProfileDesc {
+            position: relative;
+            top: 15px;
+          }
+
+          .updateProfileDescTextarea {
+            position: relative;
+            top: 20px;
+          }
+
+          input,
+          textarea,
+          select {
+            padding: 10px;
+            border: 1px solid rgb(216, 214, 214);
+          }
+
+          input:hover,
+          textarea:hover,
+          select:hover {
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+
+          input:focus,
+          textarea:focus,
+          select:focus {
+            outline: 0;
+            border: 1px solid #1dbf73 !important;
+            transition: .2s ease-in-out;
+          }
+
+          button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            font-weight: 500;
+            font-size: 18px;
+            background-color: #1dbf73;
+            cursor: pointer;
+            margin-top: 50px;
+          }
+
+          button:hover {
+            background-color: #24dc86;
+          }
+        }
+      }
+    }
+  }
+  .circle {
+    position: relative;
+    bottom: 1000px;
+    right: 300px;
+    opacity: 40%;
+    animation: up-down 3s infinite alternate;
+  }
+  
+  @keyframes up-down {
+    0% {
+      transform: translateY(0px);
+    }
+    100% {
+      transform: translateY(-100px);
+    }
+  }
+  
+  .plus {
+    position: relative;
+    left: 1300px;
+    bottom: 950px;
+    opacity: 50%;
+    animation: rotation 10s linear infinite;
+  }
+  
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  .wave1 {
+    animation: left-right 3s infinite alternate;
+    background: transparent !important;
+    opacity: 70%;
+    position: relative;
+    left: 50px;
+    bottom: 200px;
+  }
+  
+  @keyframes left-right {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(-100px);
+    }
+  }
+  
+  .wave2 {
+    animation: right-left 3s infinite alternate;
+    background: transparent !important;
+    opacity: 70%;
+    position: relative;
+    left: 1020px;
+    bottom: 400px;
+  }
+  
+  @keyframes right-left {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(100px);
+    }
+  }
+
+}

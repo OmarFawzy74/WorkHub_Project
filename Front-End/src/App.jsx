@@ -20,10 +20,11 @@ import PrivacyPolicy from './Pages/privacy/PrivacyPolicy';
 import ContactUs from './Pages/contactUs/ContactUs';
 import Register from './Pages/register/Register';
 import Learn from './Pages/learn/Learn';
-import Profile from './Pages/profile/Profile';
 import Community from './Pages/community/Community';
 import CommunityProfile from './Pages/communityProfile/CommunityProfile';
 import Course from './Pages/learn/Course';
+import UpdateProfile from './Pages/updateProfile/UpdateProfile';
+import Profile from './Pages/profile/Profile';
 
 
 function App() {
@@ -122,8 +123,8 @@ function App() {
         element:<Course/>
       },
       {
-        path: "/profile",
-        element:<Profile />
+        path: "/updateProfile",
+        element:<UpdateProfile />
       },
       {
         path: "/community",
@@ -132,6 +133,10 @@ function App() {
       {
         path: "/communityProfile",
         element:<CommunityProfile />
+      },
+      {
+        path: "/profile",
+        element:<Profile />
       },
       ]
     },
