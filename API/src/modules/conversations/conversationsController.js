@@ -26,21 +26,23 @@ export const getConversationsByUserId = async (req, res) => {
         // res.status(200).json({ msg:"Conversation has been deleted successfuly." });
 
         // res.status(400).json({ msg:"Conversation deletion failed." });
+        // let role = req.params.role;
+        // let userId = req.params.id;
 
         const userId = req.params.id;
 
         let freelancer = userId;
 
-        let conversationData = await conversation.find({ freelancer });
+        let conversationData = await conversation.find({ freelancer }).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
         // console.log(conversationData);
 
         if(!conversationData[0]) {
             let client = userId;
-            conversationData = await conversation.find({ client });
+            conversationData = await conversation.find({ client }).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
         }
 
         if(conversationData[0]) {
-            const result = await conversation.findById(conversationData[0]._id).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
+            const result = conversationData;
             return res.status(200).json({ result });
         }
 

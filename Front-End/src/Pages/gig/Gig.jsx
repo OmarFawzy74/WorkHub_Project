@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Gig.scss"
 import Slider from '../../Pages/gig/Slider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
 import { getAuthUser } from "../../localStorage/storage";
@@ -11,11 +11,40 @@ import { getAuthUser } from "../../localStorage/storage";
 function Gig() {
   const user = getAuthUser();
 
-  const [freelancer, setFreelancer] = useState({
+
+
+  const [service, setService] = useState({
+    loading: true,
+    results: null,
     err: null,
-    loading: false,
-    id: "65fa0541cb3af93721ac2647"
+    reload: 0,
   });
+
+  let { id } = useParams();
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/services/getServiceById/" + id)
+      .then((resp) => {
+
+        setService({ results: resp.data, loading: false, err: null });
+        // console.log(resp);
+        console.log(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+      });
+  }, [service.reload]);
+
+
+
+  // const [freelancer, setFreelancer] = useState({
+  //   err: null,
+  //   loading: false,
+  //   id: "65fa0541cb3af93721ac2647"
+  // });
 
   // const [conversation, setConversation] = useState({
   //   err: null,
@@ -48,16 +77,18 @@ function Gig() {
   return (
     <div className="gig">
       <div className="gigContainer">
+      {service.loading==false &&
+      <>
         <div className="left">
-          <span className="breadcrumbs">WorkHub  {'>'} Graphics & Design {'>'}</span>
-          <h1>I will create ai generated art for you</h1>
+          <span className="breadcrumbs">WorkHub  {'>'} {service.results.serviceCategoryId.categoryName} {'>'}</span>
+          <h1>{service.results.serviceTitle}</h1>
           <div className="user">
             <img
               className="pp"
-              src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              src={service.results.freelancerId.image_url}
               alt=""
             />
-            <span>Anna Bell</span>
+            <span>{service.results.freelancerId.name}</span>
             <div className="stars">
               <img src="/img/star.png" alt="" />
               <img src="/img/star.png" alt="" />
@@ -67,32 +98,20 @@ function Gig() {
               <span>5</span>
             </div>
           </div>
-          <Slider />
+          <Slider images={service.results.serviceImages_url}/>
           <h2>About This Service</h2>
           <p>
-            I use an AI program to create images based on text prompts. This
-            means I can help you to create a vision you have through a textual
-            description of your scene without requiring any reference images.
-            Some things I've found it often excels at are: Character portraits
-            (E.g. a picture to go with your DnD character) Landscapes (E.g.
-            wallpapers, illustrations to compliment a story) Logos (E.g. Esports
-            team, business, profile picture) You can be as vague or as
-            descriptive as you want. Being more vague will allow the AI to be
-            more creative which can sometimes result in some amazing images. You
-            can also be incredibly precise if you have a clear image of what you
-            want in mind. All of the images I create are original and will be
-            found nowhere else. If you have any questions you're more than
-            welcome to send me a message.
+            {service.results.serviceDesc}
           </p>
           <div className="seller">
             <h2>About The Seller</h2>
             <div className="user">
               <img
-                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={service.results.freelancerId.image_url}
                 alt=""
               />
               <div className="info">
-                <span>Anna Bell</span>
+                <span>{service.results.freelancerId.name}</span>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
                   <img src="/img/star.png" alt="" />
@@ -101,14 +120,14 @@ function Gig() {
                   <img src="/img/star.png" alt="" />
                   <span>5</span>
                 </div>
-                {user?.role=="client" && (<button value={freelancer.id} onClick={message}>Contact Me</button>)}
+                {user?.role=="client" && (<button value={service.results.freelancerId._id} onClick={message}>Contact Me</button>)}
               </div>
             </div>
             <div className="box">
               <div className="items">
                 <div className="item">
                   <span className="title">From</span>
-                  <span className="desc">Egypt</span>
+                  <span className="desc">{service.results.freelancerId.country}</span>
                 </div>
                 <div className="item">
                   <span className="title">Member since</span>
@@ -129,10 +148,7 @@ function Gig() {
               </div>
               <hr />
               <p>
-                My name is Anna, I enjoy creating AI generated art in my spare
-                time. I have a lot of experience using the AI program and that
-                means I know what to prompt the AI with to get a great and
-                incredibly detailed result.
+              {service.results.freelancerId.desc}
               </p>
             </div>
           </div>
@@ -267,43 +283,34 @@ function Gig() {
         </div>
         <div className="right">
           <div className="price">
-            <h3>1 AI generated image</h3>
-            <h2>$ 59.99</h2>
+            <h3>{service.results.serviceShortTitle}</h3>
+            <h2>$ {service.results.servicePrice}</h2>
           </div>
           <p>
-            I will create a unique high quality AI generated image based on a
-            description that you give me
+            {service.results.serviceShortDesc}
           </p>
           <div className="details">
             <div className="item">
               <img src="/img/clock.png" alt="" />
-              <span>2 Days Delivery</span>
+              <span>{service.results.deliveryTime} Days Delivery</span>
             </div>
             <div className="item">
               <img src="/img/recycle.png" alt="" />
-              <span>3 Revisions</span>
+              <span>{service.results.revisionNumber} Revisions</span>
             </div>
           </div>
           <div className="features">
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Prompt writing</span>
-            </div>
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Artwork delivery</span>
-            </div>
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Image upscaling</span>
-            </div>
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Additional design</span>
-            </div>
+            {service.results.features.map((feature) => (
+              <div className="item">
+                <img src="/img/greencheck.png" alt="" />
+                <span>{feature}</span>
+              </div>
+            ))}
           </div>
           <button>Continue</button>
         </div>
+        </>
+      }
       </div>
     </div>
   );

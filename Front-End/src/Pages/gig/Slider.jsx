@@ -12,37 +12,46 @@ const Slider = ({ images }) => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
-  return (
-    <div className="slider-container">
-          <button className='previousButton' onClick={prevSlide}>
-            <div className="leftArrowContainer">
-                <img className='leftArrow' src="/img/arrow.png" alt="" />
-            </div>  
-          </button>
-      <img src={images[currentIndex]}/>
-          <button className='nextButton' onClick={nextSlide}>
-            <div className="rightArrowContainer">
-                <img className='rightArrow' src="/img/arrow.png" alt="" />
-            </div>  
-          </button>
-    </div>
-  );
-};
-
-// Example usage
-const App = () => {
-  const imageUrls = [
-    '/img/12.jpg',
-    '/img/13.jpg',
-    '/img/14.jpg',
-    // Add more image URLs as needed
-  ];
+  // const imageUrls = [
+  //   '/img/12.jpg',
+  //   '/img/13.jpg',
+  //   '/img/14.jpg',
+  //   // Add more image URLs as needed
+  // ];
 
   return (
     <div>
-      <Slider images={imageUrls} />
+      <div className="slider-container">
+        <button className="previousButton" onClick={prevSlide}>
+          <div className="leftArrowContainer">
+            <img className="leftArrow" src="/img/arrow.png" alt="" />
+          </div>
+        </button>
+        <img src={images[currentIndex]} />
+        <button className="nextButton" onClick={nextSlide}>
+          <div className="rightArrowContainer">
+            <img className="rightArrow" src="/img/arrow.png" alt="" />
+          </div>
+        </button>
+      </div>
     </div>
   );
 };
 
-export default App;
+// // Example usage
+// const App = () => {
+//   const imageUrls = [
+//     '/img/12.jpg',
+//     '/img/13.jpg',
+//     '/img/14.jpg',
+//     // Add more image URLs as needed
+//   ];
+
+//   return (
+//     <div>
+//       <Slider images={imageUrls} />
+//     </div>
+//   );
+// };
+
+export default Slider;
