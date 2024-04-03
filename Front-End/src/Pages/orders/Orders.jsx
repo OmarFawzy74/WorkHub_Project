@@ -6,7 +6,7 @@ const Orders = () => {
   const currentUser = {
     id: 1,
     username: "Anna",
-    isSeller: true,
+    isSeller: false,
   };
 
   return (

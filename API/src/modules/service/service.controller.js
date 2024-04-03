@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 // Get all services
 export const getAllServices = async (req, res, next) => {
 
-    const services = await Service.find().populate("freelancerId");
+    const services = await Service.find().populate("freelancerId").populate("serviceCategoryId");
     if (services.length == 0) {
         return next(new Error("No services found", { cause: 404 }));
     }
@@ -127,17 +127,36 @@ export const deleteService = async (req, res, next) => {
 
 // Get a service by ID
 export const getServiceById = async (req, res, next) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send({ success: true, message: "Service not found" });
-    }
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).json({ success: true, message: "Service not found" });
+        }
+    
+        const service = await Service.findById(id).populate("freelancerId").populate("serviceCategoryId");
 
-    const service = await Service.findById(id);
-    if (service) {
-        res.status(200).json(service);
-    } else {
-        return next(new Error("Service not found", { cause: 404 }));
+        service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
+
+
+        var images_url_array = [];
+
+        service.serviceImages_url.map((image_url) => {
+            var url = "http://" + req.hostname + ":3000/" + image_url;
+
+            images_url_array.push(url);
+        });
+
+        service.serviceImages_url = images_url_array;
+    
+        if (service) {
+            return res.status(200).json(service);
+        } else {
+            return next(new Error("Service not found", { cause: 404 }));
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
     }
 };
 
@@ -159,9 +178,7 @@ export const getFreelancerServices = async (req, res, next) => {
 
 // Upload Cover Image
 export const uploadCoverImage = async (req, res, next) => {
-
     try {
-
         if (!req.file) {
             return res.status(404).send({ success: false, message: "Cover image is required" });
         }
