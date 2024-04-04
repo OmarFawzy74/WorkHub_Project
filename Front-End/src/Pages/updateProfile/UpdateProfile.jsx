@@ -138,7 +138,7 @@ function UpdateProfile() {
                 <div className="updateProfile">
                     <form onSubmit={addUserData}>
                         <div className="left">
-                            <h1>My Profile</h1>
+                            <h1>Edit Profile</h1>
                             <label htmlFor="">Name</label>
                             <input
                                 name="name"

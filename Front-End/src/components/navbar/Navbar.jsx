@@ -95,7 +95,6 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="links">
-
           <div className="user" onClick={() => setOpenExplore(!openExplore)}>
             <span>Explore</span>
             {openExplore && <div className="exploreOptions">

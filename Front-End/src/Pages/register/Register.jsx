@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
+import Skills from "../../components/skills/Skills";
+import Languages from "../../components/languages/Languages";
 
 function Register() {
   const [user, setUser] = useState({
@@ -12,11 +14,11 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    image:"",
+    image: "",
     country: "",
     role: "client",
     desc: "",
-    phoneNumber:"",
+    phoneNumber: "",
   });
 
   const navigate = useNavigate();
@@ -43,11 +45,11 @@ function Register() {
 
 
     axios
-    .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+      .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((resp) => {
         swal("Congratulations you have Joined WorkHub Successfully", "", "success");
         console.log(resp.data.message);
@@ -119,8 +121,8 @@ function Register() {
       <div className="register">
         <form onSubmit={addUserData}>
           <div className="left">
-            <h1>Create a new account</h1>
-            <label htmlFor="">Name</label>
+            <h1 className="createAccount">Create a new account</h1>
+            <label className="singupDesc" htmlFor="">Name</label>
             <input
               name="name"
               type="text"
@@ -130,7 +132,7 @@ function Register() {
                 setUser({ ...user, name: e.target.value })
               }
             />
-            <label htmlFor="">Email</label>
+            <label className="singupDesc" htmlFor="">Email</label>
             <input
               name="email"
               type="email"
@@ -139,7 +141,7 @@ function Register() {
               onChange={(e) =>
                 setUser({ ...user, email: e.target.value })
               } />
-            <label htmlFor="">Password</label>
+            <label className="singupDesc" htmlFor="">Password</label>
             <input
               name="password"
               type="password"
@@ -148,10 +150,9 @@ function Register() {
                 setUser({ ...user, password: e.target.value })
               } />
 
-            <label htmlFor="">Profile Picture</label>
-            <input type="file" ref={image}/>
-            <label htmlFor="">Country</label>
-
+            <label className="singupDesc" htmlFor="">Profile Picture</label>
+            <input type="file" ref={image} />
+            <label className="singupDesc" htmlFor="">Country</label>
             <select
               name="country"
               type="text"
@@ -168,10 +169,10 @@ function Register() {
               <option value="France">France</option>
             </select>
 
-            <button type="submit">Register</button>
+            <button className="registerButton" type="submit">Register</button>
           </div>
           <div className="right">
-            <h1>I want to become a seller</h1>
+            <h1 className="becomeSeller">I want to become a seller</h1>
             <div className="toggle">
               <label htmlFor="">Activate the seller account</label>
               <label className="switch">
@@ -180,7 +181,7 @@ function Register() {
               </label>
             </div>
 
-            {user?.role=="freelancer" && (
+            {user?.role == "freelancer" && (
               <>
                 <label className="phoneNo" htmlFor="">Phone Number</label>
                 <input className="phoneNoInput"
@@ -204,6 +205,10 @@ function Register() {
                     setUser({ ...user, desc: e.target.value })
                   }
                 ></textarea>
+                <label className="singupDesc" htmlFor="">Skills</label>
+                <Skills />
+                <label className="singupDesc" htmlFor="">Languages</label>
+                <Languages />
               </>
             )}
           </div>

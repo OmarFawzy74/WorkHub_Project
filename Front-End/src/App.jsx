@@ -25,6 +25,8 @@ import CommunityProfile from './Pages/communityProfile/CommunityProfile';
 import Course from './Pages/learn/Course';
 import UpdateProfile from './Pages/updateProfile/UpdateProfile';
 import Profile from './Pages/profile/Profile';
+import Skills from './components/skills/Skills';
+import { Language } from '@mui/icons-material';
 
 
 function App() {
@@ -137,6 +139,10 @@ function App() {
       {
         path: "/profile",
         element:<Profile />
+      },
+      {
+        path: "/skills",
+        element:<Language/>
       },
       ]
     },
