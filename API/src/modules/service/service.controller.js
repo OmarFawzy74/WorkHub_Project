@@ -4,39 +4,63 @@ import Service from "../../../DB/models/service_model.js";
 import fs from "fs";
 import path from 'path'; // Import path module to handle file paths
 import { fileURLToPath } from 'url';
+import freelancer_model from "../../../DB/models/freelancer_model.js";
 
 
 // Get all services
 export const getAllServices = async (req, res, next) => {
+    try {
+        const services = await Service.find().populate("freelancerId").populate("serviceCategoryId");
+        if (services.length == 0) {
+            return next(new Error("No services found", { cause: 404 }));
+        }
 
-    const services = await Service.find().populate("freelancerId").populate("serviceCategoryId");
-    if (services.length == 0) {
-        return next(new Error("No services found", { cause: 404 }));
-    }
+        // services.map((service) => {
+        //     console.log(service);
+        //     service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
+        // });
 
-    services.map((service) => {
-        service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
-    });
 
-    services.map((services) => {
-        services.serviceCover_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;
-    });
+        // services.forEach((service) => {
+        //     service.freelancerId = { ...service.freelancerId, image_url: "http://" + req.hostname + ":3000/" + service.freelancerId.image_url };
+        // });
+    
+        // services.map((service) => {
+        //     service.serviceCover_url = "http://" + req.hostname + ":3000/" + service.serviceCover_url;
+        // });
+    
+        // services.map((service) => {
+        //     var images_url_array = [];
+    
+        //     service.serviceImages_url.map((image_url) => {
+    
+        //         var url = "http://" + req.hostname + ":3000/" + image_url;
+    
+        //         images_url_array.push(url);
+        //     });
+    
+        //     service.serviceImages_url = images_url_array;
+    
+        // });
 
-    services.map((service) => {
-        var images_url_array = [];
 
-        service.serviceImages_url.map((image_url) => {
-
-            var url = "http://" + req.hostname + ":3000/" + image_url;
-
-            images_url_array.push(url);
+        const modifiedServices = services.map((service) => {
+            const modifiedService = { ...service._doc }; // Create a copy of the service object
+            modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
+                return "http://" + req.hostname + ":3000/" + image_url;
+            });
+            return modifiedService;
         });
-
-        service.serviceImages_url = images_url_array;
-
-    });
-
-    res.status(200).json({ success: true, message: "here u r", services });
+    
+        res.status(200).json({ success: true, message: "here u r", services: modifiedServices });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
 };
 
 // Create a new service
