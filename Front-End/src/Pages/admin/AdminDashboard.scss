@@ -1,0 +1,70 @@
+.sidebar-close {
+  margin-left: 300px !important;
+}
+
+.main-container {
+  // height: 91.8% !important;
+  // overflow-y: auto;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.95);
+  // margin-right: 100px; /* Default margin when sidebar is open */
+  margin-left: 220px;
+
+  .main-title {
+    display: flex;
+    justify-content: space-between;
+
+    .dashboardTitle {
+      color: #2d8c80;
+    }
+  }
+
+  .main-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 15px 0;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 8px 15px;
+      border-radius: 5px;
+
+      &:first-child {
+        background-color: #2962ff;
+      }
+
+      &:nth-child(2) {
+        background-color: #ff6d00;
+      }
+
+      &:nth-child(3) {
+        background-color: #2e7d32;
+      }
+
+      &:nth-child(4) {
+        background-color: #d50000;
+      }
+
+      .card-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        > .card_icon {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 60px;
+    height: 300px;
+  }
+}

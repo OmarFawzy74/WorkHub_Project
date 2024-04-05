@@ -1,0 +1,99 @@
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  z-index: 12 !important;
+  animation: myopen 1s ease-out; /* Use forwards to keep the final state after animation */
+  height: 669px !important;
+
+}
+@keyframes myopen {
+  from {
+    width: 0px; /* Start from 200px width */
+  }
+  to {
+    width: 280px; /* End with 0 width */
+  }
+}
+#sidebar {
+  background-color: #05685E;
+  overflow-x:hidden;
+  // transition: ease-in 3s !important;
+  // -webkit-transition: ease-in 3s !important;
+
+  &.sidebar-closed {
+    height: 669px !important;
+    position: relative;
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+    animation: myclose 0.8s ease-in; /* Use forwards to keep the final state after animation */
+  }
+
+  @keyframes myclose {
+    from {
+      width: 280px; /* Start from 200px width */
+    }
+    to {
+      width: 0px; /* End with 0 width */
+    }
+  }
+
+  .sidebar-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px 0px 30px;
+    margin-bottom: 30px;
+
+    span {
+      display: none;
+    }
+
+    .close_icon {
+      width: 20px;
+      height: 20px;
+      color: #ffffff;
+    }
+  }
+
+  .sidebar-brand {
+    display: flex;
+    position: relative;
+    right: 10px;
+
+    .adminLogoName {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      position: relative;
+      top: 18px;
+      right: 5px;
+    }
+
+    .icon_header {
+      width: 60px;
+      height: 60px;
+      position: relative;
+    }
+  }
+
+  .sidebar-list {
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .sidebar-list-item {
+    padding: 20px;
+    font-size: 18px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: #ffffff;
+    }
+  }
+}
