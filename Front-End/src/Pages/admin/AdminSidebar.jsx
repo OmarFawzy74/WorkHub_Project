@@ -29,7 +29,7 @@ const AdminSidebar = ({openSidebarToggle, OpenSidebar}) => {
                   </a>
               </li>
               <li className='sidebar-list-item'>
-                  <a href="">
+                  <a href="/category">
                       <BsFillGrid3X3GapFill className='icon'/> Categories
                   </a>
               </li>

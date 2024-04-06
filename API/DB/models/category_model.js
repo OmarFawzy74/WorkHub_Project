@@ -10,7 +10,6 @@ const categorySchema = new Schema ({
     categoryDesc: {
         type: String,
         required: true,
-        unique: true
     }
 },{
     timestamps: true

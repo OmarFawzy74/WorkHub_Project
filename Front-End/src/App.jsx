@@ -33,6 +33,9 @@ import AdminDashboard from './Pages/admin/AdminDashboard';
 import AdminSidebar from './Pages/admin/AdminSidebar';
 import { getAuthUser } from './localStorage/storage';
 import AdminHeader from './Pages/admin/AdminHeader';
+import Category from './Pages/admin/Category';
+import AddCategory from './Pages/admin/AddCategory';
+import UpdateCategory from './Pages/admin/UpdateCategory';
 
 
 let dashboardData;
@@ -139,6 +142,18 @@ export default function App() {
         {
           path: "/adminGigs/:category",
           element: <Gigs />
+        },
+        {
+          path: "/category",
+          element: <Category />
+        },
+        {
+          path: "/addCategory",
+          element: <AddCategory />
+        },
+        {
+          path: "/updateCategory/:id",
+          element: <UpdateCategory />
         },
       ]
     },

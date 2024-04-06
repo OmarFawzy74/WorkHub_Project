@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
  from 'recharts';
 import {sidebarStatus} from "../../App";
 
-function AdminDashboard(openSidebarToggle ) {
+function AdminDashboard() {
 
     const data = [
         {
@@ -56,7 +56,7 @@ function AdminDashboard(openSidebarToggle ) {
         },
       ];
   return (
-    <main className={sidebarStatus() ? 'main-container' : 'main-container sidebar-close'}>
+    <main className={sidebarStatus() ? 'main-container' : 'main-container sidebar-close-dashboard'}>
         <div>
             <h3 className='dashboardTitle'>DASHBOARD</h3>
         </div>
