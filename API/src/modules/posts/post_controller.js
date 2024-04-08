@@ -10,62 +10,20 @@ import Postmodel from "../../../DB/models/post_model.js"
 //     select:"email username freelancerImage_url"
 // }]
 
-export const createPost = async (req, res) => {
+export const addPost = async (req, res) => {
     try {
-        let imagesUrl = [];
-        if (req.files && req.files.length > 0) {
-            for (let i = 0; i < req.files.length; i++) {
-                let image = `${req.protocol}://${req.headers.host}/${req.files[i].destination}/${req.files[i].filename}`;
-                imagesUrl.push(image);
-            }
-        }
-
-        const { caption, tagsList } = req.body;
-
-        let tagsClient = [];
-        let tagsFreelancer = [];
-        let tagsEmail = '';
-
-        for (let i = 0; i < tagsList.length; i++) {
-            const existClient = await ClientModel.findById(tagsList[i]).select('email');
-            const existFreelancer = await FreelancerModel.findById(tagsList[i]).select('email');
-
-            if (!existClient && !existFreelancer) {
-                return res.status(400).json({ message: 'Invalid tag ID: ' + tagsList[i] });
-            }
-
-            if (existClient) {
-                tagsClient.push(existClient._id);
-                if (tagsEmail.length > 0) {
-                    tagsEmail += ',' + existClient.email;
-                } else {
-                    tagsEmail = existClient.email;
-                }
-            } else {
-                tagsFreelancer.push(existFreelancer._id);
-                if (tagsEmail.length > 0) {
-                    tagsEmail += ',' + existFreelancer.email;
-                } else {
-                    tagsEmail = existFreelancer.email;
-                }
-            }
-        }
+        const { communityId, posterId, posterType, caption, likes, Comments } = req.body
 
         const newpost = new Postmodel({
+            communityId,
+            posterId,
+            posterType,
             caption,
-            images: imagesUrl,
-            createdByClient: req.user.role === 'client' ? req.user._id : null,
-            createdByFreelancer: req.user.role === 'freelancer' ? req.user._id : null,
-            tagsClient,
-            tagsFreelancer
+            likes,
+            Comments
         });
 
         const savePost = await newpost.save();
-
-        // Uncomment this section if you want to send emails
-        // if (tagsEmail.length > 0) {
-        //     await sendEmail(tagsEmail, `<p>You have been mentioned in a post by ${req.user._id}</p><br><a href='${req.protocol}://${req.headers.host}/post/${savePost._id}'>Show the post</a>`);
-        // }
 
         res.json({ message: 'Post created successfully', savePost });
     } catch (error) {
@@ -74,7 +32,34 @@ export const createPost = async (req, res) => {
     }
 };
 
-export const getPost = async(req,res)=>{
+export const uploadPostMedia = async (req, res) => {
+    try {
+
+        if (!req.file) {
+            return res.status(404).send({ success: false, message: "media is required" });
+        }
+
+        const id = req.params.id;
+
+        if (id == undefined) {
+            return res.status(404).send({ success: false, message: "id is required" });
+        }
+
+        const media_url = req.file.filename;
+
+        const filter = { _id: id };
+        const update = { $set: { media_url: media_url } };
+
+        await Postmodel.updateOne(filter, update);
+
+        res.json({ message: 'Media uploaded successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const getPost = async (req, res) => {
     try {
         const{id}=req.params
         const post = await Postmodel.findById({_id:id})
@@ -93,157 +78,132 @@ export const getPost = async(req,res)=>{
     }
    
 
-}
-export const getAllPosts = async(req,res)=>{
-    try{
-
-        const posts=await Postmodel.find();
-        if(posts){
-            res.status(200).json({ message: 'this is the post', posts });
-            
-        }else{
-            res.status(400).json({ message: 'not found' });
-        }
-    }
-
-    
- catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-    
-}
-
-
-}
-
-
-export const createLikeToPost = async (req, res) => {
-   
-        const { id } = req.params;
-
-        // Find the post by ID
-        const post = await Postmodel.findById(id);
-
-        // Check if the post exists
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
-
-        let liked = false;
-
-        // Check if the user has already liked the post
-        if (req.user.role === 'client' && post.likesClient.includes(req.user._id)) {
-            liked = true;
-        } else if (req.user.role === 'freelancer' && post.likesFreelancer.includes(req.user._id)) {
-            liked = true;
-        }
-
-        // If the user has already liked the post, send a message
-        if (liked) {
-            return res.status(400).json({ message: 'You have already liked this post' });
-        }
-
-        // If the user hasn't liked the post, proceed to add the like
-        if (req.user.role === 'client') {
-            post.likesClient.push(req.user._id);
-        } else if (req.user.role === 'freelancer') {
-            post.likesFreelancer.push(req.user._id);
-        } else {
-            return res.status(400).json({ message: 'Invalid role' });
-        }
-
-        // Save the updated post
-        const updatedPost = await post.save();
-
-        // Populate createdByClient and createdByFreelancer fields
-        await updatedPost.populate('createdByClient', 'email username clientImage_url')
-        await updatedPost.populate('createdByFreelancer', 'email username freelancerImage_url')
-
-        // Send response with updated post including likes
-        res.status(200).json({ message: 'Like added successfully', updatedPost });
-   
 };
 
+export const getAllPosts = async (req, res) => {
+    try{
+        const posts = await Postmodel.find();
+
+        if(posts){
+            return res.status(200).json({ posts });
+            
+        }
+
+        res.status(404).json({ message: 'No posts found' });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const addLike = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const postToUpdate = await Postmodel.findById(postId);
+
+        if(postToUpdate) {
+            let likes = postToUpdate.likes
+            const filter = { _id: postId };
+            const update = { $set: { likes: likes + 1 } };
+
+            await Postmodel.updateOne(filter, update);
+
+            return res.status(200).json({ msg:"post like added successfuly." });
+        }
+
+        res.status(400).json({ msg:"There is no post with such id to update." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const removeLike = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const postToUpdate = await Postmodel.findById(postId);
+
+        if(postToUpdate) {
+            let likes = postToUpdate.likes
+            const filter = { _id: postId };
+            const update = { $set: { likes: likes - 1 } };
+
+            await Postmodel.updateOne(filter, update);
+
+            return res.status(200).json({ msg:"post like removed successfuly." });
+        }
+
+        res.status(400).json({ msg:"There is no post with such id to update." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const addComment = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const postToUpdate = await Postmodel.findById(postId);
+
+        if(postToUpdate) {
+            const filter = { _id: postId };
+            const update = { $set: { comments: req.body.comment } };
+
+            await Postmodel.updateOne(filter, update);
+
+            return res.status(200).json({ msg:"post comment added successfuly." });
+        }
+
+        res.status(400).json({ msg:"There is no post with such id to update." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 export const updatePost = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { caption } = req.body;
+        const postId = req.params.id;
+        const postToUpdate = await Postmodel.findById(communityId);
 
-        // Find and update the post
-        const updatedPost = await Postmodel.findOneAndUpdate(
-            { _id: id },
-            { caption: caption },
-            { new: true } // To return the updated document
-        );
-
-        // Check if the post exists
-        if (!updatedPost) {
-            return res.status(404).json({ message: 'Post not found' });
+        if(postToUpdate) {
+            const filter = { _id: postId };
+            const update = { $set: { ...req.body } };
+            await Postmodel.updateOne(filter, update);
+            return res.status(200).json({ msg:"past has been updated successfuly." });
         }
 
-        // Send response with the updated post
-        res.status(200).json({ message: 'Post updated successfully', updatedPost });
+        res.status(400).json({ msg:"There is no post with such id to update." });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-};
-
-export const createComment = async (req, res) => {
-    const { id } = req.params;
-    const { desc, tagslist  } = req.body;
-
-    try {
-        const post = await Postmodel.findById(id);
-        if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
-        }
-
-        let tagsClient = [];
-        let tagsFreelancer = [];
-        
-        for (let i = 0; i < tagslist.length; i++) {
-            const existClient = await ClientModel.findById(tagslist[i]).select('email');
-            const existFreelancer = await FreelancerModel.findById(tagslist[i]).select('email');
-
-            if (!existClient && existFreelancer) {
-                return res.status(400).json({ message: 'Invalid tag ID: ' + tagslist[i] });
-            }
-
-            if (existClient) {
-                tagsClient.push(existClient._id);
-            }
-
-            if (existFreelancer) {
-                tagsFreelancer.push(existFreelancer._id);
-            }
-        }
-
-        if (!desc) {
-            desc = ' ';
-        }
-
-        const newComment = {
-            desc,
-            createdByClient: req.user.role === 'client' ? req.user._id : null,
-            createdByFreelancer: req.user.role === 'freelancer' ? req.user._id : null,
-            tagsClient,
-            tagsFreelancer
-        };
-
-        const updatedPost = await Postmodel.findByIdAndUpdate(id, {
-            $push: {
-                comment: newComment
-            }
-        }, { new: true })
-        .populate({ path: 'createdByClient', select: 'email username clientImage_url', options: { strictPopulate: false } })
-        .populate({ path: 'createdByFreelancer', select: 'email username freelancerImage_url', options: { strictPopulate: false } })
-        .populate({ path: 'comment.createdByClient', select: 'email username clientImage_url', options: { strictPopulate: false } })
-        .populate({ path: 'comment.createdByFreelancer', select: 'email username freelancerImage_url', options: { strictPopulate: false } });
-
-        res.status(200).json({ message: 'Comment added successfully', updatedPost });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
+
+export const deletePost = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return next(new Error("Invalid post id", { cause: 404 }));
+        }
+        const data = await Service.findById(id);
+        if (!data) {
+            return next(new Error("Post not found", { cause: 404 }));
+        }
+        const filter = { _id: id }
+        const process = await Service.deleteOne(filter);
+
+        if (process) {
+            fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
+
+            return res.status(200).json({ success: true, message: "Post deleted successfully"});
+        }
+
+        next(new Error("Service not found", { cause: 404 }));
+
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
+};
