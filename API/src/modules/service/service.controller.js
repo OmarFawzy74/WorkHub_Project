@@ -15,35 +15,6 @@ export const getAllServices = async (req, res, next) => {
             return next(new Error("No services found", { cause: 404 }));
         }
 
-        // services.map((service) => {
-        //     console.log(service);
-        //     service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
-        // });
-
-
-        // services.forEach((service) => {
-        //     service.freelancerId = { ...service.freelancerId, image_url: "http://" + req.hostname + ":3000/" + service.freelancerId.image_url };
-        // });
-    
-        // services.map((service) => {
-        //     service.serviceCover_url = "http://" + req.hostname + ":3000/" + service.serviceCover_url;
-        // });
-    
-        // services.map((service) => {
-        //     var images_url_array = [];
-    
-        //     service.serviceImages_url.map((image_url) => {
-    
-        //         var url = "http://" + req.hostname + ":3000/" + image_url;
-    
-        //         images_url_array.push(url);
-        //     });
-    
-        //     service.serviceImages_url = images_url_array;
-    
-        // });
-
-
         const modifiedServices = services.map((service) => {
             const modifiedService = { ...service._doc }; // Create a copy of the service object
             modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object

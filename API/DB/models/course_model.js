@@ -8,10 +8,15 @@ const courseSchema = new Schema ({
         required: true,
         ref: "category"
     },
-    proffId: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "proffesor"
+    proffName: {
+        type: String,
+        required: true
+    },
+    proffImage_url: {
+        type: String,
+    },
+    ProffDesc: {
+        type: String,
     },
     courseTitle: {
         type: String,
@@ -21,7 +26,15 @@ const courseSchema = new Schema ({
         type: String,
         required: true,
     },
+    courseCoverImage_url: {
+        type: String,
+        required: true,
+    },
     courseDuration: {
+        type: String,
+        required: true,
+    },
+    courseLink: {
         type: String,
         required: true,
     }

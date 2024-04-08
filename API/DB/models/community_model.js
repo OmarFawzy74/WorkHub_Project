@@ -26,11 +26,6 @@ const communitySchema = new Schema ({
         type: [Schema.Types.ObjectId],
         required: false,
         ref: "freelancer"
-    },
-    membersCount: {
-        type: Number,
-        required: false,
-        default: 0
     }
 },{
     timestamps: true
