@@ -36,6 +36,9 @@ import AdminHeader from './Pages/admin/AdminHeader';
 import Category from './Pages/admin/Category';
 import AddCategory from './Pages/admin/AddCategory';
 import UpdateCategory from './Pages/admin/UpdateCategory';
+import ManageLearn from './Pages/admin/ManageLearn';
+import AddCourse from './Pages/admin/AddCourse';
+import LearnMenu from './components/LearnMenu/LearnMenu';
 
 
 let dashboardData;
@@ -53,14 +56,19 @@ export default function App() {
   }
 
   const Admin = () => {
-
-    // const [openSidebarToggle, setOpenSidebarToggle] = useState(true);
-
-    // const OpenSidebar = () => {
-    //   setOpenSidebarToggle(!openSidebarToggle)
-    // }
-
     const { pathname } = useLocation()
+
+    const handleClasses = (pathname) => {
+      if (pathname=="/adminDashboard") {
+        return 'grid-container' 
+      }
+      else {
+        if (pathname=="/manageLearn") {
+          return "adminManageLearn"
+        }
+        return "adminGigsContainer"
+      }
+    }
 
     const auth = getAuthUser();
     return (
@@ -69,8 +77,7 @@ export default function App() {
           (auth.role == 'admin') ? 
           <>
           <AdminHeader OpenSidebar={OpenSidebar}/>
-          <div className={pathname=="/adminDashboard" ? 'grid-container' : "adminGigsContainer"}>
-            {/* <AdminHeader OpenSidebar={OpenSidebar}/> */}
+          <div className={handleClasses(pathname)}>
             <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
             <Outlet />
           </div> 
@@ -104,11 +111,11 @@ export default function App() {
 
     return (
       <>
-        {
+        {/* {
           (auth.role == 'admin') && (
             <Navigate to={'/adminDashboard'} />
           )
-        }
+        } */}
 
         {/* {
           (auth.role == 'admin') ? <Outlet /> : <Navigate to={'/'} />
@@ -154,6 +161,14 @@ export default function App() {
         {
           path: "/updateCategory/:id",
           element: <UpdateCategory />
+        },
+        {
+          path: "/manageLearn",
+          element: <ManageLearn />
+        },
+        {
+          path: "/addCourse",
+          element: <AddCourse />
         },
       ]
     },

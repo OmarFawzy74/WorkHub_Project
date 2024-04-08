@@ -28,17 +28,20 @@
         cursor: pointer;
       }
 
+      .adminManageLearn{
+        display: inline-flex;
+      }
+
+
       .adminGigsContainer{
         display: inline-flex;
         height: 100% !important;
-
 
         .gigs{
           margin-left: 70px;
         }
 
       }
-
             .grid-container {
               display: flex;
               height: 650px !important;
@@ -56,6 +59,7 @@
     .link{
         text-decoration: none;
         color: inherit;
+
         &:hover{
             text-decoration: none;
             color: inherit;

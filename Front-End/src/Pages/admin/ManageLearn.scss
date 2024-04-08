@@ -1,0 +1,54 @@
+
+
+.manageLearnPage {
+    margin-top: 20px;
+    margin-right: 50px;
+    h1 {
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 15px;
+        margin-left: 230px;     
+    }
+
+    .courseContain-table {
+        width: 90%;   // commented out since you mentioned it's not currently used
+        margin-left: 240px;
+
+        .addCourseButton {
+            position: relative;
+            left: 1000px;
+            width: 150px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            background-color: #0e9184;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 1px solid;
+            display: inline-block;
+            cursor: pointer;
+            font-family: Arial;
+            font-size: 18px;
+            text-decoration: none;
+    
+            &:hover {
+                background-color: #11b4a3;
+            }
+    
+            &::after {
+                background-color: #11b4a3;
+            }
+        }
+    }
+    
+    .clicked {
+        opacity: 2%;
+    }
+    
+    .action {
+        text-align: center;
+    }    
+}
+

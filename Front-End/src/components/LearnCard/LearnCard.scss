@@ -1,6 +1,5 @@
 .learnLink:hover{
     color: #404145;
-
 }
 
 .learnLink{
@@ -11,10 +10,10 @@
 
     .learnCard {
         width: 300px;
-        height: 350px;
+        height: auto;
         border: 1px solid rgb(255, 255, 255);
         border-radius: 20px;
-    
+
         .learnImg {
             border-radius: 10px;
             width: 100%;
@@ -35,29 +34,38 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+
+            .professorDesc{
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 18px;
+                color: #95979D;
+            }
+
+            .card-badge {
+                width: 60px;
+                background: #cfcfcf;
+                border: 0px solid #EFEFF0;
+                box-sizing: border-box;
+                border-radius: 17px;
+                text-align: center;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                color: #404145;
+                padding: 0px 8px;
+                font-weight: bold;
+                font-size: 10px;
+                line-height: 17px;
+                padding-top: 2px;
+            }
     
-            .courseName {
+            .professorName {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-    
-                .card-badge {
-                    position: relative;
-                    right: 10px;
-                    background: #EFEFF0;
-                    border: 0px solid #EFEFF0;
-                    box-sizing: border-box;
-                    border-radius: 17px;
-                    text-align: center;
-                    letter-spacing: 0.5px;
-                    text-transform: uppercase;
-                    color: #404145;
-                    padding: 0px 8px;
-                    font-weight: bold;
-                    font-size: 10px;
-                    line-height: 17px;
-                    padding-top: 2px;
-                }
+                font-weight: bold;
+                color: #111;
     
                 img {
                     width: 26px;
@@ -71,7 +79,15 @@
             }
     
             p {
-                color: #111;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 25px;
+                color: #404145;
+                margin-bottom: 15px;
+                letter-spacing: 0px;
+                text-transform: capitalize;
+                margin-top: 7px;
             }
     
             .star {
@@ -86,12 +102,32 @@
                     width: 14px;
                 }
     
-                span {
+                .reviewNo {
                     position: relative;
                     bottom: 10px;
                     font-size: 14px;
-                    font-weight: bold;
                     color: #ffc108;
+                }
+
+                .courseDuration{
+                    display: flex;
+                    position: relative;
+                    bottom: 10px;
+
+                    .courseDurationNo{
+                    font-size: 14px;
+                    line-height: 21px;
+                    color: #62646A;
+                    display: flex;
+                    align-items: center;
+                    font-weight: 500;
+                    }
+
+                    .hourIconOut{
+                        margin-left: 10px;
+                        margin-top: 20px;
+                        margin-right: 7px;
+                    }
                 }
             }
         }
@@ -101,32 +137,6 @@
             bottom: 30px;
             height: 0;
             border: 0.5px solid rgb(255, 255, 255);
-        }
-    
-        .detail {
-            position: relative;
-            bottom: 60px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-    
-            .price {
-                margin-top: 20px;
-    
-                h2 {
-                    color: #404145;
-                    font-size: 28px;
-                    font-weight: bold;
-                    text-align: end;
-                    line-height: 36px;
-                }
-    
-                sup {
-                    font-size: 24px;
-                    font-weight: 600;
-                }
-            }
         }
     }
 }

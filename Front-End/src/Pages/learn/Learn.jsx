@@ -11,7 +11,6 @@ const Learn = () => {
     <>
       <LearnFeatured />
       <LearnMenu />
-
       <div className="learnSection">
         <div className="learnSectionContainer">
           <div className="title1">
@@ -31,9 +30,7 @@ const Learn = () => {
           </div>
         </div>
       </div>
-
       <LearnSlider />
-
     </>
   )
 }

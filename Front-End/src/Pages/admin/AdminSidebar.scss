@@ -4,7 +4,6 @@
   z-index: 12 !important;
   animation: myopen 1s ease-out; /* Use forwards to keep the final state after animation */
   height: 669px !important;
-
 }
 @keyframes myopen {
   from {
@@ -82,18 +81,22 @@
     list-style-type: none;
   }
 
-  .sidebar-list-item {
-    padding: 20px;
-    font-size: 18px;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      cursor: pointer;
-    }
-
-    a {
-      text-decoration: none;
-      color: #ffffff;
+  .sidebarLinks{
+    text-decoration: none;
+    color: #ffffff;
+    .sidebar-list-item {
+      padding: 20px;
+      font-size: 18px;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+      }
+  
+      a {
+        text-decoration: none;
+        color: #ffffff;
+      }
     }
   }
 }

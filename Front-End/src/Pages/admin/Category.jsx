@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Category.scss'
 import { Table } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import $ from "jquery";
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -16,7 +16,6 @@ const Category = () => {
         err: null,
         reload: 0
     });
-
 
     useEffect(() => {
         setCategories({ ...categories, loading: true })
@@ -38,7 +37,7 @@ const Category = () => {
         const category_id = e.target.value;
         axios.delete("http://localhost:3000/api/categories/deleteCategory/:id", {
             params: {
-                id: category_id
+                id: category_id,
             }
         })
             .then(
@@ -78,8 +77,7 @@ const Category = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    categories.loading == false && categories.err == null && (
+                                {categories.loading == false && categories.err == null && (
                                         categories.results.map((category => (
                                             <tr>
                                                 <td>
@@ -94,7 +92,7 @@ const Category = () => {
                                                             Update
                                                         </button>
                                                     </Link>
-                                                    <button value={category.id} onClick={deleteCategory} className="button muted-button gl-delete-btn">
+                                                    <button value={category._id} onClick={deleteCategory} className="button muted-button gl-delete-btn">
                                                         Delete
                                                     </button>
                                                 </td>
@@ -114,7 +112,6 @@ const Category = () => {
                         )
                     }
                 </div>
-
             </section>
         </>
     )

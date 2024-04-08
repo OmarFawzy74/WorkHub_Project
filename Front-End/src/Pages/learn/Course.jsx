@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./Course.scss"
 import Slider from '../../Pages/gig/Slider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
 import { getAuthUser } from "../../localStorage/storage";
@@ -12,6 +12,8 @@ import { Container } from 'react-bootstrap';
 
 function Course() {
     const user = getAuthUser();
+    const { pathname } = useLocation()
+
 
     const [courseContainer, setCourseContainer] = useState({
         loading: false,
@@ -285,7 +287,13 @@ function Course() {
                             <span>Learn from hand-vetted instructors, experts in their field</span>
                         </div>
                     </div>
-                    <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>
+                    {user.role!== "admin" ? <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button> 
+                    :
+                    <div className='adminBtnsContainer'>
+                        <button className='updateBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Update</button>
+                        <button className='deleteBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Delete</button>
+                    </div>
+                    }
                 </div>
             </div>
         </div>

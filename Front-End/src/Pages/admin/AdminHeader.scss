@@ -7,7 +7,9 @@
     padding: 0 30px;
     box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
     background-color: #cecece;
-
+    position: sticky;
+    top: 0;
+    z-index: 9999;
     // .menu-icon {
     // //   display: none;
     // }

@@ -8,22 +8,24 @@ const LearnCard = ({ item }) => {
       <div className="learnCard">
         <img className='learnImg' src={item.img} alt="" />
         <div className="courseInfo">
-          <div className="courseName">
-          <div class="card-badge">course</div>
-            <span>{item.username}</span>
-          </div>
+          <div className="card-badge">course</div>
           <p>{item.desc}</p>
           <div className="star">
             <img src="./img/star.png" alt="" />
-            <span>{item.star}</span>
+            <span className="reviewNo">{item.star}</span>
+            <div className="courseDuration">
+              <img
+                className="hourIconOut"
+                src="/img/hour.png"
+              />
+              <span className="courseDurationNo">1.5 Hours</span>
+            </div>
           </div>
-        </div>
-        <hr />
-        <div className="detail">
-          <div className="price">
-            <h2>
-            <sup>$</sup>{item.price}
-            </h2>
+          <div className="professorName">
+            <span>{item.username}</span>
+          </div>
+          <div className="professorDesc">
+            <span>World's top marketer by Forbes, Entrepreneur and Inc Magazines; Writer for Time Magazine with best-selling e-courses.</span>
           </div>
         </div>
       </div>
