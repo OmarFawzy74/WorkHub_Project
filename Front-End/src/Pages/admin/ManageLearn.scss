@@ -1,8 +1,11 @@
-
+.sidebar-close-learn{
+    // margin-left: -200px; 
+    position: relative;
+    right: 250px;   
+}
 
 .manageLearnPage {
     margin-top: 20px;
-    margin-right: 50px;
     h1 {
         text-align: center;
         color: #0e9184;
@@ -15,7 +18,7 @@
 
     .courseContain-table {
         width: 90%;   // commented out since you mentioned it's not currently used
-        margin-left: 240px;
+        // margin-left: 240px;
 
         .addCourseButton {
             position: relative;

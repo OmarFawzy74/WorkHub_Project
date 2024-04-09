@@ -54,7 +54,7 @@ const ManageLearn = () => {
     }
 
     return (
-        <section className="manageLearnPage">
+        <section className={sidebarStatus() ? 'manageLearnPage' : 'manageLearnPage sidebar-close-learn'}>
             <div>
                 <h1>Course List</h1>
             </div>

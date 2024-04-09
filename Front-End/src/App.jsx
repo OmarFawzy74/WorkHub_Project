@@ -39,6 +39,8 @@ import UpdateCategory from './Pages/admin/UpdateCategory';
 import ManageLearn from './Pages/admin/ManageLearn';
 import AddCourse from './Pages/admin/AddCourse';
 import LearnMenu from './components/LearnMenu/LearnMenu';
+import ClientList from './Pages/admin/ClientList';
+ import AdminProfile from './Pages/admin/AdminProfile';
 
 
 let dashboardData;
@@ -66,7 +68,7 @@ export default function App() {
         if (pathname=="/manageLearn") {
           return "adminManageLearn"
         }
-        return "adminGigsContainer"
+        return sidebarStatus() ? 'adminGigsContainer' : 'adminGigsContainer sidebar-close-gigsContainer'
       }
     }
 
@@ -169,6 +171,14 @@ export default function App() {
         {
           path: "/addCourse",
           element: <AddCourse />
+        },
+        {
+          path: "/clientList",
+          element: <ClientList />
+        },
+        {
+          path: "/adminProfile",
+          element: <AdminProfile />
         },
       ]
     },

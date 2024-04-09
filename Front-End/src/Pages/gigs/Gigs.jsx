@@ -68,7 +68,6 @@ function Gigs() {
             </p>
           </>
           : null}
-
         <div className="menu">
           <div className="left">
             <span>Budget</span>

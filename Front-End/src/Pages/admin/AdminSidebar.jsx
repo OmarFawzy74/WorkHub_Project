@@ -5,9 +5,28 @@ BsListCheck, BsMenuButtonWideFill, BsFillGearFill
 }
     from 'react-icons/bs'
 import './AdminSidebar.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { getAuthUser, removeAuthUser } from '../../localStorage/storage';
+import axios from 'axios';
 
 const AdminSidebar = ({ openSidebarToggle, OpenSidebar }) => {
+    const user = getAuthUser()
+    const navigate = useNavigate();
+
+    const userLogout = (e) => {
+        e.preventDefault();
+        const userId = user._id;
+        console.log(userId);
+        axios.put("http://localhost:3000/api/auth/logout/" + userId)
+        .then((resp) => {
+          console.log(resp);
+          removeAuthUser();
+          navigate("/");
+        }).catch((errors) => {
+          console.log(errors);
+        })
+      }
+
     return (
         <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : "sidebar-closed"}>
             <div className='sidebar-title'>
@@ -18,6 +37,13 @@ const AdminSidebar = ({ openSidebarToggle, OpenSidebar }) => {
                 <img src="/img/close.png" className='icon close_icon' onClick={OpenSidebar} />
                 {/* <h2 className='icon close_icon' onClick={OpenSidebar}>X</h2> */}
             </div>
+            <div className='sidebarProfileImg'>
+                <Link to={"/adminProfile"}>
+                    <img src="/img/profile.jpg" className='iconSidebarProfile'/>
+                </Link>    
+                    <img src="/img/notifications.png" className='iconSidebarNotifications'/>
+                    <img src="/img/logout.png" onClick={userLogout} className='iconSidebarLogout'/>
+                </div>
             <ul className='sidebar-list'>
                 <Link className='sidebarLinks' to="/adminDashboard">
                     <li className='sidebar-list-item'>
@@ -37,7 +63,7 @@ const AdminSidebar = ({ openSidebarToggle, OpenSidebar }) => {
                     </li>
                 </Link>
 
-                <Link className='sidebarLinks' to="/">
+                <Link className='sidebarLinks' to="/clientList">
                     <li className='sidebar-list-item'>
                         <BsPeopleFill className='icon' /> Clients
                     </li>
