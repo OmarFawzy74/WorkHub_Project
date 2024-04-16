@@ -1,0 +1,82 @@
+.sidebar-close-client{
+    margin-left: 0px !important;
+    margin-top: 50px !important;
+}
+
+.ClientsListPage {
+    margin-top: 50px;
+    margin-left: 90px;
+    h1 {
+        text-align: center;
+        color: #0e9184;
+        font-size: 45px;
+        font-weight: bold;
+        line-height: 120px;
+        margin-bottom: 15px;
+        margin-left: 470px;     
+    }
+
+    .contain-table {
+        width: 85%;   // commented out since you mentioned it's not currently used
+        margin-left: 310px;
+    }
+
+    .clicked {
+        opacity: 2%;
+    }
+
+    .action {
+        text-align: center;
+    }
+
+    .gl-update-btn,
+    .gl-delete-btn,
+    .gl-block-btn,
+    .gl-profile-btn {
+        width: 30px;
+        height: 30px;
+        margin-left: 15px;
+
+        &.gl-update-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+
+        &.gl-delete-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+            }
+        }
+        &.gl-block-btn {
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+        &.gl-profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+
+            &:hover {
+                background-color: rgb(211, 210, 210);
+
+            }
+        }
+    }
+
+    // .desc {
+    //     // inline-size: 10px;
+    // }
+
+    .test {
+        text-align: center;
+    }
+
+}

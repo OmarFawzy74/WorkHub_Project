@@ -1,10 +1,11 @@
-.sidebar-responsive {
-  display: inline !important;
-  position: absolute;
-  z-index: 12 !important;
+.admin-sidebar-responsive {
+  // position: sticky;
+  // display: inline !important;
+  // z-index: 12 !important;
+  height: 1400px !important;
   animation: myopen 1s ease-out; /* Use forwards to keep the final state after animation */
-  height: 669px !important;
 }
+
 @keyframes myopen {
   from {
     width: 0px; /* Start from 200px width */
@@ -14,14 +15,15 @@
   }
 }
 #sidebar {
+  position: absolute;
   background-color: #05685E;
   overflow-x:hidden;
   // transition: ease-in 3s !important;
   // -webkit-transition: ease-in 3s !important;
 
   &.sidebar-closed {
-    height: 669px !important;
-    position: relative;
+    height: 90% !important;
+    // height: 669px !important;
     width: 0;
     padding: 0;
     overflow: hidden;

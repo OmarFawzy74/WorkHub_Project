@@ -39,6 +39,10 @@ import UpdateCategory from './Pages/admin/UpdateCategory';
 import ManageLearn from './Pages/admin/ManageLearn';
 import AddCourse from './Pages/admin/AddCourse';
 import LearnMenu from './components/LearnMenu/LearnMenu';
+import PersistentDrawerLeft from './Pages/admin/test';
+import MiniDrawer from './Pages/admin/test';
+import ClientList from './Pages/admin/ClientList';
+import AdminProfile from './Pages/admin/AdminProfile';
 
 
 let dashboardData;
@@ -48,12 +52,29 @@ export function sidebarStatus(){
 }
 
 export default function App() {
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(true);
+  // const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle)
-    dashboardData = openSidebarToggle;
-  }
+  // const OpenSidebar = () => {
+  //   setOpenSidebarToggle(!openSidebarToggle)
+  //   dashboardData = openSidebarToggle;
+  // }
+
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+    dashboardData = !open;
+    console.log(dashboardData);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+    dashboardData = !open;
+    console.log(dashboardData);
+  };
+
 
   const Admin = () => {
     const { pathname } = useLocation()
@@ -76,9 +97,10 @@ export default function App() {
         {
           (auth.role == 'admin') ? 
           <>
-          <AdminHeader OpenSidebar={OpenSidebar}/>
+          {/* <AdminHeader OpenSidebar={OpenSidebar}/> */}
           <div className={handleClasses(pathname)}>
-            <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+            {/* <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} /> */}
+            <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
             <Outlet />
           </div> 
           </>
@@ -107,6 +129,8 @@ export default function App() {
       // element.scrollBy(0, -element.scrollHeight);
     }
 
+    const { pathname } = useLocation()
+
     const auth = getAuthUser();
 
     return (
@@ -120,11 +144,18 @@ export default function App() {
         {/* {
           (auth.role == 'admin') ? <Outlet /> : <Navigate to={'/'} />
         } */}
+
+        {(pathname == "/test") ? <div onLoad={scrollHandler} id='appScroll' className="app">
+          <Outlet />
+        </div>  
+        :
         <div onLoad={scrollHandler} id='appScroll' className="app">
           <Navbar />
           <Outlet />
           <Footer />
         </div>
+        }
+        
       </>
     )
   }
@@ -169,6 +200,14 @@ export default function App() {
         {
           path: "/addCourse",
           element: <AddCourse />
+        },
+        {
+          path: "/clientList",
+          element: <ClientList />
+        },
+        {
+          path: "/adminProfile",
+          element: <AdminProfile />
         },
       ]
     },
@@ -253,6 +292,10 @@ export default function App() {
           path: "/profile",
           element: <Profile />
         },
+        {
+          path: "/test",
+          element: <MiniDrawer />
+        }
       ]
     },
   ]);

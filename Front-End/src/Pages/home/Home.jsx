@@ -14,7 +14,7 @@ const Home = () => {
       <Featured />
       <TrustedBy />
       <div className="homeCards">
-        <div className="header">
+        <div className="homeCardsHeader">
           <h1>Popular services</h1>
         </div>
         <div className="card1">

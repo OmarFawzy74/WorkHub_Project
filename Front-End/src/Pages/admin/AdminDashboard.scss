@@ -1,6 +1,10 @@
 .sidebar-close-dashboard {
-  margin-left: 380px !important;
-  margin-top: 30px;
+  margin-left: 100px !important;
+}
+
+.sidebar-open-dashboard {
+  margin-left: 0px !important;
+  // margin-right: 200px !important;
 }
 
 .main-container {
@@ -10,7 +14,7 @@
   color: rgba(0, 0, 0, 0.95);
   // margin-right: 100px; /* Default margin when sidebar is open */
   margin-left: 220px;
-  margin-top: 30px;
+  margin-top: 70px;
 
 
   .main-title {

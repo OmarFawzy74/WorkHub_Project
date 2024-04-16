@@ -4,8 +4,9 @@ import { gigs } from "../../data";
 import GigCard from "../../components/GigCard/GigCard";
 import axios from "axios";
 import swal from "sweetalert";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
+import { sidebarStatus } from "../../App";
 
 
 
@@ -53,9 +54,11 @@ function Gigs() {
     console.log(maxRef.current.value)
   }
 
+  const { pathname } = useLocation()
+
   return (
-    <div className="gigs">
-      <div className="gigsContainer">
+    <div className={pathname !== "/adminGigs" ? "gigs" : "adminGigs"}>
+      <div className={sidebarStatus() ? "gigsContainer" : "allGigsContainer"}>
         <div className="breadcrumbs">
           {user == undefined ? <Link className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'}</Link> : null}
         </div>
@@ -94,7 +97,7 @@ function Gigs() {
             )}
           </div>
         </div>
-        <div className="gigsCards">
+        <div className={sidebarStatus() ? "gigsCards": "allGigsCards"}>
           {services.loading == false &&
             services.err == null &&
             services.results &&
