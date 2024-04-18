@@ -125,6 +125,7 @@ const Navbar = () => {
                     <Link className='link' to="/add">Add New Service</Link>
                   </>
                 )}
+                <Link className='link' to="/requests">Requests</Link>
                 <Link className='link' to="/orders">Orders</Link>
                 <Link className='link' to="/messages">Messages</Link>
                 <Link className='link' onClick={userLogout}>Logout</Link>

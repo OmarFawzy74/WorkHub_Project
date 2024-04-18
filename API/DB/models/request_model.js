@@ -3,11 +3,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const requestSchema = new Schema({
-    freelancerId: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: "freelancer"
-    },
     clientId: {
         type: mongoose.Types.ObjectId,
         required: true,
@@ -20,8 +15,7 @@ const requestSchema = new Schema({
     },
     requestStatus: {
         type: String,
-        required: false,
-        default: "pending"
+        default: "Pending"
     },
 },{
     timestamps: true

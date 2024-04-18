@@ -237,6 +237,10 @@ export default function App() {
           element: <Orders />
         },
         {
+          path: "/requests",
+          element: <Orders />
+        },
+        {
           path: "/mygigs",
           element: <MyGigs />
         },
