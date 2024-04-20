@@ -43,6 +43,7 @@ import PersistentDrawerLeft from './Pages/admin/test';
 import MiniDrawer from './Pages/admin/test';
 import ClientList from './Pages/admin/ClientList';
 import AdminProfile from './Pages/admin/AdminProfile';
+import Tags from './components/skills/Testing';
 
 
 let dashboardData;

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import "./GigCard.scss";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const GigCard = ({ item }) => {
 
   const [openOption, setOpenOption] = useState(false)
 
+  const { pathname } = useLocation();
+
+
   return (
     <div className="gigCardContainer">
+        {pathname!=="/gigs" &&
         <div className="gigCardOptions" onClick={() => setOpenOption(!openOption)}>
           <img src="/img/more.png" />
           {openOption && <div className="exploreOptions">
@@ -16,13 +20,13 @@ const GigCard = ({ item }) => {
               <div className='link' to="/community">Update Service</div>
             </>
           </div>}
-        </div>
+        </div>}
         <Link to={"/gig/" + item._id} className="gigLink">
           <div className="gigCard">
             <img className="gigImg" src={item.serviceCover_url} />
             <div className="gigInfo">
               <div className="user">
-                <div class="card-badge">WorkHub service</div>
+                <div class={pathname!=="/gigs" ? "card-badge" : "card-badge-2nd"}>WorkHub service</div>
                 <img src={item.freelancerId.image_url} />
                 <span>{item.freelancerId.name}</span>
               </div>

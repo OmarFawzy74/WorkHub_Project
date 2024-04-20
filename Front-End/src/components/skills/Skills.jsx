@@ -4,110 +4,43 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import "./Skills.scss";
 import React, { useEffect, useState } from "react";
+import $ from "jquery";
+
 
 export default function Skills() {
 
-  const [skillsList, setSkillsList] = useState([]);
+  var [selectedOptions, setSelectedOptions] = useState();
+  const [inputValue, setInputValue] = useState('');
 
-  
-  // const handleSkillsChange = (e) => {
-  //   const { name, value } = e.target;
-  //   const updatedSkillsList = skillsList.map((item, index) => {
-  //     if (index === skillsList.length - 1) {
-  //       // If it's the last item in the array, update its value
-  //       return { ...item, [name]: value };
-  //     }
-  //     return item;
-  //   });
-  //   // Update the state with the modified array
-  //   setSkillsList(updatedSkillsList);
-  // };
-
-  const handleSkillsChange = (e) => {
-    const value = e.target.innerText;
-    
-    // Create a new object with the value and push it to the skillsList
-    setSkillsList([...skillsList, { skills: value }]);
-    console.log(e);
+  const handleOptionChange = (event, newValue) => {
+    setSelectedOptions(newValue);
+    selectedOptions = newValue;
+    console.log(newValue);
+    console.log(selectedOptions);
   };
 
-  useEffect(() => {
-    // Function to remove deleted values from the skills list
-    const removeDeletedValues = () => {
-      const previousSkills = new Set(skillsList.map(item => item.skills));
-      const currentSkills = new Set(top100Skills.filter(skill => skillsList.some(item => item.skills === skill)));
-      const deletedSkills = Array.from(previousSkills).filter(skill => !currentSkills.has(skill));
-      const updatedSkillsList = skillsList.filter(item => !deletedSkills.includes(item.skills));
-      setSkillsList(updatedSkillsList);
-    };
-
-    removeDeletedValues();
-  }, [skillsList]);
-  
-  const handleKeyDown = (e) => {
-    if (e.key === 'Backspace' && e.target.innerText === "") {
-      // If Backspace key is pressed and input field is empty, remove last skill
-      setSkillsList(skillsList.slice(0, -1));
-      console.log(skillsList);
-    }
-  };
-
-  // const handleSkillsChange = (e) => {
-  //   let index = skillsList.length + 1
-  //   const { name, value } = e.target;
-  //   var list = [...skillsList];
-  //   list[index][name] = value;
-  //   setSkillsList(list);
-  // };
-
-  // console.log(skillsList);
-
-
-  // let test = document.querySelector("path");
-
-  // console.log(test);
-
-
-  const handleSkillsArray = () => {
-
-    var array = [];
-
-    skillsList.forEach((item) => {
-      array.push(item.skills);
-    });
-
-    return array;
-
-  };
-  // console.log(handleSkillsArray());
-
-  // const handleSkillsRemove = (index) => {
-  //   const list = [...skillsList];
-  //   list.splice(index, 1);
-  //   setSkillsList(list);
-  // };
-
-  // const handleSkillsAdd = () => {
-  //   setSkillsList([...skillsList, { skills: "" }]);
-  // };
+  const submit = () => {
+    $(".MuiIconButton-sizeMedium").click();
+  }
 
   return (
-    <Stack spacing={5} sx={{ width: 500 }}
-    >
+    <Stack spacing={3} sx={{ width: 500 }}>
       <Autocomplete
-            onChange={(e) => handleSkillsChange(e)}
-            onKeyDown={(e) => handleKeyDown(e)}
+        className='skillsInput'
         multiple
-        id="skills-standard"
+        id="tags-outlined"
         options={top100Skills}
         getOptionLabel={(option) => option}
+        value={selectedOptions}
+        onChange={handleOptionChange}
+        // onInputChange={handleInputChange}
+        // onClose={handleCloseAutocomplete}
+        // filterSelectedOptions
         renderInput={(params) => (
           <TextField
             {...params}
-            variant="standard"
-            className="no-underline"
-            // label="Skills"
-            placeholder="Add skills"
+            label=""
+            placeholder="Add Skill"
           />
         )}
       />

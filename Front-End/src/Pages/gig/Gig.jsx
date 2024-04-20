@@ -11,8 +11,6 @@ import { getAuthUser } from "../../localStorage/storage";
 function Gig() {
   const user = getAuthUser();
 
-
-
   const [service, setService] = useState({
     loading: true,
     results: null,
@@ -71,6 +69,26 @@ function Gig() {
       .catch((errors) => {
         console.log(errors);
         navigate("/messages");
+      });
+  }
+
+  const request = () => {
+    axios
+    .post("http://localhost:3000/api/requests/addRequest", {
+      clientId: user._id,
+      serviceId: id
+    })
+      .then((resp) => {
+        console.log(resp);
+        swal(
+          resp.data.msg,
+          "",
+          "success"
+        );
+      })
+      .catch((errors) => {
+        console.log(errors);
+        swal(errors.response.data.msg, "", "error");
       });
   }
 
@@ -307,7 +325,7 @@ function Gig() {
               </div>
             ))}
           </div>
-          <button>Request Order</button>
+          <button onClick={request}>Request Order</button>
         </div>
         </>
       }

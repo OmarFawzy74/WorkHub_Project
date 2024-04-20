@@ -3,23 +3,42 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import "./Language.scss";
+import $ from "jquery";
+import { useState } from 'react';
+
 
 export default function Languages() {
+  var [selectedOptions, setSelectedOptions] = useState();
+  const [inputValue, setInputValue] = useState('');
+
+  const handleOptionChange = (event, newValue) => {
+    setSelectedOptions(newValue);
+    selectedOptions = newValue;
+    console.log(newValue);
+    console.log(selectedOptions);
+  };
+
+  const submit = () => {
+    $(".MuiIconButton-sizeMedium").click();
+  }
 
   return (
     <Stack spacing={3} sx={{ width: 500 }}>
       <Autocomplete
         multiple
-        id="languages-standard"
+        id="tags-outlined"
         options={top100Languages}
         getOptionLabel={(option) => option}
+        value={selectedOptions}
+        onChange={handleOptionChange}
+        // onInputChange={handleInputChange}
+        // onClose={handleCloseAutocomplete}
+        // filterSelectedOptions
         renderInput={(params) => (
           <TextField
             {...params}
-            variant="standard"
-            className="no-underline"
-            // label="Languages"
-            placeholder="Add languages"
+            label=""
+            placeholder="Add Language"
           />
         )}
       />

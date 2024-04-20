@@ -1,8 +1,10 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Orders.scss";
 import Button from '@mui/material/Button';
-import { getAuthUser } from "../../localStorage/storage";
+import { getAuthUser, setAuthUser } from "../../localStorage/storage";
+import axios from "axios";
+import swal from "sweetalert";
 
 const Orders = () => {
   const currentUser = {
@@ -14,6 +16,58 @@ const Orders = () => {
   const { pathname } = useLocation();
 
   const user = getAuthUser();
+
+  const navigate = useNavigate();
+
+  const approve = () => {
+    axios
+    .post("http://localhost:3000/api/auth/signup/" + user.role, {
+
+    })
+    .then((resp) => {
+      swal(
+        "Congratulations you have Joined WorkHub Successfully",
+        "",
+        "success"
+      );
+      console.log(resp.data.message);
+      console.log(resp.data.userData);
+      setAuthUser(resp.data.userData);
+      navigate("/gigs");
+    })
+    .catch((errors) => {
+      swal(errors.response.data.message, "", "error");
+      console.log(errors);
+      console.log(errors.response.data.message);
+    });
+  }
+
+
+  const [requests, setRequests] = useState({
+    loading: false,
+    results: null,
+    err: null,
+    reload: 0,
+  });
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/requests/getAllRequests")
+      .then((resp) => {
+        console.log(resp);
+        // setServices({ results: resp.data.services, loading: false, err: null });
+        // console.log(resp.data.services);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+      });
+  }, [requests.reload]);
+
+  const decline = () => {
+    
+  }
 
   return (
     <div className="orders">
@@ -27,9 +81,9 @@ const Orders = () => {
             <th>Title</th>
             <th>Price</th>
             {<th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>}
-            <th>Contact</th>
+            {pathname=="/orders" && <th>Contact</th>}
             {pathname=="/requests" && user.role=="client" && <th>Status</th>}
-            {pathname=="/requests" &&<th>Action</th>}
+            {pathname=="/requests" && <th>Action</th>}
           </tr>
           <tr>
             <td>
@@ -42,13 +96,20 @@ const Orders = () => {
             <td>Stunning concept art</td>
             <td>59.<sup>99</sup></td>
             <td>Maria Anders</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
+            { pathname=="/orders" &&
+              <td>
+                <img className="message" src="./img/message.png" alt="" />
+              </td>
+            }
             {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
-            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
+            {pathname=="/requests" && 
+              <td>
+                <Button variant="contained" className="approveBtn" onClick={approve}>Approve</Button> 
+                <Button variant="contained" className="delcineBtn" onClick={decline}>Decline</Button>
+              </td>
+            }
           </tr>
-          <tr>
+          {/* <tr>
             <td>
               <img
                 className="image"
@@ -126,7 +187,7 @@ const Orders = () => {
             <td>
               <img className="message" src="./img/message.png" alt="" />
             </td>
-          </tr>
+          </tr> */}
         </table>
       </div>
     </div>

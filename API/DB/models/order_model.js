@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-    orderImage_url: {
-        type: String,
-        required: false,
-    },
     requestId: {
         type: mongoose.Types.ObjectId,
         required: true,
@@ -26,14 +22,6 @@ const orderSchema = new Schema({
         type:  mongoose.Types.ObjectId,
         required: true,
         ref: "service"
-    },
-    orderTitle: {
-        type: String,
-        required: true,
-    },
-    orderPrice: {
-        type: Number,
-        required: true
     }
 },{
     timestamps: true
