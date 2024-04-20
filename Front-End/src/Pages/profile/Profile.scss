@@ -23,7 +23,6 @@
         }
 
         .left {
-            margin-bottom: 40px;
             gap: 20px;
 
             .profileUser {
@@ -235,8 +234,8 @@
 
                 .showMore{
                     position: relative;
-                    bottom: 235px;
-                    left: 610px;
+                    bottom: 45px;
+                    left: 590px;
                     color: black;
                 }
 
@@ -249,7 +248,9 @@
                   .skillsDesc {
                     display: grid;
                     grid-template-columns: auto auto auto auto auto;
-                    gap: 15px;
+                    gap: 10px;
+                    justify-content: left;
+                    // column-gap: 5px !important;
                     list-style-type: none;
                     font-weight: bold;
                     color: #000000;
@@ -269,6 +270,11 @@
 
                     li:hover{
                         background-color: rgb(233, 233, 233);
+                    }
+
+                    .style {
+                        height: 50px;
+                        width: 120px;
                     }
                 }
             }

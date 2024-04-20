@@ -46,7 +46,6 @@ import MyCourses from './Pages/myCourses/MyCourses';
 import FreelancerList from './Pages/admin/FreelancerList';
 import OrdersList from './Pages/admin/OrdersList';
 
-
 let dashboardData;
 
 export function sidebarStatus(){

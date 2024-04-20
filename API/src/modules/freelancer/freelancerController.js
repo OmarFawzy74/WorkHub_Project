@@ -1,4 +1,5 @@
 
+import mongoose from "mongoose";
 import FreelancerModel from "../../../DB/models/freelancer_model.js";
 import { validatePassword } from '../../middleware/val.middleware.js';
 import bcrypt from 'bcrypt'
@@ -17,9 +18,28 @@ export const getAllFreelancers = async (req,res) => {
   }
 }
 
-// Get A Freelancer
-// Freelancer Photo
-// medicine.image_url = "http://" + req.hostname + ":4000/" + medicine.image_url;
+// Get FreelancerById
+export const getFreelancerById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).send({ success: false, message: "Invalid id" });
+  }
+
+  const freelancer = await FreelancerModel.find({ _id: id });
+
+  if (freelancer) {
+      return res.status(200).json(freelancer);
+  }
+
+  res.status(404).json({msg: "Freelancer not found"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg: "Internal Server Error"});
+  }
+  
+};
 
 // Delete Freelancer
 export const deleteFreelancer = async (req, res) => {
@@ -127,32 +147,3 @@ export const updateFreelancerPassword = async (req, res) => {
       res.status(500).json({ msg: "Somthing went wrong!" });
   }
 }
-
-// // Upload Freelancer Image
-// export const uploadImage = async (req, res) => {
-//   try {
-//     if (!req.files) {
-//       return res.status(404).send({ success: false, message: "images are required" });
-//     }
-
-//     const id = req.params.id;
-
-//     if (id == undefined) {
-//         return res.status(404).send({ success: false, message: "id is required" });
-//     }
-
-//     const cover_url = req.file.filename;
-
-//     const filter = { _id: id };
-//     const update = { $set: { serviceCover_url: cover_url } };
-
-//     await Service.updateOne(filter, update);
-
-
-//     res.status(200).json({ msg: "image uploaded successfuly" });
-
-//   } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ msg: "Somthing went wrong!" });
-//   }
-// }

@@ -2,15 +2,17 @@ import "./Profile.scss";
 import React, { useEffect, useRef, useState } from "react";
 import GigCard from '../../components/GigCard/GigCard';
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
+import Alert from '@mui/material/Alert';
+
 
 
 const Profile = () => {
 
     const user = getAuthUser();
 
-    let { category } = useParams();
+    let { id } = useParams();
 
     const [services, setServices] = useState({
         loading: false,
@@ -20,26 +22,68 @@ const Profile = () => {
     });
 
 
+
     useEffect(() => {
+        setServices({loading: true});
+
         axios
-            .get("http://localhost:3000/api/services/getAllServices")
+            .get("http://localhost:3000/api/services/getFreelancerServices/" + user._id)
             .then((resp) => {
                 setServices({ results: resp.data.services, loading: false, err: null });
                 console.log(resp.data.services);
             })
             .catch((err) => {
+                setServices({ loading: false, err: err.response.data.msg });
                 console.log(err);
                 // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
             });
     }, [services.reload]);
 
-    const [showMore, setShowMore] = useState(false);
+
+
+
+
+
+    // useEffect(() => {
+    //     axios
+    //         .get("http://localhost:3000/api/freelancers/getFreelancerById/" + user._id)
+    //         .then((resp) => {
+    //             // setServices({ results: resp.data.services, loading: false, err: null });
+    //             console.log(resp);
+    //             console.log(resp.data);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+    //         });
+    // });
 
 
     const [sort, setSort] = useState("sales");
     const [open, setOpen] = useState(false);
+    var skills;
+
     const minRef = useRef();
     const maxRef = useRef();
+
+    const processSkills = () => {
+        // console.log(user.skills);
+        const data = user.skills;
+        const processedData = data[0].split(",");
+        // console.log(processedData);
+        skills = processedData;
+        // console.log(skills.slice(0,1));
+    }
+
+    processSkills();
+
+    const [skillsArrayLength, setSkillsArrayLength] = useState(5);
+
+    const showMoreSkills = () => {
+        setSkillsArrayLength(skills.length)
+        // console.log(skillsArrayLength);
+    }
+
 
     const reSort = (type) => {
         setSort(type);
@@ -51,6 +95,30 @@ const Profile = () => {
         console.log(maxRef.current.value)
     }
 
+    const navigate = useNavigate();
+
+    const message = (e) => {
+        // console.log(e.target.value);
+        const freelancerId = e.target.value;
+        
+        axios
+        .post("http://localhost:3000/api/conversations/addConversation", {
+          freelancer: freelancerId,
+          client: user._id
+        })
+          .then((resp) => {
+            const conversationId = resp.data.newConversationData[0]._id;
+            // console.log(resp.data.newConversationData[0]._id);
+            navigate("/message/" + conversationId);
+          })
+          .catch((errors) => {
+            console.log(errors);
+            navigate("/messages");
+          });
+      }
+
+      const { pathname } = useLocation();
+
 
     return (
         <div className='profile'>
@@ -59,22 +127,22 @@ const Profile = () => {
                 <div className="left">
                     <div className="profileUser">
                         <img
-                            src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                            src={user.image_url}
                             alt=""
                         />
                         <div className="info">
-                            <span className='myName'>By Jon Youshaei</span>
+                            <span className='myName'>{user.name}</span>
                             <div className="userInfo">
                                 <img
                                     className="locationIcon"
                                     src="/img/location.png"
                                 />
-                                <span>Egypt</span>
+                                <span>{user.country}</span>
                                 <img
                                     className="languageIcon"
                                     src="/img/profileLanguage.png"
                                 />
-                                <span>English, French, Spanish</span>
+                                <span>{user.languages}</span>
                             </div>
                         </div>
                         <div className="rightContainer">
@@ -85,15 +153,16 @@ const Profile = () => {
                                 <div className="rightFeatures">
                                     <div className="rightProfileUser">
                                         <img
-                                            src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                                            src={user.image_url}
                                             alt=""
                                         />
                                         <div className="rightInfo">
-                                            <span className='rightMyName'>By Jon Youshaei</span>
+                                            <span className='rightMyName'>{user.name}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button><img src="/img/send.png" />Contact Me</button>
+                                {user.role=="client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                {pathname=="/profile" && user.role=="freelancer" && <button value={id}><img src="/img/send.png" />Update</button>}
                             </div>
                         </div>
 
@@ -102,7 +171,7 @@ const Profile = () => {
                         <h2 className='aboutUserHeader'>About me</h2>
                         <div className='aboutUserDesc'>
                             <p>
-                                Hi there, I'm a Proficient Full Stack Web Developer, Certified WordPress e-commerce website with over 5 years of experience delivering perfection and quality. Having successfully completed more than 400 websites I've specialized in building cutting-edge, unique, attractive websites for a variety of businesses, including e-commerce stores or WooCommerce with IDX MLS integration, Amazone promotion, Affiliate, Medical, Real Estate, Portfolio, Cleaning, Law Firm, and Petcare websites. Consequently, if you want to provide your company a stunning web presence, Let's connect and make it happen!
+                                {user.desc}
                             </p>
                         </div>
                     </div>
@@ -110,29 +179,11 @@ const Profile = () => {
                     <div className='skills'>
                         <h2 className='skillsHeader'>Skills</h2>
                         <ul className='skillsDesc'>
-                           <li>React</li>
-                           <li>Node</li>
-                           <li>WordPress</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
-                           <li>Python</li>
+                        {skills.slice(0,skillsArrayLength).map((skill) => (
+                            <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                        ))}
                         </ul>
-                        <a href="" className="showMore">+10</a>
+                        {skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{skills.length - 5}</Link>}
                     </div>
                 </div>
 
@@ -148,6 +199,12 @@ const Profile = () => {
                             ))}
                     </div>
                 </div>
+
+                {services.err != null && services.loading == false && services.results == null &&
+                    <div>
+                        <Alert severity="error">{services.err}</Alert>
+                    </div>
+                }
             </div>
         </div>
     )

@@ -157,18 +157,36 @@ export const getServiceById = async (req, res, next) => {
 
 // Get Freelancer Services
 export const getFreelancerServices = async (req, res, next) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send({ success: false, message: "Invalid id" });
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(404).send({ success: false, message: "Invalid id" });
+        }
+
+        const services = await Service.find({ freelancerId: id }).populate("freelancerId").populate("serviceCategoryId");
+
+        const modifiedServices = services.map((service) => {
+            const modifiedService = { ...service._doc }; // Create a copy of the service object
+            modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
+                return "http://" + req.hostname + ":3000/" + image_url;
+            });
+            return modifiedService;
+        });
+
+        if(modifiedServices[0]) {
+            return res.status(200).json({ success: true, message: "here u r", services: modifiedServices });
+        }
+
+        res.status(404).json({ msg: "No Services Found" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
-
-    const service = await Service.find({ freelancer: id });
-
-    if (service) {
-        return res.status(200).json(service);
-    }
-    next(new Error("Service not found", { cause: 404 }));
 };
 
 // Upload Cover Image

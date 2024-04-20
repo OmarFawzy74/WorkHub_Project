@@ -11,12 +11,10 @@ const LearnMenu = () => {
 
     const { pathname } = useLocation()
 
-    const user = getAuthUser();
-
     return (
         <div className='learnMenuContainer'>
             {
-                (user.role !== "admin") &&
+                (pathname == "/learn") &&
                 <div className='learnMenu'>
                     <Link className='learnMenuLink' to="/">
                         Graphics & Design

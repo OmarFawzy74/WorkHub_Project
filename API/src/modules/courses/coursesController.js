@@ -17,6 +17,18 @@ export const getAllCourses = async (req, res) => {
     res.status(200).json({ success: true, message: allCourses });
 }
 
+// Get Courses By Freelancer ID Or Client ID
+export const getEnrolledCourses = async (req, res) => {
+    const filter = {freelancerId: req.params.id};
+    const enrolledCourses = await course.find(filter);
+
+    if (allCourses.length == 0) {
+        return next(new Error("Courses Not found :("))
+    }
+
+    res.status(200).json({ success: true, message: allCourses });
+}
+
 // Add courses
 export const addCourse = async (req, res) => {
 

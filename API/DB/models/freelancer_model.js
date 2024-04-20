@@ -39,6 +39,14 @@ const freelancerSchema = new Schema ({
         type: Date,
         required: false
     },
+    languages: {
+        type: [String],
+        required: false
+    },
+    skills: {
+        type: [String],
+        required: false
+    },
     role: {
         type: String,
         default: 'freelancer'

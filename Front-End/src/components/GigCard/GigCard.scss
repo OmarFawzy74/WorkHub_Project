@@ -90,7 +90,25 @@
 
                     .card-badge {
                         position: relative;
-                        left: 130px;
+                        left: 140px;
+                        background: rgb(18, 35, 73);
+                        border: 0px solid rgb(18, 35, 73);
+                        box-sizing: border-box;
+                        border-radius: 17px;
+                        text-align: center;
+                        letter-spacing: 0.5px;
+                        text-transform: uppercase;
+                        color: #ffffff;
+                        padding: 0px 8px;
+                        font-weight: bold;
+                        font-size: 10px;
+                        line-height: 17px;
+                        padding-top: 2px;
+                    }
+
+                    .card-badge-2nd {
+                        position: relative;
+                        left: 160px;
                         background: rgb(18, 35, 73);
                         border: 0px solid rgb(18, 35, 73);
                         box-sizing: border-box;

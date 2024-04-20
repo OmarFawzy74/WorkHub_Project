@@ -9,9 +9,9 @@ import auth from '../../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-router.get("/getAllRequests", auth(endPoints.admin), asyncHandler(getAllRequests));
-router.post("/addRequest", validation(requestSchema), auth(endPoints.admin), asyncHandler(addRequest));
-router.put("/updateRequest/:id", validation(updateRequestSchema), validateParams(), auth(endPoints.admin), asyncHandler(updateRequestStatus));
-router.delete("/deleteRequest/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteRequest));
+router.get("/getAllRequests", asyncHandler(getAllRequests)); // auth(endPoints.admin)
+router.post("/addRequest", validation(requestSchema), asyncHandler(addRequest)); //, auth(endPoints.admin)
+router.put("/updateRequest/:id", validation(updateRequestSchema), validateParams(), asyncHandler(updateRequestStatus)); // auth(endPoints.admin),
+router.delete("/deleteRequest/:id", validateParams(), asyncHandler(deleteRequest)); // auth(endPoints.admin),
 
 export default router;
