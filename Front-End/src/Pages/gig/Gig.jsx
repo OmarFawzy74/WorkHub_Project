@@ -307,7 +307,7 @@ function Gig() {
               </div>
             ))}
           </div>
-          <button>Continue</button>
+          <button>Request Order</button>
         </div>
         </>
       }

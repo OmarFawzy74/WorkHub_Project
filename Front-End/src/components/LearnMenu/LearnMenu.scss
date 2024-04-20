@@ -22,20 +22,20 @@
         padding-bottom: 8px;
     }
 
-    .learnCards {
-        // width: 1500px;
-        margin-left: 20px;
+    .allLearnCards {
+        width: 1500px;
+        // margin-left: 50px;
         display: grid;
         grid-template-columns: auto auto auto auto;
         padding: 50px 100px;
         row-gap: 70px;
       }
 
-      .adminLearnCards{
+      .learnCards {
         width: 1200px !important;
-        margin-left: 15px;
+        margin-left: 280px;
         display: grid;
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: auto auto auto ;
         padding: 50px 100px;
         column-gap: 60px;
         row-gap: 90px;

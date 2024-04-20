@@ -1,11 +1,10 @@
-.sidebar-close-client{
+.sidebar-close-frelancer{
     margin-left: 0px !important;
     margin-top: 50px !important;
 }
 
-.ClientsListPage {
+.FreelancerListPage {
     margin-top: 50px;
-    margin-left: 90px;
     
     h1 {
         text-align: center;
@@ -14,8 +13,8 @@
         font-weight: bold;
         line-height: 120px;
         margin-bottom: 15px;
-        margin-left: 470px;    
-        margin-top: 50px; 
+        margin-left: 470px; 
+        margin-top: 50px;     
     }
 
     .contain-table {
@@ -26,6 +25,7 @@
             text-align: center;
         }
 
+        
         tr{
             text-align: center;
         }
@@ -85,8 +85,8 @@
     //     // inline-size: 10px;
     // }
 
-    .test {
-        text-align: center;
-    }
+    // .test {
+    //     // text-align: center;
+    // }
 
 }

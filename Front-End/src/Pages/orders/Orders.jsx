@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Orders.scss";
+import Button from '@mui/material/Button';
+import { getAuthUser } from "../../localStorage/storage";
 
 const Orders = () => {
   const currentUser = {
@@ -9,11 +11,15 @@ const Orders = () => {
     isSeller: false,
   };
 
+  const { pathname } = useLocation();
+
+  const user = getAuthUser();
+
   return (
     <div className="orders">
       <div className="ordersContainer">
         <div className="title">
-          <h1>Orders</h1>
+          <h1>{pathname=="/requests" ? "Requests" : "Orders"}</h1>
         </div>
         <table>
           <tr>
@@ -21,7 +27,9 @@ const Orders = () => {
             <th>Title</th>
             <th>Price</th>
             {<th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>}
-            <th>Contact</th>
+            {pathname=="/orders" && <th>Contact</th>}
+            {pathname=="/requests" && user.role=="client" && <th>Status</th>}
+            {pathname=="/requests" &&<th>Action</th>}
           </tr>
           <tr>
             <td>
@@ -34,11 +42,13 @@ const Orders = () => {
             <td>Stunning concept art</td>
             <td>59.<sup>99</sup></td>
             <td>Maria Anders</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
+            {pathname=="/orders" && <td><img className="message" src="./img/message.png" alt="" /></td>}
+            {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
+            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
           </tr>
-          <tr>
+
+          
+          {/* <tr>
             <td>
               <img
                 className="image"
@@ -52,8 +62,11 @@ const Orders = () => {
             <td>
               <img className="message" src="./img/message.png" alt="" />
             </td>
-          </tr>
-          <tr>
+            {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
+
+            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
+          </tr> */}
+          {/* <tr>
             <td>
               <img
                 className="image"
@@ -67,6 +80,7 @@ const Orders = () => {
             <td>
               <img className="message" src="./img/message.png" alt="" />
             </td>
+            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
           </tr>
           <tr>
             <td>
@@ -112,7 +126,7 @@ const Orders = () => {
             <td>
               <img className="message" src="./img/message.png" alt="" />
             </td>
-          </tr>
+          </tr> */}
         </table>
       </div>
     </div>

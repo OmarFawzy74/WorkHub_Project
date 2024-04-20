@@ -8,7 +8,6 @@ import Add from './Pages/add/Add';
 import Orders from './Pages/orders/Orders';
 import Messages from './Pages/messages/Messages';
 import Message from './Pages/message/Message';
-import MyGigs from './Pages/myGigs/MyGigs';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -39,8 +38,13 @@ import UpdateCategory from './Pages/admin/UpdateCategory';
 import ManageLearn from './Pages/admin/ManageLearn';
 import AddCourse from './Pages/admin/AddCourse';
 import LearnMenu from './components/LearnMenu/LearnMenu';
+import PersistentDrawerLeft from './Pages/admin/test';
+import MiniDrawer from './Pages/admin/test';
 import ClientList from './Pages/admin/ClientList';
- import AdminProfile from './Pages/admin/AdminProfile';
+import AdminProfile from './Pages/admin/AdminProfile';
+import MyCourses from './Pages/myCourses/MyCourses';
+import FreelancerList from './Pages/admin/FreelancerList';
+import OrdersList from './Pages/admin/OrdersList';
 
 
 let dashboardData;
@@ -50,12 +54,29 @@ export function sidebarStatus(){
 }
 
 export default function App() {
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(true);
+  // const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle)
-    dashboardData = openSidebarToggle;
-  }
+  // const OpenSidebar = () => {
+  //   setOpenSidebarToggle(!openSidebarToggle)
+  //   dashboardData = openSidebarToggle;
+  // }
+
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+    dashboardData = !open;
+    console.log(dashboardData);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+    dashboardData = !open;
+    console.log(dashboardData);
+  };
+
 
   const Admin = () => {
     const { pathname } = useLocation()
@@ -78,9 +99,10 @@ export default function App() {
         {
           (auth.role == 'admin') ? 
           <>
-          <AdminHeader OpenSidebar={OpenSidebar}/>
+          {/* <AdminHeader OpenSidebar={OpenSidebar}/> */}
           <div className={handleClasses(pathname)}>
-            <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+            {/* <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} /> */}
+            <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
             <Outlet />
           </div> 
           </>
@@ -109,6 +131,8 @@ export default function App() {
       // element.scrollBy(0, -element.scrollHeight);
     }
 
+    const { pathname } = useLocation()
+
     const auth = getAuthUser();
 
     return (
@@ -122,11 +146,18 @@ export default function App() {
         {/* {
           (auth.role == 'admin') ? <Outlet /> : <Navigate to={'/'} />
         } */}
+
+        {(pathname == "/test") ? <div onLoad={scrollHandler} id='appScroll' className="app">
+          <Outlet />
+        </div>  
+        :
         <div onLoad={scrollHandler} id='appScroll' className="app">
           <Navbar />
           <Outlet />
           <Footer />
         </div>
+        }
+        
       </>
     )
   }
@@ -177,8 +208,16 @@ export default function App() {
           element: <ClientList />
         },
         {
+          path: "/freelancerList",
+          element: <FreelancerList />
+        },
+        {
           path: "/adminProfile",
           element: <AdminProfile />
+        },
+        {
+          path: "/ordersList",
+          element: <OrdersList />
         },
       ]
     },
@@ -208,8 +247,12 @@ export default function App() {
           element: <Orders />
         },
         {
-          path: "/mygigs",
-          element: <MyGigs />
+          path: "/requests",
+          element: <Orders />
+        },
+        {
+          path: "/mycourses",
+          element: <MyCourses />
         },
         {
           path: "/add",
@@ -263,6 +306,10 @@ export default function App() {
           path: "/profile",
           element: <Profile />
         },
+        {
+          path: "/test",
+          element: <MiniDrawer />
+        }
       ]
     },
   ]);

@@ -27,9 +27,21 @@
         tr {
           height: 50px;
           th {
-            text-align: left;
+            text-align: center;
           }
           td {
+            text-align: center;
+
+            .approveBtn {
+              background-color: #1dbf73;
+              text-transform: none;
+            }
+
+            .delcineBtn {
+              background-color: #dd3232;
+              text-transform: none;
+              margin-left: 10px;
+            }
             
             sup{
               font-size: 12px;

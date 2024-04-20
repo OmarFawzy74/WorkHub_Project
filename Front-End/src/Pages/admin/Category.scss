@@ -1,9 +1,15 @@
 .sidebar-close-category{
-    margin-left: 150px;
+    position: relative;
+    right: 90px;
+}
+
+.sidebar-open-category {
+    position: relative;
+    right: 160px;
 }
 
 .CategoryListPage {
-    margin-top: 20px;
+    margin-top: 70px;
     h1 {
         text-align: center;
         color: #0e9184;

@@ -1,6 +1,10 @@
 .sidebar-close-dashboard {
   margin-left: 100px !important;
-  margin-top: 30px;
+}
+
+.sidebar-open-dashboard {
+  margin-left: 0px !important;
+  // margin-right: 200px !important;
 }
 
 .main-container {
@@ -10,16 +14,17 @@
   color: rgba(0, 0, 0, 0.95);
   // margin-right: 100px; /* Default margin when sidebar is open */
   margin-left: 220px;
-  margin-top: 30px;
+  margin-top: 70px;
 
-
-  .main-title {
-    display: flex;
-    justify-content: space-between;
-
-    .dashboardTitle {
-      color: #2d8c80;
-    }
+  .dashboardTitle {
+    text-align: center;
+    color: #0e9184;
+    font-size: 45px;
+    font-weight: bold;
+    line-height: 120px;
+    margin-bottom: 20px;
+    // margin-left: 470px;    
+    // margin-top: 50px; 
   }
 
   .main-cards {
@@ -56,7 +61,7 @@
         align-items: center;
         justify-content: space-between;
 
-        > .card_icon {
+        >.card_icon {
           font-size: 25px;
         }
       }

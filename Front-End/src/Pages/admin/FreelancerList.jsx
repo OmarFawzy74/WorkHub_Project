@@ -1,4 +1,4 @@
-import './ClientList.scss';
+import './FreelancerList.scss';
 import React, { useEffect, useState } from 'react'
 import { Table } from 'reactstrap';
 import { Link, useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 import Alert from 'react-bootstrap/Alert';
 import { sidebarStatus } from "../../App";
 
-const ClientList = () => {
+const FreelancerList = () => {
 
   const [categories, setCategories] = useState({
     loading: true,
@@ -51,9 +51,9 @@ const ClientList = () => {
   }
   return (
     <>
-      <section className={sidebarStatus() ? 'ClientsListPage' : 'ClientsListPage sidebar-close-client'}>
+      <section className={sidebarStatus() ? 'FreelancerListPage' : 'FreelancerListPage sidebar-close-freelancer'}>
         <div>
-          <h1>Clients List</h1>
+          <h1>Freelancers List</h1>
         </div>
         <div className='contain-table'>
           {/* {categories.loading == false && categories.err == null && ( */}
@@ -81,9 +81,11 @@ const ClientList = () => {
               {/* {categories.loading == false && categories.err == null && ( */}
                 {/* categories.results.map((category => ( */}
                   <tr>
-                    <td>
-                      <img src='./img/profile.jpg' className="button muted-button gl-profile-btn"/>
-                    </td>
+                    <Link to="/profile">
+                        <td>
+                        <img src='./img/profile.jpg' className="button muted-button gl-profile-btn"/>
+                        </td>
+                    </Link>
                     <td className="desc">
                       {/* {category.categoryDesc} */} mana
                     </td>
@@ -126,4 +128,4 @@ const clicked = () => {
   }, 0.05);
 }
 
-export default ClientList;
+export default FreelancerList;

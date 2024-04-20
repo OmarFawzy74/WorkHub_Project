@@ -28,7 +28,7 @@ const AdminSidebar = ({ openSidebarToggle, OpenSidebar }) => {
       }
 
     return (
-        <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : "sidebar-closed"}>
+        <aside id="sidebar" className={openSidebarToggle ? "admin-sidebar-responsive" : "sidebar-closed"}>
             <div className='sidebar-title'>
                 <div className='sidebar-brand'>
                     <img src="/img/Logo.png" className='icon_header'/>

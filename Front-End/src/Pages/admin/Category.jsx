@@ -51,7 +51,7 @@ const Category = () => {
     }
     return (
         <>
-            <section className={sidebarStatus() ? 'CategoryListPage' : 'CategoryListPage sidebar-close-category'}>
+            <section className={sidebarStatus() ? 'CategoryListPage sidebar-open-category' : 'CategoryListPage sidebar-close-category'}>
                 <div>
                     <h1>Category List</h1>
                 </div>

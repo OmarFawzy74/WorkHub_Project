@@ -7,7 +7,8 @@ import { useLocation } from 'react-router-dom';
  import 
  { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
  from 'recharts';
-import {sidebarStatus} from "../../App";
+import { sidebarStatus } from '../../App';
+// import { sidebarStatus } from './test';
 
 function AdminDashboard() {
 
@@ -56,7 +57,7 @@ function AdminDashboard() {
         },
       ];
   return (
-    <main className={sidebarStatus() ? 'main-container' : 'main-container sidebar-close-dashboard'}>
+    <main className={sidebarStatus() ? 'main-container sidebar-open-dashboard' : 'main-container sidebar-close-dashboard'}>
         <div>
             <h3 className='dashboardTitle'>DASHBOARD</h3>
         </div>

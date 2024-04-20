@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
+import Skills from "../../components/skills/Skills";
+import Languages from "../../components/languages/Languages";
+import { getAuthUser } from "../../localStorage/storage";
 
 
 function UpdateProfile() {
+
+    const users = getAuthUser();
+
     const [user, setUser] = useState({
         err: null,
         loading: false,
@@ -41,7 +47,6 @@ function UpdateProfile() {
         formData.append("image", image.current.files[0]);
         formData.append("phoneNumber", user.phoneNumber);
         formData.append("desc", user.desc);
-
 
         axios
             .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
@@ -178,38 +183,48 @@ function UpdateProfile() {
                                 <option value="France">France</option>
                             </select>
 
-                            {/* {user?.role == "freelancer" && ( */}
-                            <>
-                                <label className="updateProfilePhoneNo" htmlFor="">Phone Number</label>
-                                <input className="updateProfilePhoneNoInput"
-                                    name="phoneNumber"
-                                    type="text"
-                                    placeholder="+20 1090559824"
-                                    required
-                                    onChange={(e) =>
-                                        setUser({ ...user, phoneNumber: e.target.value })
-                                    }
-                                />
-                                <label className="updateProfileDesc" htmlFor="">Description</label>
-                                <textarea className="updateProfileDescTextarea"
-                                    placeholder="A short desc of yourself"
-                                    name="desc"
-                                    id=""
-                                    cols="30"
-                                    rows="10"
-                                    required
-                                    onChange={(e) =>
-                                        setUser({ ...user, desc: e.target.value })
-                                    }
-                                ></textarea>
-                            </>
-                            <button type="submit">Update</button>
+                            <label htmlFor="">Profile Picture</label>
+                            <input required type="file" />
 
+                            {users?.role == "freelancer" && (
+                                <>
+                                    <label className="phoneNo" htmlFor="">Phone Number</label>
+                                    <input className="phoneNoInput"
+                                        name="phoneNumber"
+                                        type="text"
+                                        placeholder="+20 1090559824"
+                                        required
+                                        onChange={(e) =>
+                                            setUser({ ...user, phoneNumber: e.target.value })
+                                        }
+                                    />
+                                    <label className="singupDesc" htmlFor="">Description</label>
+                                    <textarea
+                                        placeholder="A short desc of yourself"
+                                        name="desc"
+                                        id=""
+                                        cols="30"
+                                        rows="10"
+                                        required
+                                        onChange={(e) =>
+                                            setUser({ ...user, desc: e.target.value })
+                                        }
+                                    ></textarea>
+                                    <label className="singupDesc" htmlFor="">Skills</label>
+                                    <Skills />
+                                    <label className="singupDesc" htmlFor="">Languages</label>
+                                    <Languages />
+                                </>
+                            )}
+                            <div className="update-cancel-btn">
+                                <button className="updateProfileButton" type="submit">Update</button>
+                                <button className="cancelProfileButton" type="submit">Cancel</button>
+                            </div>
                             {/* )} */}
                         </div>
                     </form>
                     <div className="right">
-                            <img className='updateProfileImage' src="/img/profile.jpg"/>
+                        <img className='updateProfileImage' src="/img/profile.jpg" />
                     </div>
                 </div>
             </div>

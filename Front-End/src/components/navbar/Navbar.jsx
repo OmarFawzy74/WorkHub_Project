@@ -119,12 +119,13 @@ const Navbar = () => {
               <span>{currentUser?.name}</span>
               {open && <div className="options">
               <Link className='link' to="/profile">Profile</Link>
+              <Link className='link' to="/mycourses">My Courses</Link>
                 {currentUser?.type == "freelancer" && (
                   <>
-                    <Link className='link' to="/mygigs">My Services</Link>
                     <Link className='link' to="/add">Add New Service</Link>
                   </>
                 )}
+                <Link className='link' to="/requests">Requests</Link>
                 <Link className='link' to="/orders">Orders</Link>
                 <Link className='link' to="/messages">Messages</Link>
                 <Link className='link' onClick={userLogout}>Logout</Link>

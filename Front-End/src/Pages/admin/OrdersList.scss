@@ -1,11 +1,11 @@
-.sidebar-close-client{
-    margin-left: 0px !important;
+.sidebar-close-orders{
+    // margin-left: 0px !important;
     margin-top: 50px !important;
 }
 
-.ClientsListPage {
+.OrdersListPage {
     margin-top: 50px;
-    margin-left: 90px;
+    margin-left: -100px;
     
     h1 {
         text-align: center;
@@ -14,8 +14,8 @@
         font-weight: bold;
         line-height: 120px;
         margin-bottom: 15px;
-        margin-left: 470px;    
-        margin-top: 50px; 
+        margin-left: 470px; 
+        margin-top: 50px;    
     }
 
     .contain-table {
@@ -26,6 +26,7 @@
             text-align: center;
         }
 
+        
         tr{
             text-align: center;
         }
@@ -46,6 +47,7 @@
     .gl-profile-btn {
         width: 30px;
         height: 30px;
+        margin-left: 15px;
 
         &.gl-update-btn {
 
@@ -85,8 +87,8 @@
     //     // inline-size: 10px;
     // }
 
-    .test {
-        text-align: center;
-    }
+    // .test {
+    //     // text-align: center;
+    // }
 
 }
