@@ -43,13 +43,13 @@ const Orders = () => {
   }
 
 
+
   const [requests, setRequests] = useState({
     loading: false,
     results: null,
     err: null,
     reload: 0,
   });
-
 
   useEffect(() => {
     axios
@@ -96,15 +96,11 @@ const Orders = () => {
             <td>Stunning concept art</td>
             <td>59.<sup>99</sup></td>
             <td>Maria Anders</td>
-<<<<<<< HEAD
-            {pathname=="/orders" && <td><img className="message" src="./img/message.png" alt="" /></td>}
-=======
             { pathname=="/orders" &&
               <td>
                 <img className="message" src="./img/message.png" alt="" />
               </td>
             }
->>>>>>> 76c65d1bc55fa5f81a806689e53eb69a0dfa4d1f
             {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
             {pathname=="/requests" && 
               <td>
@@ -113,90 +109,6 @@ const Orders = () => {
               </td>
             }
           </tr>
-<<<<<<< HEAD
-
-          
-=======
->>>>>>> 76c65d1bc55fa5f81a806689e53eb69a0dfa4d1f
-          {/* <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>79.<sup>99</sup></td>
-            <td>Francisco Chang</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-            {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
-
-            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
-          </tr> */}
-          {/* <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>110.<sup>99</sup></td>
-            <td>Roland Mendel</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>39.<sup>99</sup></td>
-            <td>Helen Bennett</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>119.<sup>99</sup></td>
-            <td>Yoshi Tannamuri</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>49.<sup>99</sup></td>
-            <td>Giovanni Rovelli</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr> */}
         </table>
       </div>
     </div>

@@ -45,6 +45,7 @@ import AdminProfile from './Pages/admin/AdminProfile';
 import MyCourses from './Pages/myCourses/MyCourses';
 import FreelancerList from './Pages/admin/FreelancerList';
 import OrdersList from './Pages/admin/OrdersList';
+import Requests from './Pages/requests/Requests';
 
 let dashboardData;
 
@@ -247,7 +248,7 @@ export default function App() {
         },
         {
           path: "/requests",
-          element: <Orders />
+          element: <Requests />
         },
         {
           path: "/mycourses",

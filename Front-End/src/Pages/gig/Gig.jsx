@@ -72,7 +72,7 @@ function Gig() {
       });
   }
 
-  const request = () => {
+  const requestOrder = () => {
     axios
     .post("http://localhost:3000/api/requests/addRequest", {
       clientId: user._id,
@@ -325,7 +325,8 @@ function Gig() {
               </div>
             ))}
           </div>
-          <button onClick={request}>Request Order</button>
+          {user.role!=="freelancer" && <button onClick={requestOrder}>Request Order</button>}
+          {service.results.freelancerId._id == user._id && <button onClick={requestOrder}>Update</button>}
         </div>
         </>
       }

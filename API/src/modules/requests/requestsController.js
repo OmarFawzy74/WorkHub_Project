@@ -1,19 +1,33 @@
 
-import request from "../../../DB/models/request_model.js";
+import order_model from "../../../DB/models/order_model.js";
+import request_model from "../../../DB/models/request_model.js";
 
 // Get All Requests
 export const getAllRequests = async (req, res) => {
     try {
-        const allRequests = await request.find();
-        if(allRequests.length !== 0) {
-            res.status(200).send(allRequests);
+        var allRequests = await request_model.find().populate("clientId").populate("serviceId");
+
+        const requests = allRequests.map((request) => {
+            const modifiedRequest = { ...request._doc }; // Create a copy of the service object
+            // modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
+            // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            // modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
+            //     return "http://" + req.hostname + ":3000/" + image_url;
+            // });
+            return modifiedRequest;
+        });
+
+
+        if(requests.length !== 0) {
+            res.status(200).json(requests);
         }
         else {
-            res.status(200).send("No requests found!");
+            res.status(200).json({ msg:"No requests found!" });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Somthing went wrong!");
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
 
@@ -28,7 +42,7 @@ export const addRequest = async (req, res) => {
             ]
         };
 
-        const data = await request.find(filter);
+        const data = await request_model.find(filter);
 
         if(data[0]) {
             if(data[0].requestStatus === "Pending") {
@@ -36,7 +50,7 @@ export const addRequest = async (req, res) => {
             }
         }
 
-        const newRequest = new request({
+        const newRequest = new request_model({
             ...req.body,
         });
 
@@ -52,21 +66,27 @@ export const addRequest = async (req, res) => {
 export const updateRequestStatus = async (req, res) => {
     try {
         const requestId = req.params.id;
-        const requestToUpdate = await request.findById(requestId);
+        const requestToUpdate = await request_model.findById(requestId);
 
         if(requestToUpdate) {
+
+            if(requestToUpdate.requestStatus == "Approved" || requestToUpdate.requestStatus == "Decline") {
+                return res.status(404).json({ msg:"Request Already " + requestToUpdate.requestStatus });
+            }
+
             const filter = { _id: requestId };
             const update = { $set: { requestStatus: req.body.requestStatus} };
-            const process = await request.updateOne(filter, update);
+            const process = await request_model.updateOne(filter, update);
 
             if(process) {
                 if(req.body.requestStatus === "Approved") {
                     const freelancerId = req.body.freelancerId;
-                    const clientId = req.body.clientId;
-                    const serviceId = req.body.serviceId;
+                    const clientId = requestToUpdate.clientId;
+                    const serviceId = requestToUpdate.serviceId;
+
                     // const serviceData = await request.findById(serviceId);
 
-                    const newOrder = new order({
+                    const newOrder = new order_model({
                         requestId,
                         freelancerId,
                         clientId,
@@ -74,21 +94,21 @@ export const updateRequestStatus = async (req, res) => {
                     });
             
                     await newOrder.save();
-                    res.status(200).send("Order has been created successfuly.");
+                    // res.status(200).send("Order has been created successfuly.");
 
                     // addOrder();
-                    return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
+                    return res.status(200).json({ msg:"Request Approved Successfuly." });
                 }
                 else {
-                    return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
+                    return res.status(200).json({ msg:"Request Declined successfuly." });
                 }
             }
-            res.status(400).send("Request status update failed");
+            return res.status(400).json({ msg:"Request status update failed" });
         }
-        res.status(404).send("Request not found!");
+        res.status(404).json({ msg:"Request not found!" });
     } catch (error) {
         console.log(error);
-        res.status(500).send("Somthing went wrong!");
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
 
@@ -96,20 +116,20 @@ export const updateRequestStatus = async (req, res) => {
 export const deleteRequest = async (req, res) => {
     try {
         const requestId = req.params.id
-        const requestToDelete = await request.findById(requestId);
+        const requestToDelete = await request_model.findById(requestId);
 
         if(requestToDelete){
             const filter = { _id: requestId };
 
-            await request.deleteOne(filter);
-            res.status(200).send("Request has been deleted successfuly.");
+            await request_model.deleteOne(filter);
+            return res.status(200).json({ msg:"Request has been Canceled." });
         }
         else {
-            res.status(200).send("There is no request with such id to delete.");
+            res.status(200).json({ msg:"There is no request with such id to delete." });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Somthing went wrong!");
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
 

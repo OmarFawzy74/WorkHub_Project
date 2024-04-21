@@ -31,6 +31,16 @@ function Register() {
     phoneNumber: "",
   });
 
+  const processData = (data) => {
+    // console.log(user.skills);
+    // const data = user.skills;
+    // const processedData = data[0].split(",");
+    console.log(data);
+    // console.log(processedData);
+    // return processedData;
+    // console.log(skills.slice(0,1));
+  }
+
   const navigate = useNavigate();
 
   const image = useRef(null);
@@ -105,14 +115,14 @@ function Register() {
 
 
   const handleSkillsChange = (event, newValue) => {
-    setSelectedSkillsOptions(newValue);
+    // setSelectedSkillsOptions(newValue);
     selectedSkillsOptions = newValue;
     console.log(newValue);
     console.log(selectedSkillsOptions);
   };
 
   const handleLanguagesChange = (event, newValue) => {
-    setSelectedLanguagesOptions(newValue);
+    // setSelectedLanguagesOptions(newValue);
     selectedLanguagesOptions = newValue;
     console.log(newValue);
     console.log(selectedLanguagesOptions);

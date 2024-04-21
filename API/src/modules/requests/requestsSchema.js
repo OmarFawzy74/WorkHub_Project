@@ -8,7 +8,5 @@ export const requestSchema = Joi.object({
 
 export const updateRequestSchema = Joi.object({
     freelancerId: Joi.string(),
-    clientId: Joi.string(),
-    serviceId: Joi.string(),
     requestStatus: Joi.string()
 });
