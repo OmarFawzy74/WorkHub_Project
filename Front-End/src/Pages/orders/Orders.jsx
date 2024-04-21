@@ -96,15 +96,12 @@ const Orders = () => {
             <td>Stunning concept art</td>
             <td>59.<sup>99</sup></td>
             <td>Maria Anders</td>
-<<<<<<< HEAD
-            {pathname=="/orders" && <td><img className="message" src="./img/message.png" alt="" /></td>}
-=======
+
             { pathname=="/orders" &&
               <td>
                 <img className="message" src="./img/message.png" alt="" />
               </td>
             }
->>>>>>> 76c65d1bc55fa5f81a806689e53eb69a0dfa4d1f
             {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
             {pathname=="/requests" && 
               <td>
@@ -113,11 +110,6 @@ const Orders = () => {
               </td>
             }
           </tr>
-<<<<<<< HEAD
-
-          
-=======
->>>>>>> 76c65d1bc55fa5f81a806689e53eb69a0dfa4d1f
           {/* <tr>
             <td>
               <img

@@ -24,7 +24,7 @@ const Profile = () => {
 
 
     useEffect(() => {
-        setServices({loading: true});
+        setServices({ loading: true });
 
         axios
             .get("http://localhost:3000/api/services/getFreelancerServices/" + user._id)
@@ -61,26 +61,26 @@ const Profile = () => {
 
     const [sort, setSort] = useState("sales");
     const [open, setOpen] = useState(false);
-    var skills;
+    // var skills;
 
     const minRef = useRef();
     const maxRef = useRef();
 
-    const processSkills = () => {
-        // console.log(user.skills);
-        const data = user.skills;
-        const processedData = data[0].split(",");
-        // console.log(processedData);
-        skills = processedData;
-        // console.log(skills.slice(0,1));
-    }
+    // const processSkills = () => {
+    //     // console.log(user.skills);
+    //     const data = user.skills;
+    //     const processedData = data[0].split(",");
+    //     // console.log(processedData);
+    //     skills = processedData;
+    //     // console.log(skills.slice(0,1));
+    // }
 
-    processSkills();
+    // processSkills();
 
     const [skillsArrayLength, setSkillsArrayLength] = useState(5);
 
     const showMoreSkills = () => {
-        setSkillsArrayLength(skills.length)
+        setSkillsArrayLength(user.skills.length)
         // console.log(skillsArrayLength);
     }
 
@@ -100,24 +100,24 @@ const Profile = () => {
     const message = (e) => {
         // console.log(e.target.value);
         const freelancerId = e.target.value;
-        
-        axios
-        .post("http://localhost:3000/api/conversations/addConversation", {
-          freelancer: freelancerId,
-          client: user._id
-        })
-          .then((resp) => {
-            const conversationId = resp.data.newConversationData[0]._id;
-            // console.log(resp.data.newConversationData[0]._id);
-            navigate("/message/" + conversationId);
-          })
-          .catch((errors) => {
-            console.log(errors);
-            navigate("/messages");
-          });
-      }
 
-      const { pathname } = useLocation();
+        axios
+            .post("http://localhost:3000/api/conversations/addConversation", {
+                freelancer: freelancerId,
+                client: user._id
+            })
+            .then((resp) => {
+                const conversationId = resp.data.newConversationData[0]._id;
+                // console.log(resp.data.newConversationData[0]._id);
+                navigate("/message/" + conversationId);
+            })
+            .catch((errors) => {
+                console.log(errors);
+                navigate("/messages");
+            });
+    }
+
+    const { pathname } = useLocation();
 
 
     return (
@@ -142,7 +142,11 @@ const Profile = () => {
                                     className="languageIcon"
                                     src="/img/profileLanguage.png"
                                 />
-                                <span>{user.languages}</span>
+                                <span className="languageContainer">{user.languages.map((language,index) => (
+                                   <>
+                                        {language} {index !== user.languages.length - 1 ? ", " : null}
+                                   </> 
+                                ))}</span>
                             </div>
                         </div>
                         <div className="rightContainer">
@@ -161,11 +165,10 @@ const Profile = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {user.role=="client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
-                                {pathname=="/profile" && user.role=="freelancer" && <button value={id}><img src="/img/send.png" />Update</button>}
+                                {user.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                {pathname == "/profile" && user.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
                             </div>
                         </div>
-
                     </div>
                     <div className='aboutUser'>
                         <h2 className='aboutUserHeader'>About me</h2>
@@ -179,11 +182,11 @@ const Profile = () => {
                     <div className='skills'>
                         <h2 className='skillsHeader'>Skills</h2>
                         <ul className='skillsDesc'>
-                        {skills.slice(0,skillsArrayLength).map((skill) => (
-                            <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
-                        ))}
+                            {user.skills.slice(0, skillsArrayLength).map((skill) => (
+                                <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                            ))}
                         </ul>
-                        {skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{skills.length - 5}</Link>}
+                        {user.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user.skills.length - 5}</Link>}
                     </div>
                 </div>
 

@@ -35,6 +35,27 @@ function Register() {
 
   const image = useRef(null);
 
+  // var skillsData;
+
+  const processData = (data) => {
+    // console.log(user.skills);
+
+    // const data = skillsData;
+    console.log(data);
+    const processedData = data[0].split(",");
+    console.log(processedData);
+    setSelectedSkillsOptions(processedData);
+    return processedData;
+    // console.error("skillsData is undefined");
+    //     const data = user.skills;
+    //     console.log(data);
+    //     const processedData = data[0].split(",");
+    //     console.log(processedData);
+    //     // selectedSkillsOptions = processedData;
+    // setSelectedSkillsOptions(processedData);
+    //     // console.log(skills.slice(0,1));
+  }
+
   const addUserData = async (e) => {
     e.preventDefault();
 
@@ -55,7 +76,6 @@ function Register() {
     formData.append("skills", selectedSkillsOptions);
     formData.append("languages", selectedLanguagesOptions);
 
-
     axios
       .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
         headers: {
@@ -70,6 +90,8 @@ function Register() {
         );
         console.log(resp.data.message);
         console.log(resp.data.userData);
+        resp.data.userData.skills = processData(resp.data.userData.skills);
+        resp.data.userData.languages = processData(resp.data.userData.languages);
         setAuthUser(resp.data.userData);
         navigate("/gigs");
       })

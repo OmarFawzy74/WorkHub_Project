@@ -83,7 +83,7 @@
     }
 
         &.active {
-            border-bottom: 1px solid rgb(223, 221, 221);
+            // border-bottom: 1px solid rgb(223, 221, 221);
             background-color: #ffffff;
             color: #74767e;
     
@@ -243,24 +243,30 @@
 
     .menu {
         border-top: 1px solid rgb(223, 221, 221);
-        // border-bottom: 1px solid rgb(223, 221, 221);
-        position: relative;
+        border-bottom: 1px solid rgb(223, 221, 221);
+        // position: relative;
         width: 1519px;
         display: flex;
-        justify-content: space-between;
-        font-weight: 300;
-        color: gray;
+        // justify-content: space-between;
+        font-weight: 500;
+        color: rgb(0, 0, 0);
         background-color: #fff;
         padding: 0 90px;
-        margin-top: -10px;
+        // margin-top: -10px;
     }
 
     .menuLink {
         text-decoration: none;
-        color: #62646a;
+        color: #000000;
         font-weight: 500;
         font-size: 16px;
         padding-top: 8px;
         padding-bottom: 8px;
+        margin-right: 40px;
+    }
+
+    .menuLink:hover {
+        border-bottom: 4px solid #1dbf73;
+        // transition: none;
     }
 }
