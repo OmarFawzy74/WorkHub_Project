@@ -56,19 +56,47 @@ function Gigs() {
 
   const { pathname } = useLocation()
 
+  const [categories, setCategories] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+
+  useEffect(() => {
+    setCategories({ ...categories, loading: true })
+    axios.get("http://localhost:3000/api/categories/getAllCategories")
+      .then(
+        resp => {
+          console.log(resp.data);
+          setCategories({ results: resp.data, loading: false, err: null });
+          console.log(resp);
+        }
+      ).catch(err => {
+        setCategories({ ...categories, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [categories.reload]);
+
+
   return (
     <div className={pathname !== "/adminGigs" ? "gigs" : "adminGigs"}>
       <div className={sidebarStatus() ? "gigsContainer" : "allGigsContainer"}>
         <div className="breadcrumbs">
           {user == undefined ? <Link className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'}</Link> : null}
         </div>
-
         {category !== undefined ?
           <>
-            <h1 >Web Development</h1>
-            <p>
-              Explore the boundaries of art and technology with WorkHub's AI artists
-            </p>
+            {categories.loading == false && categories.err == null && 
+              categories.results.category && (
+                <>
+                  <h1>{category.categoryName}</h1>
+                  <p>
+                    {category.categoryDesc}
+                  </p>
+                </>
+              )
+            }
           </>
           : null}
         <div className="menu">
@@ -96,7 +124,7 @@ function Gigs() {
             )}
           </div>
         </div>
-        <div className={sidebarStatus() ? "gigsCards": "allGigsCards"}>
+        <div className={sidebarStatus() ? "gigsCards" : "allGigsCards"}>
           {services.loading == false &&
             services.err == null &&
             services.results &&

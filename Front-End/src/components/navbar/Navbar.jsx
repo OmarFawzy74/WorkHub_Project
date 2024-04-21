@@ -52,7 +52,7 @@ const Navbar = () => {
 
   let currentUser
 
-  if(user == undefined) {
+  if (user == undefined) {
     currentUser = null
   }
   else {
@@ -72,20 +72,42 @@ const Navbar = () => {
     const userId = user._id;
     console.log(userId);
     axios.put("http://localhost:3000/api/auth/logout/" + userId)
-    .then((resp) => {
-      console.log(resp);
-      removeAuthUser();
-      navigate("/");
-    }).catch((errors) => {
-      console.log(errors);
-    })
+      .then((resp) => {
+        console.log(resp);
+        removeAuthUser();
+        navigate("/");
+      }).catch((errors) => {
+        console.log(errors);
+      })
   }
 
 
-  return (
-    <div className={active || pathname !== "/" || activeMenu  || pathname == "/gigs" ? "navbar active activeMenu" : "navbar"}>
+  const [categories, setCategories] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
 
-    {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
+  useEffect(() => {
+    setCategories({ ...categories, loading: true })
+    axios.get("http://localhost:3000/api/categories/getAllCategories")
+      .then(
+        resp => {
+          console.log(resp.data);
+          setCategories({ results: resp.data, loading: false, err: null });
+          console.log(resp);
+        }
+      ).catch(err => {
+        setCategories({ ...categories, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [categories.reload]);
+
+  return (
+    <div className={active || pathname !== "/" || activeMenu || pathname == "/gigs" ? "navbar active activeMenu" : "navbar"}>
+
+      {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
       <div className='navbarContainer'>
         <Link to="/" className='link'>
           <div className="logo">
@@ -98,15 +120,15 @@ const Navbar = () => {
           <div className="user" onClick={() => setOpenExplore(!openExplore)}>
             <span>Explore</span>
             {openExplore && <div className="exploreOptions">
-                <>
-                  <Link className='link' to="/gigs"><span>Marketplace</span></Link>
-                  <Link className='link' to="/community">Community</Link>
-                  <Link className='link' to="/learn">Learn</Link>
-                </>
+              <>
+                <Link className='link' to="/gigs"><span>Marketplace</span></Link>
+                <Link className='link' to="/community">Community</Link>
+                <Link className='link' to="/learn">Learn</Link>
+              </>
             </div>}
           </div>
 
-          <span><img className="languageIcon" src= {!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"}/> English</span>
+          <span><img className="languageIcon" src={!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"} /> English</span>
 
 
           {currentUser?.activity !== "online" && <Link className='link' to="/login">Sign in</Link>}
@@ -118,8 +140,8 @@ const Navbar = () => {
               <img src={user.image_url} />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
-              <Link className='link' to="/profile">Profile</Link>
-              <Link className='link' to="/mycourses">My Courses</Link>
+                <Link className='link' to="/profile">Profile</Link>
+                <Link className='link' to="/mycourses">My Courses</Link>
                 {currentUser?.type == "freelancer" && (
                   <>
                     <Link className='link' to="/add">Add New Service</Link>
@@ -136,7 +158,7 @@ const Navbar = () => {
       </div>
       {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-      {(activeMenu  || pathname == "/gigs" || pathname.startsWith("/gigs/"))  &&  (
+      {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
 
         <>
           <div className="search">
@@ -146,11 +168,18 @@ const Navbar = () => {
             </div>
             <button>Search</button>
           </div>
+
           <div className='menu'>
-            <Link className='menuLink' to="/gigs/Graphics & Design">
-              Graphics & Design
-            </Link>
-            <Link className='menuLink' to="/">
+            {categories.loading == false && categories.err == null && (
+              categories.results.map((category => (
+                <Link className='menuLink' to="/gigs/:category">
+                  <div className='category'>{category.categoryName}</div>
+                </Link>
+              )))
+            )
+            }
+          </div>
+          {/* <Link className='menuLink' to="/">
               Video & Animation
             </Link>
             <Link className='menuLink' to="/">
@@ -173,8 +202,7 @@ const Navbar = () => {
             </Link>
             <Link className='menuLink' to="/">
               Lifestyle
-            </Link>
-          </div>
+            </Link> */}
         </>
       )}
     </div>

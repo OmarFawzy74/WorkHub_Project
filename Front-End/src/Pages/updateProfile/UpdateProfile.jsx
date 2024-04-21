@@ -1,36 +1,63 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./UpdateProfile.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
-import Skills from "../../components/skills/Skills";
-import Languages from "../../components/languages/Languages";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+// import "./Skills.scss";
+import $ from "jquery";
 import { getAuthUser } from "../../localStorage/storage";
 
 
 function UpdateProfile() {
+    var [selectedSkillsOptions, setSelectedSkillsOptions] = useState();
+
+    var [selectedLanguagesOptions, setSelectedLanguagesOptions] = useState();
+
+    const handleSkillsChange = (event, newValue) => {
+        setSelectedSkillsOptions(newValue);
+        selectedSkillsOptions = newValue;
+        console.log(newValue);
+        console.log(selectedSkillsOptions);
+    };
+
+    const handleLanguagesChange = (event, newValue) => {
+        setSelectedLanguagesOptions(newValue);
+        selectedLanguagesOptions = newValue;
+        console.log(newValue);
+        console.log(selectedLanguagesOptions);
+    };
+
+    const submit = () => {
+        $(".MuiIconButton-sizeMedium").click();
+    }
+
+    let { id } = useParams();
 
     const users = getAuthUser();
+
+    const image = useRef(null);
 
     const [user, setUser] = useState({
         err: null,
         loading: false,
         name: "",
         email: "",
-        password: "",
         image: "",
         country: "",
-        role: "client",
         desc: "",
         phoneNumber: "",
+        skills: "",
+        languages: "",
     });
 
     const navigate = useNavigate();
 
-    const image = useRef(null);
 
-    const addUserData = async (e) => {
+    const updateUserData = async (e) => {
         e.preventDefault();
 
         setUser({ ...user, loading: true, err: null });
@@ -42,55 +69,88 @@ function UpdateProfile() {
 
         formData.append("name", user.name);
         formData.append("email", user.email);
-        formData.append("password", user.password);
+        // formData.append("password", user.password);
         formData.append("country", user.country);
         formData.append("image", image.current.files[0]);
         formData.append("phoneNumber", user.phoneNumber);
         formData.append("desc", user.desc);
+        formData.append("skills", selectedSkillsOptions);
+        formData.append("languages", selectedLanguagesOptions);
 
         axios
-            .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
+            .put("http://localhost:3000/api/freelancers/updateFreelancerInfo/" + users._id, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
             .then((resp) => {
-                // setUser({
-                //   ...user,
-                //   loading: false,
-                //   err: null,
-                //   name: "",
-                //   desc: "",
-                //   email: "",
-                //   password: "",
-                //   country: "",
-                //   role: "",
-                // });
-                // image.current.value = null;
-                swal("Congratulations you have Joined WorkHub Successfully", "", "success");
-                console.log(resp.data.message);
-                console.log(resp.data.userData);
-                setAuthUser(resp.data.userData);
-                navigate("/gigs");
+                setUser({
+                    ...user,
+                    loading: false,
+                    err: null,
+                    name: "",
+                    email: "",
+                    password: "",
+                    image: "",
+                    country: "",
+                    role: "client",
+                    desc: "",
+                    phoneNumber: "",
+                });
+                image.current.value = null;
+                swal(resp.data.msg, "", "success");
+                console.log(resp.data);
             })
             .catch((errors) => {
-                // setUser({
-                //   ...user,
-                //   loading: false,
-                //   err: errors,
-                //   name: "",
-                //   desc: "",
-                //   email: "",
-                //   password: "",
-                //   country: "",
-                //   role: "",
-                // });
-                // image.current.value = null;
-                swal(errors.response.data.message, "", "error");
+                setUser({
+                    ...user,
+                    loading: false,
+                    err: errors.response.data.errors,
+                    name: "",
+                    email: "",
+                    password: "",
+                    image: "",
+                    country: "",
+                    role: "client",
+                    desc: "",
+                    phoneNumber: "",
+                });
+                image.current.value = null;
+                // swal(medicine.err.msg,"","error");
                 console.log(errors);
-                console.log(errors.response.data.message);
             });
-    }
+    };
+
+
+
+    useEffect(() => {
+        setUser({ ...user, loading: true });
+        axios
+          .get("http://localhost:3000/api/freelancers/getFreelancerById/" + users._id)
+          .then((resp) => {
+            console.log(resp);
+            setUser({
+              ...user,
+              name: resp.data[0].name,
+              desc: resp.data[0].desc,
+              email: resp.data[0].email,
+              country: resp.data[0].country,
+              phoneNumber: resp.data[0].phoneNumber,
+              skills: resp.data[0].skills,
+              languages: resp.data[0].languages,
+              loading: false,
+              err: null,
+            });
+            // skillsData = resp.data[0].skills;
+            // processSkills();
+            console.log(users.skills);
+            console.log(users.languages);
+          })
+          .catch((err) => {
+            console.log(err);
+            // setUser({ ...user, loading: false, err: err });
+          });
+      }, []);
 
 
     // const handleChange = (e) => {
@@ -115,11 +175,6 @@ function UpdateProfile() {
         }
     };
 
-
-
-
-
-
     // const handleSubmit = async (e) => {
     //   e.preventDefault();
 
@@ -141,25 +196,29 @@ function UpdateProfile() {
         <section className='updateProfilePage'>
             <div className="updateProfileContainer">
                 <div className="updateProfile">
-                    <form onSubmit={addUserData}>
+                    <form onSubmit={updateUserData}>
                         <div className="left">
                             <h1>Edit Profile</h1>
                             <label htmlFor="">Name</label>
                             <input
+                                className="updateProfileInput"
                                 name="name"
                                 type="text"
-                                placeholder="Fawzy"
-                                required
+                                // required
+                                placeholder="Name"
+                                value={user.name}
                                 onChange={(e) =>
                                     setUser({ ...user, name: e.target.value })
                                 }
                             />
                             <label htmlFor="">Email</label>
                             <input
+                                className="updateProfileInput"
+                                value={user.email}
                                 name="email"
                                 type="email"
-                                placeholder="email"
-                                required
+                                placeholder="Email"
+                                // required
                                 onChange={(e) =>
                                     setUser({ ...user, email: e.target.value })
                                 } />
@@ -170,7 +229,8 @@ function UpdateProfile() {
                             <select
                                 name="country"
                                 type="text"
-                                required
+                                // required
+                                value={user.country}
                                 onChange={(e) =>
                                     setUser({ ...user, country: e.target.value })
                                 }>
@@ -184,16 +244,20 @@ function UpdateProfile() {
                             </select>
 
                             <label htmlFor="">Profile Picture</label>
-                            <input required type="file" />
-
+                            <input
+                            className="updateProfileInput"
+                            // required 
+                            ref={image}
+                            type="file" />
                             {users?.role == "freelancer" && (
                                 <>
                                     <label className="phoneNo" htmlFor="">Phone Number</label>
-                                    <input className="phoneNoInput"
+                                    <input className="updateProfileInput"
                                         name="phoneNumber"
                                         type="text"
                                         placeholder="+20 1090559824"
-                                        required
+                                        value={user.phoneNumber}
+                                        // required
                                         onChange={(e) =>
                                             setUser({ ...user, phoneNumber: e.target.value })
                                         }
@@ -205,20 +269,61 @@ function UpdateProfile() {
                                         id=""
                                         cols="30"
                                         rows="10"
-                                        required
+                                        value={user.desc}
+                                        // required
                                         onChange={(e) =>
                                             setUser({ ...user, desc: e.target.value })
                                         }
                                     ></textarea>
-                                    <label className="singupDesc" htmlFor="">Skills</label>
-                                    <Skills />
-                                    <label className="singupDesc" htmlFor="">Languages</label>
-                                    <Languages />
+                                    <label className="singupDesc" htmlFor="">
+                                        Skills
+                                    </label>
+                                    <Stack spacing={3} sx={{ width: 500 }}>
+                                        <Autocomplete
+                                            className="skillsInput"
+                                            multiple
+                                            id="tags-outlined"
+                                            options={top100Skills}
+                                            getOptionLabel={(option) => option}
+                                            defaultValue={[users.skills.map((skill) => skill)]}
+                                            onChange={handleSkillsChange}
+                                            // onInputChange={handleInputChange}
+                                            // onClose={handleCloseAutocomplete}
+                                            // filterSelectedOptions
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="" placeholder="Add Skill" />
+                                            )}
+                                        />
+                                    </Stack>
+                                    <label className="singupDesc" htmlFor="">
+                                        Languages
+                                    </label>
+                                    <Stack spacing={3} sx={{ width: 500 }}>
+                                        <Autocomplete
+                                            multiple
+                                            id="tags-outlined"
+                                            options={top100Languages}
+                                            getOptionLabel={(option) => option}
+                                            value={selectedLanguagesOptions}
+                                            onChange={handleLanguagesChange}
+                                            // onInputChange={handleInputChange}
+                                            // onClose={handleCloseAutocomplete}
+                                            // filterSelectedOptions
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    label=""
+                                                    placeholder="Add Language"
+                                                />
+                                            )}
+                                        />
+                                    </Stack>
                                 </>
                             )}
                             <div className="update-cancel-btn">
                                 <button className="updateProfileButton" type="submit">Update</button>
-                                <button className="cancelProfileButton" type="submit">Cancel</button>
+
+                                <Link to="/profile"><button className="cancelProfileButton" type="submit">Cancel</button></Link>
                             </div>
                             {/* )} */}
                         </div>
@@ -235,5 +340,211 @@ function UpdateProfile() {
         </section>
     );
 }
+
+const top100Languages = [
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Arabic",
+    "Chinese",
+    "Japanese",
+    "Russian",
+    "Italian",
+    "Portuguese",
+    "Hindi",
+    "Bengali",
+    "Punjabi",
+    "Urdu",
+    "Indonesian",
+    "Turkish",
+    "Dutch",
+    "Polish",
+    "Swedish",
+    "Norwegian",
+    "Danish",
+    "Finnish",
+    "Greek",
+    "Korean",
+    "Thai",
+    "Vietnamese",
+    "Hebrew",
+    "Czech",
+    "Hungarian",
+    "Romanian",
+    "Slovak",
+    "Malay",
+    "Ukrainian",
+    "Bulgarian",
+    "Serbian",
+    "Croatian",
+    "Slovenian",
+    "Lithuanian",
+    "Estonian",
+    "Latvian",
+    "Maltese",
+    "Albanian",
+    "Macedonian",
+    "Montenegrin",
+    "Luxembourgish",
+    "Icelandic",
+    "Gaelic",
+    "Welsh",
+    "Basque",
+    "Catalan",
+    "Galician",
+    "Esperanto",
+    "Klingon",
+    "Esperanto",
+    "Latin",
+];
+
+
+const top100Skills = [
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "React",
+    "Angular",
+    "Vue.js",
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "SQL",
+    "Python",
+    "Java",
+    "C#",
+    "C++",
+    "PHP",
+    "Ruby",
+    "Swift",
+    "Kotlin",
+    "Flutter",
+    "Docker",
+    "AWS",
+    "Azure",
+    "Google Cloud Platform",
+    "Git",
+    "Jenkins",
+    "Kubernetes",
+    "HTML5",
+    "CSS3",
+    "Sass",
+    "Less",
+    "Bootstrap",
+    "Tailwind CSS",
+    "Redux",
+    "GraphQL",
+    "RESTful API",
+    "GraphQL API",
+    "TypeScript",
+    "Next.js",
+    "Gatsby",
+    "Spring Framework",
+    "Hibernate",
+    "ASP.NET",
+    "Entity Framework",
+    "Ruby on Rails",
+    "Django",
+    "Flask",
+    "TensorFlow",
+    "PyTorch",
+    "Numpy",
+    "Pandas",
+    "Matplotlib",
+    "Scikit-learn",
+    "JUnit",
+    "Mockito",
+    "Cypress",
+    "Jest",
+    "Mocha",
+    "Enzyme",
+    "Chai",
+    "Selenium",
+    "JIRA",
+    "Confluence",
+    "Trello",
+    "Slack",
+    'Logo Design',
+    'Illustration',
+    'Branding',
+    'Packaging Design',
+    'Photoshop Editing',
+    'Business Cards & Stationery',
+    'Poster Design',
+    'Flyer Design',
+    'Brochure Design',
+    'Label & Package Design',
+    'Video Editing',
+    'Animation',
+    'Motion Graphics',
+    'Explainer Videos',
+    'Whiteboard Animation',
+    'Intro & Outro Videos',
+    'Short Video Ads',
+    'Lyric & Music Videos',
+    'Subtitles & Captions',
+    'Visual Effects',
+    'Copywriting',
+    'Content Writing',
+    'Blog Writing',
+    'Article Writing',
+    'Editing & Proofreading',
+    'Translation',
+    'Creative Writing',
+    'Technical Writing',
+    'Resume Writing',
+    'Scriptwriting',
+    'Machine Learning',
+    'Natural Language Processing (NLP)',
+    'Chatbot Development',
+    'AI Model Deployment',
+    'Image Recognition',
+    'Speech Recognition',
+    'Sentiment Analysis',
+    'Predictive Analytics',
+    'Recommendation Systems',
+    'AI Consulting',
+    'Social Media Marketing',
+    'Search Engine Optimization (SEO)',
+    'Pay-Per-Click Advertising (PPC)',
+    'Content Marketing',
+    'Email Marketing',
+    'Influencer Marketing',
+    'Affiliate Marketing',
+    'Marketing Strategy',
+    'Web Analytics',
+    'Conversion Rate Optimization (CRO)',
+    'Music Production',
+    'Audio Editing',
+    'Mixing & Mastering',
+    'Sound Design',
+    'Voice Over',
+    'Jingles & Intros',
+    'Foley Artist',
+    'Podcast Editing',
+    'Audio Restoration',
+    'Music Transcription',
+    'Web Development',
+    'Mobile App Development',
+    'Software Development',
+    'Database Development',
+    'DevOps',
+    'Cloud Computing',
+    'Cybersecurity',
+    'Blockchain Development',
+    'Game Development',
+    'UI/UX Design',
+    'Business Strategy',
+    'Business Development',
+    'Market Research',
+    'Financial Consulting',
+    'Project Management',
+    'Accounting',
+    'Legal Consulting',
+    'Business Plan Writing',
+    'Virtual Assistance',
+    'HR Consulting',
+];
 
 export default UpdateProfile;
