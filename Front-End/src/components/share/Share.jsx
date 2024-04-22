@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import "./Share.scss"
 
 const Share = () => {
+
     return (
         <div className='share'>
             <div className="shareContainer">
@@ -13,8 +14,8 @@ const Share = () => {
                     <input
                         placeholder="What's on your mind, Mana?"
                         className='shareInput'
-                    />
 
+                    />
                 </div>
                 <hr className='shareHr' />
                 <div className="shareBottom">

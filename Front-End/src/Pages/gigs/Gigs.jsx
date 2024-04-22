@@ -8,8 +8,6 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
 import { sidebarStatus } from "../../App";
 
-
-
 function Gigs() {
 
   const user = getAuthUser();
@@ -23,7 +21,6 @@ function Gigs() {
     reload: 0,
   });
 
-
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/services/getAllServices")
@@ -36,8 +33,6 @@ function Gigs() {
         // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
       });
   }, [services.reload]);
-
-
 
   const [sort, setSort] = useState("sales");
   const [open, setOpen] = useState(false);
@@ -77,7 +72,6 @@ function Gigs() {
         console.log(err);
       })
   }, [categories.reload]);
-
 
   return (
     <div className={pathname !== "/adminGigs" ? "gigs" : "adminGigs"}>

@@ -22,6 +22,11 @@
         padding-bottom: 8px;
     }
 
+    .learnMenuLink:hover {
+      border-bottom: 4px solid #1dbf73;
+      // transition: none;
+  }
+
     .allLearnCards {
         width: 1500px;
         // margin-left: 50px;

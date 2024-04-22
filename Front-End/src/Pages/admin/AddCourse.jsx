@@ -14,20 +14,18 @@ const AddCourse = () => {
         reload: 0
     });
 
-    const [service, setService] = useState({
+    const [course, setCourse] = useState({
         err: null,
         loading: false,
-        serviceTitle: "",
-        serviceDesc: "",
-        serviceCategoryId: "",
-        serviceShortTitle: "",
-        serviceShortDesc: "",
-        servicePrice: "",
-        revisionNumber: "",
-        deliveryTime: "",
-        coverImage: "",
-        features: [],
-        images: [],
+        proffName: "",
+        ProffDesc: "",
+        categoryId: "",
+        courseTitle: "",
+        courseDesc: "",
+        courseDuration: "",
+        courseLink: "",
+        courseCoverImage_url: "",
+        proffImage_url: "",
     });
 
     useEffect(() => {
@@ -52,28 +50,88 @@ const AddCourse = () => {
         err: null
     });
 
-    const addCategory = (e) => {
-        e.preventDefault();
-        setCategory({ ...category, loading: true, err: null });
-        axios.post("http://localhost:3000/api/categories/addCategory", {
-            categoryName: category.categoryName,
-            categoryDesc: category.categoryDesc
-        })
-            .then((resp) => {
-                setCategory({ ...category, loading: false, err: null });
-                swal(resp.data.msg, "", "success");
-                document.querySelector("#addCategoryForm").reset();
-                // document.getElementById("categoryName").value = "";
-                // document.getElementById("categoryDesc").value = "";
-                console.log(resp);
-            })
-            .catch((errors) => {
-                console.log(errors);
-                swal(errors.response.data, "", "error");
-                setCategory({ ...category, loading: false, err: errors.response.data.errors });
-            })
-    }
+    const image = useRef(null);
 
+    const coverImage = useRef(null);
+
+  const uploadProfessorImage = (id) => {
+
+    const formData = new FormData();
+    formData.append("image", image.current.files[0]);
+
+    // for (let i = 0; i < coverImage.current.files.length; i++) {
+    //   formData.append("images", coverImage.current.files[i]);
+    // }
+    axios
+      .put("http://localhost:3000/api/courses/uploadProffImage/" + id, formData)
+      .then((resp) => {
+        // image.current.value = null;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        // console.log(errors.response.data.message);
+      });
+  }
+
+  const uploadCourseImage = (id) => {
+
+    const formData = new FormData();
+    formData.append("coverImage", coverImage.current.files[0]);
+
+    // for (let i = 0; i < coverImage.current.files.length; i++) {
+    //   formData.append("images", coverImage.current.files[i]);
+    // }
+    axios
+      .put("http://localhost:3000/api/courses/uploadCourseCoverImage/" + id, formData)
+      .then((resp) => {
+        // image.current.value = null;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        // console.log(errors.response.data.message);
+      });
+  }
+    const addCourse = (e) => {
+        e.preventDefault();
+        setCourse({ ...course, loading: true, err: null });
+        axios.post("http://localhost:3000/api/courses/addCourse", {
+            proffName: course.proffName,
+            ProffDesc: course.ProffDesc,
+            categoryId: course.categoryId,
+            courseTitle: course.courseTitle,
+            courseDesc: course.courseDesc,
+            courseDuration: course.courseDuration,
+            courseLink: course.courseLink,
+        })
+        .then((resp) => {
+            console.log(resp);
+            const courseId = resp.data.newCourse._id;
+            uploadCourseImage(courseId);
+            uploadProfessorImage(courseId);
+            // document.getElementById("serviceFrom").reset();
+            // document.getElementById("service").value = "";
+            // let list = document.querySelectorAll('#service')
+            // console.log(list);
+            // window.location.reload();
+            // for (let i = 0; i < featureList.length; i++) {
+            //   handleFeaturesRemove(i);
+            // }    
+            // document.getElementById("selectCategory").selectedIndex = 0;
+            // swal(resp.data.message, "", "success");
+            // console.log(resp);
+            // console.log(service);
+          })
+          .catch((errors) => {
+            // swal(errors.response.data.message, "", "error");
+            console.log(errors);
+          });
+    }
     return (
         <div className={sidebarStatus() ? 'addCourseContainer' : 'addCourseContainer sidebar-close-addCourse'}>
             <section className='AddCoursePage'>
@@ -82,15 +140,14 @@ const AddCourse = () => {
                 </div>
             </section>
             <section className='AddCourse'>
-                <form id='addCourseForm' onSubmit={addCategory}>
+                <form id='addCourseForm' onSubmit={addCourse}>
                     <div className='form-control'>
                         <h2>Professor Name</h2>
                         <input
                             id='courseName'
                             required
-                            placeholder='Enter Name'
-                            value={category.categoryName}
-                            onChange={(e) => setCategory({ ...category, categoryName: e.target.value })}
+                            placeholder='Enter Professor Name'
+                            onChange={(e) => setCourse({ ...course, proffName: e.target.value })}
                         />
                     </div>
                     <div className='form-control'>
@@ -98,22 +155,21 @@ const AddCourse = () => {
                         <input
                             id='courseDesc'
                             required
-                            placeholder='Enter Description'
-                            value={category.categoryDesc}
-                            onChange={(e) => setCategory({ ...category, categoryDesc: e.target.value })}
+                            placeholder='Enter Professor Description'
+                            onChange={(e) => setCourse({ ...course, ProffDesc: e.target.value })}
                         />
                     </div>
                     <div className='form-control'>
                         <h2>Professor Image</h2>
-                        <input id='courseDesc' className='professorImg' required type="file" />
+                        <input id='courseDesc' className='professorImg' required type="file" ref={image} />
                     </div>
                     <div className='form-control'>
                         <h2>Category</h2>
                         <select
-                            name="serviceCategoryId"
+                            name="categoryId"
                             required
                             onChange={(e) =>
-                                setService({ ...service, serviceCategoryId: e.target.value })
+                                setCourse({ ...course, categoryId: e.target.value })
                             }
                             id="selectCategory"
                         >
@@ -138,9 +194,9 @@ const AddCourse = () => {
                         <input
                             id='categoryDesc'
                             required
-                            placeholder='Enter Description'
-                            value={category.categoryDesc}
-                            onChange={(e) => setCategory({ ...category, categoryDesc: e.target.value })}
+                            placeholder='Enter Course Title'
+                            // value={category.categoryDesc}
+                            onChange={(e) => setCourse({ ...course, courseTitle: e.target.value })}
                         />
                     </div>
                     <div className='form-control'>
@@ -148,23 +204,23 @@ const AddCourse = () => {
                         <input
                             id='categoryDesc'
                             required
-                            placeholder='Enter Description'
-                            value={category.categoryDesc}
-                            onChange={(e) => setCategory({ ...category, categoryDesc: e.target.value })}
+                            placeholder='Enter Course Description'
+                            // value={category.categoryDesc}
+                            onChange={(e) => setCourse({ ...course, courseDesc: e.target.value })}
                         />
                     </div>
                     <div className='form-control'>
                         <h2>Course Image</h2>
-                        <input id='courseDesc' className='professorImg' required type="file" />
+                        <input id='courseDesc' className='professorImg' required type="file"  ref={coverImage} />
                     </div>
                     <div className='form-control'>
                         <h2>Course Duration</h2>
                         <input
                             id='categoryDesc'
                             required
-                            placeholder='Enter Description'
-                            value={category.categoryDesc}
-                            onChange={(e) => setCategory({ ...category, categoryDesc: e.target.value })}
+                            placeholder='Enter Course Duration in minutes'
+                            // value={category.categoryDesc}
+                            onChange={(e) => setCourse({ ...course, courseDuration: e.target.value })}
                         />
                     </div>
                     <div className='form-control'>
@@ -172,9 +228,9 @@ const AddCourse = () => {
                         <input
                             id='categoryDesc'
                             required
-                            placeholder='Enter Description'
-                            value={category.categoryDesc}
-                            onChange={(e) => setCategory({ ...category, categoryDesc: e.target.value })}
+                            placeholder='Enter Course Link'
+                            // value={category.categoryDesc}
+                            onChange={(e) => setCourse({ ...course, courseLink: e.target.value })}
                         />
                     </div>
                     <div className='btn-container'>
