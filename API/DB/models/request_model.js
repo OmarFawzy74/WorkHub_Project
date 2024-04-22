@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const requestSchema = new Schema({
+    freelancerId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "client"
+    },
     clientId: {
         type: mongoose.Types.ObjectId,
         required: true,

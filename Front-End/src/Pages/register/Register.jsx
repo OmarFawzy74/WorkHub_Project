@@ -47,7 +47,7 @@ function Register() {
 
   // var skillsData;
 
-  const processData = (data) => {
+  const processingData = (data) => {
     // console.log(user.skills);
 
     // const data = skillsData;
@@ -100,8 +100,8 @@ function Register() {
         );
         console.log(resp.data.message);
         console.log(resp.data.userData);
-        resp.data.userData.skills = processData(resp.data.userData.skills);
-        resp.data.userData.languages = processData(resp.data.userData.languages);
+        resp.data.userData.skills = processingData(resp.data.userData.skills);
+        resp.data.userData.languages = processingData(resp.data.userData.languages);
         setAuthUser(resp.data.userData);
         navigate("/gigs");
       })

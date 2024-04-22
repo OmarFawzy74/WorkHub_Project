@@ -7,24 +7,100 @@ export const getAllRequests = async (req, res) => {
     try {
         var allRequests = await request_model.find().populate("clientId").populate("serviceId");
 
+        if(allRequests.length == 0) {
+            return res.status(404).json({ msg:"No requests found!" });
+        }
+
         const requests = allRequests.map((request) => {
             const modifiedRequest = { ...request._doc }; // Create a copy of the service object
-            // modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
-            // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
             modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
-            // modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
-            //     return "http://" + req.hostname + ":3000/" + image_url;
-            // });
             return modifiedRequest;
         });
 
+        res.status(200).json(requests);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
 
-        if(requests.length !== 0) {
-            res.status(200).json(requests);
+// Get Client Requests
+export const getClientRequests = async (req, res) => {
+    try {
+        const clientId = req.params.id
+        var allRequests = await request_model.find({clientId: clientId}).populate("clientId").populate("serviceId");
+
+        if(allRequests.length == 0) {
+            return res.status(404).json({ msg:"No requests found!" });
+        }
+
+        const requests = allRequests.map((request) => {
+            const modifiedRequest = { ...request._doc }; // Create a copy of the service object
+            modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            return modifiedRequest;
+        });
+
+        res.status(200).json(requests);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+// Get Freelancer Requests
+export const getFreelancerRequests = async (req, res) => {
+    try {
+        const freelancerId = req.params.id;
+        var allRequests = await request_model.find({freelancerId: freelancerId}).populate("clientId").populate("serviceId");
+
+        if(allRequests.length == 0) {
+            return res.status(404).json({ msg:"No requests found!" });
+        }
+
+        const requests = allRequests.map((request) => {
+            const modifiedRequest = { ...request._doc }; // Create a copy of the service object
+            modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            return modifiedRequest;
+        });
+
+        res.status(200).json(requests);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+export const getUserRequests = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const role = req.params.role
+        var allRequests
+
+        if(role == "freelancer") {
+            var allRequests = await request_model.find({freelancerId: userId}).populate("clientId").populate("serviceId");
+        }
+        else if(role == "client") {
+            var allRequests = await request_model.find({clientId: userId}).populate("clientId").populate("serviceId");
         }
         else {
-            res.status(200).json({ msg:"No requests found!" });
+            return res.status(404).json({ msg:"Unauthorized!" });
         }
+
+        if(allRequests.length == 0) {
+            return res.status(404).json({ msg:"No requests found!" });
+        }
+
+        const requests = allRequests.map((request) => {
+            const modifiedRequest = { ...request._doc }; // Create a copy of the service object
+            modifiedRequest.serviceId = { ...modifiedRequest.serviceId._doc }; // Create a copy of the freelancerId object
+            modifiedRequest.serviceId.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedRequest.serviceId.serviceCover_url;
+            return modifiedRequest;
+        });
+
+        res.status(200).json(requests);
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });

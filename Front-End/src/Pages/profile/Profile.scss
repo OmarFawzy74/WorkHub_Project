@@ -83,6 +83,8 @@
         
         
                     .right {
+                        position: relative;
+                        left: 240px;
                         border: 1px solid lightgray;
                         padding: 20px;
                         border-radius: 5px;
@@ -91,7 +93,7 @@
                         gap: 20px;
                         height: max-content;
                         max-height: 500px;
-                        top: 150px;
+                        // top: 150px;
                         border-top: 5px solid #000000;
         
                         .rightFeatures {

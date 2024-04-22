@@ -28,7 +28,6 @@ const courseSchema = new Schema ({
     },
     courseCoverImage_url: {
         type: String,
-        required: true,
     },
     courseDuration: {
         type: String,
