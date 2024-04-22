@@ -15,7 +15,7 @@ export const getAllCourses = async (req, res) => {
             return res.status(404).json({ msg: "No Courses Found!" });
         }
 
-        res.status(200).json({ success: true, message: allCourses });
+        res.status(200).json({ allCourses });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });
@@ -131,9 +131,9 @@ export const uploadProffImage = async (req, res, next) => {
         const cover_url = req.file.filename;
 
         const filter = { _id: id };
-        const update = { $set: { serviceCover_url: cover_url } };
+        const update = { $set: { proffImage_url: cover_url } };
 
-        await Service.updateOne(filter, update);
+        await course.updateOne(filter, update);
 
 
         res.status(200).json({ msg: "image uploaded successfuly" });

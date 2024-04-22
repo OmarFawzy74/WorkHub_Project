@@ -1,13 +1,76 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import "./LearnMenu.scss"
-import { Link, useLocation } from 'react-router-dom'
 import { gigs } from "../../data";
 import LearnCard from '../LearnCard/LearnCard';
+import axios from "axios";
+import swal from "sweetalert";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
-import { sidebarStatus } from '../../App';
-
+import { sidebarStatus } from "../../App";
 
 const LearnMenu = () => {
+
+    const user = getAuthUser();
+
+    let { category } = useParams();
+
+    const [courses, setCourses] = useState({
+        loading: false,
+        results: null,
+        err: null,
+        reload: 0,
+    });
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/api/courses/getAllCourses")
+            .then((resp) => {
+                setCourses({ results: resp.data.allCourses, loading: false, err: null });
+                console.log(resp.data.allCourses);
+            })
+            .catch((err) => {
+                console.log(err);
+                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+            });
+    }, [courses.reload]);
+
+    const [sort, setSort] = useState("sales");
+    const [open, setOpen] = useState(false);
+    const minRef = useRef();
+    const maxRef = useRef();
+
+    const reSort = (type) => {
+        setSort(type);
+        setOpen(false);
+    };
+
+    const apply = () => {
+        console.log(minRef.current.value)
+        console.log(maxRef.current.value)
+    }
+
+    const [categories, setCategories] = useState({
+        loading: true,
+        results: [],
+        err: null,
+        reload: 0
+    });
+
+    useEffect(() => {
+        setCategories({ ...categories, loading: true })
+        axios.get("http://localhost:3000/api/categories/getAllCategories")
+            .then(
+                resp => {
+                    console.log(resp.data);
+                    setCategories({ results: resp.data, loading: false, err: null });
+                    console.log(resp);
+                }
+            ).catch(err => {
+                setCategories({ ...categories, loading: false, err: err.response.data.msg });
+                console.log(err);
+            })
+    }, [categories.reload]);
+
 
     const { pathname } = useLocation()
 
@@ -16,34 +79,27 @@ const LearnMenu = () => {
             {
                 (pathname == "/learn") &&
                 <div className='learnMenu'>
-                    <Link className='learnMenuLink' to="/">
-                        Graphics & Design
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        Video & Animation
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        Writing & Translation
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        AI Services
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        Digital Marketing
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        Programming & Tech
-                    </Link>
-                    <Link className='learnMenuLink' to="/">
-                        Business
-                    </Link>
+                    {categories.loading == false && categories.err == null && (
+                        categories.results.map((category => (
+                            <>
+                                <Link className='learnMenuLink' to="/gigs/:category">
+                                    <div className='category'>{category.categoryName}</div>
+                                </Link>
+                            </>
+
+                        )))
+                    )
+                    }
                 </div>
             }
-
             <div className={sidebarStatus() ? "learnCards" : "allLearnCards"}>
-                {gigs.map((gig) => (
-                    <LearnCard key={gig.id} item={gig} />
-                ))}
+                {courses.loading == false &&
+                    courses.err == null &&
+                    courses.results &&
+                    courses.results.length > 0 &&
+                    courses.results.map((course) => (
+                        <LearnCard key={course._id} item={course} />
+                    ))}
             </div>
         </div>
     )

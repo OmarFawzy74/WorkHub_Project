@@ -19,7 +19,7 @@ const AddCourse = () => {
         loading: false,
         proffName: "",
         ProffDesc: "",
-        courseCategoryId: "",
+        categoryId: "",
         courseTitle: "",
         courseDesc: "",
         courseDuration: "",
@@ -103,7 +103,7 @@ const AddCourse = () => {
         axios.post("http://localhost:3000/api/courses/addCourse", {
             proffName: course.proffName,
             ProffDesc: course.ProffDesc,
-            courseCategoryId: course.courseCategoryId,
+            categoryId: course.categoryId,
             courseTitle: course.courseTitle,
             courseDesc: course.courseDesc,
             courseDuration: course.courseDuration,
@@ -166,10 +166,10 @@ const AddCourse = () => {
                     <div className='form-control'>
                         <h2>Category</h2>
                         <select
-                            name="courseCategoryId"
+                            name="categoryId"
                             required
                             onChange={(e) =>
-                                setCourse({ ...course, courseCategoryId: e.target.value })
+                                setCourse({ ...course, categoryId: e.target.value })
                             }
                             id="selectCategory"
                         >

@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 const LearnCard = ({ item }) => {
   return (
-    <Link to="/course/123" className="learnLink">
+    <Link to={"/course/" + item._id} className="learnLink">
       <div className="learnCard">
-        <img className='learnImg' src={item.img} alt="" />
+        <img className='learnImg' src={item.courseCoverImage_url} alt="" />
         <div className="courseInfo">
           <div className="card-badge">course</div>
-          <p>{item.desc}</p>
+          <p>{item.courseTitle}</p>
           <div className="star">
             <img src="./img/star.png" alt="" />
             <span className="reviewNo">{item.star}</span>
@@ -18,14 +18,14 @@ const LearnCard = ({ item }) => {
                 className="hourIconOut"
                 src="/img/hour.png"
               />
-              <span className="courseDurationNo">1.5 Hours</span>
+              <span className="courseDurationNo">{item.courseDuration} Minutes</span>
             </div>
           </div>
           <div className="professorName">
-            <span>{item.username}</span>
+            <span>{item.proffName}</span>
           </div>
           <div className="professorDesc">
-            <span>World's top marketer by Forbes, Entrepreneur and Inc Magazines; Writer for Time Magazine with best-selling e-courses.</span>
+            <span>{item.ProffDesc}</span>
           </div>
         </div>
       </div>
