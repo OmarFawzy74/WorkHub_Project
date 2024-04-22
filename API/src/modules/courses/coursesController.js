@@ -22,6 +22,22 @@ export const getAllCourses = async (req, res) => {
     }
 }
 
+export const getCourseById = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const courseData = await course.findById(courseId);
+
+        if (!courseData) {
+            return res.status(404).json({ msg: "No Courses Found!" });
+        }
+
+        res.status(200).json({ courseData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
 // Get Courses By Freelancer ID Or Client ID
 export const getEnrolledCourses = async (req, res) => {
     const filter = {freelancerId: req.params.id};

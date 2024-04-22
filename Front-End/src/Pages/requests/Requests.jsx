@@ -141,7 +141,7 @@ const Requests = () => {
             <th>Image</th>
             <th>Title</th>
             <th>Price</th>
-            {<th>{user.role=="client" ? null : "Client"}</th>}
+            <th>{user.role=="client" ? null : "Client"}</th>
             {pathname == "/orders" && <th>Contact</th>}
             <th>Status</th>
             {pathname == "/requests" && <th>Action</th>}

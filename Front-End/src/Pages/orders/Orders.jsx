@@ -43,8 +43,7 @@ const Orders = () => {
   }
 
 
-
-  const [requests, setRequests] = useState({
+  const [orders, setOrders] = useState({
     loading: false,
     results: null,
     err: null,
@@ -53,21 +52,43 @@ const Orders = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/requests/getAllRequests")
+      .get("http://localhost:3000/api/orders/getUserOrders/" + user.role + "/" + user._id)
       .then((resp) => {
         console.log(resp);
-        // setServices({ results: resp.data.services, loading: false, err: null });
-        // console.log(resp.data.services);
+        setOrders({ results: resp.data.ordersData, loading: false, err: null });
+        console.log(orders.results);
       })
       .catch((err) => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
       });
-  }, [requests.reload]);
+  }, [orders.reload]);
 
-  const decline = () => {
+
+  const message = (e) => {
+    const freelancerId = e;
+
+    console.log(freelancerId);
+    console.log(e.target.value);
     
+    axios
+    .post("http://localhost:3000/api/conversations/addConversation", {
+      freelancer: freelancerId,
+      client: user._id
+    })
+      .then((resp) => {
+        const conversationId = resp.data.newConversationData[0]._id;
+        // console.log(resp.data.newConversationData[0]._id);
+        navigate("/message/" + conversationId);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        navigate("/messages");
+      });
   }
+
+  // const decline = () => {
+    
+  // }
 
   return (
     <div className="orders">
@@ -77,117 +98,37 @@ const Orders = () => {
         </div>
         <table>
           <tr>
-            <th>Image</th>
-            <th>Title</th>
+            <th>Service Image</th>
+            <th>Service Title</th>
             <th>Price</th>
-            {<th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>}
+            <th>{user.role=="client" ? "Freelancer" : "Client"}</th>
             {pathname=="/orders" && <th>Contact</th>}
             {pathname=="/requests" && user.role=="client" && <th>Status</th>}
             {pathname=="/requests" && <th>Action</th>}
           </tr>
+
+          {orders.results && orders.err == null && orders.loading == false &&
+          orders.results.map((order) => (
           <tr>
             <td>
               <img
                 className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={order.serviceId.serviceCover_url}
                 alt=""
               />
             </td>
-            <td>Stunning concept art</td>
-            <td>59.<sup>99</sup></td>
-            <td>Maria Anders</td>
+            <td>{order.serviceId.serviceTitle}</td>
+            <td>{order.serviceId.servicePrice}</td>
+            <td>{user.role=="client" ? order.freelancerId.name : order.clientId.name}</td>
             { pathname=="/orders" &&
               <td>
-                <img className="message" src="./img/message.png" alt="" />
-              </td>
-            }
-            {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
-            {pathname=="/requests" && 
-              <td>
-                <Button variant="contained" className="approveBtn" onClick={approve}>Approve</Button> 
-                <Button variant="contained" className="delcineBtn" onClick={decline}>Decline</Button>
+                <button value={order.freelancerId._id} onClick={message} className="messageBtn">
+                  <img className="message" src="./img/message.png" alt="" />
+                </button>
               </td>
             }
           </tr>
-          {/* <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>79.<sup>99</sup></td>
-            <td>Francisco Chang</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-            {pathname=="/requests" && user.role=="client" && <td>Pending</td>}
-
-            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
-          </tr> */}
-          {/* <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>110.<sup>99</sup></td>
-            <td>Roland Mendel</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-            {pathname=="/requests" && <td><Button variant="contained" className="approveBtn">Approve</Button> <Button variant="contained" className="delcineBtn">Decline</Button></td>}
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>39.<sup>99</sup></td>
-            <td>Helen Bennett</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>119.<sup>99</sup></td>
-            <td>Yoshi Tannamuri</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>49.<sup>99</sup></td>
-            <td>Giovanni Rovelli</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr> */}
+        ))}
         </table>
       </div>
     </div>

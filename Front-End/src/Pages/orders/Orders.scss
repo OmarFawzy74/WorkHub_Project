@@ -32,6 +32,15 @@
           td {
             text-align: center;
 
+            .messageBtn {
+              position: relative;
+              border-radius: 100%;
+              width: 39px;
+              height: 38px;
+              border-color: transparent;
+              background-color: transparent;
+            }
+
             .approveBtn {
               background-color: #1dbf73;
               text-transform: none;
@@ -54,8 +63,12 @@
             }
   
             .message {
+              position: relative;
               width: 25px;
               cursor: pointer;
+              margin: 0px;
+              z-index: -1 !important;
+
             }
           }
           &:nth-child(even) {
