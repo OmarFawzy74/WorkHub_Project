@@ -72,11 +72,14 @@ function Gig() {
       });
   }
 
-  const requestOrder = () => {
+  const requestOrder = (e) => {
+    const freelancerId = e.target.value;
+
     axios
     .post("http://localhost:3000/api/requests/addRequest", {
       clientId: user._id,
-      serviceId: id
+      serviceId: id,
+      freelancerId: freelancerId
     })
       .then((resp) => {
         console.log(resp);
@@ -325,7 +328,7 @@ function Gig() {
               </div>
             ))}
           </div>
-          {user.role!=="freelancer" && <button onClick={requestOrder}>Request Order</button>}
+          {user.role!=="freelancer" && <button value={service.results.freelancerId._id} onClick={requestOrder}>Request Order</button>}
           {service.results.freelancerId._id == user._id && <button onClick={requestOrder}>Update</button>}
         </div>
         </>

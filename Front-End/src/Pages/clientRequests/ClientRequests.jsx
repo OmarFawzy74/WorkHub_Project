@@ -32,7 +32,7 @@ const Requests = () => {
     setRequests({ loading: true });
 
     axios
-      .get("http://localhost:3000/api/requests/getUserRequests/" + user.role + "/" + user._id)
+      .get("http://localhost:3000/api/requests/getClientRequests/" + user._id)
       .then((resp) => {
         console.log(resp);
         console.log(resp.data);

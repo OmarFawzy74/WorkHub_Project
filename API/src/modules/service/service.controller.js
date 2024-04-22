@@ -161,7 +161,7 @@ export const getFreelancerServices = async (req, res, next) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(404).send({ success: false, message: "Invalid id" });
+            return res.status(404).json({ success: false, msg: "Invalid id" });
         }
 
         const services = await Service.find({ freelancerId: id }).populate("freelancerId").populate("serviceCategoryId");
