@@ -24,7 +24,7 @@ function MyCourses() {
                     className="hourIconOut"
                     src="/img/hour.png"
                   />
-                  <span className="courseDurationNo">1.5 Hours</span>
+                  <span className="courseDurationNo">90 Minutes</span>
                 </div>
               </div>
               <div className="professorName">

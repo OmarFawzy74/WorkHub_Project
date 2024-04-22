@@ -172,9 +172,12 @@ const Navbar = () => {
           <div className='menu'>
             {categories.loading == false && categories.err == null && (
               categories.results.map((category => (
-                <Link className='menuLink' to="/gigs/:category">
-                  <div className='category'>{category.categoryName}</div>
-                </Link>
+                <>
+                  <Link className='menuLink' to="/gigs/:category">
+                    <div className='category'>{category.categoryName}</div>
+                  </Link>
+                </>
+
               )))
             )
             }

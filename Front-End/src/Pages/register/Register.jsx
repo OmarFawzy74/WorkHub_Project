@@ -31,15 +31,15 @@ function Register() {
     phoneNumber: "",
   });
 
-  const processData = (data) => {
-    // console.log(user.skills);
-    // const data = user.skills;
-    // const processedData = data[0].split(",");
-    console.log(data);
-    // console.log(processedData);
-    // return processedData;
-    // console.log(skills.slice(0,1));
-  }
+  // const processData = (data) => {
+  //   // console.log(user.skills);
+  //   // const data = user.skills;
+  //   // const processedData = data[0].split(",");
+  //   console.log(data);
+  //   // console.log(processedData);
+  //   // return processedData;
+  //   // console.log(skills.slice(0,1));
+  // }
 
   const navigate = useNavigate();
 

@@ -96,10 +96,6 @@ const Orders = () => {
             <td>Stunning concept art</td>
             <td>59.<sup>99</sup></td>
             <td>Maria Anders</td>
-<<<<<<< HEAD
-=======
-
->>>>>>> dfd9184644dce0151ff133cd94cbe5338fa819b7
             { pathname=="/orders" &&
               <td>
                 <img className="message" src="./img/message.png" alt="" />
@@ -113,8 +109,6 @@ const Orders = () => {
               </td>
             }
           </tr>
-<<<<<<< HEAD
-=======
           {/* <tr>
             <td>
               <img
@@ -194,7 +188,6 @@ const Orders = () => {
               <img className="message" src="./img/message.png" alt="" />
             </td>
           </tr> */}
->>>>>>> dfd9184644dce0151ff133cd94cbe5338fa819b7
         </table>
       </div>
     </div>
