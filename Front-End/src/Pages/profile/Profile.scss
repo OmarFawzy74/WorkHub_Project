@@ -36,8 +36,7 @@
                     flex-direction: column;
                     gap: 40px;
                     width: 33%;
-                    position: relative;
-                    left: 310px;
+                    margin-left: 450px;
                     
                     .option {
                         border: 1px solid lightgray;
@@ -186,7 +185,7 @@
                         margin-bottom: 20px;
 
                         .languageContainer{
-                            width: 50%;
+                            width: 60%;
                         }
 
                         .locationIcon {
@@ -301,6 +300,8 @@
             .myServiceGigsCards {
                 display: grid;
                 grid-template-columns: auto auto auto auto;
+                justify-content: start;
+                column-gap: 70px;
             }
         }
     }

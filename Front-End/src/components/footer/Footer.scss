@@ -17,10 +17,11 @@
       .top {
         display: flex;
         justify-content: space-between;
+        
         .item {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 15px;
 
           .footerCategories{
             text-decoration: none;
@@ -33,6 +34,7 @@
             font-size: 16px;
             color: #000000;
           }
+
           span {
             cursor: pointer;
             font-weight: 400;
@@ -43,7 +45,7 @@
       hr {
         margin: 50px 0px;
         height: 0;
-        border: 1px solid #ebe9e9;
+        border: 1px solid #7a7a7a;
       }
       .bottom {
         display: flex;

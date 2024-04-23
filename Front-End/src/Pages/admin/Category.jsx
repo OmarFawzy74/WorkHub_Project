@@ -35,13 +35,10 @@ const Category = () => {
     const deleteCategory = (e) => {
         e.preventDefault();
         const category_id = e.target.value;
-        axios.delete("http://localhost:3000/api/categories/deleteCategory/:id", {
-            params: {
-                id: category_id,
-            }
-        })
+        axios.delete("http://localhost:3000/api/categories/deleteCategory/" + category_id)
             .then(
                 resp => {
+                    console.log(resp);
                     swal(resp.data.msg, "", "success");
                     setCategories({ ...categories, reload: categories.reload + 1 });
                 }
