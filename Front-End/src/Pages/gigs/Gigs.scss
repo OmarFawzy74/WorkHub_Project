@@ -9,6 +9,15 @@
     gap: 15px;
     margin-right: 350px;
 
+    .marketplaceTitle{
+      margin-left: 550px;
+      // text-align: center;
+      color: #0e9184;
+      font-size: 45px;
+      font-weight: bold;
+      line-height: 120px;
+      margin-bottom: 20px;
+    }
 
     .breadcrumbs{
         display: flex;
@@ -29,11 +38,7 @@
          text-decoration: none;
         }
       }
-      
-  
-    //   h1 {
-    //   }
-  
+
       p {
         color: #999;
         font-weight: 500;
@@ -299,10 +304,10 @@
       margin-right: 350px;
 
       .marketplaceTitle{
-        margin-left: 580px;
+        margin-left: 550px;
         font-weight: 500;
         font-size: 38px;
-        color: #248357;
+        color: #74767e;
         margin-bottom: 15px;
       }
 

@@ -23,7 +23,7 @@
     
     .AddCourse {
         width: 80%;
-        height: 1130px;
+        height: 1230px;
         margin-left: auto;
         margin-right: auto;
         border: 1px solid #e9e9e9;
@@ -42,6 +42,7 @@
             // margin-bottom: 70px !important;
             position: relative;
             bottom: 50px;
+            left: 10px;
     
             .form-control {
                 border: none;
@@ -112,7 +113,7 @@
             font-weight: bold;
             letter-spacing: 1px;
             font-size: 20px;
-            margin-left: 20px;
+            margin-left: 105px;
     
             &:hover {
                 background-color: rgb(25, 150, 170);
@@ -124,7 +125,7 @@
             height: 50px;
             background-color: rgb(132, 132, 132);
             color: #fff;
-            margin-left: 20px;
+            margin-left: 40px;
             border: 1px solid;
             border-radius: 4px;
             font-weight: bold;

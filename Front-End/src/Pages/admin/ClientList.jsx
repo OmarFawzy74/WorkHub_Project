@@ -10,7 +10,7 @@ import { sidebarStatus } from "../../App";
 
 const ClientList = () => {
 
-  const [categories, setCategories] = useState({
+  const [clients, setClients] = useState({
     loading: true,
     results: [],
     err: null,
@@ -18,37 +18,20 @@ const ClientList = () => {
   });
 
   useEffect(() => {
-    setCategories({ ...categories, loading: true })
+    setClients({ ...clients, loading: true })
     axios.get("http://localhost:3000/api/clients/getAllClients")
       .then(
         resp => {
           console.log(resp.data);
-          setCategories({ results: resp.data, loading: false, err: null });
+          setClients({ results: resp.data, loading: false, err: null });
           console.log(resp);
         }
       ).catch(err => {
-        setCategories({ ...categories, loading: false, err: err.response.data.msg });
+        setClients({ ...clients, loading: false, err: err.response.data.msg });
         console.log(err);
       })
-  }, [categories.reload]);
+  }, [clients.reload]);
 
-  const deleteCategory = (e) => {
-    e.preventDefault();
-    const category_id = e.target.value;
-    axios.delete("http://localhost:3000/api/categories/deleteCategory/:id", {
-      params: {
-        id: category_id,
-      }
-    })
-      .then(
-        resp => {
-          swal(resp.data.msg, "", "success");
-          setCategories({ ...categories, reload: categories.reload + 1 });
-        }
-      ).catch(error => {
-        console.log(error);
-      })
-  }
   return (
     <>
       <section className={sidebarStatus() ? 'ClientsListPage' : 'ClientsListPage sidebar-close-client'}>
@@ -78,39 +61,39 @@ const ClientList = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {categories.loading == false && categories.err == null && ( */}
-                {/* categories.results.map((category => ( */}
+              {clients.loading == false && clients.err == null && (
+                clients.results.map((client => (
                   <tr>
                     <td>
-                      <img src='./img/profile.jpg' className="button muted-button gl-profile-btn"/>
+                      <img src={client.image_url} className="button muted-button gl-profile-btn" />
                     </td>
                     <td className="desc">
-                      {/* {category.categoryDesc} */} mana
+                      {client.name}
                     </td>
                     <td className="desc">
-                      {/* {category.categoryDesc} */}mana@gmail.com
+                      {client.email}
                     </td>
                     <td className="desc">
-                      {/* {category.categoryDesc} */}Egypt
+                      {client.country}
                     </td>
                     <td className="test">
-                      <img src='./img/block.png' onClick={deleteCategory} className="button muted-button gl-block-btn"/>
+                      <img src='./img/block.png' className="button muted-button gl-block-btn" />
                     </td>
                   </tr>
-                {/* ))) */}
-              {/* )
-              } */}
+                )))
+              )
+              }
             </tbody>
           </Table>
           {/* ) */}
           {/* } */}
-          {
+          {/* {
             categories.loading == false && categories.err !== null && (
               <Alert variant={'danger'} className='err-msg-custom'>
                 {categories.err}
               </Alert>
             )
-          }
+          } */}
         </div>
       </section>
     </>

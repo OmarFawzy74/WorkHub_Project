@@ -22,6 +22,7 @@ const AddCourse = () => {
         categoryId: "",
         courseTitle: "",
         courseDesc: "",
+        aboutCourse: "",
         courseDuration: "",
         courseLink: "",
         courseCoverImage_url: "",
@@ -106,6 +107,7 @@ const AddCourse = () => {
             categoryId: course.categoryId,
             courseTitle: course.courseTitle,
             courseDesc: course.courseDesc,
+            aboutCourse: course.aboutCourse,
             courseDuration: course.courseDuration,
             courseLink: course.courseLink,
         })
@@ -210,6 +212,16 @@ const AddCourse = () => {
                         />
                     </div>
                     <div className='form-control'>
+                        <h2>About Course</h2>
+                        <input
+                            id='categoryDesc'
+                            required
+                            placeholder='Enter The About Course Description'
+                            // value={category.categoryDesc}
+                            onChange={(e) => setCourse({ ...course, aboutCourse: e.target.value })}
+                        />
+                    </div>
+                    <div className='form-control'>
                         <h2>Course Image</h2>
                         <input id='courseDesc' className='professorImg' required type="file"  ref={coverImage} />
                     </div>
@@ -236,7 +248,7 @@ const AddCourse = () => {
                     <div className='btn-container'>
                         <button type="submit" className='add-button'>Add</button>
 
-                        <Link to={"/category"}>
+                        <Link to={"/manageLearn"}>
                             <button className='cancel-button'>Cancel</button>
                         </Link>
                     </div>

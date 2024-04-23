@@ -59,83 +59,75 @@ function Course() {
         results: null,
         err: null,
         reload: 0,
-      });
-    
-      let { id } = useParams();
-    
-      useEffect(() => {
+    });
+
+    let { id } = useParams();
+
+    useEffect(() => {
         axios
-          .get("http://localhost:3000/api/courses/getCourseById/" + id)
-          .then((resp) => {
-            setCourse({ results: resp.data, loading: false, err: null });
-            // console.log(resp);
-            console.log(resp.data);
-          })
-          .catch((err) => {
-            console.log(err);
-            // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
-          });
-      },[course.reload]);
+            .get("http://localhost:3000/api/courses/getCourseById/" + id)
+            .then((resp) => {
+                setCourse({ results: resp.data.courseData, loading: false, err: null });
+                console.log(resp);
+                console.log(resp.data.courseData);
+            })
+            .catch((err) => {
+                console.log(err);
+                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+            });
+    }, [course.reload]);
 
     return (
         <div className="course">
             <div className="courseContainer">
                 <div className="left">
-                    <div className='breadcrumbsCourse'>
-                        <span className='breadcrumbsCourseFirst'>Courses {'>'}</span> <span className="breadcrumbsCourseSecond">Digital Marketing</span>
-                    </div>
-                    <h1 className='courseName'>{course.results.courseTitle}</h1>
-                    <p className='courseDesc'>Learn the 7 key secrets to being able to sell any product or service online with this in-depth course taught by a world-renowned expert.</p>
-                    <div className="courseInfo">
-                        <div className="stars">
-                            <img src="/img/star.png" alt="" />
-                            <img src="/img/star.png" alt="" />
-                            <img src="/img/star.png" alt="" />
-                            <img src="/img/star.png" alt="" />
-                            <img src="/img/star.png" alt="" />
-                            <span>5</span>
-                        </div>
-                        <img
-                            className="youtubeIcon"
-                            src="/img/youtube.png"
-                        />
-                        <span>10 videos</span>
-                        <img
-                            className="hourIcon"
-                            src="/img/hour.png"
-                        />
-                        <span>1.5 Hours</span>
-                    </div>
-                    {courseContainer?.loading == true &&
-                        <Container>
-                            <div className="ratio ratio-16x9">
-                                <iframe src="https://www.youtube.com/embed/B6CYTV1ZBqU?si=um3-GmPX9rBtfvND" title="YouTube video" allowFullScreen></iframe>
+                    {course.loading == false &&
+                        <>
+                            <div className='breadcrumbsCourse'>
+                                <span className='breadcrumbsCourseFirst'>Courses {'>'}</span> <span className="breadcrumbsCourseSecond">{course.results.categoryId.categoryName}</span>
                             </div>
-                        </Container>
+                            <h1 className='courseName'>{course.results.courseTitle}</h1>
+                            <p className='courseDesc'>{course.results.courseDesc}</p>
+                            <div className="courseInfo">
+                                <img
+                                    className="youtubeIcon"
+                                    src="/img/youtube.png"
+                                />
+                                <span>1 video</span>
+                                <img
+                                    className="hourIcon"
+                                    src="/img/hour.png"
+                                />
+                                <span>{course.results.courseDuration} Minutes</span>
+                            </div>
+                            {courseContainer?.loading == true &&
+                                <Container>
+                                    <div className="ratio ratio-16x9">
+                                        <iframe src={course.results.courseLink} title="YouTube video" allowFullScreen></iframe>
+                                    </div>
+                                </Container>
+                            }
+                            <div className="professor">
+                                <div className="user">
+                                    <img
+                                        src={course.results.proffImage_url}
+                                    />
+                                    <div className="info">
+                                        <span className='professorName'>{course.results.proffName}</span>
+                                        <span className='professorDesc'>{course.results.ProffDesc}</span>
+                                        {/* {user?.role == "client" && (<button value={freelancer.id} onClick={message}>Contact Me</button>)} */}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='aboutCourse'>
+                                <h2 className='aboutCourseHeader'>About This Course</h2>
+                                <p className='aboutCourseDesc'>
+                                    {course.results.courseDesc}
+                                </p>
+                            </div>
+                        </>
                     }
-                    <div className="professor">
-                        <div className="user">
-                            <img
-                                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                                alt=""
-                            />
-                            <div className="info">
-                                <span className='professorName'>By Jon Youshaei</span>
-                                <span className='professorDesc'>World's top marketer by Forbes, Entrepreneur and Inc Magazines; Writer for Time Magazine with best-selling e-courses.</span>
-                                {/* {user?.role == "client" && (<button value={freelancer.id} onClick={message}>Contact Me</button>)} */}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className='aboutCourse'>
-                        <h2 className='aboutCourseHeader'>About This Course</h2>
-                        <p className='aboutCourseDesc'>
-                            Ensuring that a product or service sells well online is not pure luck. It’s about employing proven tactics, tools and templates to make sure that your ad campaign stands the best chance of success. Put an end to the guessing games and learn what it takes to go viral and build a strong customer base in this best-selling course.
-                                <br /><br />
-                            You’ll learn everything from positioning, demand and content creation strategies to audience and competitor research and how to use these skills to make money as a professional freelancer.
-                        </p>
-                    </div>
-
                     <div className='requirement'>
                         <h3 className='requirementHeader'>Requirements</h3>
                         <ul className='requirementDesc'>
@@ -147,27 +139,27 @@ function Course() {
                     <div className='thirdPart'>
                         <h4 className='thirdPartHeader'>What Is Included?</h4>
                         <div className="thirdPartDesc">
-                            <img className='greenCheckImg' src="/img/greenCheckImg.png"/>
+                            <img className='greenCheckImg' src="/img/greenCheckImg.png" />
                             <span>Immediate unlimited access to course materials</span>
                         </div>
                         <div className="thirdPartDesc">
-                            <img className='greenCheckImg' src="/img/greenCheckImg.png"/>
+                            <img className='greenCheckImg' src="/img/greenCheckImg.png" />
                             <span>30-day money-back guarantee</span>
                         </div>
                         <div className="thirdPartDesc">
-                            <img className='greenCheckImg' src="/img/greenCheckImg.png"/>
+                            <img className='greenCheckImg' src="/img/greenCheckImg.png" />
                             <span>Exercises and quizzes to help you put theory into practice to course materials</span>
                         </div>
                         <div className="thirdPartDesc">
-                            <img className='greenCheckImg' src="/img/greenCheckImg.png"/>
+                            <img className='greenCheckImg' src="/img/greenCheckImg.png" />
                             <span>English Closed Captions</span>
                         </div>
                         <div className="thirdPartDesc">
-                            <img className='greenCheckImg' src="/img/greenCheckImg.png"/>
+                            <img className='greenCheckImg' src="/img/greenCheckImg.png" />
                             <span>Suitable for mobile or desktop</span>
                         </div>
                     </div>
-                    <div className="reviews">
+                    {/* <div className="reviews">
                         <h2>Reviews</h2>
                         <div className="item">
                             <div className="user">
@@ -294,7 +286,7 @@ function Course() {
                                 <span>No</span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="right">
                     <div className="features">
@@ -318,9 +310,9 @@ function Course() {
                         <button className='deleteBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Delete</button>
                     </div>
                     } */}
-                    {user && user?.role!== "admin" && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
+                    {user && user?.role !== "admin" && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
                     {!user && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
-                    {user && user?.role== "admin" &&
+                    {user && user?.role == "admin" &&
                         <div className='adminBtnsContainer'>
                             <button className='updateBtn'>Update</button>
                             <button className='deleteBtn'>Delete</button>
