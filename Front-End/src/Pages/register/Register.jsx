@@ -102,8 +102,10 @@ function Register() {
         );
         console.log(resp.data.message);
         console.log(resp.data.userData);
+        if(user?.role == "freelancer") {
           resp.data.userData.skills = processData(resp.data.userData.skills);
           resp.data.userData.languages = processData(resp.data.userData.languages);
+        }
         // const processedSkills = resp.data.userData.skills;
         // const processedLanguages = resp.data.userData.languages;
         // setUser({ skills: processedSkills, languages: processedLanguages});
@@ -125,7 +127,7 @@ function Register() {
   // };
   // console.log(user);
 
-  const handleSeller = (e) => {
+  const handleRole = (e) => {
     console.log(e.target.checked);
     if (e.target.checked == true) {
       setUser((prev) => {
@@ -137,8 +139,6 @@ function Register() {
       });
     }
   };
-
-
 
 
   const handleSkillsChange = (event, newValue) => {
@@ -229,7 +229,7 @@ function Register() {
             <div className="toggle">
               <label htmlFor="">Activate the seller account</label>
               <label className="switch">
-                <input type="checkbox" onChange={handleSeller} />
+                <input type="checkbox" onChange={handleRole} />
                 <span className="slider round"></span>
               </label>
             </div>

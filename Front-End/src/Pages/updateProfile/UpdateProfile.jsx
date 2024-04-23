@@ -31,6 +31,18 @@ function UpdateProfile() {
         console.log(selectedLanguagesOptions);
     };
 
+
+    const processData = (data) => {
+        // console.log(user.skills);
+    
+        // const data = skillsData;
+        console.log(data);
+        const processedData = data[0].split(",");
+        console.log(processedData);
+        // setSelectedSkillsOptions(processedData);
+        return processedData;
+      }
+
     const submit = () => {
         $(".MuiIconButton-sizeMedium").click();
     }
@@ -46,7 +58,6 @@ function UpdateProfile() {
         loading: false,
         name: "",
         email: "",
-        image: "",
         country: "",
         desc: "",
         phoneNumber: "",
@@ -60,20 +71,23 @@ function UpdateProfile() {
     const updateUserData = async (e) => {
         e.preventDefault();
 
-        setUser({ ...user, loading: true, err: null });
+        setUser({ loading: true, err: null });
+
+        console.log(user);
+
         // const url = await upload(file);
 
         // console.log(getAuthUser().id);
 
         const formData = new FormData();
 
-        formData.append("name", user.name);
-        formData.append("email", user.email);
+        formData.append("name", user?.name);
+        formData.append("email", user?.email);
         // formData.append("password", user.password);
-        formData.append("country", user.country);
-        formData.append("image", image.current.files[0]);
-        formData.append("phoneNumber", user.phoneNumber);
-        formData.append("desc", user.desc);
+        formData.append("country", user?.country);
+        formData.append("image", image?.current.files[0]);
+        formData.append("phoneNumber", user?.phoneNumber);
+        formData.append("desc", user?.desc);
         formData.append("skills", selectedSkillsOptions);
         formData.append("languages", selectedLanguagesOptions);
 
@@ -84,38 +98,42 @@ function UpdateProfile() {
                 },
             })
             .then((resp) => {
-                setUser({
-                    ...user,
-                    loading: false,
-                    err: null,
-                    name: "",
-                    email: "",
-                    password: "",
-                    image: "",
-                    country: "",
-                    role: "client",
-                    desc: "",
-                    phoneNumber: "",
-                });
-                image.current.value = null;
+                // setUser({
+                //     ...user,
+                //     loading: false,
+                //     err: null,
+                //     name: "",
+                //     email: "",
+                //     password: "",
+                //     country: "",
+                //     role: "client",
+                //     desc: "",
+                //     phoneNumber: "",
+                // });
+                // image.current.value = null;
                 swal(resp.data.msg, "", "success");
                 console.log(resp.data);
+                console.log(resp.data.freelancerNewData);
+                if(resp.data.freelancerNewData.role == "freelancer") {
+                    resp.data.freelancerNewData.skills = processData(resp.data.freelancerNewData.skills);
+                    resp.data.freelancerNewData.languages = processData(resp.data.freelancerNewData.languages);
+                }
+                setAuthUser(resp.data.freelancerNewData);
             })
             .catch((errors) => {
-                setUser({
-                    ...user,
-                    loading: false,
-                    err: errors.response.data.errors,
-                    name: "",
-                    email: "",
-                    password: "",
-                    image: "",
-                    country: "",
-                    role: "client",
-                    desc: "",
-                    phoneNumber: "",
-                });
-                image.current.value = null;
+                // setUser({
+                //     ...user,
+                //     loading: false,
+                //     err: errors.response.data.errors,
+                //     name: "",
+                //     email: "",
+                //     password: "",
+                //     country: "",
+                //     role: "client",
+                //     desc: "",
+                //     phoneNumber: "",
+                // });
+                // image.current.value = null;
                 // swal(medicine.err.msg,"","error");
                 console.log(errors);
             });
@@ -191,7 +209,6 @@ function UpdateProfile() {
     // };
 
 
-
     return (
         <section className='updateProfilePage'>
             <div className="updateProfileContainer">
@@ -206,7 +223,7 @@ function UpdateProfile() {
                                 type="text"
                                 // required
                                 placeholder="Name"
-                                value={user.name}
+                                value={user?.name}
                                 onChange={(e) =>
                                     setUser({ ...user, name: e.target.value })
                                 }
@@ -214,7 +231,7 @@ function UpdateProfile() {
                             <label htmlFor="">Email</label>
                             <input
                                 className="updateProfileInput"
-                                value={user.email}
+                                value={user?.email}
                                 name="email"
                                 type="email"
                                 placeholder="Email"
@@ -230,7 +247,7 @@ function UpdateProfile() {
                                 name="country"
                                 type="text"
                                 // required
-                                value={user.country}
+                                value={user?.country}
                                 onChange={(e) =>
                                     setUser({ ...user, country: e.target.value })
                                 }>
@@ -256,7 +273,7 @@ function UpdateProfile() {
                                         name="phoneNumber"
                                         type="text"
                                         placeholder="+20 1090559824"
-                                        value={user.phoneNumber}
+                                        value={user?.phoneNumber}
                                         // required
                                         onChange={(e) =>
                                             setUser({ ...user, phoneNumber: e.target.value })
@@ -269,7 +286,7 @@ function UpdateProfile() {
                                         id=""
                                         cols="30"
                                         rows="10"
-                                        value={user.desc}
+                                        value={user?.desc}
                                         // required
                                         onChange={(e) =>
                                             setUser({ ...user, desc: e.target.value })
@@ -285,7 +302,9 @@ function UpdateProfile() {
                                             id="tags-outlined"
                                             options={top100Skills}
                                             getOptionLabel={(option) => option}
-                                            defaultValue={[users.skills.map((skill) => skill)]}
+                                            value={selectedSkillsOptions}
+                                            // defaultValue={[users.skills.map((skill) => skill)]}
+                                            defaultValue={users?.skills}
                                             onChange={handleSkillsChange}
                                             // onInputChange={handleInputChange}
                                             // onClose={handleCloseAutocomplete}
@@ -305,6 +324,7 @@ function UpdateProfile() {
                                             options={top100Languages}
                                             getOptionLabel={(option) => option}
                                             value={selectedLanguagesOptions}
+                                            defaultValue={users?.languages}
                                             onChange={handleLanguagesChange}
                                             // onInputChange={handleInputChange}
                                             // onClose={handleCloseAutocomplete}
