@@ -94,9 +94,9 @@ const Navbar = () => {
     axios.get("http://localhost:3000/api/categories/getAllCategories")
       .then(
         resp => {
-          console.log(resp.data);
+          // console.log(resp.data);
           setCategories({ results: resp.data, loading: false, err: null });
-          console.log(resp);
+          // console.log(resp);
         }
       ).catch(err => {
         setCategories({ ...categories, loading: false, err: err.response.data.msg });

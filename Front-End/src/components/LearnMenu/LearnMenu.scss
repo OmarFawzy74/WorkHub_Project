@@ -1,7 +1,7 @@
 .learnMenuContainer {
     
     .learnMenu {
-        border-bottom: 1px solid #1DBF73;
+        border-bottom: 1px solid #d7d7d7;
         position: relative;
         left: 105px;
         width: 1300px;
@@ -11,6 +11,7 @@
         color: gray;
         background-color: #fff;
         padding: 0 30px;
+        // z-index: 999999;
     }
 
     .learnMenuLink {
@@ -20,9 +21,11 @@
         font-size: 16px;
         padding-top: 8px;
         padding-bottom: 8px;
+        // z-index: 999999;
     }
 
     .learnMenuLink:hover {
+      // z-index: 9999999;
       border-bottom: 4px solid #1dbf73;
       // transition: none;
   }
@@ -32,8 +35,10 @@
         // margin-left: 50px;
         display: grid;
         grid-template-columns: auto auto auto auto;
+        justify-content: start;
+        column-gap: 70px;
         padding: 50px 100px;
-        row-gap: 70px;
+        row-gap: 90px;
       }
 
       .learnCards {
@@ -41,8 +46,9 @@
         margin-left: 280px;
         display: grid;
         grid-template-columns: auto auto auto ;
+        justify-content: start;
         padding: 50px 100px;
-        column-gap: 60px;
+        column-gap: 70px;
         row-gap: 90px;
       }
 }

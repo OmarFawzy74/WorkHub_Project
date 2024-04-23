@@ -25,8 +25,9 @@ const LearnMenu = () => {
         axios
             .get("http://localhost:3000/api/courses/getAllCourses")
             .then((resp) => {
-                setCourses({ results: resp.data.allCourses, loading: false, err: null });
-                console.log(resp.data.allCourses);
+                setCourses({ results: resp.data.modifiedCourses, loading: false, err: null });
+                console.log(resp.data.modifiedCourses);
+                console.log(resp);
             })
             .catch((err) => {
                 console.log(err);
@@ -34,20 +35,20 @@ const LearnMenu = () => {
             });
     }, [courses.reload]);
 
-    const [sort, setSort] = useState("sales");
-    const [open, setOpen] = useState(false);
-    const minRef = useRef();
-    const maxRef = useRef();
+    // const [sort, setSort] = useState("sales");
+    // const [open, setOpen] = useState(false);
+    // const minRef = useRef();
+    // const maxRef = useRef();
 
-    const reSort = (type) => {
-        setSort(type);
-        setOpen(false);
-    };
+    // const reSort = (type) => {
+    //     setSort(type);
+    //     setOpen(false);
+    // };
 
-    const apply = () => {
-        console.log(minRef.current.value)
-        console.log(maxRef.current.value)
-    }
+    // const apply = () => {
+    //     console.log(minRef.current.value)
+    //     console.log(maxRef.current.value)
+    // }
 
     const [categories, setCategories] = useState({
         loading: true,
@@ -61,9 +62,9 @@ const LearnMenu = () => {
         axios.get("http://localhost:3000/api/categories/getAllCategories")
             .then(
                 resp => {
-                    console.log(resp.data);
+                    // console.log(resp.data);
                     setCategories({ results: resp.data, loading: false, err: null });
-                    console.log(resp);
+                    // console.log(resp);
                 }
             ).catch(err => {
                 setCategories({ ...categories, loading: false, err: err.response.data.msg });
@@ -72,7 +73,7 @@ const LearnMenu = () => {
     }, [categories.reload]);
 
 
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
 
     return (
         <div className='learnMenuContainer'>

@@ -15,7 +15,18 @@ export const getAllCourses = async (req, res) => {
             return res.status(404).json({ msg: "No Courses Found!" });
         }
 
-        res.status(200).json({ allCourses });
+        const modifiedCourses = allCourses.map((course) => {
+            const modifiedCourse = { ...course._doc }; // Create a copy of the service object
+            // modifiedCourse.courseCoverImage_url = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
+            // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
+            // modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
+            //     return "http://" + req.hostname + ":3000/" + image_url;
+            // });
+            return modifiedCourse;
+        });
+
+        res.status(200).json({ modifiedCourses });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });
@@ -84,8 +95,6 @@ export const updateCourse = async (req, res) => {
   
     const updatedcourse = await course.findByIdAndUpdate(courseId, req.body, { new: true });
     return res.status(200).json({ msg: "courses has been updated successfuly.", updatedcourse });
-
-
 }
 
 // Delete courses

@@ -49,7 +49,7 @@ function Gigs() {
     console.log(maxRef.current.value)
   }
 
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
 
   const [categories, setCategories] = useState({
     loading: true,

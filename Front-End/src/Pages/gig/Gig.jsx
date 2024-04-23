@@ -328,8 +328,8 @@ function Gig() {
               </div>
             ))}
           </div>
-          {user.role!=="freelancer" && <button value={service.results.freelancerId._id} onClick={requestOrder}>Request Order</button>}
-          {service.results.freelancerId._id == user._id && <button onClick={requestOrder}>Update</button>}
+          {user && user.role!=="freelancer" && <button value={service.results.freelancerId._id} onClick={requestOrder}>Request Order</button>}
+          {user && service.results.freelancerId._id == user._id && <button onClick={requestOrder}>Update</button>}
         </div>
         </>
       }

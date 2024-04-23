@@ -287,13 +287,22 @@ function Course() {
                             <span>Learn from hand-vetted instructors, experts in their field</span>
                         </div>
                     </div>
-                    {user.role!== "admin" ? <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button> 
+                    {/* {user && user.role!== "admin" ? <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button> 
                     :
                     <div className='adminBtnsContainer'>
                         <button className='updateBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Update</button>
                         <button className='deleteBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Delete</button>
                     </div>
+                    } */}
+                    {user && user?.role!== "admin" && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
+                    {!user && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
+                    {user && user?.role== "admin" &&
+                        <div className='adminBtnsContainer'>
+                            <button className='updateBtn'>Update</button>
+                            <button className='deleteBtn'>Delete</button>
+                        </div>
                     }
+
                 </div>
             </div>
         </div>

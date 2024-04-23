@@ -33,8 +33,6 @@ function Register() {
     phoneNumber: "",
   });
 
-<<<<<<< HEAD
-=======
   // const processData = (data) => {
   //   // console.log(user.skills);
   //   // const data = user.skills;
@@ -44,7 +42,6 @@ function Register() {
   //   // return processedData;
   //   // console.log(skills.slice(0,1));
   // }
->>>>>>> e16c6e5dc4ceef5cd0c905dea79b7382f7eb3129
 
   const navigate = useNavigate();
 
@@ -88,8 +85,8 @@ function Register() {
     formData.append("image", image.current.files[0]);
     formData.append("phoneNumber", user.phoneNumber);
     formData.append("desc", user.desc);
-    formData.append("skills", user.skills);
-    formData.append("languages", user.languages);
+    formData.append("skills", selectedSkillsOptions);
+    formData.append("languages", selectedLanguagesOptions);
 
     axios
       .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
@@ -105,10 +102,8 @@ function Register() {
         );
         console.log(resp.data.message);
         console.log(resp.data.userData);
-        if(user.role == "freelancer") {
           resp.data.userData.skills = processData(resp.data.userData.skills);
           resp.data.userData.languages = processData(resp.data.userData.languages);
-        }
         // const processedSkills = resp.data.userData.skills;
         // const processedLanguages = resp.data.userData.languages;
         // setUser({ skills: processedSkills, languages: processedLanguages});
