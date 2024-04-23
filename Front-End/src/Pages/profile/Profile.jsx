@@ -75,7 +75,7 @@ const Profile = () => {
     const [skillsArrayLength, setSkillsArrayLength] = useState(5);
 
     const showMoreSkills = () => {
-        setSkillsArrayLength(user.skills.length)
+        setSkillsArrayLength(user?.skills.length)
         // console.log(skillsArrayLength);
     }
 
@@ -118,7 +118,7 @@ const Profile = () => {
         axios
             .post("http://localhost:3000/api/conversations/addConversation", {
                 freelancer: freelancerId,
-                client: user._id
+                client: user?._id
             })
             .then((resp) => {
                 const conversationId = resp.data.newConversationData[0]._id;
@@ -165,13 +165,25 @@ const Profile = () => {
             <div className="profileContainer">
                 <div className="myServiceHeader"><h1>My Profile</h1></div>
                 <div className="left">
+<<<<<<< HEAD
                     {freelancer.loading == false &&
                         <>
                             <div className="profileUser">
+=======
+                    <div className="profileUser">
+                        <img
+                            src={user?.image_url}
+                            alt=""
+                        />
+                        <div className="info">
+                            <span className='myName'>{user?.name}</span>
+                            <div className="userInfo">
+>>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
                                 <img
                                     src={freelancer?.results.image_url}
                                     alt=""
                                 />
+<<<<<<< HEAD
                                 <div className="info">
                                     <span className='myName'>{freelancer?.results.name}</span>
                                     <div className="userInfo">
@@ -216,8 +228,46 @@ const Profile = () => {
                                         {user && user?.role == "freelancer" && user._id == id && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
                                     </div>
                                 </div>
+=======
+                                <span>{user?.country}</span>
+
+                                {user && user?.role == "freelancer" &&
+                                    <>
+                                        <img
+                                            className="languageIcon"
+                                            src="/img/profileLanguage.png"
+                                        />
+                                        <span className="languageContainer">{user?.languages.map((language,index) => (
+                                        <>
+                                                {language} {index !== user?.languages.length - 1 ? ", " : null}
+                                        </> 
+                                        ))}</span>
+                                    </>
+                                }
+                            </div>
+                        </div>
+                        <div className="rightContainer">
+                            {/* <div className="option">
+                            <Link to={"/updateProfile"}><button><img src="/img/profileOption.png" />Edit Profile</button></Link>
+                        </div> */}
+                            <div className="right">
+                                <div className="rightFeatures">
+                                    <div className="rightProfileUser">
+                                        <img
+                                            src={user?.image_url}
+                                            alt=""
+                                        />
+                                        <div className="rightInfo">
+                                            <span className='rightMyName'>{user?.name}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {user && user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                {pathname == "/profile" && user && user?.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
+>>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
                             </div>
 
+<<<<<<< HEAD
                             {user && user?.role == "freelancer" &&
                                 <div className='aboutUser'>
                                     <h2 className='aboutUserHeader'>About me</h2>
@@ -240,6 +290,29 @@ const Profile = () => {
                                 </div>
                             }
                         </>
+=======
+                    {user && user?.role == "freelancer" &&
+                        <div className='aboutUser'>
+                            <h2 className='aboutUserHeader'>About me</h2>
+                            <div className='aboutUserDesc'>
+                                <p>
+                                    {user?.desc}
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+                    {user && user?.role == "freelancer" &&
+                        <div className='skills'>
+                            <h2 className='skillsHeader'>Skills</h2>
+                            <ul className='skillsDesc'>
+                                {user?.skills.slice(0, skillsArrayLength).map((skill) => (
+                                    <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                                ))}
+                            </ul>
+                            {user?.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user?.skills.length - 5}</Link>}
+                        </div>
+>>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
                     }
                 </div>
 
