@@ -76,6 +76,7 @@ function Gigs() {
   return (
     <div className={pathname !== "/adminGigs" ? "gigs" : "adminGigs"}>
       <div className={sidebarStatus() ? "gigsContainer" : "allGigsContainer"}>
+        <span className="marketplaceTitle">MarketPlace</span>
         <div className="breadcrumbs">
           {user == undefined ? <Link className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'}</Link> : null}
         </div>

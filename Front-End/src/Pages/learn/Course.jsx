@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Course.scss"
 import Slider from '../../Pages/gig/Slider';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
 import { getAuthUser } from "../../localStorage/storage";
@@ -53,6 +53,30 @@ function Course() {
             });
     }
 
+
+    const [course, setCourse] = useState({
+        loading: true,
+        results: null,
+        err: null,
+        reload: 0,
+      });
+    
+      let { id } = useParams();
+    
+      useEffect(() => {
+        axios
+          .get("http://localhost:3000/api/courses/getCourseById/" + id)
+          .then((resp) => {
+            setCourse({ results: resp.data, loading: false, err: null });
+            // console.log(resp);
+            console.log(resp.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+          });
+      },[course.reload]);
+
     return (
         <div className="course">
             <div className="courseContainer">
@@ -60,7 +84,7 @@ function Course() {
                     <div className='breadcrumbsCourse'>
                         <span className='breadcrumbsCourseFirst'>Courses {'>'}</span> <span className="breadcrumbsCourseSecond">Digital Marketing</span>
                     </div>
-                    <h1 className='courseName'>Viral Marketing: 7 Secrets To Promote Any Product</h1>
+                    <h1 className='courseName'>{course.results.courseTitle}</h1>
                     <p className='courseDesc'>Learn the 7 key secrets to being able to sell any product or service online with this in-depth course taught by a world-renowned expert.</p>
                     <div className="courseInfo">
                         <div className="stars">

@@ -153,8 +153,6 @@ function UpdateProfile() {
             });
     };
 
-
-
     useEffect(() => {
         setUser({ ...user, loading: true });
         axios
