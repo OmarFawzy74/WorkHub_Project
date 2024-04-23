@@ -9,6 +9,7 @@
     gap: 15px;
     margin-right: 350px;
 
+
     .breadcrumbs{
         display: flex;
 
@@ -147,6 +148,11 @@
   gap: 15px;
   margin-left: 100px;
 
+  .marketplaceTitle{
+    margin-left: 100px;
+    position: relative;
+    left: 100px;
+  }
 
   .breadcrumbs{
     display: flex;
@@ -291,6 +297,14 @@
       flex-direction: column;
       gap: 15px;
       margin-right: 350px;
+
+      .marketplaceTitle{
+        margin-left: 580px;
+        font-weight: 500;
+        font-size: 38px;
+        color: #248357;
+        margin-bottom: 15px;
+      }
 
       .breadcrumbs{
           display: flex;

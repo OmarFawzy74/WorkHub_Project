@@ -11,7 +11,7 @@ const GigCard = ({ item }) => {
 
   return (
     <div className="gigCardContainer">
-        {pathname!=="/gigs" &&
+      {pathname !== "/gigs" &&
         <div className="gigCardOptions" onClick={() => setOpenOption(!openOption)}>
           <img src="/img/more.png" />
           {openOption && <div className="exploreOptions">
@@ -21,32 +21,34 @@ const GigCard = ({ item }) => {
             </>
           </div>}
         </div>}
+      <div className="gigCard">
         <Link to={"/gig/" + item._id} className="gigLink">
-          <div className="gigCard">
-            <img className="gigImg" src={item.serviceCover_url} />
-            <div className="gigInfo">
-              <div className="user">
-                <div class={pathname!=="/gigs" ? "card-badge" : "card-badge-2nd"}>WorkHub service</div>
-                <img src={item.freelancerId.image_url} />
-                <span>{item.freelancerId.name}</span>
-              </div>
-              <p>{item.serviceTitle}</p>
-              <div className="star">
-                <img src="./img/star.png" alt="" />
-                <span>{item.serviceShortTitle}</span>
-              </div>
-            </div>
-            <hr />
-            <div className="detail">
-              <div className="price">
-                <h2>
-                  ${item.servicePrice}
-                </h2>
-              </div>
-            </div>
-          </div>
+          <img className="gigImg" src={item.serviceCover_url} />
         </Link>
+        <div className="gigInfo">
+          <div className="user">
+            <div class={pathname !== "/gigs" ? "card-badge" : "card-badge-2nd"}>WorkHub service</div>
+            <Link to={"/profile"} className="freelancerLink">
+                <img src={item.freelancerId.image_url} />
+                <span className="freelancerName">{item.freelancerId.name}</span>
+            </Link>
+          </div>
+          <p>{item.serviceTitle}</p>
+          <div className="star">
+            <img src="./img/star.png" alt="" />
+            <span>{item.serviceShortTitle}</span>
+          </div>
+        </div>
+        <hr />
+        <div className="detail">
+          <div className="price">
+            <h2>
+              ${item.servicePrice}
+            </h2>
+          </div>
+        </div>
       </div>
+    </div>
   );
 };
 

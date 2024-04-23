@@ -1,15 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Footer.scss";
 import { Link } from 'react-router-dom'
+import axios from "axios";
 
 function Footer() {
+
+  const [categories, setCategories] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+
+  useEffect(() => {
+    setCategories({ ...categories, loading: true })
+    axios.get("http://localhost:3000/api/categories/getAllCategories")
+      .then(
+        resp => {
+          // console.log(resp.data);
+          setCategories({ results: resp.data, loading: false, err: null });
+          // console.log(resp);
+        }
+      ).catch(err => {
+        setCategories({ ...categories, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [categories.reload]);
+
+
+
+
   return (
     <div className="footer">
       <div className="footerContainer">
         <div className="top">
           <div className="item">
             <h2>Categories</h2>
-            <span>Graphics & Design</span>
+            {categories.loading == false && categories.err == null && (
+              categories.results.map((category => (
+                <>
+                  <Link className='footerCategories' to="/gigs/:category">
+                    <div className='category'>{category.categoryName}</div>
+                  </Link>
+                </>
+
+              )))
+            )
+            }
+            {/* <span>Graphics & Design</span>
             <span>Digital Marketing</span>
             <span>Writing & Translation</span>
             <span>Video & Animation</span>
@@ -19,42 +57,24 @@ function Footer() {
             <span>Business</span>
             <span>Lifestyle</span>
             <span>Photography</span>
-            <span>Sitemap</span>
+            <span>Sitemap</span> */}
           </div>
           <div className="item">
             <h2>About</h2>
-            <span>Press & News</span>
-            <span>Partnerships</span>
             <Link className= 'link' to="/privacyPolicy"><span>Privacy Policy</span></Link>
-            <span>Terms of Service</span>
-            <span>Intellectual Property Claims</span>
-            <span>Investor Relations</span>
             <Link className= 'link' to="/contactUs"><span>Contact Us</span></Link>
           </div>
           <div className="item">
             <h2>Support</h2>
-            <span>Help & Support</span>
-            <span>Trust & Safety</span>
             <span>Selling on WorkHub</span>
             <span>Buying on WorkHub</span>
           </div>
           <div className="item">
             <h2>Community</h2>
-            <span>Customer Success Stories</span>
             <Link className= 'link' to="/community"><span>Community hub</span></Link>
-            <span>Forum</span>
-            <span>Events</span>
-            <span>Blog</span>
-            <span>Influencers</span>
-            <span>Affiliates</span>
-            <span>Podcast</span>
-            <span>Invite a Friend</span>
-            <span>Become a Seller</span>
-            <span>Community Standards</span>
           </div>
           <div className="item">
-            <h2>More From WorkHub</h2>
-            <span>WorkHub Guides</span>
+            <h2>Learn</h2>
             <Link className= 'link' to="/learn"><span>Learn</span></Link>
           </div>
         </div>
@@ -66,12 +86,12 @@ function Footer() {
           </div>
           <div className="right">
             <div className="social">
-              <img src="/img/tiktok.png" alt="" /> 
-              <img src="/img/instagram.png" alt="" />
-              <img src="/img/linkedin.png" alt="" />
-              <img src="/img/facebook.png" alt="" />
-              <img src="/img/pinterest.png" alt="" />
-              <img src="/img/twitter.png" alt="" />
+              <Link><img src="/img/tiktok.png" alt="" /> </Link>
+              <Link><img src="/img/instagram.png" alt="" /></Link>
+              <Link><img src="/img/linkedin.png" alt="" /></Link>
+              <Link><img src="/img/facebook.png" alt="" /></Link>
+              <Link><img src="/img/pinterest.png" alt="" /></Link>
+              <Link><img src="/img/twitter.png" alt="" /></Link>
             </div>
             <div className="link">
               <img src="/img/language.png" alt="" />

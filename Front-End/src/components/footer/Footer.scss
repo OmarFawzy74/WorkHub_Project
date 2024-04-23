@@ -21,9 +21,17 @@
           display: flex;
           flex-direction: column;
           gap: 20px;
+
+          .footerCategories{
+            text-decoration: none;
+            color: #555;
+            font-weight: 400;
+            font-size: 16px;
+          }
+
           h2 {
             font-size: 16px;
-            color: #555;
+            color: #000000;
           }
           span {
             cursor: pointer;

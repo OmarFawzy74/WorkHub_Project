@@ -164,7 +164,7 @@ const Navbar = () => {
           <div className="search">
             <div className="searchInput">
               <img src="./img/search.png" alt="" />
-              <input type="text" placeholder='What service are you looking  for today?' />
+              <input type="text" placeholder='What service are you looking for today?' />
             </div>
             <button>Search</button>
           </div>
