@@ -73,8 +73,6 @@ function UpdateProfile() {
 
         setUser({ loading: true, err: null });
 
-        console.log(user);
-
         // const url = await upload(file);
 
         // console.log(getAuthUser().id);
@@ -88,8 +86,23 @@ function UpdateProfile() {
         formData.append("image", image?.current.files[0]);
         formData.append("phoneNumber", user?.phoneNumber);
         formData.append("desc", user?.desc);
-        formData.append("skills", selectedSkillsOptions);
-        formData.append("languages", selectedLanguagesOptions);
+        
+        if(selectedSkillsOptions == undefined) {
+            formData.append("skills", user?.skills);
+        }
+        else {
+            formData.append("skills", selectedSkillsOptions);
+        }
+
+        if(selectedLanguagesOptions == undefined) {
+            formData.append("languages", user?.languages);
+        }
+        else {
+            formData.append("languages", selectedLanguagesOptions);
+        }
+
+        // console.log(selectedSkillsOptions);
+        // console.log(selectedLanguagesOptions);
 
         axios
             .put("http://localhost:3000/api/freelancers/updateFreelancerInfo/" + users._id, formData, {
@@ -119,6 +132,7 @@ function UpdateProfile() {
                     resp.data.freelancerNewData.languages = processData(resp.data.freelancerNewData.languages);
                 }
                 setAuthUser(resp.data.freelancerNewData);
+                navigate("/profile");
             })
             .catch((errors) => {
                 // setUser({
@@ -159,6 +173,14 @@ function UpdateProfile() {
               loading: false,
               err: null,
             });
+
+            // selectedSkillsOptions = resp.data[0].skills;
+            // selectedLanguagesOptions = resp.data[0].languages;
+
+            // if(users?.role == "freelancer") {
+            //     selectedSkillsOptions = resp.data[0].skills;
+            //     selectedLanguagesOptions = resp.data[0].languages;
+            // }
             // skillsData = resp.data[0].skills;
             // processSkills();
             console.log(users.skills);

@@ -9,7 +9,7 @@ import course from "../../../DB/models/course_model.js";
 // Get All courses
 export const getAllCourses = async (req, res) => {
     try {
-        const allCourses = await course.find();
+        const allCourses = await course.find().populate("categoryId");
 
         if (allCourses.length == 0) {
             return res.status(404).json({ msg: "No Courses Found!" });
@@ -20,6 +20,8 @@ export const getAllCourses = async (req, res) => {
             // modifiedCourse.courseCoverImage_url = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
             // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
             modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            // modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
             // modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
             //     return "http://" + req.hostname + ":3000/" + image_url;
             // });
@@ -36,11 +38,13 @@ export const getAllCourses = async (req, res) => {
 export const getCourseById = async (req, res) => {
     try {
         const courseId = req.params.id;
-        const courseData = await course.findById(courseId);
+        const courseData = await course.findById(courseId).populate("categoryId");
 
         if (!courseData) {
             return res.status(404).json({ msg: "No Courses Found!" });
         }
+
+        courseData.proffImage_url = "http://" + req.hostname + ":3000/" + courseData.proffImage_url;
 
         res.status(200).json({ courseData });
     } catch (error) {

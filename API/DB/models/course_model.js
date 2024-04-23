@@ -36,7 +36,11 @@ const courseSchema = new Schema ({
     courseLink: {
         type: String,
         required: true,
-    }
+    },
+    aboutCourse: {
+        type: String,
+        required: true,
+    },
 },{
     timestamps: true
 });

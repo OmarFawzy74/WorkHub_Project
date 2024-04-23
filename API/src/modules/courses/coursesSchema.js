@@ -7,7 +7,8 @@ export const CoursesSchema = Joi.object({
     courseDuration: Joi.string().required(),
     proffName: Joi.string().required(),
     ProffDesc: Joi.string().required(),
-    courseLink: Joi.string().required()
+    courseLink: Joi.string().required(),
+    aboutCourse: Joi.string().required()
 });
 
 

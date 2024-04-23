@@ -67,10 +67,10 @@ export const updateFreelancerInfo = async (req, res) => {
       let update;
       console.log(req);
       if(!req.file) {
-        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country } }
+        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country, skills: req.body.skills, languages: req.body.languages } }
       }
       else {
-        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country, image_url: req.file.filename } }
+        update = { $set: { name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country, image_url: req.file.filename, skills: req.body.skills, languages: req.body.languages} }
       }
 
       const freelancerId = req.params.id;
