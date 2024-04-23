@@ -138,15 +138,20 @@ const Profile = () => {
                                     src="/img/location.png"
                                 />
                                 <span>{user.country}</span>
-                                <img
-                                    className="languageIcon"
-                                    src="/img/profileLanguage.png"
-                                />
-                                <span className="languageContainer">{user.languages.map((language,index) => (
-                                   <>
-                                        {language} {index !== user.languages.length - 1 ? ", " : null}
-                                   </> 
-                                ))}</span>
+
+                                {user && user?.role == "freelancer" &&
+                                    <>
+                                        <img
+                                            className="languageIcon"
+                                            src="/img/profileLanguage.png"
+                                        />
+                                        <span className="languageContainer">{user.languages.map((language,index) => (
+                                        <>
+                                                {language} {index !== user.languages.length - 1 ? ", " : null}
+                                        </> 
+                                        ))}</span>
+                                    </>
+                                }
                             </div>
                         </div>
                         <div className="rightContainer">
@@ -170,40 +175,47 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='aboutUser'>
-                        <h2 className='aboutUserHeader'>About me</h2>
-                        <div className='aboutUserDesc'>
-                            <p>
-                                {user.desc}
-                            </p>
+
+                    {user && user?.role == "freelancer" &&
+                        <div className='aboutUser'>
+                            <h2 className='aboutUserHeader'>About me</h2>
+                            <div className='aboutUserDesc'>
+                                <p>
+                                    {user.desc}
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+                    {user && user?.role == "freelancer" &&
+                        <div className='skills'>
+                            <h2 className='skillsHeader'>Skills</h2>
+                            <ul className='skillsDesc'>
+                                {user.skills.slice(0, skillsArrayLength).map((skill) => (
+                                    <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                                ))}
+                            </ul>
+                            {user.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user.skills.length - 5}</Link>}
+                        </div>
+                    }
+                </div>
+                
+                {user && user?.role == "freelancer" &&
+                    <div className="myServiceSection">
+                        <div className="myServiceHeader"><h2>My Services</h2></div>
+                        <div className="myServiceGigsCards">
+                            {services.loading == false &&
+                                services.err == null &&
+                                services.results &&
+                                services.results.length > 0 &&
+                                services.results.map((service) => (
+                                    <GigCard key={service._id} item={service} />
+                                ))}
                         </div>
                     </div>
+                }
 
-                    <div className='skills'>
-                        <h2 className='skillsHeader'>Skills</h2>
-                        <ul className='skillsDesc'>
-                            {user.skills.slice(0, skillsArrayLength).map((skill) => (
-                                <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
-                            ))}
-                        </ul>
-                        {user.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user.skills.length - 5}</Link>}
-                    </div>
-                </div>
-
-                <div className="myServiceSection">
-                    <div className="myServiceHeader"><h2>My Services</h2></div>
-                    <div className="myServiceGigsCards">
-                        {services.loading == false &&
-                            services.err == null &&
-                            services.results &&
-                            services.results.length > 0 &&
-                            services.results.map((service) => (
-                                <GigCard key={service._id} item={service} />
-                            ))}
-                    </div>
-                </div>
-
-                {services.err != null && services.loading == false && services.results == null &&
+                {services.err != null && services.loading == false && services.results == null && user && user?.role == "freelancer" &&
                     <div>
                         <Alert severity="error">{services.err}</Alert>
                     </div>

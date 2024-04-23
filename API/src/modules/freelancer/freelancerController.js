@@ -92,7 +92,10 @@ export const updateFreelancerInfo = async (req, res) => {
               const filter = { _id: freelancerId };
             //   const update = { $set: { name: req.body.name, email: req.body.email, image_url: req.body.image_url, phoneNumber: req.body.phoneNumber, desc: req.body.desc, country: req.body.country } }
               await FreelancerModel.updateOne(filter, update);
-              return res.status(200).json({ msg: "Freelancer has been updated successfuly." });
+
+              const freelancerNewData = await FreelancerModel.findById(freelancerId);
+              freelancerNewData.image_url = "http://" + req.hostname + ":3000/" + freelancerNewData.image_url;
+              return res.status(200).json({ msg: "Freelancer has been updated successfuly.", freelancerNewData});
           }
           return res.status(400).json({ msg: "You cannot use this email." });
       }
