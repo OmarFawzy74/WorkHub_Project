@@ -7,13 +7,21 @@ import bcrypt from 'bcrypt'
 // Get All Freelancers
 export const getAllFreelancers = async (req,res) => {
   try {
-    const freelancers = await FreelancerModel.find();
-    if(freelancers[0]){
-      res.status(200).json({ freelancers });
-    }else{
-      res.status(400).json({msg:'No freelancers found'})
+      var freelancers = await FreelancerModel.find();
+      if(freelancers[0]){
+        const modifiedFreelancers = freelancers.map((freelancer) => {
+          const modifiedFreelancer = { ...freelancer._doc }; // Create a copy of the service object
+          modifiedFreelancer.image_url = "http://" + req.hostname + ":3000/" + modifiedFreelancer.image_url;
+          return modifiedFreelancer;
+      });
+
+      freelancers = modifiedFreelancers;
+
+      return res.status(200).json({ freelancers });
     }
-  } catch (error) {
+    res.status(400).json({msg:'No freelancers found'})
+  } 
+  catch (error) {
     res.status(500).json({msg:'Internal server error'});
   }
 }
@@ -27,18 +35,18 @@ export const getFreelancerById = async (req, res, next) => {
       return res.status(404).send({ success: false, message: "Invalid id" });
   }
 
-  const freelancer = await FreelancerModel.find({ _id: id });
+  const freelancer = await FreelancerModel.findById(id);
 
-  if (freelancer) {
-      return res.status(200).json(freelancer);
+  if (!freelancer) {
+    res.status(404).json({msg: "Freelancer not found"});
   }
 
-  res.status(404).json({msg: "Freelancer not found"});
+  freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;
+  res.status(200).json({ freelancer });
   } catch (error) {
     console.log(error);
     res.status(500).json({msg: "Internal Server Error"});
   }
-  
 };
 
 // Delete Freelancer

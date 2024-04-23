@@ -3,6 +3,8 @@ import client from "../../../DB/models/client_model.js";
 import bcrypt from "bcrypt";
 import { validatePassword } from "../../middleware/val.middleware.js";
 import ClientModel from "../../../DB/models/client_model.js"
+import mongoose from "mongoose";
+
 
 // Get All Clients
 export const getAllClients = async (req, res) => {
@@ -20,6 +22,28 @@ export const getAllClients = async (req, res) => {
     }
 }
 
+export const getClientById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+  
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send({ success: false, message: "Invalid id" });
+    }
+  
+    const client = await ClientModel.findById(id);
+  
+    if (!client) {
+      res.status(404).json({msg: "Freelancer not found"});
+    }
+  
+    client.image_url = "http://" + req.hostname + ":3000/" + client.image_url;
+    res.status(200).json({ client });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({msg: "Internal Server Error"});
+    }
+};
+  
 // Update Client Info
 export const updateClientInfo = async (req, res) => {
     try {

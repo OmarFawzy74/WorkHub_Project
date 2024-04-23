@@ -80,7 +80,7 @@ const Profile = () => {
     const [skillsArrayLength, setSkillsArrayLength] = useState(5);
 
     const showMoreSkills = () => {
-        setSkillsArrayLength(user.skills.length)
+        setSkillsArrayLength(user?.skills.length)
         // console.log(skillsArrayLength);
     }
 
@@ -104,7 +104,7 @@ const Profile = () => {
         axios
             .post("http://localhost:3000/api/conversations/addConversation", {
                 freelancer: freelancerId,
-                client: user._id
+                client: user?._id
             })
             .then((resp) => {
                 const conversationId = resp.data.newConversationData[0]._id;
@@ -127,17 +127,17 @@ const Profile = () => {
                 <div className="left">
                     <div className="profileUser">
                         <img
-                            src={user.image_url}
+                            src={user?.image_url}
                             alt=""
                         />
                         <div className="info">
-                            <span className='myName'>{user.name}</span>
+                            <span className='myName'>{user?.name}</span>
                             <div className="userInfo">
                                 <img
                                     className="locationIcon"
                                     src="/img/location.png"
                                 />
-                                <span>{user.country}</span>
+                                <span>{user?.country}</span>
 
                                 {user && user?.role == "freelancer" &&
                                     <>
@@ -145,9 +145,9 @@ const Profile = () => {
                                             className="languageIcon"
                                             src="/img/profileLanguage.png"
                                         />
-                                        <span className="languageContainer">{user.languages.map((language,index) => (
+                                        <span className="languageContainer">{user?.languages.map((language,index) => (
                                         <>
-                                                {language} {index !== user.languages.length - 1 ? ", " : null}
+                                                {language} {index !== user?.languages.length - 1 ? ", " : null}
                                         </> 
                                         ))}</span>
                                     </>
@@ -162,16 +162,16 @@ const Profile = () => {
                                 <div className="rightFeatures">
                                     <div className="rightProfileUser">
                                         <img
-                                            src={user.image_url}
+                                            src={user?.image_url}
                                             alt=""
                                         />
                                         <div className="rightInfo">
-                                            <span className='rightMyName'>{user.name}</span>
+                                            <span className='rightMyName'>{user?.name}</span>
                                         </div>
                                     </div>
                                 </div>
-                                {user.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
-                                {pathname == "/profile" && user.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
+                                {user && user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                {pathname == "/profile" && user && user?.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ const Profile = () => {
                             <h2 className='aboutUserHeader'>About me</h2>
                             <div className='aboutUserDesc'>
                                 <p>
-                                    {user.desc}
+                                    {user?.desc}
                                 </p>
                             </div>
                         </div>
@@ -191,11 +191,11 @@ const Profile = () => {
                         <div className='skills'>
                             <h2 className='skillsHeader'>Skills</h2>
                             <ul className='skillsDesc'>
-                                {user.skills.slice(0, skillsArrayLength).map((skill) => (
+                                {user?.skills.slice(0, skillsArrayLength).map((skill) => (
                                     <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
                                 ))}
                             </ul>
-                            {user.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user.skills.length - 5}</Link>}
+                            {user?.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user?.skills.length - 5}</Link>}
                         </div>
                     }
                 </div>

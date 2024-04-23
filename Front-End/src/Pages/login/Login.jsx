@@ -34,22 +34,10 @@ function Login() {
 
 
   const processData = (data) => {
-    // console.log(user.skills);
-
-    // const data = skillsData;
     console.log(data);
     const processedData = data[0].split(",");
     console.log(processedData);
-    // setSelectedSkillsOptions(processedData);
     return processedData;
-    // console.error("skillsData is undefined");
-    //     const data = user.skills;
-    //     console.log(data);
-    //     const processedData = data[0].split(",");
-    //     console.log(processedData);
-    //     // selectedSkillsOptions = processedData;
-    // setSelectedSkillsOptions(processedData);
-    //     // console.log(skills.slice(0,1));
   }
 
   const userLoginFun = (e) => {

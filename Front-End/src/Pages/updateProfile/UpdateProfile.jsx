@@ -171,18 +171,6 @@ function UpdateProfile() {
               loading: false,
               err: null,
             });
-
-            // selectedSkillsOptions = resp.data[0].skills;
-            // selectedLanguagesOptions = resp.data[0].languages;
-
-            // if(users?.role == "freelancer") {
-            //     selectedSkillsOptions = resp.data[0].skills;
-            //     selectedLanguagesOptions = resp.data[0].languages;
-            // }
-            // skillsData = resp.data[0].skills;
-            // processSkills();
-            console.log(users.skills);
-            console.log(users.languages);
           })
           .catch((err) => {
             console.log(err);
