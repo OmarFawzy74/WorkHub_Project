@@ -65,7 +65,7 @@ const FreelancerList = () => {
                   freelancers.results.map((freelancer => (
                     <tr>
                       <td>
-                        <Link className='freelancerProfilePage' to="/profile">
+                        <Link className='freelancerProfilePage' to="/usersProile">
                           <img src={freelancer.image_url} className="button muted-button gl-profile-btn" />
                         </Link>
                       </td>

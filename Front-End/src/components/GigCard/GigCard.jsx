@@ -28,7 +28,7 @@ const GigCard = ({ item }) => {
         <div className="gigInfo">
           <div className="user">
             <div class={pathname !== "/gigs" ? "card-badge" : "card-badge-2nd"}>WorkHub service</div>
-            <Link to={"/profile"} className="freelancerLink">
+            <Link to={"/profile/" + item?.freelancerId._id} className="freelancerLink">
                 <img src={item.freelancerId.image_url} />
                 <span className="freelancerName">{item.freelancerId.name}</span>
             </Link>

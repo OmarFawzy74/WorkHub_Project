@@ -46,6 +46,7 @@ import MyCourses from './Pages/myCourses/MyCourses';
 import FreelancerList from './Pages/admin/FreelancerList';
 import OrdersList from './Pages/admin/OrdersList';
 import Requests from './Pages/requests/Requests';
+import ClientProfile from './Pages/admin/ClientProfile';
 
 let dashboardData;
 
@@ -219,6 +220,10 @@ export default function App() {
           path: "/ordersList",
           element: <OrdersList />
         },
+        {
+          path: "/clientProfile/:id",
+          element: <ClientProfile />
+        },
       ]
     },
 
@@ -303,7 +308,7 @@ export default function App() {
           element: <CommunityProfile />
         },
         {
-          path: "/profile",
+          path: "/profile/:id",
           element: <Profile />
         },
         {

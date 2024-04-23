@@ -65,7 +65,9 @@ const ClientList = () => {
                 clients.results.map((client => (
                   <tr>
                     <td>
-                      <img src={client.image_url} className="button muted-button gl-profile-btn" />
+                      <Link className='clientsProfilePage' to="/clientProfile/123">
+                          <img src={client.image_url} className="button muted-button gl-profile-btn" />
+                      </Link>
                     </td>
                     <td className="desc">
                       {client.name}

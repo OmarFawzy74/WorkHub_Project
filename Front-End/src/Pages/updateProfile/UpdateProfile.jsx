@@ -132,7 +132,7 @@ function UpdateProfile() {
                     resp.data.freelancerNewData.languages = processData(resp.data.freelancerNewData.languages);
                 }
                 setAuthUser(resp.data.freelancerNewData);
-                navigate("/profile");
+                navigate("/profile/" + users?._id);
             })
             .catch((errors) => {
                 // setUser({
@@ -363,7 +363,7 @@ function UpdateProfile() {
                             <div className="update-cancel-btn">
                                 <button className="updateProfileButton" type="submit">Update</button>
 
-                                <Link to="/profile"><button className="cancelProfileButton" type="submit">Cancel</button></Link>
+                                <Link to={"/profile/" + users?._id}><button className="cancelProfileButton" type="submit">Cancel</button></Link>
                             </div>
                             {/* )} */}
                         </div>

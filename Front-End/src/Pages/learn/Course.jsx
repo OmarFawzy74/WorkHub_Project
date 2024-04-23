@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./Course.scss"
 import Slider from '../../Pages/gig/Slider';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
 import { getAuthUser } from "../../localStorage/storage";
@@ -84,7 +84,7 @@ function Course() {
                     {course.loading == false &&
                         <>
                             <div className='breadcrumbsCourse'>
-                                <span className='breadcrumbsCourseFirst'>Courses {'>'}</span> <span className="breadcrumbsCourseSecond">{course.results.categoryId.categoryName}</span>
+                              <Link className='learnHome' to="/learn"><span className='breadcrumbsCourseFirst'>Courses</span></Link> {'>'} <span className="breadcrumbsCourseSecond">{course.results.categoryId.categoryName}</span>
                             </div>
                             <h1 className='courseName'>{course.results.courseTitle}</h1>
                             <p className='courseDesc'>{course.results.courseDesc}</p>
@@ -310,7 +310,7 @@ function Course() {
                         <button className='deleteBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Delete</button>
                     </div>
                     } */}
-                    {user && user?.role !== "admin" && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
+                    {user && user?.role !== "admin" && <button className='enrollBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
                     {!user && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
                     {user && user?.role == "admin" &&
                         <div className='adminBtnsContainer'>

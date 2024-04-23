@@ -8,11 +8,8 @@ const LearnCard = ({ item }) => {
       <div className="learnCard">
         <img className='learnImg' src={item.courseCoverImage_url} alt="" />
         <div className="courseInfo">
-          <div className="card-badge">course</div>
-          <p>{item.courseTitle}</p>
-          <div className="star">
-            <img src="./img/star.png" alt="" />
-            <span className="reviewNo">{item.star}</span>
+          <div className="badgeDuration">
+            <div className="card-badge">course</div>
             <div className="courseDuration">
               <img
                 className="hourIconOut"
@@ -21,11 +18,18 @@ const LearnCard = ({ item }) => {
               <span className="courseDurationNo">{item.courseDuration} Minutes</span>
             </div>
           </div>
-          <div className="professorName">
-            <span>{item.proffName}</span>
+          <p>{item.courseTitle}</p>
+          <span className="courseDescCard">{item.courseDesc}</span>
+          <div className="star">
           </div>
-          <div className="professorDesc">
-            <span>{item.ProffDesc}</span>
+          <div className="proffInfoContainer">
+            <div className="professorName">
+              <img className="proffImageLearnCard" src={item.proffImage_url} alt="" />
+              <div className="proffInfoCard">
+              <span>{item.proffName}</span>
+              <p>{item.ProffDesc}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

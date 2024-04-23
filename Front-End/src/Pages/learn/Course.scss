@@ -28,6 +28,10 @@
             .breadcrumbsCourse {
                 float: left;
 
+                .learnHome{
+                    text-decoration: none;
+                }
+
                 .breadcrumbsCourseFirst {
                     font-size: 16px;
                     line-height: 1;
@@ -317,7 +321,7 @@
                 }
             }
 
-            button {
+            .enrollBtn {
                 background-color: #1dbf73;
                 padding: 10px;
                 color: white;

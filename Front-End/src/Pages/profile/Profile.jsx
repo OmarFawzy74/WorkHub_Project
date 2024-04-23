@@ -39,11 +39,6 @@ const Profile = () => {
             });
     }, [services.reload]);
 
-
-
-
-
-
     // useEffect(() => {
     //     axios
     //         .get("http://localhost:3000/api/freelancers/getFreelancerById/" + user._id)
@@ -84,6 +79,25 @@ const Profile = () => {
         // console.log(skillsArrayLength);
     }
 
+    const processData = (data) => {
+        // console.log(user.skills);
+    
+        // const data = skillsData;
+        console.log(data);
+        const processedData = data[0].split(",");
+        console.log(processedData);
+        // setSelectedSkillsOptions(processedData);
+        return processedData;
+        // console.error("skillsData is undefined");
+        //     const data = user.skills;
+        //     console.log(data);
+        //     const processedData = data[0].split(",");
+        //     console.log(processedData);
+        //     // selectedSkillsOptions = processedData;
+        // setSelectedSkillsOptions(processedData);
+        //     // console.log(skills.slice(0,1));
+      }
+
 
     const reSort = (type) => {
         setSort(type);
@@ -119,87 +133,116 @@ const Profile = () => {
 
     const { pathname } = useLocation();
 
+    const [freelancer, setFreelancer] = useState({
+        loading: true,
+        results: null,
+        err: null,
+        reload: 0,
+    });
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/api/freelancers/getFreelancerById/" + id)
+            .then((resp) => {
+                resp.data[0].skills = processData(resp.data[0].skills);
+                resp.data[0].languages = processData(resp.data[0].languages);      
+                setFreelancer({ results: resp.data[0], loading: false, err: null });
+                // console.log(resp);
+                // console.log(resp.data);
+            })
+            .catch((err) => {
+                console.log(err);
+                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+            });
+    }, [freelancer.reload]);
+
+
+
+
 
     return (
         <div className='profile'>
             <div className="profileContainer">
                 <div className="myServiceHeader"><h1>My Profile</h1></div>
                 <div className="left">
-                    <div className="profileUser">
-                        <img
-                            src={user.image_url}
-                            alt=""
-                        />
-                        <div className="info">
-                            <span className='myName'>{user.name}</span>
-                            <div className="userInfo">
+                    {freelancer.loading == false &&
+                        <>
+                            <div className="profileUser">
                                 <img
-                                    className="locationIcon"
-                                    src="/img/location.png"
+                                    src={freelancer?.results.image_url}
+                                    alt=""
                                 />
-                                <span>{user.country}</span>
+                                <div className="info">
+                                    <span className='myName'>{freelancer?.results.name}</span>
+                                    <div className="userInfo">
+                                        <img
+                                            className="locationIcon"
+                                            src="/img/location.png"
+                                        />
+                                        <span>{freelancer?.results.country}</span>
 
-                                {user && user?.role == "freelancer" &&
-                                    <>
-                                        <img
-                                            className="languageIcon"
-                                            src="/img/profileLanguage.png"
-                                        />
-                                        <span className="languageContainer">{user.languages.map((language,index) => (
-                                        <>
-                                                {language} {index !== user.languages.length - 1 ? ", " : null}
-                                        </> 
-                                        ))}</span>
-                                    </>
-                                }
-                            </div>
-                        </div>
-                        <div className="rightContainer">
-                            {/* <div className="option">
-                            <Link to={"/updateProfile"}><button><img src="/img/profileOption.png" />Edit Profile</button></Link>
-                        </div> */}
-                            <div className="right">
-                                <div className="rightFeatures">
-                                    <div className="rightProfileUser">
-                                        <img
-                                            src={user.image_url}
-                                            alt=""
-                                        />
-                                        <div className="rightInfo">
-                                            <span className='rightMyName'>{user.name}</span>
-                                        </div>
+                                        {user && user?.role == "freelancer" &&
+                                            <>
+                                                <img
+                                                    className="languageIcon"
+                                                    src="/img/profileLanguage.png"
+                                                />
+                                                <span className="languageContainer">{freelancer?.results.languages.map((language, index) => (
+                                                    <>
+                                                        {language} {index !== user.languages.length - 1 ? ", " : null}
+                                                    </>
+                                                ))}</span>
+                                            </>
+                                        }
                                     </div>
                                 </div>
-                                {user.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
-                                {pathname == "/profile" && user.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
+                                <div className="rightContainer">
+                                    {/* <div className="option">
+                            <Link to={"/updateProfile"}><button><img src="/img/profileOption.png" />Edit Profile</button></Link>
+                        </div> */}
+                                    <div className="right">
+                                        <div className="rightFeatures">
+                                            <div className="rightProfileUser">
+                                                <img
+                                                    src={freelancer?.results.image_url}
+                                                    alt=""
+                                                />
+                                                <div className="rightInfo">
+                                                    <span className='rightMyName'>{freelancer?.results.name}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {user && user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                        {user && user?.role == "freelancer" && user._id == id && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    {user && user?.role == "freelancer" &&
-                        <div className='aboutUser'>
-                            <h2 className='aboutUserHeader'>About me</h2>
-                            <div className='aboutUserDesc'>
-                                <p>
-                                    {user.desc}
-                                </p>
-                            </div>
-                        </div>
-                    }
-
-                    {user && user?.role == "freelancer" &&
-                        <div className='skills'>
-                            <h2 className='skillsHeader'>Skills</h2>
-                            <ul className='skillsDesc'>
-                                {user.skills.slice(0, skillsArrayLength).map((skill) => (
-                                    <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
-                                ))}
-                            </ul>
-                            {user.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user.skills.length - 5}</Link>}
-                        </div>
+                            {user && user?.role == "freelancer" &&
+                                <div className='aboutUser'>
+                                    <h2 className='aboutUserHeader'>About me</h2>
+                                    <div className='aboutUserDesc'>
+                                        <p>
+                                            {freelancer?.results.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            {user && user?.role == "freelancer" &&
+                                <div className='skills'>
+                                    <h2 className='skillsHeader'>Skills</h2>
+                                    <ul className='skillsDesc'>
+                                        {freelancer?.results.skills.slice(0, skillsArrayLength).map((skill) => (
+                                            <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                                        ))}
+                                    </ul>
+                                    {freelancer?.results.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{freelancer?.results.skills.length - 5}</Link>}
+                                </div>
+                            }
+                        </>
                     }
                 </div>
-                
+
                 {user && user?.role == "freelancer" &&
                     <div className="myServiceSection">
                         <div className="myServiceHeader"><h2>My Services</h2></div>

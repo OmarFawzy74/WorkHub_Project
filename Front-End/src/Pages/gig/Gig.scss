@@ -15,10 +15,10 @@
         gap: 20px;
   
         .breadcrumbs {
-          font-weight: 300;
+          font-weight: 500;
           text-transform: uppercase;
           font-size: 13px;
-          color: #555;
+          color: #7e7e7e;
         }
   
         // h1 {
@@ -28,19 +28,26 @@
           display: flex;
           align-items: center;
           gap: 10px;
-  
-          .pp {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
+
+          .freelancerTitleLink{
+            text-decoration: none !important;
+            display: flex;
+            gap: 10px;
+            .freelancerTitleGig{
+              font-size: 14px;
+              font-weight: 500;
+              color: black;
+              margin-top: 5px;
+            }
+    
+            .pp {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
           }
-  
-          span {
-            font-size: 14px;
-            font-weight: 500;
-          }
-  
+
           .stars {
             display: flex;
             align-items: center;
