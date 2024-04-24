@@ -3,11 +3,19 @@ import Review from '../../../DB/models/review_model.js';
 // Create a new review
 export const createReview = async (req, res) => {
     try {
-        const { clientId, rating, reviewDesc } = req.body;
+        const { clientId, rating, reviewDesc, serviceId } = req.body;
+
+        const reviewData = await Review.findOne({ clientId, serviceId });
+  
+        if(reviewData) {
+          return res.status(400).json({ message: "You have already reviewed this service!" });
+        }
+
         const newReview = new Review({
           clientId,
           rating,
           reviewDesc,
+          serviceId
         });
     
         await newReview.save();
@@ -38,7 +46,7 @@ export const getReviewById = async (req, res) => {
         if (!review) {
           return next(new Error("review not found",{cause:404}));
         }
-        
+
         res.status(200).json({success:true, message:"here u r", review});
     } catch (error) {
         res.status(500).json({msg:'Internal server error'});

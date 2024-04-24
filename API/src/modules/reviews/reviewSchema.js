@@ -2,5 +2,8 @@
 import Joi from "joi";
 
 export const reviewSchema = Joi.object({
-    reviewDesc:Joi.string().max(30)
+    clientId: Joi.string().required(),
+    serviceId: Joi.string().required(),
+    reviewDesc: Joi.string().required(),
+    rating: Joi.number().required(),
 });

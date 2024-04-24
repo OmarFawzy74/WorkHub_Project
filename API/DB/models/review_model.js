@@ -8,6 +8,11 @@ const reviewSchema = new Schema({
         required: true,
         ref: "client"
     },
+    serviceId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "service"
+    },
     rating: {
         type: Number,
         required: true,
