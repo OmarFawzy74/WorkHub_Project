@@ -28,9 +28,27 @@ export const createReview = async (req, res) => {
 };
 
 // Get all reviews
-export const getAllReviews = async (req, res) => {
+export const getServiceReviews = async (req, res) => {
     try {
+<<<<<<< HEAD
         const reviews = await Review.find().populate("clientId").populate("serviceId");
+=======
+        const serviceId = req.params.id;
+        var reviews = await Review.find({ serviceId }).populate("clientId").populate("serviceId");
+
+        if(reviews.length == 0) {
+            return res.status(404).json({ msg:"No reviews found!" });
+        }
+
+        const modifiedReviews = reviews.map((review) => {
+            const modifiedReview = { ...review._doc }; // Create a copy of the service object
+            modifiedReview.clientId.image_url = "http://" + req.hostname + ":3000/" + modifiedReview.clientId.image_url;
+            return modifiedReview;
+        });
+
+        reviews = modifiedReviews
+
+>>>>>>> 5ce8036760e7553ce2d5d34721dbc304fa046dd9
         res.status(200).json({success:true, message:"here u r", reviews});
     } catch (error) {
         res.status(500).json({msg:'Internal server error'});
