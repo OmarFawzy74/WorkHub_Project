@@ -47,6 +47,7 @@ import FreelancerList from './Pages/admin/FreelancerList';
 import OrdersList from './Pages/admin/OrdersList';
 import Requests from './Pages/requests/Requests';
 import ClientProfile from './Pages/admin/ClientProfile';
+import ScrollToTop from './ScrollToTop';
 
 let dashboardData;
 
@@ -80,7 +81,7 @@ export default function App() {
 
 
   const Admin = () => {
-    const { pathname } = useLocation()
+    const { pathname } = useLocation();
 
     const handleClasses = (pathname) => {
       if (pathname=="/adminDashboard") {
@@ -321,7 +322,7 @@ export default function App() {
 
   return (
     <div>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </div>
   );
 }
