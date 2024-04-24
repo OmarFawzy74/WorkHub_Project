@@ -85,11 +85,11 @@ function Register() {
         },
       })
       .then((resp) => {
-        swal(
-          "Congratulations you have Joined WorkHub Successfully",
-          "",
-          "success"
-        );
+        // swal(
+        //   "Congratulations you have Joined WorkHub Successfully",
+        //   "",
+        //   "success"
+        // );
         console.log(resp.data.message);
         console.log(resp.data.userData);
         if(user?.role == "freelancer") {
@@ -101,6 +101,8 @@ function Register() {
         // setUser({ skills: processedSkills, languages: processedLanguages});
         setAuthUser(resp.data.userData);
         navigate("/gigs");
+        window.location.reload();
+        // navigate("/gigs", { state: { SOME_OBJECT } });
       })
       .catch((errors) => {
         swal(errors.response.data.message, "", "error");

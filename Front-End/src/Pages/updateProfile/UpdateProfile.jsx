@@ -161,13 +161,13 @@ function UpdateProfile() {
             console.log(resp);
             setUser({
               ...user,
-              name: resp.data[0].name,
-              desc: resp.data[0].desc,
-              email: resp.data[0].email,
-              country: resp.data[0].country,
-              phoneNumber: resp.data[0].phoneNumber,
-              skills: resp.data[0].skills,
-              languages: resp.data[0].languages,
+              name: resp.data.freelancer.name,
+              desc: resp.data.freelancer.desc,
+              email: resp.data.freelancer.email,
+              country: resp.data.freelancer.country,
+              phoneNumber: resp.data.freelancer.phoneNumber,
+              skills: resp.data.freelancer.skills,
+              languages: resp.data.freelancer.languages,
               loading: false,
               err: null,
             });

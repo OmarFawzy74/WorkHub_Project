@@ -21,11 +21,19 @@ function Gig () {
   let { id } = useParams();
 
 
+  const processData = (data) => {
+    console.log(data);
+    const processedData = data[0].split(",");
+    console.log(processedData);
+    return processedData;
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/services/getServiceById/" + id)
       .then((resp) => {
-
+        resp.data.freelancerId.skills = processData(resp.data.freelancerId.skills);
+        resp.data.freelancerId.languages = processData(resp.data.freelancerId.languages);
         setService({ results: resp.data, loading: false, err: null });
         // console.log(resp);
         console.log(resp.data);
@@ -120,19 +128,34 @@ function Gig () {
   return (
     <div className="gig">
       <div className="gigContainer">
-        {service.loading == false &&
+        {service.loading == false && (
           <>
             <div className="left">
+<<<<<<< HEAD
               <span className="breadcrumbs"><Link reloadDocument className='marketplaceLinkGig' to={"/gigs"}>Marketplace</Link> {'>'} <span className='categoryNameSpan'>{service.results.serviceCategoryId.categoryName}</span> </span>
               <h1>{service.results.serviceTitle}</h1>
               <div className="user">
                 <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
+=======
+              <span className="breadcrumbs">
+                Marketplace {">"}{" "}
+                {service.results.serviceCategoryId.categoryName}
+              </span>
+              <h1>{service.results.serviceTitle}</h1>
+              <div className="user">
+                <Link
+                  className="freelancerTitleLink"
+                  to={"/profile/" + service?.results.freelancerId._id}
+                >
+>>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                   <img
                     className="pp"
                     src={service.results.freelancerId.image_url}
                     alt=""
                   />
-                  <span className='freelancerTitleGig'>{service.results.freelancerId.name}</span>
+                  <span className="freelancerTitleGig">
+                    {service.results.freelancerId.name}
+                  </span>
                 </Link>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
@@ -145,18 +168,20 @@ function Gig () {
               </div>
               <Slider images={service.results.serviceImages_url} />
               <h2>About This Service</h2>
-              <p>
-                {service.results.serviceDesc}
-              </p>
+              <p>{service.results.serviceDesc}</p>
               <div className="seller">
                 <h2>About The Seller</h2>
                 <div className="user">
+<<<<<<< HEAD
                 <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
                   <img
                     src={service.results.freelancerId.image_url}
                     alt=""
                   />
                 </Link>
+=======
+                  <img src={service.results.freelancerId.image_url} alt="" />
+>>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                   <div className="info">
                 <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
                     <span>{service.results.freelancerId.name}</span>
@@ -169,22 +194,31 @@ function Gig () {
                       <img src="/img/star.png" alt="" />
                       <span>5</span>
                     </div>
-                    {user?.role == "client" && (<button value={service.results.freelancerId._id} onClick={message}>Contact Me</button>)}
+                    {user?.role == "client" && (
+                      <button
+                        value={service.results.freelancerId._id}
+                        onClick={message}
+                      >
+                        Contact Me
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="box">
                   <div className="items">
                     <div className="item">
                       <span className="title">From</span>
-                      <span className="desc">{service.results.freelancerId.country}</span>
+                      <span className="desc">
+                        {service.results.freelancerId.country}
+                      </span>
                     </div>
                     <div className="item">
                       <span className="title">Member since</span>
-                      <span className="desc">Mar 2024</span>
+                      <span className="desc">{service?.results.freelancerId.createdAt.slice(0, 10)}</span>
                     </div>
                     <div className="item">
                       <span className="title">Avg. response time</span>
-                      <span className="desc">4 hours</span>
+                      <span className="desc">2 hours</span>
                     </div>
                     <div className="item">
                       <span className="title">Last delivery</span>
@@ -192,13 +226,23 @@ function Gig () {
                     </div>
                     <div className="item">
                       <span className="title">Languages</span>
-                      <span className="desc">English</span>
+                      <span className="desc">
+                        {service?.results.freelancerId.languages.map(
+                          (language, index) => (
+                            <>
+                              {language}{" "}
+                              {index !==
+                              service?.results.freelancerId.languages.length - 1
+                                ? ", "
+                                : null}
+                            </>
+                          )
+                        )}
+                      </span>
                     </div>
                   </div>
                   <hr />
-                  <p>
-                    {service.results.freelancerId.desc}
-                  </p>
+                  <p>{service.results.freelancerId.desc}</p>
                 </div>
               </div>
               <div className="reviews">
@@ -229,14 +273,100 @@ function Gig () {
                   </div>
                   <p>
                     I just want to say that art_with_ai was the first, and after
-                    this, the only artist Ill be using on Fiverr. Communication was
-                    amazing, each and every day he sent me images that I was free to
-                    request changes to. They listened, understood, and delivered
-                    above and beyond my expectations. I absolutely recommend this
-                    gig, and know already that Ill be using it again very very soon
+                    this, the only artist Ill be using on Fiverr. Communication
+                    was amazing, each and every day he sent me images that I was
+                    free to request changes to. They listened, understood, and
+                    delivered above and beyond my expectations. I absolutely
+                    recommend this gig, and know already that Ill be using it
+                    again very very soon
                   </p>
                 </div>
                 <hr />
+<<<<<<< HEAD
+=======
+                <div className="item">
+                  <div className="user">
+                    <img
+                      className="pp"
+                      src="https://images.pexels.com/photos/4124367/pexels-photo-4124367.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                      alt=""
+                    />
+                    <div className="info">
+                      <span>Sidney Owen</span>
+                      <div className="country">
+                        <img
+                          src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1e9-1f1ea.png"
+                          alt=""
+                        />
+                        <span>Germany</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stars">
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <span>5</span>
+                  </div>
+                  <p>
+                    The designer took my photo for my book cover to the next
+                    level! Professionalism and ease of working with designer
+                    along with punctuality is above industry standards!!
+                    Whatever your project is, you need this designer!
+                  </p>
+                  <div className="helpful">
+                    <span>Helpful?</span>
+                    <img src="/img/like.png" alt="" />
+                    <span>Yes</span>
+                    <img src="/img/dislike.png" alt="" />
+                    <span>No</span>
+                  </div>
+                </div>
+                <hr />
+                <div className="item">
+                  <div className="user">
+                    <img
+                      className="pp"
+                      src="https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                      alt=""
+                    />
+                    <div className="info">
+                      <span>Lyle Giles </span>
+                      <div className="country">
+                        <img
+                          src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
+                          alt=""
+                        />
+                        <span>United States</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stars">
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <img src="/img/star.png" alt="" />
+                    <span>5</span>
+                  </div>
+                  <p>
+                    Amazing work! Communication was amazing, each and every day
+                    he sent me images that I was free to request changes to.
+                    They listened, understood, and delivered above and beyond my
+                    expectations. I absolutely recommend this gig, and know
+                    already that Ill be using it again very very soon
+                  </p>
+                  <div className="helpful">
+                    <span>Helpful?</span>
+                    <img src="/img/like.png" alt="" />
+                    <span>Yes</span>
+                    <img src="/img/dislike.png" alt="" />
+                    <span>No</span>
+                  </div>
+                </div>
+>>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
               </div>
             </div>
             <div className="right">
@@ -244,9 +374,7 @@ function Gig () {
                 <h3>{service.results.serviceShortTitle}</h3>
                 <h2>$ {service.results.servicePrice}</h2>
               </div>
-              <p>
-                {service.results.serviceShortDesc}
-              </p>
+              <p>{service.results.serviceShortDesc}</p>
               <div className="details">
                 <div className="item">
                   <img src="/img/clock.png" alt="" />
@@ -265,11 +393,20 @@ function Gig () {
                   </div>
                 ))}
               </div>
-              {user && user.role !== "freelancer" && <button value={service.results.freelancerId._id} onClick={requestOrder}>Request Order</button>}
-              {user && service.results.freelancerId._id == user._id && <button onClick={requestOrder}>Update</button>}
+              {user && user.role !== "freelancer" && (
+                <button
+                  value={service.results.freelancerId._id}
+                  onClick={requestOrder}
+                >
+                  Request Order
+                </button>
+              )}
+              {user && service.results.freelancerId._id == user._id && (
+                <button onClick={requestOrder}>Update</button>
+              )}
             </div>
           </>
-        }
+        )}
       </div>
     </div>
   );

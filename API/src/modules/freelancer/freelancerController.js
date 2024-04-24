@@ -23,6 +23,7 @@ export const getAllFreelancers = async (req,res) => {
   } 
   catch (error) {
     res.status(500).json({msg:'Internal server error'});
+    console.log(error);
   }
 }
 
@@ -38,7 +39,7 @@ export const getFreelancerById = async (req, res, next) => {
   const freelancer = await FreelancerModel.findById(id);
 
   if (!freelancer) {
-    res.status(404).json({msg: "Freelancer not found"});
+    return res.status(404).json({msg: "Freelancer not found"});
   }
 
   freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;

@@ -15,9 +15,9 @@ const router = express.Router();
 
 // Routes
 
-router.post('/reviews', auth(endPoints.allUsers),validation(reviewSchema),asyncHandler(createReview) );
-router.get('/reviews', auth(endPoints.allUsers), asyncHandler(getAllReviews));
-router.get('/reviews/:id', auth(endPoints.allUsers),asyncHandler(getReviewById) );
-router.delete('/reviews/:id', auth(endPoints.allUsers),asyncHandler(deleteReview) );
+router.post('/addReview', validation(reviewSchema),asyncHandler(createReview) ); //, auth(endPoints.allUsers)
+router.get('/getAllReviews', asyncHandler(getAllReviews)); // auth(endPoints.allUsers),
+router.get('/reviews/:id', asyncHandler(getReviewById) );
+router.delete('/reviews/:id', asyncHandler(deleteReview) );
 
 export default router;

@@ -2,33 +2,56 @@ import Review from '../../../DB/models/review_model.js';
 
 // Create a new review
 export const createReview = async (req, res) => {
+    try {
+        const { clientId, rating, reviewDesc, serviceId } = req.body;
 
-    const { client, rating, reviewDesc } = req.body;
-    const newReview = new Review({
-      client,
-      rating,
-      reviewDesc,
-    });
-    await newReview.save();
-    res.status(201).json({success:true, message: 'Review created successfully', newReview });
- 
+        const reviewData = await Review.findOne({ clientId, serviceId });
+  
+        if(reviewData) {
+          return res.status(400).json({ message: "You have already reviewed this service!" });
+        }
+
+        const newReview = new Review({
+          clientId,
+          rating,
+          reviewDesc,
+          serviceId
+        });
+    
+        await newReview.save();
+    
+        res.status(201).json({success:true, message: 'Review created successfully', newReview });
+    } catch (error) {
+        res.status(500).json({msg:'Internal server error'});
+        console.log(error);
+    }
 };
 
 // Get all reviews
 export const getAllReviews = async (req, res) => {
-    const reviews = await Review.find();
-    res.status(200).json({success:true, message:"here u r", reviews});
+    try {
+        const reviews = await Review.find();
+        res.status(200).json({success:true, message:"here u r", reviews});
+    } catch (error) {
+        res.status(500).json({msg:'Internal server error'});
+        console.log(error);
+    }
 };
 
 // Get review by ID
 export const getReviewById = async (req, res) => {
+    try {
+        const review = await Review.findById(req.params.id);
 
-    const review = await Review.findById(req.params.id);
-    if (!review) {
-      return next(new Error("review not found",{cause:404}));
+        if (!review) {
+          return next(new Error("review not found",{cause:404}));
+        }
+
+        res.status(200).json({success:true, message:"here u r", review});
+    } catch (error) {
+        res.status(500).json({msg:'Internal server error'});
+        console.log(error);
     }
-    res.status(200).json({success:true, message:"here u r", review});
-
 };
 
 // Delete a review
