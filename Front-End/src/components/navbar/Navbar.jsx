@@ -138,13 +138,8 @@ const Navbar = () => {
               <img src={user.image_url} />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
-<<<<<<< HEAD
-                <Link reloadDocument className='link' to={"/profile/" + user?._id}>Profile</Link>
-                <Link reloadDocument className='link' to="/mycourses">My Courses</Link>
-=======
                 <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
                 <Link className='link' to="/mycourses">My Courses</Link>
->>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                 {currentUser?.type == "freelancer" && (
                   <>
                     <Link className='link' to="/add">Add New Service</Link>

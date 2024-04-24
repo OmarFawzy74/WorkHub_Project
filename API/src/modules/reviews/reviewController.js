@@ -30,7 +30,7 @@ export const createReview = async (req, res) => {
 // Get all reviews
 export const getAllReviews = async (req, res) => {
     try {
-        const reviews = await Review.find();
+        const reviews = await Review.find().populate("clientId").populate("serviceId");
         res.status(200).json({success:true, message:"here u r", reviews});
     } catch (error) {
         res.status(500).json({msg:'Internal server error'});

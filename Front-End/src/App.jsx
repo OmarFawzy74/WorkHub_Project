@@ -29,9 +29,7 @@ import Profile from './Pages/profile/Profile';
 import Skills from './components/skills/Skills';
 import { Language } from '@mui/icons-material';
 import AdminDashboard from './Pages/admin/AdminDashboard';
-import AdminSidebar from './Pages/admin/AdminSidebar';
 import { getAuthUser } from './localStorage/storage';
-import AdminHeader from './Pages/admin/AdminHeader';
 import Category from './Pages/admin/Category';
 import AddCategory from './Pages/admin/AddCategory';
 import UpdateCategory from './Pages/admin/UpdateCategory';
@@ -172,10 +170,10 @@ export default function App() {
           path: "/adminDashboard",
           element: <AdminDashboard />
         },
-        {
-          path: "/adminSidebar",
-          element: <AdminSidebar />
-        },
+        // {
+        //   path: "/adminSidebar",
+        //   element: <AdminSidebar />
+        // },
         {
           path: "/adminGigs",
           element: <Gigs />
