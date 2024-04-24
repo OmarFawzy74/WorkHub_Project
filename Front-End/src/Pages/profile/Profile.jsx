@@ -10,6 +10,10 @@ import Alert from '@mui/material/Alert';
 
 const Profile = () => {
 
+    var [selectedSkillsOptions, setSelectedSkillsOptions] = useState();
+
+    var [selectedLanguagesOptions, setSelectedLanguagesOptions] = useState();
+
     const user = getAuthUser();
 
     let { id } = useParams();
@@ -27,10 +31,12 @@ const Profile = () => {
         setServices({ loading: true });
 
         axios
-            .get("http://localhost:3000/api/services/getFreelancerServices/" + user._id)
+            .get("http://localhost:3000/api/services/getFreelancerServices/" + id)
             .then((resp) => {
                 setServices({ results: resp.data.services, loading: false, err: null });
                 console.log(resp.data.services);
+                
+                console.log(resp);
             })
             .catch((err) => {
                 setServices({ loading: false, err: err.response.data.msg });
@@ -38,6 +44,11 @@ const Profile = () => {
                 // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
             });
     }, [services.reload]);
+
+
+
+
+
 
     // useEffect(() => {
     //     axios
@@ -79,25 +90,6 @@ const Profile = () => {
         // console.log(skillsArrayLength);
     }
 
-    const processData = (data) => {
-        // console.log(user.skills);
-    
-        // const data = skillsData;
-        console.log(data);
-        const processedData = data[0].split(",");
-        console.log(processedData);
-        // setSelectedSkillsOptions(processedData);
-        return processedData;
-        // console.error("skillsData is undefined");
-        //     const data = user.skills;
-        //     console.log(data);
-        //     const processedData = data[0].split(",");
-        //     console.log(processedData);
-        //     // selectedSkillsOptions = processedData;
-        // setSelectedSkillsOptions(processedData);
-        //     // console.log(skills.slice(0,1));
-      }
-
 
     const reSort = (type) => {
         setSort(type);
@@ -131,6 +123,15 @@ const Profile = () => {
             });
     }
 
+    const processData = (data) => {
+
+        console.log(data);
+        const processedData = data[0].split(",");
+        console.log(processedData);
+        setSelectedSkillsOptions(processedData);
+        return processedData;
+      }
+
     const { pathname } = useLocation();
 
     const [freelancer, setFreelancer] = useState({
@@ -144,11 +145,11 @@ const Profile = () => {
         axios
             .get("http://localhost:3000/api/freelancers/getFreelancerById/" + id)
             .then((resp) => {
-                resp.data[0].skills = processData(resp.data[0].skills);
-                resp.data[0].languages = processData(resp.data[0].languages);      
-                setFreelancer({ results: resp.data[0], loading: false, err: null });
-                // console.log(resp);
-                // console.log(resp.data);
+                resp.data.freelancer.skills = processData(resp.data.freelancer.skills);
+                resp.data.freelancer.languages = processData(resp.data.freelancer.languages);
+                setFreelancer({ results: resp.data.freelancer, loading: false, err: null });
+                console.log(resp);
+                console.log(resp.data.freelancer);
             })
             .catch((err) => {
                 console.log(err);
@@ -157,89 +158,35 @@ const Profile = () => {
     }, [freelancer.reload]);
 
 
-
-
-
     return (
         <div className='profile'>
+            {freelancer?.loading == false &&
             <div className="profileContainer">
-                <div className="myServiceHeader"><h1>My Profile</h1></div>
+                <div className="myServiceHeader"><h1>{freelancer?.results.name !== user?.name ? freelancer?.results.name + "'s Profile" : "My Profile"}</h1></div>
                 <div className="left">
-<<<<<<< HEAD
-                    {freelancer.loading == false &&
-                        <>
-                            <div className="profileUser">
-=======
                     <div className="profileUser">
                         <img
-                            src={user?.image_url}
+                            src={freelancer?.results.image_url}
                             alt=""
                         />
                         <div className="info">
-                            <span className='myName'>{user?.name}</span>
+                            <span className='myName'>{freelancer?.results.name}</span>
                             <div className="userInfo">
->>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
                                 <img
-                                    src={freelancer?.results.image_url}
-                                    alt=""
+                                    className="locationIcon"
+                                    src="/img/location.png"
                                 />
-<<<<<<< HEAD
-                                <div className="info">
-                                    <span className='myName'>{freelancer?.results.name}</span>
-                                    <div className="userInfo">
-                                        <img
-                                            className="locationIcon"
-                                            src="/img/location.png"
-                                        />
-                                        <span>{freelancer?.results.country}</span>
+                                <span>{freelancer?.results.country}</span>
 
-                                        {user && user?.role == "freelancer" &&
-                                            <>
-                                                <img
-                                                    className="languageIcon"
-                                                    src="/img/profileLanguage.png"
-                                                />
-                                                <span className="languageContainer">{freelancer?.results.languages.map((language, index) => (
-                                                    <>
-                                                        {language} {index !== user.languages.length - 1 ? ", " : null}
-                                                    </>
-                                                ))}</span>
-                                            </>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="rightContainer">
-                                    {/* <div className="option">
-                            <Link to={"/updateProfile"}><button><img src="/img/profileOption.png" />Edit Profile</button></Link>
-                        </div> */}
-                                    <div className="right">
-                                        <div className="rightFeatures">
-                                            <div className="rightProfileUser">
-                                                <img
-                                                    src={freelancer?.results.image_url}
-                                                    alt=""
-                                                />
-                                                <div className="rightInfo">
-                                                    <span className='rightMyName'>{freelancer?.results.name}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {user && user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
-                                        {user && user?.role == "freelancer" && user._id == id && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
-                                    </div>
-                                </div>
-=======
-                                <span>{user?.country}</span>
-
-                                {user && user?.role == "freelancer" &&
+                                {freelancer?.results.role == "freelancer" &&
                                     <>
                                         <img
                                             className="languageIcon"
                                             src="/img/profileLanguage.png"
                                         />
-                                        <span className="languageContainer">{user?.languages.map((language,index) => (
+                                        <span className="languageContainer">{freelancer?.results.languages.map((language,index) => (
                                         <>
-                                                {language} {index !== user?.languages.length - 1 ? ", " : null}
+                                                {language} {index !== freelancer?.results.languages.length - 1 ? ", " : null}
                                         </> 
                                         ))}</span>
                                     </>
@@ -254,71 +201,47 @@ const Profile = () => {
                                 <div className="rightFeatures">
                                     <div className="rightProfileUser">
                                         <img
-                                            src={user?.image_url}
+                                            src={freelancer?.results.image_url}
                                             alt=""
                                         />
                                         <div className="rightInfo">
-                                            <span className='rightMyName'>{user?.name}</span>
+                                            <span className='rightMyName'>{freelancer?.results.name}</span>
                                         </div>
                                     </div>
                                 </div>
-                                {user && user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
-                                {pathname == "/profile" && user && user?.role == "freelancer" && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
->>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
+                                {user?.role == "client" && <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>}
+                                {id == user?._id && <Link to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update</button></Link>}
+                            </div>
+                        </div>
+                    </div>
+
+                    {freelancer?.results.role == "freelancer" &&
+                        <>
+                            <div className='aboutUser'>
+                                <h2 className='aboutUserHeader'>About me</h2>
+                                <div className='aboutUserDesc'>
+                                    <p>
+                                        {freelancer?.results.desc}
+                                    </p>
+                                </div>
                             </div>
 
-<<<<<<< HEAD
-                            {user && user?.role == "freelancer" &&
-                                <div className='aboutUser'>
-                                    <h2 className='aboutUserHeader'>About me</h2>
-                                    <div className='aboutUserDesc'>
-                                        <p>
-                                            {freelancer?.results.desc}
-                                        </p>
-                                    </div>
-                                </div>
-                            }
-                            {user && user?.role == "freelancer" &&
-                                <div className='skills'>
-                                    <h2 className='skillsHeader'>Skills</h2>
-                                    <ul className='skillsDesc'>
-                                        {freelancer?.results.skills.slice(0, skillsArrayLength).map((skill) => (
-                                            <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
-                                        ))}
-                                    </ul>
-                                    {freelancer?.results.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{freelancer?.results.skills.length - 5}</Link>}
-                                </div>
-                            }
+                            <div className='skills'>
+                                <h2 className='skillsHeader'>Skills</h2>
+                                <ul className='skillsDesc'>
+                                    {freelancer?.results.skills.slice(0, skillsArrayLength).map((skill) => (
+                                        <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                                    ))}
+                                </ul>
+                                {freelancer?.results.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{freelancer?.results.skills.length - 5}</Link>}
+                            </div>
                         </>
-=======
-                    {user && user?.role == "freelancer" &&
-                        <div className='aboutUser'>
-                            <h2 className='aboutUserHeader'>About me</h2>
-                            <div className='aboutUserDesc'>
-                                <p>
-                                    {user?.desc}
-                                </p>
-                            </div>
-                        </div>
-                    }
-
-                    {user && user?.role == "freelancer" &&
-                        <div className='skills'>
-                            <h2 className='skillsHeader'>Skills</h2>
-                            <ul className='skillsDesc'>
-                                {user?.skills.slice(0, skillsArrayLength).map((skill) => (
-                                    <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
-                                ))}
-                            </ul>
-                            {user?.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{user?.skills.length - 5}</Link>}
-                        </div>
->>>>>>> 474b97a6f59f64129df9a267b66fa289dc420f81
                     }
                 </div>
-
-                {user && user?.role == "freelancer" &&
+                
+                {freelancer?.results.role == "freelancer" &&
                     <div className="myServiceSection">
-                        <div className="myServiceHeader"><h2>My Services</h2></div>
+                        <div className="myServiceHeader"><h2>{freelancer?.results.name !== user?.name ? freelancer?.results.name + "'s Services" : "My Services"}</h2></div>
                         <div className="myServiceGigsCards">
                             {services.loading == false &&
                                 services.err == null &&
@@ -331,12 +254,16 @@ const Profile = () => {
                     </div>
                 }
 
-                {services.err != null && services.loading == false && services.results == null && user && user?.role == "freelancer" &&
+                {services.err !== null && services.loading == false && services.results == null && freelancer?.results.role == "freelancer" &&
                     <div>
                         <Alert severity="error">{services.err}</Alert>
                     </div>
                 }
             </div>
+            }
+
+
+
         </div>
     )
 }

@@ -138,7 +138,7 @@ const Navbar = () => {
               <img src={user.image_url} />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
-                <Link className='link' to={"/profile/" + user?._id}>Profile</Link>
+                <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
                 <Link className='link' to="/mycourses">My Courses</Link>
                 {currentUser?.type == "freelancer" && (
                   <>

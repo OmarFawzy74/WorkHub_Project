@@ -55,6 +55,7 @@ function Login() {
 
         setAuthUser(resp.data.userData);
         navigate("/gigs");
+        // window.location.reload();
       }).catch((errors) => {
         console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");
