@@ -131,12 +131,6 @@ function Gig () {
         {service.loading == false && (
           <>
             <div className="left">
-<<<<<<< HEAD
-              <span className="breadcrumbs"><Link reloadDocument className='marketplaceLinkGig' to={"/gigs"}>Marketplace</Link> {'>'} <span className='categoryNameSpan'>{service.results.serviceCategoryId.categoryName}</span> </span>
-              <h1>{service.results.serviceTitle}</h1>
-              <div className="user">
-                <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
-=======
               <span className="breadcrumbs">
                 Marketplace {">"}{" "}
                 {service.results.serviceCategoryId.categoryName}
@@ -147,7 +141,6 @@ function Gig () {
                   className="freelancerTitleLink"
                   to={"/profile/" + service?.results.freelancerId._id}
                 >
->>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                   <img
                     className="pp"
                     src={service.results.freelancerId.image_url}
@@ -172,16 +165,7 @@ function Gig () {
               <div className="seller">
                 <h2>About The Seller</h2>
                 <div className="user">
-<<<<<<< HEAD
-                <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
-                  <img
-                    src={service.results.freelancerId.image_url}
-                    alt=""
-                  />
-                </Link>
-=======
                   <img src={service.results.freelancerId.image_url} alt="" />
->>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                   <div className="info">
                 <Link reloadDocument className='freelancerTitleLink' to={"/profile/" + service?.results.freelancerId._id}>
                     <span>{service.results.freelancerId.name}</span>
@@ -282,8 +266,6 @@ function Gig () {
                   </p>
                 </div>
                 <hr />
-<<<<<<< HEAD
-=======
                 <div className="item">
                   <div className="user">
                     <img
@@ -366,7 +348,6 @@ function Gig () {
                     <span>No</span>
                   </div>
                 </div>
->>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
               </div>
             </div>
             <div className="right">
