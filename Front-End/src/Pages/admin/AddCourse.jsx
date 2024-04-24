@@ -248,7 +248,7 @@ const AddCourse = () => {
                     <div className='btn-container'>
                         <button type="submit" className='add-button'>Add</button>
 
-                        <Link to={"/manageLearn"}>
+                        <Link reloadDocument to={"/manageLearn"}>
                             <button className='cancel-button'>Cancel</button>
                         </Link>
                     </div>

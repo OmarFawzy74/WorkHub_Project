@@ -53,7 +53,7 @@ const Category = () => {
                     <h1>Category List</h1>
                 </div>
                 <div className='contain-table'>
-                    <Link to={'/addCategory'}>
+                    <Link reloadDocument to={'/addCategory'}>
                         <button className='addCategoryButton' onClick={clicked}>
                             Add Category
                         </button>
@@ -84,7 +84,7 @@ const Category = () => {
                                                     {category.categoryDesc}
                                                 </td>
                                                 <td className="test" colSpan={2}>
-                                                    <Link to={'/updateCategory/' + category._id}>
+                                                    <Link reloadDocument to={'/updateCategory/' + category._id}>
                                                         <button className="button muted-button gl-update-btn">
                                                             Update
                                                         </button>

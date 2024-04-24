@@ -244,15 +244,17 @@
     .menu {
         border-top: 1px solid rgb(223, 221, 221);
         border-bottom: 1px solid rgb(223, 221, 221);
-        // position: relative;
+        position: relative;
         width: 1519px;
         display: flex;
+        height: 40px;
         // justify-content: space-between;
         font-weight: 500;
         color: rgb(0, 0, 0);
         background-color: #fff;
         padding: 0 90px;
         // margin-top: -10px;
+        text-decoration: none !important;
 
         .downMenuImg{
             width: 20px;
@@ -260,20 +262,27 @@
         }
     }
 
-    .menuLink {
-        text-decoration: none;
-        color: #000000;
-        font-weight: 500;
-        font-size: 16px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-        margin-right: 40px;
-        position: relative;
-        left: 70px;
-    }
+    .category{
+        list-style-type: none;
+        margin-top: 7px;
 
-    .menuLink:hover {
-        border-bottom: 4px solid #1dbf73;
-        // transition: none;
+        .menuLink {
+            text-decoration: none;
+            color: #000000;
+            font-weight: 500;
+            font-size: 16px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            margin-right: 40px;
+            position: relative;
+            left: 70px;
+        }
+        .menuLink:hover{
+            border-bottom: 4px solid #1dbf73;
+        }
     }
+    // .menuLink:hover {
+    //     border-bottom: 4px solid #1dbf73;
+    //     // transition: none;
+    // }
 }

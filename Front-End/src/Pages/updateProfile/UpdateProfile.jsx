@@ -351,7 +351,7 @@ function UpdateProfile() {
                             <div className="update-cancel-btn">
                                 <button className="updateProfileButton" type="submit">Update</button>
 
-                                <Link to={"/profile/" + users?._id}><button className="cancelProfileButton" type="submit">Cancel</button></Link>
+                                <Link reloadDocument to={"/profile/" + users?._id}><button className="cancelProfileButton" type="submit">Cancel</button></Link>
                             </div>
                             {/* )} */}
                         </div>

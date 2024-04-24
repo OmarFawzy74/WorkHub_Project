@@ -84,7 +84,7 @@ function Course() {
                     {course.loading == false &&
                         <>
                             <div className='breadcrumbsCourse'>
-                              <Link className='learnHome' to="/learn"><span className='breadcrumbsCourseFirst'>Courses</span></Link> {'>'} <span className="breadcrumbsCourseSecond">{course.results.categoryId.categoryName}</span>
+                              <Link reloadDocument className='learnHome' to="/learn"><span className='breadcrumbsCourseFirst'>Courses</span></Link> {'>'} <span className="breadcrumbsCourseSecond">{course.results.categoryId.categoryName}</span>
                             </div>
                             <h1 className='courseName'>{course.results.courseTitle}</h1>
                             <p className='courseDesc'>{course.results.courseDesc}</p>

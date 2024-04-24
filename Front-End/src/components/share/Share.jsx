@@ -8,7 +8,7 @@ const Share = () => {
         <div className='share'>
             <div className="shareContainer">
                 <div className="shareTop">
-                    <Link to="/communityProfile">
+                    <Link reloadDocument to="/communityProfile">
                         <img className='shareProfileImg' src="/img/profile.jpg" alt="" />
                     </Link>
                     <input

@@ -22,13 +22,13 @@ const GigCard = ({ item }) => {
           </div>}
         </div>}
       <div className="gigCard">
-        <Link to={"/gig/" + item._id} className="gigLink">
+        <Link reloadDocument to={"/gig/" + item._id} className="gigLink">
           <img className="gigImg" src={item.serviceCover_url} />
         </Link>
         <div className="gigInfo">
           <div className="user">
             <div class={pathname !== "/gigs" ? "card-badge" : "card-badge-2nd"}>WorkHub service</div>
-            <Link to={"/profile/" + item?.freelancerId._id} className="freelancerLink">
+            <Link reloadDocument to={"/profile/" + item?.freelancerId._id} className="freelancerLink">
                 <img src={item.freelancerId.image_url} />
                 <span className="freelancerName">{item.freelancerId.name}</span>
             </Link>

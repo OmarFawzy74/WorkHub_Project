@@ -68,7 +68,7 @@ const AddCategory = () => {
                     <div className='btn-container'>
                         <button type="submit" className='add-button'>Add</button>
 
-                        <Link to={"/category"}>
+                        <Link reloadDocument to={"/category"}>
                             <button className='cancel-button'>Cancel</button>
                         </Link>
                     </div>

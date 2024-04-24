@@ -74,7 +74,7 @@ const Message = () => {
   return (
     <div className="message">
       <span className="messageTitle">
-          <Link to="/messages">Messages</Link> {'>'} John Doe {'>'}
+          <Link reloadDocument to="/messages">Messages</Link> {'>'} John Doe {'>'}
         </span>
     <div className="chatPage">   
       <div id="chatScroll" className="messageContainer">

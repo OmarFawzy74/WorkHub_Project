@@ -10,7 +10,7 @@ function MyCourses() {
           <h1>Enrolled Courses</h1>
       </div>
       <div className="myCoursesContainer">
-        <Link to="/course/123" className="myCoursesLink">
+        <Link reloadDocument to="/course/123" className="myCoursesLink">
           <div className="learnCard">
             <img className='learnImg' src="/img/image_1.jpg"/>
             <div className="courseInfo">
