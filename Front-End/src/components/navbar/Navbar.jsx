@@ -107,7 +107,7 @@ const Navbar = () => {
 
       {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
       <div className='navbarContainer'>
-        <Link to="/" className='link'>
+        <Link reloadDocument to="/" className='link'>
           <div className="logo">
             <img className='WH' src="/img/Logo.png" />
             <span className='text'>WorkHub</span>
@@ -119,9 +119,9 @@ const Navbar = () => {
             <span>Explore</span>
             {openExplore && <div className="exploreOptions">
               <>
-                <Link className='link' to="/gigs"><span>Marketplace</span></Link>
-                <Link className='link' to="/community">Community</Link>
-                <Link className='link' to="/learn">Learn</Link>
+                <Link reloadDocument className='link' to="/gigs"><span>Marketplace</span></Link>
+                <Link reloadDocument className='link' to="/community">Community</Link>
+                <Link reloadDocument className='link' to="/learn">Learn</Link>
               </>
             </div>}
           </div>
@@ -138,17 +138,22 @@ const Navbar = () => {
               <img src={user.image_url} />
               <span>{currentUser?.name}</span>
               {open && <div className="options">
+<<<<<<< HEAD
+                <Link reloadDocument className='link' to={"/profile/" + user?._id}>Profile</Link>
+                <Link reloadDocument className='link' to="/mycourses">My Courses</Link>
+=======
                 <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
                 <Link className='link' to="/mycourses">My Courses</Link>
+>>>>>>> 9964afcccf88139ccf6c155ba77dc5c79fd67c1a
                 {currentUser?.type == "freelancer" && (
                   <>
                     <Link className='link' to="/add">Add New Service</Link>
                   </>
                 )}
-                <Link className='link' to="/requests">Requests</Link>
-                <Link className='link' to="/orders">Orders</Link>
-                <Link className='link' to="/messages">Messages</Link>
-                <Link className='link' onClick={userLogout}>Logout</Link>
+                <Link reloadDocument className='link' to="/requests">Requests</Link>
+                <Link reloadDocument className='link' to="/orders">Orders</Link>
+                <Link reloadDocument className='link' to="/messages">Messages</Link>
+                <Link reloadDocument className='link' onClick={userLogout}>Logout</Link>
               </div>}
             </div>
           )}
@@ -167,19 +172,19 @@ const Navbar = () => {
             <button>Search</button>
           </div>
 
-          <div className='menu'>
+          <ul className='menu'>
             {categories.loading == false && categories.err == null && (
               categories.results.map((category => (
                 <>
-                  <Link className='menuLink' to="/gigs/:category">
-                    <div className='category'>{category.categoryName}</div>
-                  </Link>
+                  <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:category">
+                    {category.categoryName}</Link>
+                  </li>
                 </>
-
               )))
             )
             }
-          </div>
+          </ul>
+
           {/* <Link className='menuLink' to="/">
               Video & Animation
             </Link>

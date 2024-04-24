@@ -114,7 +114,7 @@ const Messages = () => {
                 <tr className={conversation.lastMessage.senderId !== user._id ? "active" : null}>
                   <td className="userNameData"><p>{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</p></td>
                   <td className="lastMessageData">
-                    <Link id={conversation._id} onClick={openChat} className="link">
+                    <Link reloadDocument id={conversation._id} onClick={openChat} className="link">
                       {conversation.lastMessage.messageContent.substring(0, 100)}...
                     </Link>
                   </td>

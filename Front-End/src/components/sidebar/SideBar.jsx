@@ -9,42 +9,42 @@ const SideBar = () => {
         <ul className="sidebarList">
           
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/communityProfile">
+            <Link reloadDocument className='sidebarLink' to="/communityProfile">
               <img className='sidebarProfileImg' src="/img/profile.jpg" />
               <span className='sidebarListItemText'>Abdelrahman Muhammed</span>
             </Link>
           </li>
 
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/community">
+            <Link reloadDocument className='sidebarLink' to="/community">
               <img className='sidebarIcon' src="/img/feed.png" />
               <span className='sidebarListItemText'>Feeds</span>
             </Link>
           </li>
 
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/">
+            <Link reloadDocument className='sidebarLink' to="/">
               <img className='sidebarIcon' src="/img/chat.png" />
               <span className='sidebarListItemText'>Chats</span>
             </Link>
           </li>
 
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/">
+            <Link reloadDocument className='sidebarLink' to="/">
               <img className='sidebarIcon' src="/img/groups.png" />
               <span className='sidebarListItemText'>Communities</span>
             </Link>
           </li>
 
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/gigs">
+            <Link reloadDocument className='sidebarLink' to="/gigs">
               <img className='sidebarIcon' src="/img/marketplace.png" />
               <span className='sidebarListItemText'>Marketplace</span>
             </Link>
           </li>
 
           <li className="sidebarListItem">
-            <Link className='sidebarLink' to="/learn">
+            <Link reloadDocument className='sidebarLink' to="/learn">
               <img className='sidebarIcon' src="/img/course.png" />
               <span className='sidebarListItemText'>Courses</span>
             </Link>

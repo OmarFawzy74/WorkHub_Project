@@ -39,7 +39,7 @@ function Footer() {
             {categories.loading == false && categories.err == null && (
               categories.results.map((category => (
                 <>
-                  <Link className='footerCategories' to="/gigs/:category">
+                  <Link reloadDocument className='footerCategories' to="/gigs/:category">
                     <div className='category'>{category.categoryName}</div>
                   </Link>
                 </>
@@ -61,8 +61,8 @@ function Footer() {
           </div>
           <div className="item">
             <h2>About</h2>
-            <Link className= 'link' to="/privacyPolicy"><span>Privacy Policy</span></Link>
-            <Link className= 'link' to="/contactUs"><span>Contact Us</span></Link>
+            <Link reloadDocument className= 'link' to="/privacyPolicy"><span>Privacy Policy</span></Link>
+            <Link reloadDocument className= 'link' to="/contactUs"><span>Contact Us</span></Link>
           </div>
           <div className="item">
             <h2>Support</h2>
@@ -71,11 +71,11 @@ function Footer() {
           </div>
           <div className="item">
             <h2>Community</h2>
-            <Link className= 'link' to="/community"><span>Community hub</span></Link>
+            <Link reloadDocument className= 'link' to="/community"><span>Community hub</span></Link>
           </div>
           <div className="item">
             <h2>Learn</h2>
-            <Link className= 'link' to="/learn"><span>Learn</span></Link>
+            <Link reloadDocument className= 'link' to="/learn"><span>Learn</span></Link>
           </div>
         </div>
         <hr />
@@ -86,12 +86,12 @@ function Footer() {
           </div>
           <div className="right">
             <div className="social">
-              <Link><img src="/img/tiktok.png" alt="" /> </Link>
-              <Link><img src="/img/instagram.png" alt="" /></Link>
-              <Link><img src="/img/linkedin.png" alt="" /></Link>
-              <Link><img src="/img/facebook.png" alt="" /></Link>
-              <Link><img src="/img/pinterest.png" alt="" /></Link>
-              <Link><img src="/img/twitter.png" alt="" /></Link>
+              <Link reloadDocument><img src="/img/tiktok.png" alt="" /> </Link>
+              <Link reloadDocument><img src="/img/instagram.png" alt="" /></Link>
+              <Link reloadDocument><img src="/img/linkedin.png" alt="" /></Link>
+              <Link reloadDocument><img src="/img/facebook.png" alt="" /></Link>
+              <Link reloadDocument><img src="/img/pinterest.png" alt="" /></Link>
+              <Link reloadDocument><img src="/img/twitter.png" alt="" /></Link>
             </div>
             <div className="link">
               <img src="/img/language.png" alt="" />

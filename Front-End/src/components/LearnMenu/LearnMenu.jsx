@@ -83,11 +83,8 @@ const LearnMenu = () => {
                     {categories.loading == false && categories.err == null && (
                         categories.results.map((category => (
                             <>
-                                <Link className='learnMenuLink' to="/gigs/:category">
-                                    <div className='category'>{category.categoryName}</div>
-                                </Link>
+                            <div className='category'><Link className='learnMenuLink' to="/learn">{category.categoryName}</Link></div>
                             </>
-
                         )))
                     )
                     }

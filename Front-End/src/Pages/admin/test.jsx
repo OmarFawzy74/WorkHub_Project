@@ -111,8 +111,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-
-
 // export function sidebarStatus(){
 //   console.log(sidebarData);
 //   return sidebarData;
@@ -134,8 +132,6 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
   //   console.log(sidebarData);
   // };
 
-
-
   const user = getAuthUser();
 
   let { category } = useParams();
@@ -146,7 +142,6 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
     err: null,
     reload: 0,
   });
-
 
   useEffect(() => {
     axios
@@ -160,8 +155,6 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
         // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
       });
   }, [services.reload]);
-
-
 
   const [sort, setSort] = useState("sales");
   const [openSortMenu, setOpenSortMenu] = useState(false);

@@ -55,7 +55,7 @@ function UpdateProfile() {
                                         <button type="submit" className="update-button">
                                             Update
                                         </button>
-                                        <Link to={"/adminProfile"}>
+                                        <Link reloadDocument to={"/adminProfile"}>
                                             <button className="cancel-button">Cancel</button>
                                         </Link>
                                     </div>

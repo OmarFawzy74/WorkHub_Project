@@ -18,7 +18,15 @@
           font-weight: 500;
           text-transform: uppercase;
           font-size: 13px;
-          color: #7e7e7e;
+
+          .marketplaceLinkGig{
+            color: #909090;
+            text-decoration: none;
+          }
+
+          .categoryNameSpan{
+            color: black;
+          }
         }
   
         // h1 {
@@ -33,10 +41,11 @@
             text-decoration: none !important;
             display: flex;
             gap: 10px;
+            color: #000000;
+            font-weight: 500;
+
             .freelancerTitleGig{
               font-size: 14px;
-              font-weight: 500;
-              color: black;
               margin-top: 5px;
             }
     

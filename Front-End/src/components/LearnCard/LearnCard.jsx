@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const LearnCard = ({ item }) => {
   return (
-    <Link to={"/course/" + item._id} className="learnLink">
+    <Link reloadDocument to={"/course/" + item._id} className="learnLink">
       <div className="learnCard">
         <img className='learnImg' src={item.courseCoverImage_url} alt="" />
         <div className="courseInfo">
