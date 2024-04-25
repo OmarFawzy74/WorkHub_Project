@@ -171,10 +171,6 @@ export default function App() {
           path: "/adminDashboard",
           element: <AdminDashboard />
         },
-        // {
-        //   path: "/adminSidebar",
-        //   element: <AdminSidebar />
-        // },
         {
           path: "/adminGigs",
           element: <Gigs />
