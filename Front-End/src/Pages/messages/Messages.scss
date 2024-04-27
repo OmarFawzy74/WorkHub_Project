@@ -7,21 +7,18 @@
       padding: 50px 0px;
 
       .action {
-        text-align: left;
+        text-align: center;
         position: relative;
-        left: 10px;
       }
 
       .date {
-        text-align: left;
+        text-align: center;
         position: relative;
-        left: 10px;
       }
 
       .userName {
-        text-align: left;
+        text-align: center;
         position: relative;
-        left: 10px;
       }
   
       .title {
@@ -44,9 +41,10 @@
         tr {
           height: 100px;
           th {
-            text-align: left;
+            text-align: center;
           }
           td {
+            text-align: center;
             padding: 10px;
   
             &:first-child {
@@ -56,6 +54,7 @@
             &:nth-child(2),
             &:nth-child(3) {
               color: gray;
+              text-align: center;
             }
           }
   
@@ -71,15 +70,14 @@
             background-color: #1dbf730f;
 
             .dateData {
-              text-align: left;
+              text-align: center;
             }
 
             .userNameData {
-              text-align: left;
+              text-align: center;
 
               p {
                 position: relative;
-                left: 10px;
               }
             }
           }

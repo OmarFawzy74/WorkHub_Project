@@ -89,6 +89,10 @@ const Message = () => {
                     />
                     <p>
                       {message.messageContent}
+                      <img
+                        className="seen"
+                        src="/img/read.png"
+                      />
                     </p>
                   </div>
                 </>

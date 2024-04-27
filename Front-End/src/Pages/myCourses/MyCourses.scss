@@ -7,16 +7,14 @@
     }
   
     .myCoursesContainer {
-      width: 1200px;
-      margin-top: 50px;
-      margin-bottom: 80px;
-      display: grid;
-      grid-template-columns: auto auto auto auto ;
-      padding-left: 100px;
-      column-gap: 70px;
-      row-gap: 90px;
-
-
+        width: 1200px;
+        margin-top: 50px;
+        margin-bottom: 80px;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        padding-left: 100px;
+        column-gap: 46.5px;
+        justify-content: start;
 
       .myCoursesLink:hover{
         color: #404145;

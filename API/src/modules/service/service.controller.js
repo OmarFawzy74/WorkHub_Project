@@ -71,20 +71,29 @@ export const createService = async (req, res) => {
 }
 
 // Update a service by ID
-export const updateService = async (req, res, next) => {
-    const { id } = req.params;
-    const service = req.body;
+export const updateService = async (req, res) => {
+    try {
+        const serviceId = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return next(new Error("Service not found", { cause: 404 }));
+        const { serviceTitle, serviceShortDesc, deliveryTime, revisionNumber, freelancerId, serviceShortTitle, serviceCategoryId, serviceDesc, servicePrice, features } = req.body
+
+        const serviceData = await Service.findById(serviceId);
+
+        if (serviceData.length == 0) {
+            return res.status(404).json({ msg: "Service not found!" });
+        }
+
+        const filter = { _id: serviceId };
+        const update = { $set: { serviceTitle: serviceTitle, serviceShortDesc: serviceShortDesc, deliveryTime: deliveryTime, revisionNumber: revisionNumber, freelancerId: freelancerId, serviceShortTitle: serviceShortTitle, serviceCategoryId: serviceCategoryId, serviceDesc: serviceDesc, servicePrice: servicePrice, features: features } };
+        await Service.updateOne(filter, update);
+
+        res.status(200).json({ msg: "Service updated successfully"});
+    } catch (error) {
+        // console.log(req);
+        // console.log(req.body);
+        console.log(error);
+        res.status(500).json({ success: false, message: "Server Error" });
     }
-    const updatedService = await Service.findByIdAndUpdate(id, service, { new: true });
-    if (!updateService) {
-        return next(new Error("service can't updated", {
-            cause: 404
-        }))
-    }
-    res.status(200).json({ success: true, message: "service updated successfully", updatedService });
 };
 
 // Delete a service by ID

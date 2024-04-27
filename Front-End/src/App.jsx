@@ -113,23 +113,23 @@ export default function App() {
   }
 
   const Layout = () => {
-    const scrollHandler = () => {
-      if (window.location.href == "http://localhost:3001/") {
-        if (window.scrollY > 600) {
-          window.scrollTo(0, 660);
-        }
-      }
-      else {
-        // window.scrollBy(0, -200);
-      }
+    // const scrollHandler = () => {
+    //   if (window.location.href == "http://localhost:3001/") {
+    //     if (window.scrollY > 600) {
+    //       window.scrollTo(0, 660);
+    //     }
+    //   }
+    //   else {
+    //     // window.scrollBy(0, -200);
+    //   }
 
-      // window.scrollTo(0, 0);
+    //   // window.scrollTo(0, 0);
 
-      // console.log(window.location.href);
+    //   // console.log(window.location.href);
 
-      // var element = document.getElementById("appScroll");
-      // element.scrollBy(0, -element.scrollHeight);
-    }
+    //   // var element = document.getElementById("appScroll");
+    //   // element.scrollBy(0, -element.scrollHeight);
+    // }
 
     const { pathname } = useLocation()
 
@@ -147,11 +147,11 @@ export default function App() {
           (auth.role == 'admin') ? <Outlet /> : <Navigate to={'/'} />
         } */}
 
-        {(pathname == "/test") ? <div onLoad={scrollHandler} id='appScroll' className="app">
+        {(pathname == "/test") ? <div id='appScroll' className="app">
           <Outlet />
         </div>  
         :
-        <div onLoad={scrollHandler} id='appScroll' className="app">
+        <div id='appScroll' className="app">
           <Navbar />
           <Outlet />
           <Footer />

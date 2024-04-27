@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./Home.scss";
 import Featured from '../../components/featured/Featured';
 import TrustedBy from "../../components/trustedBy/TrustedBy";
@@ -9,6 +9,12 @@ import ProjectCard from '../../components/projectCard/ProjectCard';
 
 
 const Home = () => {
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, []);
+
+
   return (
     <div className='home'>
       <Featured />
