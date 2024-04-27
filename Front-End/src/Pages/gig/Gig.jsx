@@ -264,14 +264,10 @@ function Gig() {
                         </div>
                         <p className='reviewDescParagraph'>{review?.reviewDesc}</p>
                       </div>
-<<<<<<< HEAD
                         {index !==
                           reviews?.results.length - 1
                           ? <hr />
                           : null}
-=======
-                      <hr />
->>>>>>> 77dae3317709762480ad147f30816a203607167f
                     </>
                   ))}
               </div>
@@ -309,7 +305,7 @@ function Gig() {
                 </button>
               )}
               {user && service.results.freelancerId._id == user._id && (
-               <Link reloadDocument className='updateButtonService' to={"/updateService/" + service?.results._id}><button>Update</button></Link> 
+               <Link reloadDocument className='updateButtonService' to={"/updateService/" + service?.results._id}><button onClick={requestOrder}>Update</button></Link> 
               )}
             </div>
           </>
