@@ -75,14 +75,6 @@ const Profile = () => {
 
     const [skillsArrayLength, setSkillsArrayLength] = useState(5);
 
-<<<<<<< HEAD
-    const showMoreSkills = () => {
-        setSkillsArrayLength(user?.skills.length)
-        // console.log(skillsArrayLength);
-    }
-
-=======
->>>>>>> 77dae3317709762480ad147f30816a203607167f
     const reSort = (type) => {
         setSort(type);
         setOpen(false);
