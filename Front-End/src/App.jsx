@@ -46,6 +46,7 @@ import OrdersList from './Pages/admin/OrdersList';
 import Requests from './Pages/requests/Requests';
 import ClientProfile from './Pages/admin/ClientProfile';
 import ScrollToTop from './ScrollToTop';
+import UpdateService from './Pages/updateService/UpdateService';
 
 let dashboardData;
 
@@ -297,6 +298,10 @@ export default function App() {
         {
           path: "/updateProfile",
           element: <UpdateProfile />
+        },
+        {
+          path: "/updateService/:id",
+          element: <UpdateService />
         },
         {
           path: "/community",

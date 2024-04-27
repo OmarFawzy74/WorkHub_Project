@@ -322,55 +322,6 @@ const Add = () => {
                   </div>
                 ))}
               </div>
-              {/* <label htmlFor="">Add Features</label>
-              <input
-                name="feature"
-                required
-                onChange={(e) =>
-                  setService({
-                    ...service,
-                    features: [...service.features, e.target.value],
-                  })
-                }
-                type="text"
-                placeholder="e.g. page design"
-              />
-              <input
-                name="feature"
-                required
-                onChange={(e) =>
-                  setService({
-                    ...service,
-                    features: [...service.features, e.target.value],
-                  })
-                }
-                type="text"
-                placeholder="e.g. file uploading"
-              />
-              <input
-                name="feature"
-                required
-                onChange={(e) =>
-                  setService({
-                    ...service,
-                    features: [...service.features, e.target.value],
-                  })
-                }
-                type="text"
-                placeholder="e.g. setting up a domain"
-              />
-              <input
-                name="feature"
-                required
-                onChange={(e) =>
-                  setService({
-                    ...service,
-                    features: [...service.features, e.target.value],
-                  })
-                }
-                type="text"
-                placeholder="e.g. hosting"
-              /> */}
               <label htmlFor="">Price($)</label>
               <input
                 name="servicePrice"
