@@ -73,7 +73,8 @@ const Navbar = () => {
       .then((resp) => {
         console.log(resp);
         removeAuthUser();
-        navigate("/");
+        window.location.replace("http://localhost:3001/");
+        // navigate("/");
       }).catch((errors) => {
         console.log(errors);
       })
@@ -92,9 +93,9 @@ const Navbar = () => {
     axios.get("http://localhost:3000/api/categories/getAllCategories")
       .then(
         resp => {
-          console.log(resp.data);
+          // console.log(resp.data);
           setCategories({ results: resp.data, loading: false, err: null });
-          console.log(resp);
+          // console.log(resp);
         }
       ).catch(err => {
         setCategories({ ...categories, loading: false, err: err.response.data.msg });
@@ -129,10 +130,10 @@ const Navbar = () => {
           <span><img className="languageIcon" src={!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"} /> English</span>
 
 
-          {currentUser?.activity !== "online" && <Link className='link' to="/login">Sign in</Link>}
+          {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/login">Sign in</Link>}
           {/* {currentUser.activity !== "online" ? <Link className='link' to="/login">Sign in</Link> : null} */}
 
-          {currentUser?.activity !== "online" && <Link className='link' to="/register"><button className='joinButton'>Join</button></Link>}
+          {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/register"><button className='joinButton'>Join</button></Link>}
           {currentUser && (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src={user.image_url} />
@@ -148,7 +149,7 @@ const Navbar = () => {
                 <Link reloadDocument className='link' to="/requests">Requests</Link>
                 <Link reloadDocument className='link' to="/orders">Orders</Link>
                 <Link reloadDocument className='link' to="/messages">Messages</Link>
-                <Link reloadDocument className='link' onClick={userLogout}>Logout</Link>
+                <Link className='link' onClick={userLogout}>Logout</Link>
               </div>}
             </div>
           )}

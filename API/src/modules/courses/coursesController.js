@@ -1,10 +1,7 @@
 
 import course from "../../../DB/models/course_model.js";
-
-// Unfinished Tasks
-
-// 1. Check Authentication
-// 2. Check Authorization
+import freelancer_model from "../../../DB/models/freelancer_model.js";
+import Client_Model from "../../../DB/models/client_model.js"
 
 // Get All courses
 export const getAllCourses = async (req, res) => {
@@ -17,14 +14,8 @@ export const getAllCourses = async (req, res) => {
 
         const modifiedCourses = allCourses.map((course) => {
             const modifiedCourse = { ...course._doc }; // Create a copy of the service object
-            // modifiedCourse.courseCoverImage_url = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
-            // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
             modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
             modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
-            // modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
-            // modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
-            //     return "http://" + req.hostname + ":3000/" + image_url;
-            // });
             return modifiedCourse;
         });
 
@@ -35,6 +26,7 @@ export const getAllCourses = async (req, res) => {
     }
 }
 
+// Get Course By ID
 export const getCourseById = async (req, res) => {
     try {
         const courseId = req.params.id;
@@ -55,17 +47,243 @@ export const getCourseById = async (req, res) => {
 
 // Get Courses By Freelancer ID Or Client ID
 export const getEnrolledCourses = async (req, res) => {
-    const filter = {freelancerId: req.params.id};
-    const enrolledCourses = await course.find(filter);
+    try {
+        const userId = req.params.userId;
+        const role = req.params.role;
+    
+        const allCourses = await course.find();
 
-    if (enrolledCourses.length == 0) {
-        return next(new Error("Courses Not found :("))
+        const modifiedCourses = allCourses.map((course) => {
+            const modifiedCourse = { ...course._doc }; // Create a copy of the service object
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            return modifiedCourse;
+        });
+    
+        const coursesData = [];
+        // const coursesIds = [];
+
+        if (role == "freelancer") {
+            modifiedCourses.map((course) => {
+                course.enrolledFreelancersIds.filter((id) => {
+                    if (id == userId) {
+                        coursesData.push(course);
+                    }
+                })
+            })
+        }
+
+        if(role == "client") [
+            modifiedCourses.map((course) => {
+                course.enrolledClientsIds.filter((id) => {
+                    if (id == userId) {
+                        coursesData.push(course);
+                    }
+                })
+            })
+        ]
+    
+        if(role !== "client" && role !== "freelancer") {
+            return res.status(404).json({ msg: "Invalid role!" });
+        }
+
+
+        if (coursesData.length == 0) {
+            return res.status(404).json({ msg: "No Courses Found!" });
+        }
+    
+        res.status(200).json({ coursesData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
-
-    res.status(200).json({ success: true, message: allCourses });
 }
 
-// Add courses
+// Enroll In a Course
+export const enrollCourse = async (req, res) => {
+    try {
+        const courseId = req.params.courseId;
+        const freelancerId = req.params.userId;
+        const clientId = req.params.userId;
+        const role = req.params.role;
+        const courseData = await course.findById(courseId);
+
+        if(!courseData) {
+            return res.status(404).json({ msg: "Course not found!" });
+        }
+
+        if(role == "freelancer") {
+            if(freelancerId == undefined) {
+                return res.status(404).json({ msg: "Freelancer id is required!" });
+            }
+
+            const freelancerData = await freelancer_model.findById(freelancerId);
+
+            if(!freelancerData) {
+                return res.status(404).json({ msg: "Freelancer not found!" });
+            }
+    
+            const enrollCourses = courseData.enrolledFreelancersIds;
+
+            let actualData = [];
+
+            enrollCourses.filter((id) => {
+                if (id == freelancerId) {
+                    actualData.push(freelancerId);
+                }
+            })
+
+            if(actualData.length !== 0) {
+                return res.status(400).json({ msg: "You already enrolled in this course!" });
+            }
+    
+            enrollCourses.push(freelancerId);
+    
+            const filter = { _id: courseId };
+    
+            const update = { $set: { enrolledFreelancersIds: enrollCourses} }
+    
+            await course.updateOne(filter, update);
+        }
+
+        if(role == "client") {
+            if(clientId == undefined) {
+                return res.status(404).json({ msg: "Client id is required!" });
+            }
+
+            const clientData = await Client_Model.findById(clientId);
+
+            if(!clientData) {
+                return res.status(404).json({ msg: "Client not found!" });
+            }
+    
+            const enrollCourses = courseData.enrolledClientsIds;
+    
+            enrollCourses.push(clientId);
+    
+            const filter = { _id: courseId };
+    
+            const update = { $set: { enrolledClientsIds: enrollCourses} }
+    
+            await course.updateOne(filter, update);
+        }
+
+        if(role !== "client" && role !== "freelancer") {
+            return res.status(404).json({ msg: "Invalid role!" });
+        }
+
+        res.status(200).json({ msg: "Course has been enrolled successfuly." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+// Unenroll In a Course
+export const unenrollCourse = async (req, res) => {
+    try {
+        const courseId = req.params.courseId;
+        const freelancerId = req.params.userId;
+        const clientId = req.params.userId;
+        const role = req.params.role;
+        const courseData = await course.findById(courseId);
+
+        if(!courseData) {
+            return res.status(404).json({ msg: "Course not found!" });
+        }
+
+        if(role == "freelancer") {
+            if(freelancerId == undefined) {
+                return res.status(404).json({ msg: "Freelancer id is required!" });
+            }
+
+            const freelancerData = await freelancer_model.findById(freelancerId);
+
+            if(!freelancerData) {
+                return res.status(404).json({ msg: "Freelancer not found!" });
+            }
+    
+            const enrollCourses = courseData.enrolledFreelancersIds;
+
+            let actualData = [];
+
+            enrollCourses.filter((id) => {
+                if (id == freelancerId) {
+                    actualData.push(freelancerId);
+                }
+            })
+
+            if(actualData.length == 0) {
+                return res.status(400).json({ msg: "You are not enrolled in this course!" });
+            }
+    
+            let data = [];
+
+            enrollCourses.filter((id) => {
+                if (id != freelancerId) {
+                    data.push(freelancerId);
+                }
+            })
+    
+            const filter = { _id: courseId };
+    
+            const update = { $set: { enrolledFreelancersIds: data} }
+    
+            await course.updateOne(filter, update);
+        }
+
+        if(role == "client") {
+            if(clientId == undefined) {
+                return res.status(404).json({ msg: "Client id is required!" });
+            }
+
+            const clientData = await Client_Model.findById(clientId);
+
+            if(!clientData) {
+                return res.status(404).json({ msg: "Client not found!" });
+            }
+    
+            const enrollCourses = courseData.enrolledClientsIds;
+    
+            let actualData = [];
+
+            enrollCourses.filter((id) => {
+                if (id == clientId) {
+                    actualData.push(clientId);
+                }
+            })
+
+            if(actualData.length == 0) {
+                return res.status(400).json({ msg: "You are not enrolled in this course!" });
+            }
+    
+            let data = [];
+
+            enrollCourses.filter((id) => {
+                if (id != clientId) {
+                    data.push(clientId);
+                }
+            })
+    
+            const filter = { _id: courseId };
+    
+            const update = { $set: { enrolledClientsIds: data} }
+    
+            await course.updateOne(filter, update);
+        }
+
+        if(role !== "client" && role !== "freelancer") {
+            return res.status(404).json({ msg: "Invalid role!" });
+        }
+
+        res.status(200).json({ msg: "Course has been unenrolled successfuly." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+// Add Course
 export const addCourse = async (req, res) => {
     try {
         const courseTitle = { courseTitle: req.body.courseTitle };
@@ -119,6 +337,7 @@ export const deleteCourse = async (req, res) => {
 
 }
 
+// Upload Course Cover Image
 export const uploadCourseCoverImage = async (req, res, next) => {
     try {
         if (!req.file) {
@@ -145,6 +364,7 @@ export const uploadCourseCoverImage = async (req, res, next) => {
     }
 };
 
+// Upload Proffessor Image
 export const uploadProffImage = async (req, res, next) => {
     try {
         if (!req.file) {

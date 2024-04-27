@@ -20,6 +20,10 @@ const messageSchema = new Schema({
         type: String,
         required: true
     },
+    messageStatus: {
+        type: String,
+        default: 'sent',
+    },
     creationDate: {
         type: String,
     }

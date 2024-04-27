@@ -41,6 +41,14 @@ const courseSchema = new Schema ({
         type: String,
         required: true,
     },
+    enrolledFreelancersIds: {
+        type: [mongoose.Types.ObjectId],
+        required: false
+    },
+    enrolledClientsIds: {
+        type: [mongoose.Types.ObjectId],
+        required: false
+    }
 },{
     timestamps: true
 });

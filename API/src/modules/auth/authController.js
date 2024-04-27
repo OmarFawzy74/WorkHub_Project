@@ -145,7 +145,19 @@ export const signup = async (req, res) => {
       const adminEmail = await AdminModel.findOne({ email });
   
       if(adminEmail) {
-        return res.status(400).json({ message: "This Email is already registerd" });
+        return res.status(400).json({ message: "This Email is used" });
+      }
+
+      const clientEmail = await ClientModel.findOne({ email });
+
+      if(clientEmail) {
+        return res.status(400).json({ message: "This Email is used" });
+      }
+
+      const freelancerEmail = await FreelancerModel.findOne({ email });
+
+      if(freelancerEmail) {
+        return res.status(400).json({ message: "This Email is used" });
       }
   
       // Validate role
@@ -154,19 +166,19 @@ export const signup = async (req, res) => {
       }
   
       // Check if the user already exists in any of the models
-      let existingUser;
-      switch (role) {
-        case 'client':
-          existingUser = await ClientModel.findOne({ email });
-          break;
-        case 'freelancer':
-          existingUser = await FreelancerModel.findOne({ email });
-          break;
-      }
+      // let existingUser;
+      // switch (role) {
+      //   case 'client':
+      //     existingUser = await ClientModel.findOne({ email });
+      //     break;
+      //   case 'freelancer':
+      //     existingUser = await FreelancerModel.findOne({ email });
+      //     break;
+      // }
   
-      if (existingUser) {
-        return res.status(400).json({ message: 'User already exists' });
-      }
+      // if (existingUser) {
+      //   return res.status(400).json({ message: 'User already exists' });
+      // }
   
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));

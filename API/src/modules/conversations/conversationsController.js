@@ -63,13 +63,13 @@ export const addConversation = async (req, res) => {
 
         // Check if Client is Exists in Clients
 
-        const data = await conversation.findOne({freelancer});
+        const conversationData = await conversation.findOne({freelancer});
 
         // console.log(data);
 
-        if(data) {
-            if(data.client == client) {
-                return res.status(400).json({ msg:"Conversation is already exists!"});
+        if(conversationData) {
+            if(conversationData.client == client) {
+                return res.status(400).json({ msg:"Conversation is already exists!", conversationData});
             }
         }
 

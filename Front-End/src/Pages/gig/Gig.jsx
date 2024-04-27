@@ -264,10 +264,14 @@ function Gig() {
                         </div>
                         <p className='reviewDescParagraph'>{review?.reviewDesc}</p>
                       </div>
+<<<<<<< HEAD
                         {index !==
                           reviews?.results.length - 1
                           ? <hr />
                           : null}
+=======
+                      <hr />
+>>>>>>> 77dae3317709762480ad147f30816a203607167f
                     </>
                   ))}
               </div>

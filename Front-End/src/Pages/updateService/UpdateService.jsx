@@ -193,8 +193,8 @@ const UpdateService = () => {
             // swal(resp.data.message, "", "success");
             console.log(resp);
             console.log(service);
-            navigate("/gig/" + service?.results._id);
-          })
+            window.location = "http://localhost:3001/gig/" + service?.results._id;
+        })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
             console.log(errors);

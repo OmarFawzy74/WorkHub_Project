@@ -12,8 +12,7 @@ import { Container } from 'react-bootstrap';
 
 function Course() {
     const user = getAuthUser();
-    const { pathname } = useLocation()
-
+    const { pathname } = useLocation();
 
     const [courseContainer, setCourseContainer] = useState({
         loading: false,
@@ -56,6 +55,7 @@ function Course() {
 
     const [course, setCourse] = useState({
         loading: true,
+        enrollStatus: null,
         results: null,
         err: null,
         reload: 0,
@@ -67,15 +67,53 @@ function Course() {
         axios
             .get("http://localhost:3000/api/courses/getCourseById/" + id)
             .then((resp) => {
-                setCourse({ results: resp.data.courseData, loading: false, err: null });
-                console.log(resp);
-                console.log(resp.data.courseData);
+                let status = false;
+
+                if(user.role == "freelancer") {
+                    resp.data.courseData.enrolledFreelancersIds.filter((id) => {
+                        if(id == user._id) {
+                            status = true;
+                        }
+                    })
+                }
+
+                if(user.role == "client") {
+                    resp.data.courseData.enrolledClientsIds.filter((id) => {
+                        if(id == user._id) {
+                            status = true;
+                        }
+                    })
+                }
+
+                setCourse({ results: resp.data.courseData, loading: false, err: null, enrollStatus: status });
             })
             .catch((err) => {
                 console.log(err);
-                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
             });
     }, [course.reload]);
+
+
+    const enrollCourse = () => {
+        axios
+        .put("http://localhost:3000/api/courses/enrollCourse/" + id + "/" + user._id + "/" + user.role)
+        .then((resp) => {
+            window.location.replace("http://localhost:3001/course/" + id);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+    const unenrollCourse = () => {
+        axios
+        .put("http://localhost:3000/api/courses/unenrollCourse/" + id + "/" + user._id + "/" + user.role)
+        .then((resp) => {
+            window.location.replace("http://localhost:3001/course/" + id);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 
     return (
         <div className="course">
@@ -100,7 +138,7 @@ function Course() {
                                 />
                                 <span>{course.results.courseDuration} Minutes</span>
                             </div>
-                            {courseContainer?.loading == true &&
+                            {course.enrollStatus == true &&
                                 <Container>
                                     <div className="ratio ratio-16x9">
                                         <iframe src={course.results.courseLink} title="YouTube video" allowFullScreen></iframe>
@@ -128,6 +166,7 @@ function Course() {
                             </div>
                         </>
                     }
+
                     <div className='requirement'>
                         <h3 className='requirementHeader'>Requirements</h3>
                         <ul className='requirementDesc'>
@@ -310,8 +349,9 @@ function Course() {
                         <button className='deleteBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Delete</button>
                     </div>
                     } */}
-                    {user && user?.role !== "admin" && <button className='enrollBtn' onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
-                    {!user && <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })}>Enroll</button>}
+                    {user && user?.role !== "admin" && course.results && course.enrollStatus == false && <button className='enrollBtn' onClick={enrollCourse}>Enroll</button>}
+                    {user && user?.role !== "admin" && course.results && course.enrollStatus == true && <button className='unenrollBtn' onClick={unenrollCourse}>Unenroll</button>}
+                    {!user && <button>Enroll</button>}
                     {user && user?.role == "admin" &&
                         <div className='adminBtnsContainer'>
                             <button className='updateBtn'>Update</button>

@@ -65,24 +65,34 @@ const Orders = () => {
 
 
   const message = (e) => {
-    const freelancerId = e;
+    let freelancerId;
+    let clientId;
 
-    console.log(freelancerId);
-    console.log(e.target.value);
-    
+    if(user.role == "client") {
+      freelancerId = e.target.value;
+      clientId = user._id;
+    }
+
+    if(user.role == "freelancer") {
+      freelancerId = user._id;
+      clientId = e.target.value;
+    }
+
+    // var actualConversationId;
+
     axios
     .post("http://localhost:3000/api/conversations/addConversation", {
       freelancer: freelancerId,
-      client: user._id
+      client: clientId
     })
       .then((resp) => {
         const conversationId = resp.data.newConversationData[0]._id;
-        // console.log(resp.data.newConversationData[0]._id);
-        navigate("/message/" + conversationId);
+        window.location = "http://localhost:3001/message/" + conversationId
       })
       .catch((errors) => {
         console.log(errors);
-        navigate("/messages");
+        const conversationId = errors.response.data.conversationData._id;
+        window.location = "http://localhost:3001/message/" + conversationId
       });
   }
 
@@ -122,7 +132,7 @@ const Orders = () => {
             <td>{user.role=="client" ? order.freelancerId.name : order.clientId.name}</td>
             { pathname=="/orders" &&
               <td>
-                <button value={order.freelancerId._id} onClick={message} className="messageBtn">
+                <button value={user.role == "freelancer" ? order.clientId._id : order.freelancerId._id} onClick={message} className="messageBtn">
                   <img className="message" src="./img/message.png" alt="" />
                 </button>
               </td>

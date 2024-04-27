@@ -75,11 +75,14 @@ const Profile = () => {
 
     const [skillsArrayLength, setSkillsArrayLength] = useState(5);
 
+<<<<<<< HEAD
     const showMoreSkills = () => {
         setSkillsArrayLength(user?.skills.length)
         // console.log(skillsArrayLength);
     }
 
+=======
+>>>>>>> 77dae3317709762480ad147f30816a203607167f
     const reSort = (type) => {
         setSort(type);
         setOpen(false);
@@ -145,6 +148,12 @@ const Profile = () => {
                 // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
             });
     }, [freelancer.reload]);
+
+    const showMoreSkills = (e) => {
+        e.preventDefault();
+        setSkillsArrayLength(freelancer?.results.skills.length);
+        // console.log(skillsArrayLength);
+    }
 
 
     const [client, setClient] = useState({

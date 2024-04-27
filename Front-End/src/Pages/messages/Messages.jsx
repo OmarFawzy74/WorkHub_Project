@@ -80,7 +80,36 @@ const Messages = () => {
 
   const openChat = (e) => {
     const conservationId = e.target.id;
-    navigate("/message/" + conservationId);
+
+
+    axios.put("http://localhost:3000/api/messages/updateMessagesStatus/:id/:role" + user._id)
+      .then(
+        resp => {
+
+
+          console.log(resp);
+          
+          // console.log(resp);
+          // console.log(resp.data);
+          // console.log(resp.data.result);
+          // let data = resp.data.result
+
+          // if(!Array.isArray(data)) {
+          //   data = [resp.data.result];
+          // }
+
+          // setConversations({ results: data, loading: false, err: null });
+        }
+      ).catch(err => {
+        console.log(err);
+        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+      })
+
+
+
+    // window.location.replace("http://localhost:3001/message/" + conservationId);
+
+    // navigate("/message/" + conservationId);
   }
 
 
@@ -114,7 +143,7 @@ const Messages = () => {
                 <tr className={conversation.lastMessage.senderId !== user._id ? "active" : null}>
                   <td className="userNameData"><p>{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</p></td>
                   <td className="lastMessageData">
-                    <Link reloadDocument id={conversation._id} onClick={openChat} className="link">
+                    <Link id={conversation._id} onClick={openChat} className="link">
                       {conversation.lastMessage.messageContent.substring(0, 100)}...
                     </Link>
                   </td>

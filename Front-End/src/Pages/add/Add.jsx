@@ -73,6 +73,7 @@ const Add = () => {
         // image.current.value = null;
         // swal(resp.data.message, "", "success");
         console.log(resp);
+        window.location.replace("http://localhost:3001/gigs");
       })
       .catch((errors) => {
         // swal(errors.response.data.message, "", "error");
@@ -179,7 +180,7 @@ const Add = () => {
         // }
 
         // document.getElementById("selectCategory").selectedIndex = 0;
-        swal(resp.data.message, "", "success");
+        // swal(resp.data.message, "", "success");
         console.log(resp);
         console.log(service);
       })
