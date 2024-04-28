@@ -22,6 +22,10 @@ const orderSchema = new Schema({
         type:  mongoose.Types.ObjectId,
         required: true,
         ref: "service"
+    },
+    orderStatus: {
+        type:  String,
+        default: "Ongoing"
     }
 },{
     timestamps: true
