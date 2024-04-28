@@ -68,7 +68,8 @@ const UpdateService = () => {
     const coverImage = useRef(null);
 
 
-        const uploadImages = (id) => {
+        const updateImages = (id) => {
+
             if (serviceImages.current && serviceImages.current.files) {
                 const formData = new FormData();
                 for (let i = 0; i < serviceImages.current.files.length; i++) {
@@ -88,7 +89,7 @@ const UpdateService = () => {
             }
         }
 
-        
+
     // const uploadImages = (id) => {
 
     //     const formData = new FormData();
@@ -227,7 +228,7 @@ const UpdateService = () => {
                 console.log(serviceImages.current);
                 // if (serviceImages.current !== null) {               
                 // }
-                uploadImages(serviceId);
+                updateImages(serviceId);
                 // uploadCoverImage(serviceId);
                 // console.log(resp);
                 // document.getElementById("serviceFrom").reset();
