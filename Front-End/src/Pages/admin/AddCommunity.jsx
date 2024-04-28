@@ -17,7 +17,7 @@ const AddCommunity = () => {
       const addCommunity = (e) => {
         e.preventDefault();
         setCommunity({...community, loading: true, err: null});
-        axios.post("http://localhost:3000/api/categories/addCategory", {
+        axios.post("http://localhost:3000/api/communities/addCommunity", {
             communityName: community.communityName,
             communityDesc: community.communityDesc
         })
@@ -51,7 +51,7 @@ const AddCommunity = () => {
                         required
                         placeholder='Enter Name'
                         value={community.communityName}
-                        onChange={(e) => setCategory({...community, communityName: e.target.value})}
+                        onChange={(e) => setCommunity({...community, communityName: e.target.value})}
                         />
                     </div>
                     <div className='form-control'>
@@ -61,7 +61,7 @@ const AddCommunity = () => {
                         required
                         placeholder='Enter Description'
                         value={community.communityDesc}
-                        onChange={(e) => setCategory({...community, communityDesc: e.target.value})}
+                        onChange={(e) => setCommunity({...community, communityDesc: e.target.value})}
                         />
                     </div>
                     <div className='btn-container'>

@@ -52,15 +52,13 @@
                         }
             
                     }
-            
                     .shareBottom{
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
             
                         .shareOption:hover{
-                            background-color: rgb(221, 221, 221);
-                            
+                            background-color: rgb(255, 255, 255);  
                        }
             
                         .shareOptions{
@@ -73,6 +71,24 @@
                                 align-items: center;
                                 margin-right: 15px;
                                 cursor: pointer;
+
+                                .addPostImg{
+                                    width: 110px;
+                                }
+
+                                select{
+                                    padding: 5px;
+                                    border: 1px solid rgb(220, 220, 220);
+
+                                    &:focus {
+                                      outline: 0;
+                                      border: 1px solid #1dbf73;
+                                    }
+                        
+                                    &:hover {
+                                      border: 1px solid #1dbf73;
+                                    }
+                                }
             
                                 .shareIcon{
                                     width: 30px;

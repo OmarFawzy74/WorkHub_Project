@@ -31,7 +31,6 @@ const postSchema = new Schema({
     },
     comments: {
         type: [String],
-        required: true
     }
 },{
     timestamps: true

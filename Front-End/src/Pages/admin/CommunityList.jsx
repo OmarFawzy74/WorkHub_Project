@@ -10,7 +10,7 @@ import { sidebarStatus } from "../../App";
 
 const CommunityList = () => {
 
-    const [categories, setCategories] = useState({
+    const [communities, setCommunities] = useState({
         loading: true,
         results: [],
         err: null,
@@ -18,34 +18,34 @@ const CommunityList = () => {
     });
 
     useEffect(() => {
-        setCategories({ ...categories, loading: true })
-        axios.get("http://localhost:3000/api/categories/getAllCategories")
+        setCommunities({ ...communities, loading: true })
+        axios.get("http://localhost:3000/api/communities/getAllCommunities")
             .then(
                 resp => {
                     console.log(resp.data);
-                    setCategories({ results: resp.data, loading: false, err: null });
+                    setCommunities({ results: resp.data.allCommunities, loading: false, err: null });
                     console.log(resp);
                 }
             ).catch(err => {
-                setCategories({ ...categories, loading: false, err: err.response.data.msg });
+                setCommunities({ ...communities, loading: false, err: err.response.data.msg });
                 console.log(err);
             })
-    }, [categories.reload]);
+    }, [communities.reload]);
 
-    const deleteCategory = (e) => {
-        e.preventDefault();
-        const category_id = e.target.value;
-        axios.delete("http://localhost:3000/api/categories/deleteCategory/" + category_id)
-            .then(
-                resp => {
-                    console.log(resp);
-                    swal(resp.data.msg, "", "success");
-                    setCategories({ ...categories, reload: categories.reload + 1 });
-                }
-            ).catch(error => {
-                console.log(error);
-            })
-    }
+    // const deleteCategory = (e) => {
+    //     e.preventDefault();
+    //     const category_id = e.target.value;
+    //     axios.delete("http://localhost:3000/api/categories/deleteCategory/" + category_id)
+    //         .then(
+    //             resp => {
+    //                 console.log(resp);
+    //                 swal(resp.data.msg, "", "success");
+    //                 setCategories({ ...categories, reload: categories.reload + 1 });
+    //             }
+    //         ).catch(error => {
+    //             console.log(error);
+    //         })
+    // }
     return (
         <>
             <section className={sidebarStatus() ? 'CommunityListPage sidebar-open-category' : 'CommunityListPage sidebar-close-community'}>
@@ -58,7 +58,7 @@ const CommunityList = () => {
                             Add Community
                         </button>
                     </Link>
-                    {categories.loading == false && categories.err == null && (
+                    {communities.loading == false && communities.err == null && (
                         <Table striped>
                             <thead>
                                 <tr>
@@ -74,27 +74,27 @@ const CommunityList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {categories.loading == false && categories.err == null && (
-                                        categories.results.map((category => (
+                                {communities.loading == false && communities.err == null && (
+                                        communities.results.map((community) => (
                                             <tr>
                                                 <td>
-                                                    {/* {category.categoryName} */}
+                                                    {community.communityName}
                                                 </td>
                                                 <td className="desc">
-                                                    {/* {category.categoryDesc} */}
+                                                    {community.communityDesc}
                                                 </td>
                                                 <td className="test" colSpan={2}>
-                                                    <Link reloadDocument to={'/updateCategory/' + category._id}>
+                                                    <Link reloadDocument to={'/updateCategory/' + community._id}>
                                                         <button className="button muted-button gl-update-btn">
                                                             Update
                                                         </button>
                                                     </Link>
-                                                    <button value={category._id} onClick={deleteCategory} className="button muted-button gl-delete-btn">
+                                                    <button value={community._id} className="button muted-button gl-delete-btn">
                                                         Delete
                                                     </button>
                                                 </td>
                                             </tr>
-                                        )))
+                                        ))
                                     )
                                 }
                             </tbody>
@@ -102,9 +102,9 @@ const CommunityList = () => {
                     )
                     }
                     {
-                        categories.loading == false && categories.err !== null && (
+                        communities.loading == false && communities.err !== null && (
                             <Alert variant={'danger'} className='err-msg-custom'>
-                                {categories.err}
+                                {communities.err}
                             </Alert>
                         )
                     }

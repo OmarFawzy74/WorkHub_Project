@@ -1,53 +1,51 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import "./Feed.scss"
 import Share from '../share/Share'
 import Post from '../post/Post'
 import { Link, useParams } from 'react-router-dom'
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 const Feed = (data) => {
   const user = getAuthUser()
 
   let { id } = useParams();
 
-  const [open, setOpen] = React.useState(false);
-  const [community, setCommunity] = React.useState('');
-
-  const handleChange = (event) => {
-    setCommunity(event.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false);
-    }
-  };
-
   const [post, setPost] = useState({
     loading: true,
     err: null,
-    reviewDesc: "",
-    rating: "",
-    clientId: user._id,
-    serviceId: id,
+    caption: "",
+    posterType: user.role,
+    posterId: user._id,
+    communityId: "",
     reload: 0
   });
+
+  const media = useRef(null);
+
+
+  const uploadMedia = (id) => {
+
+    const formData = new FormData();
+    formData.append("media", media.current.files[0]);
+
+    // for (let i = 0; i < coverImage.current.files.length; i++) {
+    //   formData.append("images", coverImage.current.files[i]);
+    // }
+
+    axios
+      .put("http://localhost:3000/api/posts/uploadPostMedia/" + id, formData)
+      .then((resp) => {
+        // image.current.value = null;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+        // console.log(errors.response.data.message);
+      });
+  }
 
   const addPostData = async (e) => {
     e.preventDefault();
@@ -55,20 +53,48 @@ const Feed = (data) => {
     setPost({ ...post, loading: true, err: null });
 
     axios
-      .post("http://localhost:3000/api/reviews/addReview", {
-        // reviewDesc: addReview.reviewDesc,
-        // rating: addReview.rating,
-        // clientId: addReview.clientId,
-        // serviceId: addReview.serviceId,
+      .post("http://localhost:3000/api/posts/addPost", {
+        caption: post.caption,
+        posterType: post.posterType,
+        posterId: post.posterId,
+        communityId: post.communityId,
       })
       .then((resp) => {
         // setPost({ reload: reviews.reload + 1 });
+        const postId = resp.data.savePost._id
+        uploadMedia(postId);
         console.log(resp);
       })
       .catch((errors) => {
         console.log(errors);
       });
   };
+
+
+
+  const [communities, setCommunities] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    communityName: "",
+    communityDesc: "",
+    reload: 0
+  });
+
+  useEffect(() => {
+    setCommunities({ ...communities, loading: true })
+    axios.get("http://localhost:3000/api/communities/getAllCommunities")
+      .then(
+        resp => {
+          // console.log(resp.data.allCommunities);
+          setCommunities({ results: resp.data.allCommunities, loading: false, err: null });
+          // console.log(resp);
+        }
+      ).catch(err => {
+        setCommunities({ ...communities, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [communities.reload]);
 
   return (
     <div className='feed'>
@@ -81,9 +107,12 @@ const Feed = (data) => {
                   <img className='shareProfileImg' src={data?.data.image_url} />
                 </Link>
                 <input
-                  placeholder="What's on your mind, Mana?"
+                  placeholder="What's on your mind?"
                   className='shareInput'
                   required
+                  onChange={(e) =>
+                    setPost({ ...post, caption: e.target.value })
+                  }
                 />
               </div>
               <hr className='shareHr' />
@@ -91,42 +120,35 @@ const Feed = (data) => {
                 <div className="shareOptions">
                   <div className="shareOption">
                     <img className='shareIcon' src="/img/photo.png" alt="" />
-                    <span className='shareOptionText'>Photo/video</span>
+                    <input className='addPostImg' required type="file" ref={media} />
                   </div>
                   <div className="shareOption">
                     <img className='shareIcon' src="/img/groups.png" />
-                    <div>
-                      <Button sx={{color : "rgb(107, 107, 107)"}} onClick={handleClickOpen}>Communities</Button>
-                      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-                        <DialogTitle>Please Choose A Coummunity</DialogTitle>
-                        <DialogContent>
-                          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <FormControl sx={{ m: 1, minWidth: 250 }}>
-                              <InputLabel id="demo-dialog-select-label">Community</InputLabel>
-                              <Select
-                                required
-                                labelId="demo-dialog-select-label"
-                                id="demo-dialog-select"
-                                value={community}
-                                onChange={handleChange}
-                                input={<OutlinedInput label="Age" />}
-                              >
-                                <MenuItem value="">
-                                  <em>None</em>
-                                </MenuItem>
-                                <MenuItem value="Digital Marketing">Digital Marketing</MenuItem>
-                                <MenuItem value="Video & Animation">Video & Animation</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                              </Select>
-                            </FormControl>
-                          </Box>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleClose}>Cancel</Button>
-                          <Button onClick={handleClose}>Ok</Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>                  </div>
+
+                    <select
+                      name="serviceCategoryId"
+                      required
+                      onChange={(e) =>
+                        setPost({ ...post, communityId: e.target.value })
+                      }
+                      id="selectCategory"
+                    >
+                      <option value={""} disabled selected>
+                        Select Community
+                      </option>
+                      {communities.loading == false &&
+                        communities.err == null &&
+                        communities.results &&
+                        communities.results.length > 0 &&
+                        communities.results.map((community) => (
+                          <>
+                            <option value={community._id}>
+                              {community.communityName}
+                            </option>
+                          </>
+                        ))}
+                    </select>
+                  </div>
                 </div>
                 <button type='submit' className='shareButton'>Post</button>
               </div>
