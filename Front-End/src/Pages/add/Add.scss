@@ -50,35 +50,81 @@
         
           .first-division {
             display: flex;
-            flex-direction: column;
+            // flex-direction: column;
         
-            .add-img {
+            .updateAdd-img {
               width: 30px;
               height: 30px;
               cursor: pointer;
               position: relative;
-              left: 320px;
-              bottom: 33px;
+              left: 15px;
+              top: 13px;
               display: flex;
               align-self: flex-start;
             }
           }
         
           .second-division {
-            margin-right: 250px;
+            // margin-right: 250px;
             
             .remove-img {
               width: 20px;
               height: 20px;
-              align-self: flex-start;
-              display: flex;
-              position: relative;
-              right: 30px;
-              top: 17px;
+              // align-self: flex-start;
+              // display: flex;
+              // position: relative;
+              // right: 70px;
+              // bottom: 70px;
               cursor: pointer;
               // margin-left: 20px; 
               // Note: you can add this line if needed
             }
+
+            .updateRemove-img:nth-last-child(2) {
+              width: 20px;
+              height: 20px;
+              background-color: #1dbf73;
+              // align-self: flex-start;
+              // display: flex;
+              position: relative;
+              right: 70px;
+              bottom: 70px;
+              cursor: pointer;
+              // margin-left: 20px; 
+              // Note: you can add this line if needed
+            }
+          }
+
+          .second-division:nth-last-child(-1) {
+            // margin-right: 250px;
+            // margin-top: 1000px
+            background-color: #1dbf73;
+            
+            .remove-img {
+              width: 20px;
+              height: 20px;
+              // align-self: flex-start;
+              // display: flex;
+              position: relative;
+              right: 70px;
+              bottom: 70px;
+              cursor: pointer;
+              // margin-left: 20px; 
+              // Note: you can add this line if needed
+            }
+
+            // .updateRemove-img{
+            //   width: 20px;
+            //   height: 20px;
+            //   // align-self: flex-start;
+            //   // display: flex;
+            //   position: relative;
+            //   right: 70px;
+            //   bottom: 70px;
+            //   cursor: pointer;
+            //   // margin-left: 20px; 
+            //   // Note: you can add this line if needed
+            // }
           }
         }
         

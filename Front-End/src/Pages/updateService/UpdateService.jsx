@@ -68,50 +68,50 @@ const UpdateService = () => {
     const coverImage = useRef(null);
 
 
-        const updateImages = (id) => {
+        // const updateImages = (id) => {
 
-            if (serviceImages.current && serviceImages.current.files) {
-                const formData = new FormData();
-                for (let i = 0; i < serviceImages.current.files.length; i++) {
-                    formData.append("images", serviceImages.current.files[i]);
-                }
+        //     if (serviceImages.current && serviceImages.current.files) {
+        //         const formData = new FormData();
+        //         for (let i = 0; i < serviceImages.current.files.length; i++) {
+        //             formData.append("images", serviceImages.current.files[i]);
+        //         }
         
-                axios
-                    .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
-                    .then((resp) => {
-                        console.log(resp);
-                    })
-                    .catch((errors) => {
-                        console.log(errors);
-                    });
-            } else {
-                console.error("serviceImages.current or serviceImages.current.files is null");
-            }
+        //         axios
+        //             .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
+        //             .then((resp) => {
+        //                 console.log(resp);
+        //             })
+        //             .catch((errors) => {
+        //                 console.log(errors);
+        //             });
+        //     } else {
+        //         console.error("serviceImages.current or serviceImages.current.files is null");
+        //     }
+        // }
+
+
+    const updateImages = (id) => {
+
+        const formData = new FormData();
+        // formData.append("images", images.current.files[0]);
+
+        for (let i = 0; i < serviceImages.current.files.length; i++) {
+            formData.append("serviceImages", serviceImages.current.files[i]);
         }
 
-
-    // const uploadImages = (id) => {
-
-    //     const formData = new FormData();
-    //     // formData.append("images", images.current.files[0]);
-
-    //     for (let i = 0; i < serviceImages.current.files.length; i++) {
-    //         formData.append("images", serviceImages.current.files[i]);
-    //     }
-
-    //     axios
-    //         .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
-    //         .then((resp) => {
-    //             // image.current.value = null;
-    //             // swal(resp.data.message, "", "success");
-    //             console.log(resp);
-    //         })
-    //         .catch((errors) => {
-    //             // swal(errors.response.data.message, "", "error");
-    //             console.log(errors);
-    //             // console.log(errors.response.data.message);
-    //         });
-    // }
+        axios
+            .put("http://localhost:3000/api/services/updateServiceImages/" + id, formData)
+            .then((resp) => {
+                // image.current.value = null;
+                // swal(resp.data.message, "", "success");
+                console.log(resp);
+            })
+            .catch((errors) => {
+                // swal(errors.response.data.message, "", "error");
+                console.log(errors);
+                // console.log(errors.response.data.message);
+            });
+    }
 
     const uploadCoverImage = (id) => {
 
@@ -122,7 +122,7 @@ const UpdateService = () => {
         //   formData.append("images", coverImage.current.files[i]);
         // }
         axios
-            .put("http://localhost:3000/api/services/uploadCoverImage/" + id, formData)
+            .put("http://localhost:3000/api/services/updateServiceCoverImage/" + id, formData)
             .then((resp) => {
                 // image.current.value = null;
                 // swal(resp.data.message, "", "success");
@@ -381,19 +381,21 @@ const UpdateService = () => {
                                                         {featureList.length - 1 === index && (
                                                             <img
                                                                 onClick={handleFeaturesAdd} // Corrected event handler
-                                                                className="add-img"
+                                                                className="updateAdd-img"
                                                                 src="/img/add-image.png"
                                                             />
                                                         )}
-                                                    </div>
-                                                    <div className="second-division">
-                                                        {index !== 0 && (
-                                                            <img
-                                                                onClick={() => handleFeaturesRemove(index)}
-                                                                className="remove-img"
-                                                                src="/img/remove-image.png"
-                                                            />
+                                                    
+                                                        <div className="second-division">                                                  
+                                                        {featureList.length !== 1 && (
+                                                                <img
+                                                                    onClick={() => handleFeaturesRemove(index)}
+                                                                    className="remove-img"
+                                                                    src="/img/remove-image.png"
+                                                                /> 
                                                         )}
+                                                        </div>
+                                                   
                                                     </div>
                                                 </>
                                             ))}

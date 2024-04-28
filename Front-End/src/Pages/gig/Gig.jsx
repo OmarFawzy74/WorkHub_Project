@@ -270,6 +270,7 @@ function Gig() {
                           : null}
                     </>
                   ))}
+                  <div ></div>
               </div>
             </div>
             <div className="right">
