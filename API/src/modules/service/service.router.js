@@ -15,6 +15,10 @@ router.put("/updateService/:id", asyncHandler(serviceController.updateService));
 router.post("/createService", validation(createService), asyncHandler(serviceController.createService));
 router.put("/uploadCoverImage/:id", upload.single('coverImage'), asyncHandler(serviceController.uploadCoverImage));
 router.put("/uploadImages/:id", upload.array('images'), asyncHandler(serviceController.uploadImages));
+
+router.put("/updateServiceCoverImage/:id", upload.single('serviceCoverImage'), asyncHandler(serviceController.updateServiceCoverImage));
+router.put("/updateServiceImages/:id", upload.array('serviceImages'), asyncHandler(serviceController.updateServiceImages));
+
 router.delete("/deleteService/:id", asyncHandler(serviceController.deleteService));
 
 export default router;
