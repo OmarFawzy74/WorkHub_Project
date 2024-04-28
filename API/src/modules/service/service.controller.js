@@ -260,3 +260,64 @@ export const uploadImages = async (req, res, next) => {
         res.status(404).json({ success: false, message: "Server Error" });
     }
 }
+
+export const updateServiceCoverImage = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(404).send({ success: false, message: "Cover image is required" });
+        }
+
+        const id = req.params.id;
+
+        if (id == undefined) {
+            return res.status(404).send({ success: false, message: "id is required" });
+        }
+
+        const cover_url = req.file.filename;
+
+        const filter = { _id: id };
+        const update = { $set: { serviceCover_url: cover_url } };
+
+        await Service.updateOne(filter, update);
+
+
+        res.status(200).json({ msg: "image uploaded successfuly" });
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
+};
+
+export const updateServiceImages = async (req, res, next) => {
+
+    try {
+
+        if (!req.files) {
+            return res.status(404).send({ success: false, message: "images are required" });
+        }
+
+        const id = req.params.id;
+
+        if (id == undefined) {
+            return res.status(404).send({ success: false, message: "id is required" });
+        }
+
+        const images_url = [];
+
+        for (let index = 0; index < req.files.length; index++) {
+
+            const fileName = req.files[index].filename;
+            images_url.push(fileName);
+        }
+
+        const filter = { _id: id };
+        const update = { $set: { serviceImages_url: images_url } };
+
+        await Service.updateOne(filter, update);
+
+        res.status(200).json({ msg: "images uploaded successfuly" });
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
+}
