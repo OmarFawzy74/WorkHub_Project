@@ -1,7 +1,7 @@
 import React from 'react'
 import "./RightBar.scss"
 
-const RightBar = ({ profile }) => {
+const RightBar = ({ profile, item }) => {
 
   const HomeRightbar = () => {
     return (
@@ -27,11 +27,11 @@ const RightBar = ({ profile }) => {
           <h4 className='rightbarTitle'>User information</h4>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Country:</span>
-            <span className="rightbarInfoValue">Egypt</span>
+            <span className="rightbarInfoValue">{item.country}</span>
           </div>
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Email:</span>
-            <span className="rightbarInfoValue">Abdelrahman@gmail.com</span>
+            <span className="rightbarInfoValue">{item.email}</span>
           </div>
         </div>
       </>

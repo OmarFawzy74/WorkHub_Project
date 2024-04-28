@@ -11,7 +11,6 @@ import Stack from '@mui/material/Stack';
 import $ from "jquery";
 import { getAuthUser } from "../../localStorage/storage";
 
-
 function UpdateProfile() {
     var [selectedSkillsOptions, setSelectedSkillsOptions] = useState();
 

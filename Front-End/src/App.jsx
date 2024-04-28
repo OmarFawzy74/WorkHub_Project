@@ -47,6 +47,7 @@ import Requests from './Pages/requests/Requests';
 import ClientProfile from './Pages/admin/ClientProfile';
 import ScrollToTop from './ScrollToTop';
 import UpdateService from './Pages/updateService/UpdateService';
+import SelectCommunity from './components/selectCommunity/SelectCommunity';
 
 let dashboardData;
 
@@ -304,7 +305,7 @@ export default function App() {
           element: <Community />
         },
         {
-          path: "/communityProfile",
+          path: "/communityProfile/:id",
           element: <CommunityProfile />
         },
         {
@@ -314,7 +315,11 @@ export default function App() {
         {
           path: "/test",
           element: <MiniDrawer />
-        }
+        },
+        {
+          path: "/selectCommunity",
+          element: <SelectCommunity />
+        },
       ]
     },
   ]);

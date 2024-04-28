@@ -43,6 +43,44 @@
             border: 1px solid #1dbf73;
           }
         }
+
+        .updateFeatures{
+          // display: flex;
+          justify-content: space-between;
+        
+          .first-division {
+            display: flex;
+            flex-direction: column;
+        
+            .add-img {
+              width: 30px;
+              height: 30px;
+              cursor: pointer;
+              position: relative;
+              left: 320px;
+              bottom: 33px;
+              display: flex;
+              align-self: flex-start;
+            }
+          }
+        
+          .second-division {
+            margin-right: 250px;
+            
+            .remove-img {
+              width: 20px;
+              height: 20px;
+              align-self: flex-start;
+              display: flex;
+              position: relative;
+              right: 30px;
+              top: 17px;
+              cursor: pointer;
+              // margin-left: 20px; 
+              // Note: you can add this line if needed
+            }
+          }
+        }
         
         .features {
           display: flex;

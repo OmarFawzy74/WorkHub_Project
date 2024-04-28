@@ -1,15 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import "./Share.scss"
+import { getAuthUser } from '../../localStorage/storage'
 
-const Share = () => {
+const Share = (items) => {
+    const user = getAuthUser()
 
     return (
         <div className='share'>
             <div className="shareContainer">
                 <div className="shareTop">
-                    <Link reloadDocument to="/communityProfile">
-                        <img className='shareProfileImg' src="/img/profile.jpg" alt="" />
+                    <Link reloadDocument to={"/communityProfile/" + items?._id} >
+                        <img className='shareProfileImg' src={items?.image_url} alt="" />
                     </Link>
                     <input
                         placeholder="What's on your mind, Mana?"

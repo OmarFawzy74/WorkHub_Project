@@ -164,6 +164,8 @@ const Add = () => {
       })
       .then((resp) => {
         const serviceId = resp.data.newService._id;
+        console.log(images.current);
+        console.log(coverImage.current);
         uploadCoverImage(serviceId);
         uploadImages(serviceId);
         document.getElementById("serviceFrom").reset();
@@ -185,7 +187,7 @@ const Add = () => {
         console.log(service);
       })
       .catch((errors) => {
-        swal(errors.response.data.message, "", "error");
+        // swal(errors.response.data.message, "", "error");
         console.log(errors);
       });
   };

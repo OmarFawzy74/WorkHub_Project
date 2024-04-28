@@ -11,6 +11,8 @@ const UpdateService = () => {
 
     const freelancer = getAuthUser();
 
+    var [selectedFeaturesOptions, setSelectedFeaturesOptions] = useState();
+
     const [service, setService] = useState({
         loading: true,
         results: null,
@@ -29,6 +31,13 @@ const UpdateService = () => {
         features: [],
         images: [],
     });
+
+    if (selectedFeaturesOptions == undefined) {
+        // formData.append("skills", user?.skills);
+    }
+    else {
+        // formData.append("skills", selectedFeaturesOptions);
+    }
 
     const navigate = useNavigate();
 
@@ -54,32 +63,54 @@ const UpdateService = () => {
             });
     }, [categories.reload]);
 
-    const images = useRef(null);
+    const serviceImages = useRef(null);
 
     const coverImage = useRef(null);
 
-    const uploadImages = (id) => {
 
-        const formData = new FormData();
-        // formData.append("images", images.current.files[0]);
-
-        for (let i = 0; i < images.current.files.length; i++) {
-            formData.append("images", images.current.files[i]);
+        const uploadImages = (id) => {
+            if (serviceImages.current && serviceImages.current.files) {
+                const formData = new FormData();
+                for (let i = 0; i < serviceImages.current.files.length; i++) {
+                    formData.append("images", serviceImages.current.files[i]);
+                }
+        
+                axios
+                    .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
+                    .then((resp) => {
+                        console.log(resp);
+                    })
+                    .catch((errors) => {
+                        console.log(errors);
+                    });
+            } else {
+                console.error("serviceImages.current or serviceImages.current.files is null");
+            }
         }
 
-        axios
-            .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
-            .then((resp) => {
-                // image.current.value = null;
-                // swal(resp.data.message, "", "success");
-                console.log(resp);
-            })
-            .catch((errors) => {
-                // swal(errors.response.data.message, "", "error");
-                console.log(errors);
-                // console.log(errors.response.data.message);
-            });
-    }
+        
+    // const uploadImages = (id) => {
+
+    //     const formData = new FormData();
+    //     // formData.append("images", images.current.files[0]);
+
+    //     for (let i = 0; i < serviceImages.current.files.length; i++) {
+    //         formData.append("images", serviceImages.current.files[i]);
+    //     }
+
+    //     axios
+    //         .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
+    //         .then((resp) => {
+    //             // image.current.value = null;
+    //             // swal(resp.data.message, "", "success");
+    //             console.log(resp);
+    //         })
+    //         .catch((errors) => {
+    //             // swal(errors.response.data.message, "", "error");
+    //             console.log(errors);
+    //             // console.log(errors.response.data.message);
+    //         });
+    // }
 
     const uploadCoverImage = (id) => {
 
@@ -89,7 +120,6 @@ const UpdateService = () => {
         // for (let i = 0; i < coverImage.current.files.length; i++) {
         //   formData.append("images", coverImage.current.files[i]);
         // }
-
         axios
             .put("http://localhost:3000/api/services/uploadCoverImage/" + id, formData)
             .then((resp) => {
@@ -109,20 +139,21 @@ const UpdateService = () => {
 
     const handleFeaturesChange = (e, index) => {
         const { name, value } = e.target;
+        console.log(name);
+        console.log(value);
         var list = [...featureList];
-        list[index][name] = value;
+        list[index] = value;
         setFeatureList(list);
+        console.log(list);
     };
 
-    const handleFeaturesArray = () => {
-
-        var array = [];
-
-        featureList.forEach((item) => {
-            array.push(item.feature);
-        });
-        return array;
-    };
+    // const handleFeaturesArray = () => {
+    //     var array = [];
+    //     featureList.forEach((item) => {
+    //         array.push(item.feature);
+    //     });
+    //     return array;
+    // };
 
     const handleFeaturesRemove = (index) => {
         const list = [...featureList];
@@ -140,8 +171,24 @@ const UpdateService = () => {
             .then((resp) => {
                 // resp.data.freelancerId.skills = processData(resp.data.freelancerId.skills);
                 // resp.data.freelancerId.languages = processData(resp.data.freelancerId.languages);
-                setService({ results: resp.data, loading: false, err: null });
-                // console.log(resp);
+                setService({
+                    ...service,
+                    serviceTitle: resp.data.serviceTitle,
+                    serviceShortTitle: resp.data.serviceShortTitle,
+                    serviceShortDesc: resp.data.serviceShortDesc,
+                    serviceDesc: resp.data.serviceDesc,
+                    serviceCategoryId: resp.data.serviceCategoryId,
+                    servicePrice: resp.data.servicePrice,
+                    freelancerId: resp.data.freelancerId,
+                    deliveryTime: resp.data.deliveryTime,
+                    revisionNumber: resp.data.revisionNumber,
+                    features: resp.data.features,
+                    loading: false,
+                    err: null
+                });
+
+                setFeatureList(resp.data.features)
+                console.log(resp.data);
                 // console.log(resp.data);
             })
             .catch((err) => {
@@ -152,58 +199,64 @@ const UpdateService = () => {
 
     const updateServiceData = async (e) => {
         e.preventDefault();
-    
-        handleFeaturesArray();
-    
+
+        // handleFeaturesArray();
+
         setService({ ...service, loading: true, err: null });
         // const formData = new FormData();
         // formData.append("images", images.current.files[0]);
         // formData.append("cover_image", cover_image.current.files[0]);
         axios
-          .put("http://localhost:3000/api/services/updateService/" + id , {
-            serviceTitle: service.serviceTitle,
-            serviceShortTitle: service.serviceShortTitle,
-            serviceShortDesc: service.serviceShortDesc,
-            serviceDesc: service.serviceDesc,
-            serviceCategoryId: service.serviceCategoryId,
-            servicePrice: service.servicePrice,
-            freelancerId: service.freelancerId,
-            deliveryTime: service.deliveryTime,
-            revisionNumber: service.revisionNumber,
-            features: handleFeaturesArray()
-          })
-          .then((resp) => {
-            const serviceId = resp.data.newService._id;
-            uploadCoverImage(serviceId);
-            uploadImages(serviceId);
-            document.getElementById("serviceFrom").reset();
-            document.getElementById("service").value = "";
-            let list = document.querySelectorAll('#service')
-            for (let i = 0; i < list.length; i++) {
-              list[i].value = "";
-              handleFeaturesRemove(i);
-            }
-            // console.log(list);
-            // window.location.reload();
-            // for (let i = 0; i < featureList.length; i++) {
-            //   handleFeaturesRemove(i);
-            // }
-    
-            // document.getElementById("selectCategory").selectedIndex = 0;
-            // swal(resp.data.message, "", "success");
-            console.log(resp);
-            console.log(service);
-            window.location = "http://localhost:3001/gig/" + service?.results._id;
-        })
-          .catch((errors) => {
-            // swal(errors.response.data.message, "", "error");
-            console.log(errors);
-          });
-      };
+            .put("http://localhost:3000/api/services/updateService/" + id, {
+                serviceTitle: service.serviceTitle,
+                serviceShortTitle: service.serviceShortTitle,
+                serviceShortDesc: service.serviceShortDesc,
+                serviceDesc: service.serviceDesc,
+                serviceCategoryId: service.serviceCategoryId,
+                servicePrice: service.servicePrice,
+                freelancerId: service.freelancerId,
+                deliveryTime: service.deliveryTime,
+                revisionNumber: service.revisionNumber,
+                features: featureList,
+            })
+            .then((resp) => {
+                setService({ ...service, loading: false, err: null });
+                const serviceId = id;
+                // if (coverImage.current !== null) {
+                // // }
+                console.log(serviceImages.current);
+                // if (serviceImages.current !== null) {               
+                // }
+                uploadImages(serviceId);
+                // uploadCoverImage(serviceId);
+                // console.log(resp);
+                // document.getElementById("serviceFrom").reset();
+                // document.getElementById("service").value = "";
+                // let list = document.querySelectorAll('#service')
+                // for (let i = 0; i < list.length; i++) {
+                //   list[i].value = "";
+                //   handleFeaturesRemove(i);
+                // }
+                // console.log(list);
+                // window.location.reload();
+                // for (let i = 0; i < featureList.length; i++) {
+                //   handleFeaturesRemove(i);
+                // }
 
-      const navigation = () => {
+                // document.getElementById("selectCategory").selectedIndex = 0;
+                // swal(resp.data.message, "", "success");
+                // console.log(service);
+                // window.location = "http://localhost:3001/gig/" + id;
+            })
+            .catch((errors) => {
+                // swal(errors.response.data.message, "", "error");
+                console.log(errors);
+            });
+    };
+
+    const navigation = () => {
         window.location = "http://localhost:3001/gig/" + service?.results._id;
-      }
+    }
 
     return (
         <div className="add">
@@ -219,7 +272,7 @@ const UpdateService = () => {
                                         type="text"
                                         placeholder="e.g. I will do something I'm really good at"
                                         name="serviceTitle"
-                                        value={service?.results.serviceTitle}
+                                        value={service?.serviceTitle}
                                         onChange={(e) =>
                                             setService({ ...service, serviceTitle: e.target.value })
                                         }
@@ -228,7 +281,7 @@ const UpdateService = () => {
 
                                     <select
                                         name="serviceCategoryId"
-                                        value={service?.results.serviceCategoryId._id}
+                                        value={service?.serviceCategoryId._id}
                                         onChange={(e) =>
                                             setService({ ...service, serviceCategoryId: e.target.value })
                                         }
@@ -250,13 +303,13 @@ const UpdateService = () => {
                                             ))}
                                     </select>
                                     <label htmlFor="">Cover Image</label>
-                                    <input type="file" ref={coverImage} />
+                                    <input type="file"  ref={coverImage} />
                                     <label htmlFor="">Upload Images</label>
-                                    <input type="file" multiple ref={images} />
+                                    <input type="file" multiple ref={serviceImages} />
                                     <label htmlFor="">Description</label>
                                     <textarea
                                         name="serviceDesc"
-                                        value={service?.results.serviceDesc}
+                                        value={service?.serviceDesc}
                                         onChange={(e) =>
                                             setService({ ...service, serviceDesc: e.target.value })
                                         }
@@ -265,14 +318,14 @@ const UpdateService = () => {
                                         rows="16"
                                     ></textarea>
                                     <button type="submit">Update</button>
-                                  <button onClick={navigation} className="cancelBtnUpdateService">Cancel</button>
+                                    <button onClick={navigation} className="cancelBtnUpdateService">Cancel</button>
                                 </div>
                                 <div className="details">
                                     <label htmlFor="">Service Title</label>
                                     <input
                                         type="text"
                                         name="serviceShortTitle"
-                                        value={service?.results.serviceShortTitle}
+                                        value={service?.serviceShortTitle}
                                         onChange={(e) =>
                                             setService({ ...service, serviceShortTitle: e.target.value })
                                         }
@@ -281,7 +334,7 @@ const UpdateService = () => {
                                     <label htmlFor="">Short Description</label>
                                     <textarea
                                         name="serviceShortDesc"
-                                        value={service?.results.serviceShortDesc}
+                                        value={service?.serviceShortDesc}
                                         onChange={(e) =>
                                             setService({ ...service, serviceShortDesc: e.target.value })
                                         }
@@ -293,7 +346,7 @@ const UpdateService = () => {
                                     <input
                                         type="number"
                                         name="deliveryTime"
-                                        value={service?.results.deliveryTime}
+                                        value={service?.deliveryTime}
                                         onChange={(e) =>
                                             setService({ ...service, deliveryTime: e.target.value })
                                         }
@@ -302,48 +355,55 @@ const UpdateService = () => {
                                     <input
                                         type="number"
                                         name="revisionNumber"
-                                        value={service?.results.revisionNumber}
+                                        value={service?.revisionNumber}
                                         onChange={(e) =>
                                             setService({ ...service, revisionNumber: e.target.value })
                                         }
                                     />
                                     <div className="form-field">
-                                        <label htmlFor="service">Add Feature(s)</label>
-                                        {featureList.map((singleFeature, index) => (
-                                            <div key={index} className="features">
-                                                <div className="first-division">
-                                                    <input
-                                                        className="featureInput"
-                                                        name="feature"
-                                                        type="text"
-                                                        id="service"
-                                                        value={service?.results.features}
-                                                        onChange={(e) => handleFeaturesChange(e, index)}
-                                                    />
-                                                    {featureList.length - 1 === index && (
-                                                        <img
-                                                            onClick={handleFeaturesAdd} // Corrected event handler
-                                                            className="add-img"
-                                                            src="/img/add-image.png"
+                                        <label htmlFor="service">Update Feature(s)</label>
+                                        {/* {service?.results && service?.results.features.map((feature) => (
+                                            <> */}
+                                        <div className="updateFeatures">
+                                            {featureList.map((feature, index) => (
+                                                <>
+                                                    <div key={index} className="first-division">
+                                                        <input
+                                                            className="featureInput"
+                                                            name="feature"
+                                                            type="text"
+                                                            id="service"
+                                                            value={selectedFeaturesOptions}
+                                                            defaultValue={feature}
+                                                            onChange={(e) => handleFeaturesChange(e, index)}
                                                         />
-                                                    )}
-                                                </div>
-                                                <div className="second-division">
-                                                    {featureList.length !== 1 && (
-                                                        <img
-                                                            onClick={() => handleFeaturesRemove(index)}
-                                                            className="remove-img"
-                                                            src="/img/remove-image.png"
-                                                        />
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ))}
+                                                        {featureList.length - 1 === index && (
+                                                            <img
+                                                                onClick={handleFeaturesAdd} // Corrected event handler
+                                                                className="add-img"
+                                                                src="/img/add-image.png"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    <div className="second-division">
+                                                        {index !== 0 && (
+                                                            <img
+                                                                onClick={() => handleFeaturesRemove(index)}
+                                                                className="remove-img"
+                                                                src="/img/remove-image.png"
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </>
+                                            ))}
+                                        </div>
+                                        {/* </>
+                                        ))} */}
                                     </div>
                                     <label htmlFor="">Price($)</label>
                                     <input
                                         name="servicePrice"
-                                        value={service?.results.servicePrice}
+                                        value={service?.servicePrice}
                                         onChange={(e) =>
                                             setService({ ...service, servicePrice: e.target.value })
                                         }

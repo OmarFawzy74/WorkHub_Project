@@ -1,17 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import "./SideBar.scss"
+import { getAuthUser } from '../../localStorage/storage'
 
 const SideBar = () => {
+  const user = getAuthUser()
+
   return (
     <div className='sidebar'>
       <div className="sidebarContainer">
         <ul className="sidebarList">
-          
           <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/communityProfile">
-              <img className='sidebarProfileImg' src="/img/profile.jpg" />
-              <span className='sidebarListItemText'>Abdelrahman Muhammed</span>
+          <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
+              <img className='sidebarProfileImg' src={user?.image_url} />
+              <span className='sidebarListItemText'>{user?.name}</span>
             </Link>
           </li>
 
