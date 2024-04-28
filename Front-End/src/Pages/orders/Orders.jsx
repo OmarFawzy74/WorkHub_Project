@@ -112,9 +112,10 @@ const Orders = () => {
             <th>Service Title</th>
             <th>Price</th>
             <th>{user.role=="client" ? "Freelancer" : "Client"}</th>
-            {pathname=="/orders" && <th>Contact</th>}
-            {pathname=="/requests" && user.role=="client" && <th>Status</th>}
-            {pathname=="/requests" && <th>Action</th>}
+            <th>Contact</th>
+            <th>Order Status</th>
+            {user.role=="client" && <th>Status</th>}
+            <th>Action</th>
           </tr>
 
           {orders.results && orders.err == null && orders.loading == false &&
