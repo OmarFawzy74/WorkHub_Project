@@ -9,9 +9,9 @@ import endPoints from "../../middleware/endPoints.js";
 
 const router = express.Router();
 
-router.get("/getAllCommunities", auth(endPoints.allUsers), asyncHandler(getAllCommunities));
-router.post("/addCommunity", validation(communitySchema), auth(endPoints.admin), asyncHandler(addCommunity));
-router.put("/updateCommunity/:id", validation(updateCommunitySchema), validateParams(), auth(endPoints.admin), asyncHandler(updateCommunity));
-router.delete("/deleteCommunity/:id", validateParams(), auth(endPoints.admin), asyncHandler(deleteCommunity));
+router.get("/getAllCommunities", asyncHandler(getAllCommunities));
+router.post("/addCommunity", validation(communitySchema), asyncHandler(addCommunity));
+router.put("/updateCommunity/:id", validation(updateCommunitySchema), validateParams(), asyncHandler(updateCommunity));
+router.delete("/deleteCommunity/:id", validateParams(), asyncHandler(deleteCommunity));
 
 export default router;

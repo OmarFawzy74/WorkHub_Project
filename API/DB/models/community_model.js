@@ -7,10 +7,9 @@ const communitySchema = new Schema ({
         type: String,
         required: true
     },
-    communityCategory: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "category"
+    communityDesc: {
+        type: String,
+        required: true
     },
     communityPosts: {
         type: [Schema.Types.ObjectId],

@@ -1,5 +1,6 @@
 
 import Review from '../../../DB/models/review_model.js';
+import service_model from '../../../DB/models/service_model.js';
 
 // Create a new review
 export const createReview = async (req, res) => {
@@ -20,8 +21,22 @@ export const createReview = async (req, res) => {
         });
     
         await newReview.save();
+
+        const serviceData = await service_model.findById(serviceId);
+
+        if(!serviceData) {
+            return res.status(404).json({ message: "Service not found!" });
+        }
+
+        var actualReviewsData = serviceData.reviews;
+
+        var newReviewsData =  actualReviewsData.push(newReview._id);
+
+        const filter = { _id: serviceId };
+        const update = { $set: { reviews: newReviewsData } };
+        await service_model.updateOne(filter, update);
     
-        res.status(201).json({success:true, message: 'Review created successfully', newReview });
+        res.status(201).json({ success:true, message: 'Review created successfully', newReview });
     } catch (error) {
         res.status(500).json({msg:'Internal server error'});
         console.log(error);
