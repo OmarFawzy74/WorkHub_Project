@@ -10,7 +10,7 @@ import freelancer_model from "../../../DB/models/freelancer_model.js";
 // Get all services
 export const getAllServices = async (req, res, next) => {
     try {
-        const services = await Service.find().populate("freelancerId").populate("serviceCategoryId");
+        const services = await Service.find().populate("freelancerId").populate("serviceCategoryId").populate("reviews");
         if (services.length == 0) {
             return next(new Error("No services found", { cause: 404 }));
         }

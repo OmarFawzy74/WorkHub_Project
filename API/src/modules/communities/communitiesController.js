@@ -4,7 +4,7 @@ import community from "../../../DB/models/community_model.js";
 // Get All Communities
 export const getAllCommunities = async (req, res) => {
     try {
-        const allCommunities = await community.find().populate('communityCategory');
+        const allCommunities = await community.find();
         if(allCommunities.length !== 0) {
             res.status(200).json({ allCommunities });;
         }

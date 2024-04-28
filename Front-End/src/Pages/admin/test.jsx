@@ -208,9 +208,9 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
       return navigate("/ordersList");
     }
 
-      // if (text == "Community") {
-      //   return navigate("/clientList");
-      // }
+      if (text == "Community") {
+        return navigate("/communityList");
+      }
 
     text = e.target.dataset.testid;
     console.log();
@@ -247,9 +247,9 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
       return navigate("/ordersList");
     }
 
-    // if(text == "PeopleIcon") {
-    //   return navigate("/clientList");
-    // }
+    if(text == "PeopleIcon") {
+      return navigate("/communityList");
+    }
 
     if(text == "Person4Icon") {
       return navigate("/freelancerList");

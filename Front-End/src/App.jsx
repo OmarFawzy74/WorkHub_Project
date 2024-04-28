@@ -48,6 +48,8 @@ import ClientProfile from './Pages/admin/ClientProfile';
 import ScrollToTop from './ScrollToTop';
 import UpdateService from './Pages/updateService/UpdateService';
 import SelectCommunity from './components/selectCommunity/SelectCommunity';
+import CommunityList from './Pages/admin/CommunityList';
+import AddCommunity from './Pages/admin/AddCommunity';
 
 let dashboardData;
 
@@ -220,6 +222,14 @@ export default function App() {
         {
           path: "/clientProfile/:id",
           element: <ClientProfile />
+        },
+        {
+          path: "/communityList",
+          element: <CommunityList />
+        },
+        {
+          path: "/addCommunity",
+          element: <AddCommunity />
         },
       ]
     },

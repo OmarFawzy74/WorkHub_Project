@@ -1,5 +1,7 @@
 
+import client_model from "../../../DB/models/client_model.js";
 import ClientModel from "../../../DB/models/client_model.js"
+import freelancer_model from "../../../DB/models/freelancer_model.js";
 import FreelancerModel from "../../../DB/models/freelancer_model.js"
 import Postmodel from "../../../DB/models/post_model.js"
 // import sendEmail from "../../../common/email"
@@ -61,8 +63,8 @@ export const uploadPostMedia = async (req, res) => {
 
 export const getPost = async (req, res) => {
     try {
-        const{id}=req.params
-        const post = await Postmodel.findById({_id:id})
+        const { id } = req.params
+        const post = await Postmodel.findById({ _id: id })
             .populate('createdByClient', 'email username clientImage_url') // Populate the createdByClient field with email
             .populate('createdByFreelancer', 'email username freelancerImage_url'); // Populate the createdByFreelancer field with email
 
@@ -71,22 +73,47 @@ export const getPost = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Post found', post });
-        
+
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
-        
+
     }
-   
+
 
 };
 
 export const getAllPosts = async (req, res) => {
-    try{
-        const posts = await Postmodel.find();
+    try {
+        var posts = await Postmodel.find();
 
-        if(posts){
+        const modifiedPosts = posts.map((post) => {
+
+            const getPosterData = async (req, res) => {
+                if (post.posterType == "freelancer") {
+                    const data = await freelancer_model.findById(post.posterId);
+                    return data;
+                }
+                if (post.posterType == "client") {
+                    const data = await client_model.findById(post.posterId);
+                    return data;
+                }
+                if (post.posterType !== "client" || post.posterType !== "freelancer") {
+                    return res.status(404).json({ message: 'Invalid role' });
+                }
+            }
+
+            const modifiedPost = { ...post._doc }; // Create a copy of the service object
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPost.posterId = getPosterData();
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" +  modifiedPost.posterId.image_url;
+            return modifiedPost;
+        });
+
+        posts = modifiedPosts;
+
+        if (posts) {
             return res.status(200).json({ posts });
-            
+
         }
 
         res.status(404).json({ message: 'No posts found' });
@@ -101,17 +128,17 @@ export const addLike = async (req, res) => {
         const postId = req.params.id;
         const postToUpdate = await Postmodel.findById(postId);
 
-        if(postToUpdate) {
+        if (postToUpdate) {
             let likes = postToUpdate.likes
             const filter = { _id: postId };
             const update = { $set: { likes: likes + 1 } };
 
             await Postmodel.updateOne(filter, update);
 
-            return res.status(200).json({ msg:"post like added successfuly." });
+            return res.status(200).json({ msg: "post like added successfuly." });
         }
 
-        res.status(400).json({ msg:"There is no post with such id to update." });
+        res.status(400).json({ msg: "There is no post with such id to update." });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -123,17 +150,17 @@ export const removeLike = async (req, res) => {
         const postId = req.params.id;
         const postToUpdate = await Postmodel.findById(postId);
 
-        if(postToUpdate) {
+        if (postToUpdate) {
             let likes = postToUpdate.likes
             const filter = { _id: postId };
             const update = { $set: { likes: likes - 1 } };
 
             await Postmodel.updateOne(filter, update);
 
-            return res.status(200).json({ msg:"post like removed successfuly." });
+            return res.status(200).json({ msg: "post like removed successfuly." });
         }
 
-        res.status(400).json({ msg:"There is no post with such id to update." });
+        res.status(400).json({ msg: "There is no post with such id to update." });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -145,16 +172,16 @@ export const addComment = async (req, res) => {
         const postId = req.params.id;
         const postToUpdate = await Postmodel.findById(postId);
 
-        if(postToUpdate) {
+        if (postToUpdate) {
             const filter = { _id: postId };
             const update = { $set: { comments: req.body.comment } };
 
             await Postmodel.updateOne(filter, update);
 
-            return res.status(200).json({ msg:"post comment added successfuly." });
+            return res.status(200).json({ msg: "post comment added successfuly." });
         }
 
-        res.status(400).json({ msg:"There is no post with such id to update." });
+        res.status(400).json({ msg: "There is no post with such id to update." });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -166,17 +193,17 @@ export const updatePost = async (req, res) => {
         const postId = req.params.id;
         const postToUpdate = await Postmodel.findById(communityId);
 
-        if(postToUpdate) {
+        if (postToUpdate) {
             const filter = { _id: postId };
             const update = { $set: { ...req.body } };
             await Postmodel.updateOne(filter, update);
-            return res.status(200).json({ msg:"past has been updated successfuly." });
+            return res.status(200).json({ msg: "past has been updated successfuly." });
         }
 
-        res.status(400).json({ msg:"There is no post with such id to update." });
+        res.status(400).json({ msg: "There is no post with such id to update." });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg:"Somthing went wrong!" });
+        res.status(500).json({ msg: "Somthing went wrong!" });
     }
 }
 
@@ -197,7 +224,7 @@ export const deletePost = async (req, res, next) => {
         if (process) {
             fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
 
-            return res.status(200).json({ success: true, message: "Post deleted successfully"});
+            return res.status(200).json({ success: true, message: "Post deleted successfully" });
         }
 
         next(new Error("Service not found", { cause: 404 }));
