@@ -186,6 +186,79 @@
         .reviews {
           margin-top: 50px;
 
+          .reviewInputContainer{
+            margin-top: 80px;
+            margin-bottom: 40px;
+
+            .reviewForm{
+              display: flex;
+              gap: 30px;
+
+              img{
+              width: 15px;
+              height: 15px;
+              position: relative;
+              top: 15px;
+              right: 15px;
+            }
+
+            select{
+              border: 1px solid rgb(216, 214, 214) !important;
+              padding: 10px;
+              width: 22%;
+            }
+
+            select:focus {
+              outline: 0;
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+            select:hover {
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+
+
+            .reviewInput{
+              border: 1px solid rgb(216, 214, 214) !important;
+              padding: 10px;
+              width: 50%;
+            }
+
+            .reviewInput:hover {
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+
+            .reviewInput:focus {
+              outline: 0;
+              border: 1px solid #1dbf73 !important;
+              transition: .2s ease-in-out;
+            }
+
+
+            .reviewSubmitBtn{
+              width: 15%;
+              background-color: #1dbf73;
+              padding: 10px;
+              color: white;
+              font-weight: 500;
+              border: none;
+              font-size: 16px;
+              cursor: pointer;
+            }
+            .reviewSubmitBtn:hover{
+                background-color: #24dc86;
+            }
+            .reviewSubmitBtn:focus{
+                outline: 0; 
+            }
+            }
+
+
+
+          }
+
           h2{
             color: #000000;
             margin-bottom: 70px;

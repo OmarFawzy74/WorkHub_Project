@@ -5,8 +5,24 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import swal from "sweetalert";
 import { getAuthUser } from "../../localStorage/storage";
-
+import SelectCommunity from '../../components/selectCommunity/SelectCommunity';
+import SelectRating from '../../components/selectCommunity/SelectRating';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { FormHelperText } from '@mui/material';
+// import "./SelectRating.css"
 // export let data;
+import Form from 'react-bootstrap/Form';
+
 
 function Gig() {
   const user = getAuthUser();
@@ -124,6 +140,52 @@ function Gig() {
         console.log(err);
       })
   }, [reviews.reload]);
+
+  // const client = getAuthUser();
+
+  const [addReview, setAddReview] = useState({
+    loading: true,
+    err: null,
+    reviewDesc: "",
+    rating: "",
+    clientId: user._id,
+    serviceId: id,
+    reload: 0
+  });
+
+  const addReviewData = async (e) => {
+    e.preventDefault();
+
+    setAddReview({ ...addReview, loading: true, err: null });
+    // const formData = new FormData();
+    // formData.append("images", images.current.files[0]);
+    // formData.append("cover_image", cover_image.current.files[0]);
+
+    axios
+      .post("http://localhost:3000/api/reviews/addReview", {
+        reviewDesc: addReview.reviewDesc,
+        rating: addReview.rating,
+        clientId: addReview.clientId,
+        serviceId: addReview.serviceId,
+      })
+      .then((resp) => {
+
+        setReviews({ reload: reviews.reload + 1 });
+
+        // console.log(list);
+        // window.location.reload();
+        // for (let i = 0; i < featureList.length; i++) {
+        //   handleFeaturesRemove(i);
+        // }
+        // document.getElementById("selectCategory").selectedIndex = 0;
+        // swal(resp.data.message, "", "success");
+        console.log(resp);
+      })
+      .catch((errors) => {
+        // swal(errors.response.data.message, "", "error");
+        console.log(errors);
+      });
+  };
 
   return (
     <div className="gig">
@@ -255,22 +317,61 @@ function Gig() {
                           </div>
                         </div>
                         <div className="stars">
-                          <img src="/img/star.png" alt="" />
-                          <img src="/img/star.png" alt="" />
-                          <img src="/img/star.png" alt="" />
-                          <img src="/img/star.png" alt="" />
-                          <img src="/img/star.png" alt="" />
+                          {/* {for (let index = 0; index < {review?.rating}; index++) {
+                            <img src="/img/star.png" alt="" />                            
+                          }} */}
+                          {review.rating == 1 && <img src="/img/star.png" alt="" />}
+                          {review.rating == 2 && <><img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /></>}
+                          {review.rating == 3 && <><img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /></>}
+                          {review.rating == 4 && <><img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /></>}
+                          {review.rating == 5 && <><img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /> <img src="/img/star.png" alt="" /></>}
+
+                          {/* {reviews?.results.rating.map((review, index) => (
+                        ))} */}
                           <span className='reviewRatingNo'>{review?.rating}</span>
                         </div>
                         <p className='reviewDescParagraph'>{review?.reviewDesc}</p>
                       </div>
-                        {index !==
-                          reviews?.results.length - 1
-                          ? <hr />
-                          : null}
+                      {index !==
+                        reviews?.results.length - 1
+                        ? <hr />
+                        : null}
                     </>
                   ))}
-                  <div ></div>
+                {user && user?.role == "client" &&
+                  <>
+                    <div className='reviewInputContainer'>
+                      <form onSubmit={addReviewData} className='reviewForm'>
+                        <input
+                          className='reviewInput'
+                          type="text"
+                          required
+                          placeholder='Please Leave Your Review'
+                          onChange={(e) =>
+                            setAddReview({ ...addReview, reviewDesc: e.target.value })
+                          }
+                        />
+                        <select
+                          name="rating"
+                          type="text"
+                          required
+                          onChange={(e) => setAddReview({ ...addReview, rating: e.target.value })}
+                        >
+                          <option value={""} disabled selected>
+                            Please Select Rate
+                          </option>
+                          <option value={1}>1</option>
+                          <option value={2}>2</option>
+                          <option value={3}>3</option>
+                          <option value={4}>4</option>
+                          <option value={5}>5</option>
+                        </select>
+                        <img src="/img/star.png" alt="" />
+                        <button type='submit' className='reviewSubmitBtn'>Submit</button>
+                      </form>
+                    </div>
+                  </>
+                }
               </div>
             </div>
             <div className="right">
@@ -306,7 +407,7 @@ function Gig() {
                 </button>
               )}
               {user && service.results.freelancerId._id == user._id && (
-               <Link reloadDocument className='updateButtonService' to={"/updateService/" + service?.results._id}><button onClick={requestOrder}>Update</button></Link> 
+                <Link reloadDocument className='updateButtonService' to={"/updateService/" + service?.results._id}><button onClick={requestOrder}>Update</button></Link>
               )}
             </div>
           </>
