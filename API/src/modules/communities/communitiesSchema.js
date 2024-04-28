@@ -3,7 +3,7 @@ import Joi from "joi";
 
 export const communitySchema = Joi.object({
     communityName: Joi.string().required(),
-    communityCategory: Joi.string().required(),
+    communityDesc: Joi.string().required(),
     communityPosts: Joi.string(),
     clientMemberIds: Joi.string(),
     freelancerMemberIds: Joi.string(),

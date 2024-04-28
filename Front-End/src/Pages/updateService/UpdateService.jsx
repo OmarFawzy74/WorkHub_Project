@@ -39,7 +39,6 @@ const UpdateService = () => {
         // formData.append("skills", selectedFeaturesOptions);
     }
 
-    const navigate = useNavigate();
 
     const [categories, setCategories] = useState({
         loading: true,
@@ -63,34 +62,11 @@ const UpdateService = () => {
             });
     }, [categories.reload]);
 
-    const serviceImages = useRef(null);
+    let serviceImages = useRef(null);
 
-    const coverImage = useRef(null);
+    let serviceCoverImage = useRef(null);
 
-
-        // const updateImages = (id) => {
-
-        //     if (serviceImages.current && serviceImages.current.files) {
-        //         const formData = new FormData();
-        //         for (let i = 0; i < serviceImages.current.files.length; i++) {
-        //             formData.append("images", serviceImages.current.files[i]);
-        //         }
-        
-        //         axios
-        //             .put("http://localhost:3000/api/services/uploadImages/" + id, formData)
-        //             .then((resp) => {
-        //                 console.log(resp);
-        //             })
-        //             .catch((errors) => {
-        //                 console.log(errors);
-        //             });
-        //     } else {
-        //         console.error("serviceImages.current or serviceImages.current.files is null");
-        //     }
-        // }
-
-
-    const updateImages = (id) => {
+    const updateServiceImages = (id) => {
 
         const formData = new FormData();
         // formData.append("images", images.current.files[0]);
@@ -113,10 +89,10 @@ const UpdateService = () => {
             });
     }
 
-    const uploadCoverImage = (id) => {
+    const updateServiceCoverImage = (id) => {
 
         const formData = new FormData();
-        formData.append("coverImage", coverImage.current.files[0]);
+        formData.append("serviceCoverImage", serviceCoverImage.current.files[0]);
 
         // for (let i = 0; i < coverImage.current.files.length; i++) {
         //   formData.append("images", coverImage.current.files[i]);
@@ -225,10 +201,11 @@ const UpdateService = () => {
                 const serviceId = id;
                 // if (coverImage.current !== null) {
                 // // }
-                console.log(serviceImages.current);
+                // console.log(serviceImages.current);
                 // if (serviceImages.current !== null) {               
                 // }
-                updateImages(serviceId);
+                updateServiceImages(serviceId);
+                updateServiceCoverImage(serviceId);
                 // uploadCoverImage(serviceId);
                 // console.log(resp);
                 // document.getElementById("serviceFrom").reset();
@@ -248,6 +225,7 @@ const UpdateService = () => {
                 // swal(resp.data.message, "", "success");
                 // console.log(service);
                 // window.location = "http://localhost:3001/gig/" + id;
+                console.log(resp);
             })
             .catch((errors) => {
                 // swal(errors.response.data.message, "", "error");
@@ -260,165 +238,185 @@ const UpdateService = () => {
     }
 
     return (
-        <div className="add">
-            {service.loading == false && (
-                <>
-                    <div className="addContainer">
-                        <h1>Update Service</h1>
-                        <form onSubmit={updateServiceData} id="serviceFrom">
-                            <div className="sections">
-                                <div className="info">
-                                    <label htmlFor="">Title</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. I will do something I'm really good at"
-                                        name="serviceTitle"
-                                        value={service?.serviceTitle}
-                                        onChange={(e) =>
-                                            setService({ ...service, serviceTitle: e.target.value })
-                                        }
-                                    />
-                                    <label htmlFor="">Category</label>
+      <div className="add">
+        {service.loading == false && (
+          <>
+            <div className="addContainer">
+              <h1>Update Service</h1>
+              <form onSubmit={updateServiceData} id="serviceFrom">
+                <div className="sections">
+                  <div className="info">
+                    <label htmlFor="">Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. I will do something I'm really good at"
+                      name="serviceTitle"
+                      value={service?.serviceTitle}
+                      onChange={(e) =>
+                        setService({ ...service, serviceTitle: e.target.value })
+                      }
+                    />
+                    <label htmlFor="">Category</label>
 
-                                    <select
-                                        name="serviceCategoryId"
-                                        value={service?.serviceCategoryId._id}
-                                        onChange={(e) =>
-                                            setService({ ...service, serviceCategoryId: e.target.value })
-                                        }
-                                        id="selectCategory"
-                                    >
-                                        <option value={""} disabled selected>
-                                            Select Category
-                                        </option>
-                                        {categories.loading == false &&
-                                            categories.err == null &&
-                                            categories.results &&
-                                            categories.results.length > 0 &&
-                                            categories.results.map((category) => (
-                                                <>
-                                                    <option value={category._id}>
-                                                        {category.categoryName}
-                                                    </option>
-                                                </>
-                                            ))}
-                                    </select>
-                                    <label htmlFor="">Cover Image</label>
-                                    <input type="file"  ref={coverImage} />
-                                    <label htmlFor="">Upload Images</label>
-                                    <input type="file" multiple ref={serviceImages} />
-                                    <label htmlFor="">Description</label>
-                                    <textarea
-                                        name="serviceDesc"
-                                        value={service?.serviceDesc}
-                                        onChange={(e) =>
-                                            setService({ ...service, serviceDesc: e.target.value })
-                                        }
-                                        placeholder="Brief descriptions to introduce your service to customers"
-                                        cols="0"
-                                        rows="16"
-                                    ></textarea>
-                                    <button type="submit">Update</button>
-                                    <button onClick={navigation} className="cancelBtnUpdateService">Cancel</button>
-                                </div>
-                                <div className="details">
-                                    <label htmlFor="">Service Title</label>
-                                    <input
-                                        type="text"
-                                        name="serviceShortTitle"
-                                        value={service?.serviceShortTitle}
-                                        onChange={(e) =>
-                                            setService({ ...service, serviceShortTitle: e.target.value })
-                                        }
-                                        placeholder="e.g. One-page web design"
-                                    />
-                                    <label htmlFor="">Short Description</label>
-                                    <textarea
-                                        name="serviceShortDesc"
-                                        value={service?.serviceShortDesc}
-                                        onChange={(e) =>
-                                            setService({ ...service, serviceShortDesc: e.target.value })
-                                        }
-                                        placeholder="Short description of your service"
-                                        cols="30"
-                                        rows="10"
-                                    ></textarea>
-                                    <label htmlFor="">Delivery Time (e.g. 3 days)</label>
-                                    <input
-                                        type="number"
-                                        name="deliveryTime"
-                                        value={service?.deliveryTime}
-                                        onChange={(e) =>
-                                            setService({ ...service, deliveryTime: e.target.value })
-                                        }
-                                    />
-                                    <label htmlFor="">Revision Number</label>
-                                    <input
-                                        type="number"
-                                        name="revisionNumber"
-                                        value={service?.revisionNumber}
-                                        onChange={(e) =>
-                                            setService({ ...service, revisionNumber: e.target.value })
-                                        }
-                                    />
-                                    <div className="form-field">
-                                        <label htmlFor="service">Update Feature(s)</label>
-                                        {/* {service?.results && service?.results.features.map((feature) => (
+                    <select
+                      name="serviceCategoryId"
+                      value={service?.serviceCategoryId._id}
+                      onChange={(e) =>
+                        setService({
+                          ...service,
+                          serviceCategoryId: e.target.value,
+                        })
+                      }
+                      id="selectCategory"
+                    >
+                      <option value={""} disabled selected>
+                        Select Category
+                      </option>
+                      {categories.loading == false &&
+                        categories.err == null &&
+                        categories.results &&
+                        categories.results.length > 0 &&
+                        categories.results.map((category) => (
+                          <>
+                            <option value={category._id}>
+                              {category.categoryName}
+                            </option>
+                          </>
+                        ))}
+                    </select>
+                    <label htmlFor="">Cover Image</label>
+                    <input type="file" ref={serviceCoverImage} />
+                    <label htmlFor="">Upload Images</label>
+                    <input type="file" multiple ref={serviceImages} />
+                    <label htmlFor="">Description</label>
+                    <textarea
+                      name="serviceDesc"
+                      value={service?.serviceDesc}
+                      onChange={(e) =>
+                        setService({ ...service, serviceDesc: e.target.value })
+                      }
+                      placeholder="Brief descriptions to introduce your service to customers"
+                      cols="0"
+                      rows="16"
+                    ></textarea>
+                    <button type="submit">Update</button>
+                    <button
+                      onClick={navigation}
+                      className="cancelBtnUpdateService"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div className="details">
+                    <label htmlFor="">Service Title</label>
+                    <input
+                      type="text"
+                      name="serviceShortTitle"
+                      value={service?.serviceShortTitle}
+                      onChange={(e) =>
+                        setService({
+                          ...service,
+                          serviceShortTitle: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. One-page web design"
+                    />
+                    <label htmlFor="">Short Description</label>
+                    <textarea
+                      name="serviceShortDesc"
+                      value={service?.serviceShortDesc}
+                      onChange={(e) =>
+                        setService({
+                          ...service,
+                          serviceShortDesc: e.target.value,
+                        })
+                      }
+                      placeholder="Short description of your service"
+                      cols="30"
+                      rows="10"
+                    ></textarea>
+                    <label htmlFor="">Delivery Time (e.g. 3 days)</label>
+                    <input
+                      type="number"
+                      name="deliveryTime"
+                      value={service?.deliveryTime}
+                      onChange={(e) =>
+                        setService({ ...service, deliveryTime: e.target.value })
+                      }
+                    />
+                    <label htmlFor="">Revision Number</label>
+                    <input
+                      type="number"
+                      name="revisionNumber"
+                      value={service?.revisionNumber}
+                      onChange={(e) =>
+                        setService({
+                          ...service,
+                          revisionNumber: e.target.value,
+                        })
+                      }
+                    />
+                    <div className="form-field">
+                      <label htmlFor="service">Update Feature(s)</label>
+                      {/* {service?.results && service?.results.features.map((feature) => (
                                             <> */}
-                                        <div className="updateFeatures">
-                                            {featureList.map((feature, index) => (
-                                                <>
-                                                    <div key={index} className="first-division">
-                                                        <input
-                                                            className="featureInput"
-                                                            name="feature"
-                                                            type="text"
-                                                            id="service"
-                                                            value={selectedFeaturesOptions}
-                                                            defaultValue={feature}
-                                                            onChange={(e) => handleFeaturesChange(e, index)}
-                                                        />
-                                                        {featureList.length - 1 === index && (
-                                                            <img
-                                                                onClick={handleFeaturesAdd} // Corrected event handler
-                                                                className="updateAdd-img"
-                                                                src="/img/add-image.png"
-                                                            />
-                                                        )}
-                                                    
-                                                        <div className="second-division">                                                  
-                                                        {featureList.length !== 1 && (
-                                                                <img
-                                                                    onClick={() => handleFeaturesRemove(index)}
-                                                                    className="remove-img"
-                                                                    src="/img/remove-image.png"
-                                                                /> 
-                                                        )}
-                                                        </div>
-                                                   
-                                                    </div>
-                                                </>
-                                            ))}
-                                        </div>
-                                        {/* </>
-                                        ))} */}
-                                    </div>
-                                    <label htmlFor="">Price($)</label>
-                                    <input
-                                        name="servicePrice"
-                                        value={service?.servicePrice}
-                                        onChange={(e) =>
-                                            setService({ ...service, servicePrice: e.target.value })
-                                        }
-                                        type="number"
-                                    />
+                      <div className="updateFeatures">
+                        {featureList.map((feature, index) => (
+                          <>
+                            <div key={index} className="first-division">
+                              <input
+                                className="featureInput"
+                                name="feature"
+                                type="text"
+                                id="service"
+                                value={selectedFeaturesOptions}
+                                required
+                                defaultValue={feature}
+                                onChange={(e) => handleFeaturesChange(e, index)}
+                              />
+
+                              {featureList.length > 1 && index !== 0 && (
+                                <div className="second-division">
+                                  <img
+                                    onClick={() => handleFeaturesRemove(index)}
+                                    className="updateService-remove-img"
+                                    src="/img/remove-image.png"
+                                  />
                                 </div>
+                              )}
+
+                              {featureList.length - 1 === index && (
+                                <div>
+                                  <img
+                                    onClick={handleFeaturesAdd} // Corrected event handler
+                                    className={featureList.length > 1 ? "updateAdd-img_2" : "updateAdd-img"}
+                                    src="/img/add-image.png"
+                                  />
+                                </div>
+                              )}
                             </div>
-                        </form>
+                          </>
+                        ))}
+                      </div>
+                      {/* </>
+                                        ))} */}
                     </div>
-                </>
-            )}
-        </div>
+                    <label htmlFor="">Price($)</label>
+                    <input
+                      name="servicePrice"
+                      value={service?.servicePrice}
+                      onChange={(e) =>
+                        setService({ ...service, servicePrice: e.target.value })
+                      }
+                      type="number"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </>
+        )}
+      </div>
     );
 };
 
