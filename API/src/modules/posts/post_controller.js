@@ -14,15 +14,13 @@ import Postmodel from "../../../DB/models/post_model.js"
 
 export const addPost = async (req, res) => {
     try {
-        const { communityId, posterId, posterType, caption, likes, Comments } = req.body
+        const { communityId, posterId, posterType, caption } = req.body
 
         const newpost = new Postmodel({
             communityId,
             posterId,
             posterType,
             caption,
-            likes,
-            Comments
         });
 
         const savePost = await newpost.save();
@@ -88,13 +86,35 @@ export const getAllPosts = async (req, res) => {
 
         const modifiedPosts = posts.map((post) => {
 
-            const getPosterData = async (req, res) => {
+            // const data = await freelancer_model.findById(post.posterId);
+
+            // const data = await client_model.findById(post.posterId);
+
+
+
+            var userData;
+
+            const modifiedPost = { ...post._doc }; // Create a copy of the service object
+
+
+            const getPosterData =  (req, res) => {
                 if (post.posterType == "freelancer") {
-                    const data = await freelancer_model.findById(post.posterId);
+                    const data =  freelancer_model.findById(post.posterId);
+                    userData = { ...data._doc };
+                    // userData = data;
+                    // console.log(data);
+                    // userData = data;
                     return data;
                 }
                 if (post.posterType == "client") {
-                    const data = await client_model.findById(post.posterId);
+                    const data =  client_model.findById(post.posterId);
+                    // console.log(data);
+                    // modifiedPost.posterId = data;
+
+                    userData = { ...data._doc };
+                    // userData = data;
+
+                    // userData = data;
                     return data;
                 }
                 if (post.posterType !== "client" || post.posterType !== "freelancer") {
@@ -102,10 +122,13 @@ export const getAllPosts = async (req, res) => {
                 }
             }
 
-            const modifiedPost = { ...post._doc }; // Create a copy of the service object
+            getPosterData();
+
+            console.log(getPosterData());
+
             modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
-            modifiedPost.posterId = getPosterData();
-            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" +  modifiedPost.posterId.image_url;
+            modifiedPost.posterId = userData;
+            // modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" +  modifiedPost.posterId.image_url;
             return modifiedPost;
         });
 
@@ -120,6 +143,7 @@ export const getAllPosts = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ message: 'Internal server error' });
+        console.log(error);
     }
 };
 

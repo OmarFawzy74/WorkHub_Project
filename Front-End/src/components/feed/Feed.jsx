@@ -52,11 +52,24 @@ const Feed = (data) => {
 
     setPost({ ...post, loading: true, err: null });
 
+    // var clientId;
+    // var freelancerId;
+
+    // if(user.role == "freelancer") {
+    //   freelancerId = user._id;
+    //   clientId = user._id;
+    // }
+
+    // if(user.role == "client") {
+    //   freelancerId = user._id;
+    //   clientId = user._id;
+    // }
+
     axios
       .post("http://localhost:3000/api/posts/addPost", {
         caption: post.caption,
-        posterType: post.posterType,
         posterId: post.posterId,
+        posterType: post.posterType,
         communityId: post.communityId,
       })
       .then((resp) => {

@@ -4,7 +4,7 @@ import login from '../../../login.js';
 import logout from '../../../logout.js';
 import valMiddleware, { validateParams } from '../../middleware/val.middleware.js';
 import { loginSchema, sigupSchema, updatePasswordSchema } from '../validation/validation.js';
-import { addAdmin, deleteAdmin, getAllAdmins, updateAdminInfo, updateAdminPassword } from './adminController.js';
+import { addAdmin, deleteAdmin, getAllAdmins, updateAdminInfo, updateAdminPassword, uploadAdminImage } from './adminController.js';
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { updateInfoSchema } from "./adminSchema.js";
 import auth from "../../middleware/auth.middleware.js";
@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.get('/getAllAdmins', getAllAdmins); // auth(endPoints.admin)
 router.post('/addAdmin', valMiddleware(sigupSchema), addAdmin);
+router.put("/uploadAdminImage/:id", asyncHandler(uploadAdminImage)); // auth(endPoints.admin)
 router.put("/updateAdminInfo/:id", validateParams(), valMiddleware(updateInfoSchema), asyncHandler(updateAdminInfo)); // auth(endPoints.admin)
 router.put("/updateAdminPassword/:id", validateParams(), valMiddleware(updatePasswordSchema), asyncHandler(updateAdminPassword)); // auth(endPoints.admin)
 router.delete("/deleteAdmin/:id", validateParams(), asyncHandler(deleteAdmin)); // auth(endPoints.admin)
