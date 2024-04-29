@@ -6,6 +6,4 @@ export const postSchema = Joi.object({
     posterId: Joi.string().required(),
     posterType: Joi.string().required(),
     caption: Joi.string().required(),
-    likes: Joi.number(),
-    Comments: Joi.array()
 });

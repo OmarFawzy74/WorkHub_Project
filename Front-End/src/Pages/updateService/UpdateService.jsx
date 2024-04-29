@@ -62,17 +62,17 @@ const UpdateService = () => {
             });
     }, [categories.reload]);
 
-    let serviceImages = useRef(null);
+    const serviceImages = useRef(null);
 
-    let serviceCoverImage = useRef(null);
+    const serviceCoverImage = useRef(null);
 
     const updateServiceImages = (id) => {
 
         const formData = new FormData();
         // formData.append("images", images.current.files[0]);
 
-        for (let i = 0; i < serviceImages.current.files.length; i++) {
-            formData.append("serviceImages", serviceImages.current.files[i]);
+        for (let i = 0; i < serviceImages?.current.files.length; i++) {
+            formData.append("serviceImages", serviceImages?.current.files[i]);
         }
 
         axios
@@ -92,7 +92,8 @@ const UpdateService = () => {
     const updateServiceCoverImage = (id) => {
 
         const formData = new FormData();
-        formData.append("serviceCoverImage", serviceCoverImage.current.files[0]);
+        formData.append("serviceCoverImage", serviceCoverImage?.current.files[0]);
+
 
         // for (let i = 0; i < coverImage.current.files.length; i++) {
         //   formData.append("images", coverImage.current.files[i]);
@@ -177,6 +178,9 @@ const UpdateService = () => {
     const updateServiceData = async (e) => {
         e.preventDefault();
 
+        console.log(serviceCoverImage);
+        console.log(serviceImages);
+
         // handleFeaturesArray();
 
         setService({ ...service, loading: true, err: null });
@@ -204,8 +208,15 @@ const UpdateService = () => {
                 // console.log(serviceImages.current);
                 // if (serviceImages.current !== null) {               
                 // }
-                updateServiceImages(serviceId);
-                updateServiceCoverImage(serviceId);
+
+
+
+                
+                // updateServiceImages(serviceId);
+                // updateServiceCoverImage(serviceId);
+
+
+
                 // uploadCoverImage(serviceId);
                 // console.log(resp);
                 // document.getElementById("serviceFrom").reset();

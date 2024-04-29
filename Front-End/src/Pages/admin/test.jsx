@@ -322,7 +322,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
         </DrawerHeader>
         <Divider />
         <List>
-          {[{user.name}, 'Dashboard', 'Gigs', 'Orders', 'Categories', 'Courses', 'Community', 'Clients', 'Freelancers'].map((text, index) => (
+          {[user.name, 'Dashboard', 'Gigs', 'Orders', 'Categories', 'Courses', 'Community', 'Clients', 'Freelancers'].map((text, index) => (
             <ListItem key={text} id='text' onClick={navigation} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
