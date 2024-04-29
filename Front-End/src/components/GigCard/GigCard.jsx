@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import "./GigCard.scss";
 import { Link, useLocation } from "react-router-dom";
+import { getAuthUser } from "../../localStorage/storage";
 
 const GigCard = ({ item }) => {
 
   const [openOption, setOpenOption] = useState(false)
 
   const { pathname } = useLocation();
+  const user = getAuthUser();
 
 
   return (
@@ -22,7 +24,7 @@ const GigCard = ({ item }) => {
           </div>}
         </div>}
       <div className="gigCard">
-        <Link reloadDocument to={"/gig/" + item._id} className="gigLink">
+      <Link reloadDocument to={"/gig/" + item._id} className="gigLink">
           <img className="gigImg" src={item.serviceCover_url} />
         </Link>
         <div className="gigInfo">

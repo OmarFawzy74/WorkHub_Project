@@ -115,6 +115,10 @@ function Course() {
         });
     }
 
+    const navigation = () => {
+        window.location = "http://localhost:3001/login/";
+    }
+
     return (
         <div className="course">
             <div className="courseContainer">
@@ -351,7 +355,7 @@ function Course() {
                     } */}
                     {user && user?.role !== "admin" && course.results && course.enrollStatus == false && <button className='enrollBtn' onClick={enrollCourse}>Enroll</button>}
                     {user && user?.role !== "admin" && course.results && course.enrollStatus == true && <button className='unenrollBtn' onClick={unenrollCourse}>Unenroll</button>}
-                    {!user && <button>Enroll</button>}
+                    {!user && <button onClick={navigation} className='enrollBtn'>Enroll</button>}
                     {user && user?.role == "admin" &&
                         <div className='adminBtnsContainer'>
                             <button className='updateBtn'>Update</button>

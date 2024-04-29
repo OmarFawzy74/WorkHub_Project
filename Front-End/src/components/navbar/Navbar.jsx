@@ -104,84 +104,86 @@ const Navbar = () => {
   }, [categories.reload]);
 
   return (
-    <div className={active || pathname !== "/" || activeMenu || pathname == "/gigs" ? "navbar active activeMenu" : "navbar"}>
+    <>
+      {user.role !== "admin" &&
+        <div className={active || pathname !== "/" || activeMenu || pathname == "/gigs" ? "navbar active activeMenu" : "navbar"}>
 
-      {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
-      <div className='navbarContainer'>
-        <Link reloadDocument to="/" className='link'>
-          <div className="logo">
-            <img className='WH' src="/img/Logo.png" />
-            <span className='text'>WorkHub</span>
-            <span className='dot'>.</span>
-          </div>
-        </Link>
-        <div className="links">
-          <div className="user" onClick={() => setOpenExplore(!openExplore)}>
-            <span>Explore</span>
-            {openExplore && <div className="exploreOptions">
-              <>
-                <Link reloadDocument className='link' to="/gigs"><span>Marketplace</span></Link>
-                <Link reloadDocument className='link' to="/community">Community</Link>
-                <Link reloadDocument className='link' to="/learn">Learn</Link>
-              </>
-            </div>}
-          </div>
-
-          <span><img className="languageIcon" src={!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"} /> English</span>
-
-
-          {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/login">Sign in</Link>}
-          {/* {currentUser.activity !== "online" ? <Link className='link' to="/login">Sign in</Link> : null} */}
-
-          {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/register"><button className='joinButton'>Join</button></Link>}
-          {currentUser && (
-            <div className="user" onClick={() => setOpen(!open)}>
-              <img src={user.image_url} />
-              <span>{currentUser?.name}</span>
-              {open && <div className="options">
-                <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
-                <Link className='link' to="/mycourses">My Courses</Link>
-                {currentUser?.type == "freelancer" && (
+          {/* // <div className={active || pathname !== "/" ? "navbar active activeMenu" : "navbar"} > */}
+          <div className='navbarContainer'>
+            <Link reloadDocument to="/" className='link'>
+              <div className="logo">
+                <img className='WH' src="/img/Logo.png" />
+                <span className='text'>WorkHub</span>
+                <span className='dot'>.</span>
+              </div>
+            </Link>
+            <div className="links">
+              <div className="user" onClick={() => setOpenExplore(!openExplore)}>
+                <span>Explore</span>
+                {openExplore && <div className="exploreOptions">
                   <>
-                    <Link className='link' to="/add">Add New Service</Link>
+                    <Link reloadDocument className='link' to="/gigs"><span>Marketplace</span></Link>
+                    <Link reloadDocument className='link' to="/community">Community</Link>
+                    <Link reloadDocument className='link' to="/learn">Learn</Link>
                   </>
-                )}
-                <Link reloadDocument className='link' to="/requests">Requests</Link>
-                <Link reloadDocument className='link' to="/orders">Orders</Link>
-                <Link reloadDocument className='link' to="/messages">Messages</Link>
-                <Link className='link' onClick={userLogout}>Logout</Link>
-              </div>}
-            </div>
-          )}
-        </div>
-      </div>
-      {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
+                </div>}
+              </div>
 
-      {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
+              <span><img className="languageIcon" src={!active && pathname == "/" ? "/img/newLanguage.png" : "/img/language.png"} /> English</span>
 
-        <>
-          <div className="search">
-            <div className="searchInput">
-              <img src="./img/search.png" alt="" />
-              <input type="text" placeholder='What service are you looking  for today?' />
+
+              {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/login">Sign in</Link>}
+              {/* {currentUser.activity !== "online" ? <Link className='link' to="/login">Sign in</Link> : null} */}
+
+              {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/register"><button className='joinButton'>Join</button></Link>}
+              {currentUser && (
+                <div className="user" onClick={() => setOpen(!open)}>
+                  <img src={user.image_url} />
+                  <span>{currentUser?.name}</span>
+                  {open && <div className="options">
+                    <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
+                    <Link className='link' to="/mycourses">My Courses</Link>
+                    {currentUser?.type == "freelancer" && (
+                      <>
+                        <Link className='link' to="/add">Add New Service</Link>
+                      </>
+                    )}
+                    <Link reloadDocument className='link' to="/requests">Requests</Link>
+                    <Link reloadDocument className='link' to="/orders">Orders</Link>
+                    <Link reloadDocument className='link' to="/messages">Messages</Link>
+                    <Link className='link' onClick={userLogout}>Logout</Link>
+                  </div>}
+                </div>
+              )}
             </div>
-            <button>Search</button>
           </div>
+          {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-          <ul className='menu'>
-            {categories.loading == false && categories.err == null && (
-              categories.results.map((category => (
-                <>
-                  <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:category">
-                    {category.categoryName}</Link>
-                  </li>
-                </>
-              )))
-            )
-            }
-          </ul>
+          {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
 
-          {/* <Link className='menuLink' to="/">
+            <>
+              <div className="search">
+                <div className="searchInput">
+                  <img src="./img/search.png" alt="" />
+                  <input type="text" placeholder='What service are you looking  for today?' />
+                </div>
+                <button>Search</button>
+              </div>
+
+              <ul className='menu'>
+                {categories.loading == false && categories.err == null && (
+                  categories.results.map((category => (
+                    <>
+                      <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:category">
+                        {category.categoryName}</Link>
+                      </li>
+                    </>
+                  )))
+                )
+                }
+              </ul>
+
+              {/* <Link className='menuLink' to="/">
               Video & Animation
             </Link>
             <Link className='menuLink' to="/">
@@ -205,9 +207,11 @@ const Navbar = () => {
             <Link className='menuLink' to="/">
               Lifestyle
             </Link> */}
-        </>
-      )}
-    </div>
+            </>
+          )}
+        </div>
+      }
+    </>
   );
 };
 

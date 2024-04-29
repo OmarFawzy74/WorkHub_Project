@@ -148,7 +148,7 @@ function Gig() {
     err: null,
     reviewDesc: "",
     rating: "",
-    clientId: user._id,
+    clientId: "",
     serviceId: id,
     reload: 0
   });
@@ -165,7 +165,7 @@ function Gig() {
       .post("http://localhost:3000/api/reviews/addReview", {
         reviewDesc: addReview.reviewDesc,
         rating: addReview.rating,
-        clientId: addReview.clientId,
+        clientId: user._id,
         serviceId: addReview.serviceId,
       })
       .then((resp) => {
@@ -186,6 +186,10 @@ function Gig() {
         console.log(errors);
       });
   };
+
+  const navigation = () => {
+    window.location = "http://localhost:3001/login/";
+}
 
   return (
     <div className="gig">
@@ -406,6 +410,16 @@ function Gig() {
                   Request Order
                 </button>
               )}
+
+              {!user && (
+                <button
+                  // value={service.results.freelancerId._id}
+                  onClick={navigation}
+                >
+                  Request Order
+                </button>
+              )}
+              
               {user && service.results.freelancerId._id == user._id && (
                 <Link reloadDocument className='updateButtonService' to={"/updateService/" + service?.results._id}><button onClick={requestOrder}>Update</button></Link>
               )}

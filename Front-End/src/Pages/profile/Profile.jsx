@@ -322,7 +322,7 @@ const Profile = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {user && client?.results._id !== user._id && (
+                                    {user && user.role !== "admin" && client?.results._id !== user._id && (
                                         <button value={id} onClick={message}><img src="/img/send.png" />Contact Me</button>
                                     )}
                                     {id == user?._id && <Link reloadDocument to={"/updateProfile"}><button value={id}><img src="/img/profileOption.png" />Update Profile</button></Link>}

@@ -11,10 +11,12 @@ const SideBar = () => {
       <div className="sidebarContainer">
         <ul className="sidebarList">
           <li className="sidebarListItem">
-          <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
+          {user &&
+            <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
               <img className='sidebarProfileImg' src={user?.image_url} />
               <span className='sidebarListItemText'>{user?.name}</span>
             </Link>
+          }
           </li>
 
           <li className="sidebarListItem">

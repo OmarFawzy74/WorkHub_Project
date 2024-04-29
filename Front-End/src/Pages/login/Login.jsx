@@ -54,7 +54,13 @@ function Login() {
         }
 
         setAuthUser(resp.data.userData);
-        navigate("/gigs");
+        if (resp.data.userData.role == "admin") {
+          window.location = "http://localhost:3001/adminDashboard/";
+        }
+        else {
+          window.location = "http://localhost:3001/gigs/";
+        }
+        // navigate("/gigs");
         // window.location.reload();
       }).catch((errors) => {
         console.log(errors.response);

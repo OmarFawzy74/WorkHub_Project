@@ -15,14 +15,13 @@ const Feed = (data) => {
     loading: true,
     err: null,
     caption: "",
-    posterType: user.role,
-    posterId: user._id,
+    posterType: "",
+    posterId: "",
     communityId: "",
     reload: 0
   });
 
   const media = useRef(null);
-
 
   const uploadMedia = (id) => {
 
@@ -55,8 +54,8 @@ const Feed = (data) => {
     axios
       .post("http://localhost:3000/api/posts/addPost", {
         caption: post.caption,
-        posterType: post.posterType,
-        posterId: post.posterId,
+        posterType: user.role,
+        posterId: user._id,
         communityId: post.communityId,
       })
       .then((resp) => {
@@ -69,8 +68,6 @@ const Feed = (data) => {
         console.log(errors);
       });
   };
-
-
 
   const [communities, setCommunities] = useState({
     loading: true,
@@ -103,9 +100,11 @@ const Feed = (data) => {
           <div className='share'>
             <div className="shareContainer">
               <div className="shareTop">
-                <Link reloadDocument to={"/communityProfile/" + data?.data._id} >
+                {data.data  &&
+                  <Link reloadDocument to={"/communityProfile/" + data?.data._id} >
                   <img className='shareProfileImg' src={data?.data.image_url} />
-                </Link>
+                  </Link>
+                }
                 <input
                   placeholder="What's on your mind?"
                   className='shareInput'

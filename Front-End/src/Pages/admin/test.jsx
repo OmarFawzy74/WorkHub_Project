@@ -171,6 +171,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
     console.log(maxRef.current.value)
   }
 
+
   const navigate = useNavigate();
 
   const navigation = (e) => {
@@ -321,7 +322,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
         </DrawerHeader>
         <Divider />
         <List>
-          {["Admin", 'Dashboard', 'Gigs', 'Orders', 'Categories', 'Courses', 'Community', 'Clients', 'Freelancers'].map((text, index) => (
+          {[{user.name}, 'Dashboard', 'Gigs', 'Orders', 'Categories', 'Courses', 'Community', 'Clients', 'Freelancers'].map((text, index) => (
             <ListItem key={text} id='text' onClick={navigation} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -339,7 +340,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
                   }}
                 >
                   {/* {index % 2 === 0 ? <DashboardIcon /> : <MailIcon />} */}
-                  {text == "Admin" ? <img className='profileIco' src="/img/profile.jpg" alt="" /> : null}
+                  {text == user.name ? <img className='profileIco' src={user.image_url} alt="" /> : null}
                   {text == "Dashboard" ? <DashboardIcon /> : null}
                   {text == "Gigs" ? <MiscellaneousServicesIcon /> : null}
                   {text == "Orders" ? <ShoppingCartIcon /> : null}
