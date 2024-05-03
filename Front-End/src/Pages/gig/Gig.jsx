@@ -107,11 +107,12 @@ function Gig() {
       })
       .then((resp) => {
         console.log(resp);
-        swal(
-          resp.data.msg,
-          "",
-          "success"
-        );
+        // swal(
+        //   resp.data.msg,
+        //   "",
+        //   "success"
+        // );
+        window.location = "http://localhost:3001/requests";
       })
       .catch((errors) => {
         console.log(errors);

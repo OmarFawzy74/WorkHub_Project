@@ -4,7 +4,7 @@ import conversation from "../../../DB/models/conversation_model.js";
 // Get All Conversations
 export const getAllConversations = async (req, res) => {
     try {
-        const allConversations = await conversation.find().populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1});
+        const allConversations = await conversation.find().populate('freelancer').populate('client');
         if(allConversations.length !== 0) {
             res.status(200).json({ allConversations });
         }
@@ -17,7 +17,31 @@ export const getAllConversations = async (req, res) => {
     }
 }
 
-// Get A Conversation By ID
+// Get a Conversation by ID
+export const getConversationById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+        //     return res.status(404).json({ msg: "Invalid Id" });
+        // }
+    
+        const conversationData = await conversation.findById(id).populate("freelancer").populate("client");
+        if (!conversationData) {
+            return res.status(404).json({ msg: "Conversation Not Found" });
+        }
+
+        conversationData.freelancer.image_url = "http://" + req.hostname + ":3000/" + conversationData.freelancer.image_url;
+        conversationData.client.image_url = "http://" + req.hostname + ":3000/" + conversationData.client.image_url;
+        return res.status(200).json({conversationData});
+
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ msg: "Server Error" });
+    }
+};
+
+// Get A Conversation By User ID
 export const getConversationsByUserId = async (req, res) => {
     try {
         const filter = { lastMessage: undefined };
@@ -33,16 +57,26 @@ export const getConversationsByUserId = async (req, res) => {
 
         let freelancer = userId;
 
-        let conversationData = await conversation.find({ freelancer }).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
+        let conversationData = await conversation.find({ freelancer }).populate('freelancer').populate('client').populate("lastMessage");
         // console.log(conversationData);
 
         if(!conversationData[0]) {
             let client = userId;
-            conversationData = await conversation.find({ client }).populate('freelancer', {_id: 1, name: 1, email: 1}).populate('client', {_id: 1, name: 1, email: 1}).populate("lastMessage");
+            conversationData = await conversation.find({ client }).populate('freelancer').populate('client').populate("lastMessage");
         }
 
         if(conversationData[0]) {
-            const result = conversationData;
+
+            const modifiedConversations = conversationData.map((conversation) => {
+                const modifiedConversation = { ...conversation._doc }; // Create a copy of the service object
+                modifiedConversation.freelancer = { ...modifiedConversation.freelancer._doc }; // Create a copy of the freelancerId object
+                modifiedConversation.freelancer.image_url = "http://" + req.hostname + ":3000/" + modifiedConversation.freelancer.image_url;
+                modifiedConversation.client = { ...modifiedConversation.client._doc }; // Create a copy of the freelancerId object
+                modifiedConversation.client.image_url = "http://" + req.hostname + ":3000/" + modifiedConversation.client.image_url;
+                return modifiedConversation;
+            });
+
+            const result = modifiedConversations;
             return res.status(200).json({ result });
         }
 

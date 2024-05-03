@@ -50,6 +50,7 @@ import UpdateService from './Pages/updateService/UpdateService';
 import SelectCommunity from './components/selectCommunity/SelectCommunity';
 import CommunityList from './Pages/admin/CommunityList';
 import AddCommunity from './Pages/admin/AddCommunity';
+import UserDashboard from './Pages/freelancerDashboard/UserDashboard';
 
 let dashboardData;
 
@@ -220,8 +221,8 @@ export default function App() {
           element: <OrdersList />
         },
         {
-          path: "/clientProfile/:id",
-          element: <ClientProfile />
+          path: "/usersProfile/:id",
+          element: <Profile />
         },
         {
           path: "/communityList",
@@ -329,6 +330,10 @@ export default function App() {
         {
           path: "/selectCommunity",
           element: <SelectCommunity />
+        },
+        {
+          path: "/userDashboard",
+          element: <UserDashboard />
         },
       ]
     },

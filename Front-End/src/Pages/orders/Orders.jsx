@@ -19,28 +19,28 @@ const Orders = () => {
 
   const navigate = useNavigate();
 
-  const approve = () => {
-    axios
-    .post("http://localhost:3000/api/auth/signup/" + user.role, {
+  // const approve = () => {
+  //   axios
+  //   .post("http://localhost:3000/api/auth/signup/" + user.role, {
 
-    })
-    .then((resp) => {
-      swal(
-        "Congratulations you have Joined WorkHub Successfully",
-        "",
-        "success"
-      );
-      console.log(resp.data.message);
-      console.log(resp.data.userData);
-      setAuthUser(resp.data.userData);
-      navigate("/gigs");
-    })
-    .catch((errors) => {
-      swal(errors.response.data.message, "", "error");
-      console.log(errors);
-      console.log(errors.response.data.message);
-    });
-  }
+  //   })
+  //   .then((resp) => {
+  //     swal(
+  //       "Congratulations you have Joined WorkHub Successfully",
+  //       "",
+  //       "success"
+  //     );
+  //     console.log(resp.data.message);
+  //     console.log(resp.data.userData);
+  //     setAuthUser(resp.data.userData);
+  //     navigate("/gigs");
+  //   })
+  //   .catch((errors) => {
+  //     swal(errors.response.data.message, "", "error");
+  //     console.log(errors);
+  //     console.log(errors.response.data.message);
+  //   });
+  // }
 
 
   const [orders, setOrders] = useState({
@@ -104,14 +104,14 @@ const Orders = () => {
     <div className="orders">
       <div className="ordersContainer">
         <div className="title">
-          <h1>{pathname=="/requests" ? "Requests" : "Orders"}</h1>
+          <h1><Link reloadDocument className="breadcrumbsLink" to={"/gigs"}><img className="homeIconImg" src="./img/marketplace-1.png" /> Marketplace {'>'} </Link>{pathname=="/requests" ? "Requests" : "Orders"}</h1>
         </div>
         <table>
           <tr>
+          <th>{user.role=="client" ? "Freelancer" : "Client"}</th>
             <th>Service Image</th>
             <th>Service Title</th>
             <th>Price</th>
-            <th>{user.role=="client" ? "Freelancer" : "Client"}</th>
             <th>Contact</th>
             <th>Order Status</th>
             {user.role=="client" && <th>Status</th>}
@@ -121,16 +121,18 @@ const Orders = () => {
           {orders.results && orders.err == null && orders.loading == false &&
           orders.results.map((order) => (
           <tr>
+            <td><Link reloadDocument className="link" to={user.role == "client" ? "/profile/" + order?.freelancerId._id : "/profile/" + order?.clientId._id }>{user.role == "client" ? order.freelancerId.name : order.clientId.name}</Link></td>
             <td>
-              <img
-                className="image"
-                src={order.serviceId.serviceCover_url}
-                alt=""
-              />
+            <Link reloadDocument to={"/gig/" + order?.serviceId._id}>
+                <img
+                    className="image"
+                    src={order.serviceId.serviceCover_url}
+                    alt=""
+                />
+            </Link> 
             </td>
             <td>{order.serviceId.serviceTitle}</td>
             <td>{order.serviceId.servicePrice}</td>
-            <td>{user.role=="client" ? order.freelancerId.name : order.clientId.name}</td>
             { pathname=="/orders" &&
               <td>
                 <button value={user.role == "freelancer" ? order.clientId._id : order.freelancerId._id} onClick={message} className="messageBtn">

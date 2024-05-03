@@ -118,6 +118,9 @@ const Navbar = () => {
               </div>
             </Link>
             <div className="links">
+            {currentUser?.type !== undefined && (
+                <Link reloadDocument className='link' to="/userDashboard"><span>Dashboard</span></Link>
+            )}
               <div className="user" onClick={() => setOpenExplore(!openExplore)}>
                 <span>Explore</span>
                 {openExplore && <div className="exploreOptions">
@@ -141,17 +144,18 @@ const Navbar = () => {
                   <img src={user.image_url} />
                   <span>{currentUser?.name}</span>
                   {open && <div className="options">
-                    <Link className='link' reloadDocument to={"/profile/" + user?._id}>Profile</Link>
-                    <Link className='link' to="/mycourses">My Courses</Link>
+                    <Link reloadDocument className='link' to="/userDashboard"><span>Dashboard</span></Link>
+                    <Link reloadDocument className='link' to={"/profile/" + user?._id}>Profile</Link>
+                    <Link reloadDocument className='link' to="/mycourses">My Courses</Link>
                     {currentUser?.type == "freelancer" && (
                       <>
-                        <Link className='link' to="/add">Add New Service</Link>
+                        <Link reloadDocument className='link' to="/add">Add New Service</Link>
                       </>
                     )}
                     <Link reloadDocument className='link' to="/requests">Requests</Link>
                     <Link reloadDocument className='link' to="/orders">Orders</Link>
                     <Link reloadDocument className='link' to="/messages">Messages</Link>
-                    <Link className='link' onClick={userLogout}>Logout</Link>
+                    <Link reloadDocument className='link' onClick={userLogout}>Logout</Link>
                   </div>}
                 </div>
               )}
@@ -165,7 +169,7 @@ const Navbar = () => {
               <div className="search">
                 <div className="searchInput">
                   <img src="./img/search.png" alt="" />
-                  <input type="text" placeholder='What service are you looking  for today?' />
+                  <input type="text" placeholder='What service are you looking for today?' />
                 </div>
                 <button>Search</button>
               </div>

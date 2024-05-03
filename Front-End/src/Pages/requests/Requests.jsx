@@ -128,20 +128,21 @@ const Requests = () => {
     });
   }
 
-
-
   return (
     <div className="orders">
       <div className="ordersContainer">
         <div className="title">
-          <h1>{pathname == "/requests" ? "Requests" : "Orders"}</h1>
+          <h1><Link reloadDocument className="breadcrumbsLink" to={"/gigs"}><img className="homeIconImg" src="./img/marketplace-1.png" /> Marketplace {'>'} </Link>{pathname == "/requests" ? "Requests" : "Orders"}</h1>
         </div>
+        {/* <div className="breadcrumbs">
+          <Link reloadDocument className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'} </Link>
+        </div> */}
         <table>
           <tr>
+            <th>{user.role=="client" ? null : "Client"}</th>
             <th>Image</th>
             <th>Title</th>
             <th>Price</th>
-            <th>{user.role=="client" ? null : "Client"}</th>
             {pathname == "/orders" && <th>Contact</th>}
             <th>Status</th>
             {pathname == "/requests" && <th>Action</th>}
@@ -150,16 +151,18 @@ const Requests = () => {
           {requests.results && requests.err == null && requests.loading == false &&
           requests.results.map((request) => (
             <tr>
+                <td><Link className="link" reloadDocument to={"/profile/" + request?.clientId._id}>{user.role=="client" ? null : request.clientId.name}</Link></td>
                 <td>
-                <img
-                    className="image"
-                    src={request.serviceId.serviceCover_url}
-                    alt=""
-                />
+                <Link reloadDocument to={"/gig/" + request?.serviceId._id}>
+                    <img
+                        className="image"
+                        src={request.serviceId.serviceCover_url}
+                        alt=""
+                    />
+                </Link> 
                 </td>
                 <td>{request.serviceId.serviceTitle}</td>
                 <td>{request.serviceId.servicePrice}</td>
-                <td>{user.role=="client" ? null : request.clientId.name}</td>
                 {pathname == "/orders" && (
                 <td>
                     <img className="message" src="./img/message.png" alt="" />

@@ -49,6 +49,7 @@ const OrdersList = () => {
                 console.log(error);
             })
     }
+
     return (
         <>
             <section className={sidebarStatus() ? 'OrdersListPage' : 'OrdersListPage sidebar-close-orders'}>
@@ -73,9 +74,6 @@ const OrdersList = () => {
                                     Pricing
                                 </th>
                                 <th>
-                                    Order Request Status
-                                </th>
-                                <th>
                                     Delivery Status
                                 </th>
                             </tr>
@@ -95,9 +93,6 @@ const OrdersList = () => {
                                 </td>
                                 <td className="desc">
                                     {/* {category.categoryDesc} */}100$
-                                </td>
-                                <td className="test">
-                                    Accepted
                                 </td>
                                 <td className="test">
                                     Pending

@@ -1,9 +1,39 @@
 .myCourses {  
-  color: #000000;
+  
+    .breadcrumbsCourse{
+        // float: left;
+        margin-left: 110px;
+
+        .learnHome{
+            text-decoration: none;
+        }
+
+        .learningImg{
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+            margin-right: 5px;
+          }
+
+        .breadcrumbsCourseFirst {
+            font-size: 16px;
+            line-height: 1;
+            color: #7e7e7e;
+            font-weight: 500;
+        }
+
+        .breadcrumbsCourseSecond {
+            font-size: 16px;
+            line-height: 1;
+            color: #000;
+            font-weight: 500;
+        }
+    }
 
     .title {
       text-align: center;
       margin-top: 50px;
+      color: #74767e;
     }
   
     .myCoursesContainer {

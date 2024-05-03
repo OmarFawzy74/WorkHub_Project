@@ -3,7 +3,6 @@
   justify-content: center;
   margin-bottom: 100px;
   margin-top: 80px;
-  
 
   .messageTitle {
     position: relative;
@@ -13,13 +12,19 @@
     font-size: 18px;
     color: #555;
 
+    .messageSenderNameLink{
+      text-decoration: none;
+      color: #555;
+    }
+    
 
-    a {
+
+    .messagePath {
       text-decoration: none;
       color: #189d5f;
     }
 
-    a:hover {
+    .messagePath:hover {
       color: #23be76;
     }
   }

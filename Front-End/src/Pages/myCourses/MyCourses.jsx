@@ -42,6 +42,9 @@ function MyCourses() {
       <div className="title">
         <h1>Enrolled Courses</h1>
       </div>
+      <div className='breadcrumbsCourse'>
+        <Link reloadDocument className='learnHome' to="/learn"><img className="learningImg" src="./img/learning.png" /><span className='breadcrumbsCourseFirst'>Courses</span></Link> {'>'} <span className="breadcrumbsCourseSecond">My Courses</span>
+      </div>
       <div className="myCoursesContainer">
         {courses.results &&
           courses.results.map((course) => (
