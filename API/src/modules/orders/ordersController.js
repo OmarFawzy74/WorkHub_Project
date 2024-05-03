@@ -10,7 +10,7 @@ import order_model from "../../../DB/models/order_model.js";
 // Get All Orders
 export const getAllOrders = async (req, res) => {
     try {
-        const allOrders = await order_model.find();
+        const allOrders = await order_model.find().populate("clientId").populate("freelancerId").populate("serviceId");
         if(allOrders.length !== 0) {
             res.status(200).send(allOrders);
         }

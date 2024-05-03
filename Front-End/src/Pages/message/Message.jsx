@@ -23,6 +23,30 @@ const Message = () => {
     reload: 0
   });
 
+  const [conversationData, setConversationData] = useState({
+    loading: true,
+    results: null,
+    err: null,
+    status: null,
+    reload: 0
+  });
+
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/conversations/getConversationById/" + id)
+      .then(
+        resp => {
+          console.log(resp);
+          console.log(resp.data);
+          setConversationData({ results: resp.data.conversationData, loading: false, err: null });
+        }
+      ).catch(err => {
+        console.log(err);
+        // setConversationData({ ...conversationData, loading: false, err: err.response.data.errors });
+      })
+  }, [conversationData.reload]);
+
+
   const user = getAuthUser();
 
   const sendMessage = (e) => {
@@ -36,8 +60,8 @@ const Message = () => {
       })
       .then((resp) => {
         console.log(resp);
-        setMessages({ ...messages, reload: messages.reload + 1});
-        setMessage({ ...messages, data: ""});
+        setMessages({ ...messages, reload: messages.reload + 1 });
+        setMessage({ ...messages, data: "" });
         // window.scrollBy(0, -200);
         // alert(window.scrollX + window.scrollY);
 
@@ -53,7 +77,6 @@ const Message = () => {
       });
   }
 
-
   useEffect(() => {
     axios.get("http://localhost:3000/api/messages/getConversationMessages/" + id)
       .then(
@@ -66,53 +89,59 @@ const Message = () => {
           window.scrollTo(0, 200)
         }
       ).catch(err => {
-        setMessages({ ...messages, loading: false, err: err.response.data.errors });
+        // setMessages({ ...messages, loading: false, err: err.response.data.errors });
       })
   }, [messages.reload]);
 
 
   return (
     <div className="message">
-      <span className="messageTitle">
-          <Link reloadDocument to="/messages">Messages</Link> {'>'} John Doe {'>'}
-        </span>
-    <div className="chatPage">   
-      <div id="chatScroll" className="messageContainer">
-        <div className="messages">
-          {
-            messages.loading == false && messages.err == null && messages.results && messages.results.length > 0 && (
-              messages.results.map((message) => (
-                <>
-                  <div className={message.senderType == "client" ? "item owner" : "item"}>
-                    <img
-                      src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    />
-                    <p>
-                      {message.messageContent}
-                      <img
-                        className="seen"
-                        src="/img/read.png"
-                      />
-                    </p>
-                  </div>
-                </>
-              ))
-            )
-          }
-        </div>
-      </div>
-      <hr />
-      <div className="sendContainer">
-        <div className="write">
-          <textarea value={message.data} type="text" placeholder="Write a message" onChange={(e) =>
-            setMessage({ ...message, data: e.target.value })
-          } />
-        </div>
+      {conversationData.results &&
         <>
-          <button className="sendButton" onClick={sendMessage}>Send</button>
+          <span className="messageTitle">
+            <Link className="messagePath" reloadDocument to="/messages">Messages</Link> {'>'} <Link reloadDocument className="messageSenderNameLink" to={user.role == "client" ? "/profile/" +  conversationData.results.freelancer._id : "/profile/" + conversationData.results.client._id}>{user.role == "client" ? conversationData.results.freelancer.name : conversationData.results.client.name}</Link> {'>'}
+          </span>
+          <div className="chatPage">
+            <div id="chatScroll" className="messageContainer">
+              <div className="messages">
+                {
+                  messages.loading == false && messages.err == null && messages.results && messages.results.length > 0 && (
+                    messages.results.map((message) => (
+                      <>
+                        <div className={message.senderType == "client" ? "item owner" : "item"}>
+                          <Link reloadDocument to={message.senderType == "client" ? "/profile/" +  conversationData.results.client._id : "/profile/" + conversationData.results.freelancer._id}>
+                              <img
+                                src={message.senderType == "client" ? conversationData.results.client.image_url : conversationData.results.freelancer.image_url}
+                              />
+                          </Link>
+                          <p>
+                            {message.messageContent}
+                            <img
+                              className="seen"
+                              src="/img/read.png"
+                            />
+                          </p>
+                        </div>
+                      </>
+                    ))
+                  )
+                }
+              </div>
+            </div>
+            <hr />
+            <div className="sendContainer">
+              <div className="write">
+                <textarea value={message.data} type="text" placeholder="Write a message" onChange={(e) =>
+                  setMessage({ ...message, data: e.target.value })
+                } />
+              </div>
+              <>
+                <button className="sendButton" onClick={sendMessage}>Send</button>
+              </>
+            </div>
+          </div>
         </>
-      </div>
-    </div> 
+      }
     </div>
   );
 };

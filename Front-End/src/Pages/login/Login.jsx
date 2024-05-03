@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Login.scss";
 // import newRequest from "../../utils/newRequest.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
-import { setAuthUser } from '../../localStorage/storage';
+import { getAuthUser, setAuthUser } from '../../localStorage/storage';
 
 
 function Login() {
@@ -12,7 +12,11 @@ function Login() {
   // const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  let { id } = useParams();
+
   const navigate = useNavigate();
+
+  const user = getAuthUser();
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -55,10 +59,10 @@ function Login() {
 
         setAuthUser(resp.data.userData);
         if (resp.data.userData.role == "admin") {
-          window.location = "http://localhost:3001/adminDashboard/";
+          window.location = "http://localhost:3001/adminDashboard";
         }
         else {
-          window.location = "http://localhost:3001/gigs/";
+          window.location = "http://localhost:3001/userDashboard";
         }
         // navigate("/gigs");
         // window.location.reload();

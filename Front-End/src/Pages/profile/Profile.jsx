@@ -253,6 +253,7 @@ const Profile = () => {
                     {freelancer?.results.role == "freelancer" &&
                         <div className="myServiceSection">
                             <div className="myServiceHeader"><h2>{freelancer?.results.name !== user?.name ? freelancer?.results.name + "'s Services" : "My Services"}</h2></div>
+                            <Link reloadDocument to={"/add"}><button className="addNewServiceBtn">Add New Service</button></Link>
                             <div className="myServiceGigsCards">
                                 {services.loading == false &&
                                     services.err == null &&

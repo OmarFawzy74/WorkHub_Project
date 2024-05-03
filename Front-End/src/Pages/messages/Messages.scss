@@ -46,6 +46,12 @@
           td {
             text-align: center;
             padding: 10px;
+
+            .image{
+              width: 45px;
+              height: 45px;
+              border-radius: 50%;
+            }
   
             &:first-child {
               font-weight: 500;

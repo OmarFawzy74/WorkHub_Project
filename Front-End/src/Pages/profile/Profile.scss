@@ -287,6 +287,29 @@
 
         .myServiceSection {
 
+            .addNewServiceBtn{
+                position: relative;
+                left: 1250px;
+                // width: 100%;
+                background-color: #1dbf73;
+                padding: 10px;
+                color: white;
+                font-weight: 500;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+                margin-bottom: 10px;
+                border-radius: 5px;              
+            }
+            
+            .addNewServiceBtn:hover{
+                background-color: #24dc86;
+            }
+
+            .addNewServiceBtn:focus{
+                outline: 0; 
+            }
+
             .myServiceHeader {
                 margin-bottom: 30px;
 

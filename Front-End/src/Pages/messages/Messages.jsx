@@ -78,45 +78,62 @@ const Messages = () => {
       })
   }, [conversations.reload]);
 
+
+  const message = (e) => {
+    // console.log(e.target.value);
+    const freelancerId = e.target.value;
+
+    axios
+      .post("http://localhost:3000/api/conversations/addConversation", {
+        freelancer: freelancerId,
+        client: user._id
+      })
+      .then((resp) => {
+        const conversationId = resp.data.newConversationData[0]._id;
+        // console.log(resp.data.newConversationData[0]._id);
+        // navigate("/message/" + conversationId);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        // navigate("/messages");
+      });
+  }
+
+
+
+
   const openChat = (e) => {
     const conservationId = e.target.id;
 
+    // axios.put("http://localhost:3000/api/messages/updateMessagesStatus/:id/:role" + user._id)
+    //   .then(
+    //     resp => {
+    //       console.log(resp);
+    //       // console.log(resp);
+    //       // console.log(resp.data);
+    //       // console.log(resp.data.result);
+    //       // let data = resp.data.result
 
-    axios.put("http://localhost:3000/api/messages/updateMessagesStatus/:id/:role" + user._id)
-      .then(
-        resp => {
+    //       // if(!Array.isArray(data)) {
+    //       //   data = [resp.data.result];
+    //       // }
 
-
-          console.log(resp);
-          
-          // console.log(resp);
-          // console.log(resp.data);
-          // console.log(resp.data.result);
-          // let data = resp.data.result
-
-          // if(!Array.isArray(data)) {
-          //   data = [resp.data.result];
-          // }
-
-          // setConversations({ results: data, loading: false, err: null });
-        }
-      ).catch(err => {
-        console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
-      })
-
-
-
-    // window.location.replace("http://localhost:3001/message/" + conservationId);
+    //       // setConversations({ results: data, loading: false, err: null });
+    //     }
+    //   ).catch(err => {
+    //     console.log(err);
+    //     // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+    //   })
+    window.location.replace("http://localhost:3001/message/" + conservationId);
 
     // navigate("/message/" + conservationId);
   }
 
 
-  const message = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-  maxime cum corporis esse aspernatur laborum dolorum? Animi
-  molestias aliquam, cum nesciunt, aut, ut quam vitae saepe repellat
-  nobis praesentium placeat.`;
+  // const message = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
+  // maxime cum corporis esse aspernatur laborum dolorum? Animi
+  // molestias aliquam, cum nesciunt, aut, ut quam vitae saepe repellat
+  // nobis praesentium placeat.`;
 
   return (
     <div className="messages">
@@ -124,10 +141,9 @@ const Messages = () => {
         <div className="title">
           <h1>Messages</h1>
         </div>
-
         <table>
-
           <tr>
+          <th className="userImg">Image</th>
             <th className="userName">{user.role == "freelancer" ? "Client" : "Freelancer"}</th>
             <th className="lastMessage">Last Message</th>
             <th className="date">Date</th>
@@ -141,7 +157,16 @@ const Messages = () => {
             conversations.results.map((conversation) => (
               <>
                 <tr className={conversation.lastMessage.senderId !== user._id ? "active" : null}>
-                  <td className="userNameData"><p>{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</p></td>
+                <td>
+                    <Link reloadDocument to={user.role == "client" ? "/profile/" + conversation?.freelancer._id : "/profile/" + conversation?.client._id}>
+                        <img
+                            className="image"
+                            src={user.role == "client" ? conversation?.freelancer.image_url : conversation?.client.image_url}
+                            alt=""
+                        />
+                    </Link> 
+                </td>
+                <td className="userNameData"><Link reloadDocument className="link" to={user.role == "client" ? "/profile/" + conversation?.freelancer._id : "/profile/" + conversation?.client._id }><p>{user.role == "freelancer" ? conversation.client.name : conversation.freelancer.name}</p></Link></td>
                   <td className="lastMessageData">
                     <Link id={conversation._id} onClick={openChat} className="link">
                       {conversation.lastMessage.messageContent.substring(0, 100)}...
@@ -154,62 +179,6 @@ const Messages = () => {
                 </tr>
               </>
             ))}
-
-          {/* <tr>
-            <th>{user.role == "freelancer" ? "Client" : "Freelancer"}</th>
-            <th>Last Message</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-          <tr className="active">
-            <td>Charley Sharp</td>
-            <td>
-              <Link to="/message/123" className="link">
-                {message.substring(0, 100)}...
-              </Link>
-            </td>
-            <td>1 hour ago</td>
-            <td>
-              <button>Mark as Read</button>
-            </td>
-          </tr> */}
-          {/* <tr className="active">
-            <td>John Doe</td>
-            <td>
-              <Link to="/message/123" className="link">
-                {message.substring(0, 100)}...
-              </Link>
-            </td>
-            <td>2 hours ago</td>
-            <td>
-              <button>Mark as Read</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>Elinor Good</td>
-            <td>
-              <Link to="/message/123" className="link">
-                {message.substring(0, 100)}...
-              </Link>
-            </td>
-            <td>1 day ago</td>
-          </tr>
-
-          <tr>
-            <td>Garner David </td>
-            <td>
-              <Link to="/message/123" className="link">
-                {message.substring(0, 100)}...
-              </Link>
-            </td>
-            <td>2 days ago</td>
-          </tr>
-          <tr>
-            <td>Troy Oliver</td>
-            <td>{message.substring(0, 100)}</td>
-            <td>1 week ago</td>
-          </tr> */}
         </table>
       </div>
     </div>

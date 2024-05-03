@@ -189,6 +189,9 @@
           .reviewInputContainer{
             margin-top: 80px;
             margin-bottom: 40px;
+            border: 1px solid #c5c5c5;
+            border-radius: 10px;
+            padding: 50px 50px;
 
             .reviewForm{
               display: flex;
@@ -205,7 +208,7 @@
             select{
               border: 1px solid rgb(216, 214, 214) !important;
               padding: 10px;
-              width: 22%;
+              width: 23%;
             }
 
             select:focus {
