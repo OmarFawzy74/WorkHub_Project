@@ -2,9 +2,12 @@ import React, { useRef, useState } from "react";
 import "./AdminProfile.scss";
 import { sidebarStatus } from "../../App";
 import { Link } from "react-router-dom";
+import { getAuthUser } from "../../localStorage/storage";
 
 
 function UpdateProfile() {
+
+    const user = getAuthUser();
     const [courseContainer, setCourseContainer] = useState({
         loading: false,
     });
@@ -14,12 +17,11 @@ function UpdateProfile() {
             <div className="adminProfileContainer">
                 <div className="adminProfile">
                     <div className="top">
-                        <img className='adminProfileImage' src="/img/profile.jpg" />
+                        <img className='adminProfileImage' src={user.image_url} />
                     </div>
                     <div className="bottom">
-                        <h2 htmlFor="">Name: <span>Mana</span></h2>
-                        <h2 htmlFor="">Email: <span>Mana@gmail.com</span></h2>
-                        <h2 htmlFor="">Phone Number: <span>01027913515</span></h2>
+                        <h2 htmlFor="">Name: <span>{user.name}</span></h2>
+                        <h2 htmlFor="">Email: <span>{user.email}</span></h2>
                         <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })} className="updateAdminProfilebtn">Update Pofile</button>
                     </div>
                 </div>
