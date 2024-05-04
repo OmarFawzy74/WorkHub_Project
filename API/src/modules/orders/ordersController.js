@@ -1,25 +1,19 @@
 
 import order_model from "../../../DB/models/order_model.js";
 
-//Unfinished Tasks
-
-// 1. Check Freelancer Id
-// 2. Check Client Id
-// 3. Check Order Price
-
 // Get All Orders
 export const getAllOrders = async (req, res) => {
     try {
         const allOrders = await order_model.find().populate("clientId").populate("freelancerId").populate("serviceId");
         if(allOrders.length !== 0) {
-            res.status(200).send(allOrders);
+            res.status(200).json(allOrders);
         }
         else {
-            res.status(200).send("No orders found!");
+            res.status(200).json("No orders found!");
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Somthing went wrong!");
+        res.status(500).json("Somthing went wrong!");
     }
 }
 
@@ -91,6 +85,28 @@ export const updateOrder = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
+    }
+}
+
+// Update Order Status
+export const updateOrderStatus = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+
+        const orderToUpdate = await order_model.findById(orderId);
+
+        if(orderToUpdate) {
+            const filter = { _id: orderId }; // specify the condition to match the document
+            const update = { $set: { orderStatus: "Completed" } }; // specify the update operation
+
+            await order_model.updateOne(filter, update);
+            return res.status(200).json({ msg:"Order has been updated successfuly." });
+        }
+
+        res.status(200).json({ msg:"There is no order with such id to update." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
 

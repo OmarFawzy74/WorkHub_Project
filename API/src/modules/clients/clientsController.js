@@ -9,13 +9,21 @@ import mongoose from "mongoose";
 // Get All Clients
 export const getAllClients = async (req, res) => {
     try {
-        const allClients = await client.find();
-        if(allClients.length !== 0) {
-            res.status(200).send(allClients);
+        var allClients = await client.find();
+
+        if(!allClients[0]) {
+          return res.status(404).json({ msg:"No clients found!"});
         }
-        else {
-            res.status(200).send("No clients found!");
-        }
+
+        const modifiedClients = allClients.map((client) => {
+          const modifiedClient = { ...client._doc }; // Create a copy of the service object
+          modifiedClient.image_url = "http://" + req.hostname + ":3000/" + modifiedClient.image_url;
+          return modifiedClient;
+        });
+
+        allClients = modifiedClients;
+
+        res.status(200).json(allClients);
     } catch (error) {
         console.log(error);
         res.status(500).send("Somthing went wrong!");

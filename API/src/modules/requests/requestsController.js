@@ -1,6 +1,8 @@
 
 import order_model from "../../../DB/models/order_model.js";
 import request_model from "../../../DB/models/request_model.js";
+import service_model from "../../../DB/models/service_model.js";
+
 
 // Get All Requests
 export const getAllRequests = async (req, res) => {
@@ -114,15 +116,16 @@ export const addRequest = async (req, res) => {
             $and: [
                 { clientId: req.body.clientId },
                 { freelancerId: req.body.freelancerId },
-                { serviceId: req.body.serviceId }
+                { serviceId: req.body.serviceId },
+                { requestStatus : "Pending"}
             ]
         };
 
         const data = await request_model.find(filter);
 
         if(data[0]) {
-            if(data[0].requestStatus === "Pending") {
-                return res.status(200).json({ msg:"Request has already been sent." });
+            if(data[0].requestStatus == "Pending") {
+                return res.status(400).json({ msg:"Request has already been sent." });
             }
         }
 
@@ -150,9 +153,9 @@ export const updateRequestStatus = async (req, res) => {
                 return res.status(404).json({ msg:"Request Already " + requestToUpdate.requestStatus });
             }
 
-            const filter = { _id: requestId };
-            const update = { $set: { requestStatus: req.body.requestStatus} };
-            const process = await request_model.updateOne(filter, update);
+            let filter = { _id: requestId };
+            let update = { $set: { requestStatus: req.body.requestStatus} };
+            let process = await request_model.updateOne(filter, update);
 
             if(process) {
                 if(req.body.requestStatus === "Approved") {
@@ -172,7 +175,16 @@ export const updateRequestStatus = async (req, res) => {
                     await newOrder.save();
                     // res.status(200).send("Order has been created successfuly.");
 
-                    // addOrder();
+                    const serviceToUpdate = await service_model.findById(serviceId);
+
+                    const orders = serviceToUpdate.orders;
+
+                    orders.push(newOrder._id);
+
+                    filter = { _id: serviceId };
+                    update = { $set: { orders: orders} };
+                    process = await service_model.updateOne(filter, update);
+
                     return res.status(200).json({ msg:"Request Approved Successfuly." });
                 }
                 else {

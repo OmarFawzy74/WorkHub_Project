@@ -177,7 +177,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
   const navigation = (e) => {
     let text = e.target.innerText;
 
-    if (text == "Admin") {
+    if (text == user.name) {
       return navigate("/adminProfile");
     }
 
@@ -209,12 +209,15 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
       return navigate("/ordersList");
     }
 
-      if (text == "Community") {
-        return navigate("/communityList");
-      }
+    if (text == "Community") {
+      return navigate("/communityList");
+    }
+
+    if(text == "") {
+      return navigate("/adminProfile");
+    }
 
     text = e.target.dataset.testid;
-    console.log();
 
     if(text == undefined) {
       text = e.target.nearestViewportElement.dataset.testid;
