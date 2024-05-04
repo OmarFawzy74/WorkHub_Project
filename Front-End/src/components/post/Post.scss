@@ -105,13 +105,34 @@
                         flex-direction: column;
                         gap: 10px;
                         color: gray;
-                        width: 125px;
+                        width: 130px;
                         font-weight: 500;
                         z-index: 999;
 
-                        span{
+                        .sidebarDeleteList{
                             cursor: pointer;
+                            list-style:none;
+                            margin-left: 5px;
                         }
+
+                        .sidebarJoinButton{
+                            width: 100px;
+                            // border: 1px solid rgb(185, 185, 185);
+                            padding: 7px;
+                            // border-radius: 10px;
+                            background-color: transparent;
+                            font-weight: 500;
+                            color: rgb(0, 0, 0);
+                            position: relative;
+                            right: 5px;
+                            text-transform: none;
+                        }
+                
+                        .sidebarJoinButton:hover{
+                            background-color: #ff3030;
+                            color: #fff;
+                        }
+                
                 }
 
                 .postTopRightImg {

@@ -7,6 +7,7 @@ import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
 import { processDate } from '../../Pages/messages/Messages'
 import swal from 'sweetalert'
+import Button from '@mui/material/Button';
 
 const Feed = (data) => {
   const user = getAuthUser()
@@ -16,6 +17,7 @@ const Feed = (data) => {
   const [like, setLike] = useState(0)
   const [isLiked, setIsLiked] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const likeHandler = () => {
     setLike(isLiked ? like - 1 : like + 1)
@@ -128,8 +130,10 @@ const Feed = (data) => {
 
   const deletePost = (e) => {
     e.preventDefault();
-    const category_id = e.target.value;
-    axios.delete("http://localhost:3000/api/posts/deletePost/" + category_id)
+    const post_id = e.target.attributes.value.nodeValue;
+    console.log(post_id);
+    console.log(e);
+    axios.delete("http://localhost:3000/api/posts/deletePost/" + post_id)
         .then(
             resp => {
                 console.log(resp);
@@ -220,16 +224,24 @@ const Feed = (data) => {
                     </div>
                     <div className="postTopRight">
                       <img
+                          value={post._id} 
                           className="postTopRightImg"
                           src="/img/option.png"
                           onClick={() =>
-                              setCommentOpen(!commentOpen)
+                            setDeleteOpen(!deleteOpen)
                           }
                       />
-                      {commentOpen &&
-                          <div className="deletePostContainer">
-                              <span onClick={deletePost}>Delete Post</span>
-                          </div>
+                      {deleteOpen &&
+                          <ul className="deletePostContainer">
+                              <li
+                                variant="contained"
+                                className="sidebarDeleteList"
+                                value={post._id} 
+                                onClick={deletePost}     
+                              >
+                                Delete Post
+                              </li>
+                          </ul>
                       }
                   </div>
                   </div>
