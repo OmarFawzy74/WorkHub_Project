@@ -1,9 +1,9 @@
 
+import mongoose from "mongoose";
 import client_model from "../../../DB/models/client_model.js";
-import ClientModel from "../../../DB/models/client_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
-import FreelancerModel from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
+import fs from "fs";
 
 export const getAllPosts = async (req, res) => {
     try {
@@ -278,25 +278,26 @@ export const deletePost = async (req, res, next) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return next(new Error("Invalid post id", { cause: 404 }));
+            return res.status(400).json({ message: 'Invalid ID' });
         }
-        const data = await Service.findById(id);
+
+        const data = await Postmodel.findById(id);
+
         if (!data) {
-            return next(new Error("Post not found", { cause: 404 }));
+            return res.status(404).json({ message: 'Post Not Found' });
         }
+
         const filter = { _id: id }
-        const process = await Service.deleteOne(filter);
+        const process = await Postmodel.deleteOne(filter);
 
         if (process) {
             fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
 
-            return res.status(200).json({ success: true, message: "Post deleted successfully" });
+            return res.status(200).json({ msg: "Post deleted successfully" });
         }
-
-        next(new Error("Service not found", { cause: 404 }));
 
     } catch (error) {
         console.log(error);
-        res.status(404).json({ success: false, message: "Server Error" });
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 };
