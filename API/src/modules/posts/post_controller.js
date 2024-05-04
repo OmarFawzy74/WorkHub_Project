@@ -1,10 +1,9 @@
 
 import client_model from "../../../DB/models/client_model.js";
-import ClientModel from "../../../DB/models/client_model.js"
+import ClientModel from "../../../DB/models/client_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
-import FreelancerModel from "../../../DB/models/freelancer_model.js"
-import Postmodel from "../../../DB/models/post_model.js"
-
+import FreelancerModel from "../../../DB/models/freelancer_model.js";
+import Postmodel from "../../../DB/models/post_model.js";
 
 export const getAllPosts = async (req, res) => {
     try {
@@ -40,15 +39,61 @@ export const getAllPosts = async (req, res) => {
     }
 };
 
+export const getUserPosts = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        let userData = await freelancer_model.findById(userId);
+
+        if(!userData) {
+            userData = await client_model.findById(userId);
+        }
+
+        const posts = await Postmodel.find({posterId: userId, posterType: userData.role}).populate("communityId");
+        const modifiedPosts = [];
+
+        for (const post of posts) {
+            let modifiedPost = { ...post._doc };
+            let data;
+
+            if (modifiedPost.posterType === "freelancer") {
+                data = userData;
+            } else if (modifiedPost.posterType === "client") {
+                data = userData;
+            } else {
+                return res.status(404).json({ message: 'Invalid role' });
+            }
+
+            modifiedPost.posterId = { ...data._doc };
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPosts.push(modifiedPost);
+        }
+
+        if (modifiedPosts.length > 0) {
+            return res.status(200).json({ posts: modifiedPosts });
+        } else {
+            return res.status(404).json({ message: 'No posts found' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 export const addPost = async (req, res) => {
     try {
         const { communityId, posterId, posterType, caption } = req.body
+
+        const date = new Date();
+        const creationDate = date.getTime();
 
         const newpost = new Postmodel({
             communityId,
             posterId,
             posterType,
             caption,
+            creationDate
         });
 
         const savePost = await newpost.save();

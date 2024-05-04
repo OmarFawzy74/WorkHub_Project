@@ -31,6 +31,9 @@ const postSchema = new Schema({
     },
     comments: {
         type: [String],
+    },
+    creationDate: {
+        type: String,
     }
 },{
     timestamps: true
