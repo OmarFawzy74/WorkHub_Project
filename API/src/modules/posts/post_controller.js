@@ -81,6 +81,42 @@ export const getUserPosts = async (req, res) => {
     }
 };
 
+export const getCommunityPosts = async (req, res) => {
+    try {
+        const communityId = req.params.id;
+        
+        const posts = await Postmodel.find({communityId: communityId}).populate("communityId");
+        const modifiedPosts = [];
+
+        for (const post of posts) {
+            let modifiedPost = { ...post._doc };
+            let data;
+
+            if (modifiedPost.posterType === "freelancer") {
+                data = await freelancer_model.findById(modifiedPost.posterId);
+            } else if (modifiedPost.posterType === "client") {
+                data = await client_model.findById(modifiedPost.posterId);;
+            } else {
+                return res.status(404).json({ message: 'Invalid role' });
+            }
+
+            modifiedPost.posterId = { ...data._doc };
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPosts.push(modifiedPost);
+        }
+
+        if (modifiedPosts.length > 0) {
+            return res.status(200).json({ posts: modifiedPosts });
+        } else {
+            return res.status(404).json({ message: 'No posts found' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 export const addPost = async (req, res) => {
     try {
         const { communityId, posterId, posterType, caption } = req.body
