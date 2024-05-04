@@ -45,8 +45,8 @@ const Post = () => {
             <>
               <div className="postTop">
                 <div className="postTopLeft">
-                  <img className='postProfileImg' src="/img/profile.jpg" />
-                  <span className="postUsername"></span>
+                  <img className='postProfileImg' src={post?.posterId.image_url}/>
+                  <span className="postUsername">{post?.posterId.name}</span>
                   <span className="postDate">5 mins ago</span>
                 </div>
                 <div className="postTopRight">
@@ -54,8 +54,8 @@ const Post = () => {
                 </div>
               </div>
               <div className="postCenter">
-                <span className="postText">عايز يظهر فى فيديو ١٠ لاعبين خذلتهم كأس العاصمة الإدارية </span>
-                <img className='postImg' src="/img/af4a.jpg" alt="" />
+                <span className="postText">{post?.caption}</span>
+                <img className='postImg' src={post?.media_url} alt="" />
               </div>
               <div className="postBottom">
                 <div className="postBottomLeft">

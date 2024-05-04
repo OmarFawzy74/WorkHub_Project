@@ -38,6 +38,16 @@
                 position: relative;
                 align-items: center;
                 margin-bottom: 20px;
+
+                .communityList{
+                    list-style: none;
+                    color: #1dbf73;
+
+                    .communityListContent{
+                        margin-left: 35px;
+                        margin-top: 10px;
+                    }
+                }
     
                 .sidebarProfileImg{
                     width: 30px;
@@ -49,6 +59,8 @@
 
                 .sidebarListItemText{
                     align-items: center;
+                    color: #1dbf73;
+                    cursor: pointer;
                 }
             }
         }

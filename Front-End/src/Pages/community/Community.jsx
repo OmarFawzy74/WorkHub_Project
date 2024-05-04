@@ -13,7 +13,7 @@ const Community = () => {
             <h1>Community</h1>
             <div className="communityContainer">
                 <SideBar />
-                <Feed data={user} />
+                <Feed data={user}/>
                 <RightBar />
             </div>
         </div>

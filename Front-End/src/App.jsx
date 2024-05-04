@@ -351,6 +351,10 @@ export default function App() {
           element: <Community />
         },
         {
+          path: "/community/:id",
+          element: <Community />
+        },
+        {
           path: "/communityProfile/:id",
           element: <CommunityProfile />
         },

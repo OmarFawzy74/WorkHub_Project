@@ -1,22 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import "./SideBar.scss"
 import { getAuthUser } from '../../localStorage/storage'
+import axios from 'axios'
 
 const SideBar = () => {
   const user = getAuthUser()
+  const [communityListOpen, setCommunityListOpen] = useState(false);
+
+  const [communities, setCommunities] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    communityName: "",
+    communityDesc: "",
+    reload: 0
+  });
+
+  useEffect(() => {
+    setCommunities({ ...communities, loading: true })
+    axios.get("http://localhost:3000/api/communities/getAllCommunities")
+      .then(
+        resp => {
+          // console.log(resp.data.allCommunities);
+          setCommunities({ results: resp.data.allCommunities, loading: false, err: null });
+          // console.log(resp);
+        }
+      ).catch(err => {
+        setCommunities({ ...communities, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [communities.reload]);
 
   return (
     <div className='sidebar'>
       <div className="sidebarContainer">
         <ul className="sidebarList">
           <li className="sidebarListItem">
-          {user &&
-            <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
-              <img className='sidebarProfileImg' src={user?.image_url} />
-              <span className='sidebarListItemText'>{user?.name}</span>
-            </Link>
-          }
+            {user &&
+              <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
+                <img className='sidebarProfileImg' src={user?.image_url} />
+                <span className='sidebarListItemText'>{user?.name}</span>
+              </Link>
+            }
           </li>
 
           <li className="sidebarListItem">
@@ -33,11 +59,27 @@ const SideBar = () => {
             </Link>
           </li>
 
-          <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/">
-              <img className='sidebarIcon' src="/img/groups.png" />
-              <span className='sidebarListItemText'>Communities</span>
-            </Link>
+          <li onClick={() => setCommunityListOpen(!communityListOpen)} className="sidebarListItem">
+            {/* <Link reloadDocument className='sidebarLink'> */}
+            <img className='sidebarIcon' src="/img/groups.png" />
+            <span className='sidebarListItemText'>Communities</span>
+            {/* </Link> */}
+            {communityListOpen &&
+              <>
+                {
+                  communities.loading == false &&
+                  communities.err == null &&
+                  communities.results &&
+                  communities.results.length > 0 &&
+                  communities.results.map((community) => (
+                    <>
+                      <ul className='communityList'>
+                        <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id }><li className='communityListContent'>{community?.communityName}</li></Link>
+                      </ul>
+                    </>
+                  ))}
+              </>
+            }
           </li>
 
           <li className="sidebarListItem">
@@ -58,18 +100,18 @@ const SideBar = () => {
         <span className='sidebaMenuText'>Joined Communities</span>
         <hr className='sidebarHr-2' />
         <ul className="sidebarCommunityList">
-          <li className="sidebarCommunity">
-            <span className='sidebarCommunityName'>Graphics & Design</span>
-            <button className='sidebarJoinButton'>Unjoin</button>
-          </li>
-          <li className="sidebarCommunity">
-            <span className='sidebarCommunityName'>Video & Animation</span>
-            <button className='sidebarJoinButton'>Unjoin</button>
-          </li>
-          <li className="sidebarCommunity">
-            <span className='sidebarCommunityName'>Artificial Intelligence</span>
-            <button className='sidebarJoinButton'>Unjoin</button>
-          </li>
+          {communities.loading == false &&
+            communities.err == null &&
+            communities.results &&
+            communities.results.length > 0 &&
+            communities.results.map((community) => (
+              <>
+                <li className="sidebarCommunity">
+                  <span className='sidebarCommunityName'>{community?.communityName}</span>
+                  <button className='sidebarJoinButton'>Join</button>
+                </li>
+              </>
+            ))}
         </ul>
       </div>
       <span></span>
