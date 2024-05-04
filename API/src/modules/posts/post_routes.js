@@ -1,7 +1,7 @@
 
 import express from "express";
 import auth from '../../middleware/auth.middleware.js';
-import { addPost, getPost, getAllPosts, addLike, updatePost, addComment, uploadPostMedia, removeLike, getUserPosts } from './post_controller.js'
+import { addPost, getPost, getAllPosts, addLike, updatePost, addComment, uploadPostMedia, removeLike, getUserPosts, getCommunityPosts } from './post_controller.js'
 import endPoints from "../../middleware/endPoints.js";
 import { postSchema } from "./post.schema.js";
 import { validation } from "../../middleware/val.middleware.js";
@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.get('/getAllPosts', getAllPosts); // auth(endPoints.admin)
 router.get('/getUserPosts/:id', getUserPosts); // auth(endPoints.admin)
+router.get('/getCommunityPosts/:id', getCommunityPosts); // auth(endPoints.admin)
 router.post('/addPost', validation(postSchema), addPost); // auth(endPoints.allUsersExceptAdmin)
 router.put('/uploadPostMedia/:id', upload.single('media'), uploadPostMedia); // auth(endPoints.allUsersExceptAdmin)
 router.put('/addLike/:id', addLike); // auth(endPoints.allUsersExceptAdmin)
