@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { getAuthUser } from '../../localStorage/storage';
+import { processDate } from '../messages/Messages';
 
 const CommunityProfile = (data) => {
 
@@ -323,7 +324,7 @@ const CommunityProfile = (data) => {
                                       {post?.posterId.name}
                                     </span>
                                   </Link>
-                                  <span className="postDate">5 mins ago</span>
+                                  <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                 </div>
                                 <div className="postTopRight">
                                   <img
@@ -559,7 +560,7 @@ const CommunityProfile = (data) => {
                                         {post?.posterId.name}
                                       </span>
                                     </Link>
-                                    <span className="postDate">5 mins ago</span>
+                                    <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                   </div>
                                   <div className="postTopRight">
                                     <img

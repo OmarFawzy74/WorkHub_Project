@@ -4,49 +4,48 @@ import "./Messages.scss";
 import { getAuthUser } from "../../localStorage/storage";
 import axios from "axios";
 
+export const processDate = (messageTime) => {
+
+  const getDate = new Date();
+
+  const currentTime = getDate.getTime();
+
+  const timeDifference = Math.abs(currentTime - messageTime);
+
+  // For example, to get the difference in minutes:
+  const differenceInMinutes = timeDifference / (1000 * 60);
+
+  // To get the difference in hours:
+  const differenceInHours = timeDifference / (1000 * 60 * 60);
+
+  // To get the difference in days:
+  const differenceInDays = timeDifference / (1000 * 60 * 60 * 24);
+
+  const differenceInMonths = timeDifference / (1000 * 60 * 60 * 24 * 30);
+
+  // To get the difference in seconds:
+  const differenceInSeconds = timeDifference / 1000;
+
+  if(Math.round(differenceInSeconds) >= 60) {
+    if(Math.round(differenceInMinutes) >= 60) {
+      if(Math.round(differenceInHours) >= 24) {
+        if(Math.round(differenceInDays) >= 30) {
+          return Math.round(differenceInMonths) + " month";
+        }
+        return Math.round(differenceInDays) + " day";
+      }
+      return Math.round(differenceInHours) + " hours";
+    }
+    return Math.round(differenceInMinutes) + " min";
+  }
+  return Math.round(differenceInSeconds) + " sec";
+};
+
 const Messages = () => {
   
   const user = getAuthUser();
 
   const navigate = useNavigate();
-
-  const processDate = (messageTime) => {
-
-    const getDate = new Date();
-
-    const currentTime = getDate.getTime();
-
-    const timeDifference = Math.abs(currentTime - messageTime);
-
-    // For example, to get the difference in minutes:
-    const differenceInMinutes = timeDifference / (1000 * 60);
-
-    // To get the difference in hours:
-    const differenceInHours = timeDifference / (1000 * 60 * 60);
-
-    // To get the difference in days:
-    const differenceInDays = timeDifference / (1000 * 60 * 60 * 24);
-
-    const differenceInMonths = timeDifference / (1000 * 60 * 60 * 24 * 30);
-
-    // To get the difference in seconds:
-    const differenceInSeconds = timeDifference / 1000;
-
-    if(Math.round(differenceInSeconds) >= 60) {
-      if(Math.round(differenceInMinutes) >= 60) {
-        if(Math.round(differenceInHours) >= 24) {
-          if(Math.round(differenceInDays) >= 30) {
-            return Math.round(differenceInMonths) + " month";
-          }
-          return Math.round(differenceInDays) + " day";
-        }
-        return Math.round(differenceInHours) + " hours";
-      }
-      return Math.round(differenceInMinutes) + " min";
-    }
-    return Math.round(differenceInSeconds) + " sec";
-  }
-
 
   const [conversations, setConversations] = useState({
     loading: true,

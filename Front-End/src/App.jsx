@@ -51,6 +51,7 @@ import SelectCommunity from './components/selectCommunity/SelectCommunity';
 import CommunityList from './Pages/admin/CommunityList';
 import AddCommunity from './Pages/admin/AddCommunity';
 import UserDashboard from './Pages/userDashboard/UserDashboard';
+import CommunityFilter from './Pages/communityFilter/CommunityFilter';
 
 let dashboardData;
 
@@ -352,7 +353,7 @@ export default function App() {
         },
         {
           path: "/community/:id",
-          element: <Community />
+          element: <CommunityFilter />
         },
         {
           path: "/communityProfile/:id",
