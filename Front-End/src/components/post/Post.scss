@@ -93,9 +93,31 @@
 
             .postTopRight {
 
+                .deletePostContainer{
+                        position: absolute;
+                        top: 40px;
+                        right: 10px;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 10px;
+                        border: 1px solid lightgray;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        color: gray;
+                        width: 125px;
+                        font-weight: 500;
+                        z-index: 999;
+
+                        span{
+                            cursor: pointer;
+                        }
+                }
+
                 .postTopRightImg {
                     width: 30px;
                     height: 30px;
+                    cursor: pointer;
                 }
 
             }

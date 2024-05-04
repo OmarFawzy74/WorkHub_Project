@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import "./SideBar.scss"
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
+import Button from '@mui/material/Button';
 
 const SideBar = () => {
   const user = getAuthUser()
@@ -59,25 +60,39 @@ const SideBar = () => {
             </Link>
           </li>
 
-          <li onClick={() => setCommunityListOpen(!communityListOpen)} className="sidebarListItem">
-            {/* <Link reloadDocument className='sidebarLink'> */}
-            <img className='sidebarIcon' src="/img/groups.png" />
-            <span className='sidebarListItemText'>Communities</span>
-            {/* </Link> */}
+          <li className="sidebarListItem">
+            <div onClick={() => setCommunityListOpen(!communityListOpen)} className='sidebarLink'>
+              <img className='sidebarIcon' src="/img/groups.png" />
+              <span className='sidebarListItemText'>Communities</span>
+            </div>
+
             {communityListOpen &&
               <>
-                {
-                  communities.loading == false &&
-                  communities.err == null &&
-                  communities.results &&
-                  communities.results.length > 0 &&
-                  communities.results.map((community) => (
-                    <>
-                      <ul className='communityList'>
-                        <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id }><li className='communityListContent'>{community?.communityName}</li></Link>
-                      </ul>
-                    </>
-                  ))}
+
+                <ul className='communityList'>
+                  {communities.loading == false &&
+                    communities.err == null &&
+                    communities.results &&
+                    communities.results.length > 0 &&
+                    communities.results.map((community) => (
+                      <>
+                        <li className='communityListContent'>
+                          <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id}>
+                            {community?.communityName}
+                          </Link>
+
+                          <Button
+                            variant="contained"
+                            className="approveBtn"
+                          // value={request._id}
+                          >
+                            Join
+                          </Button>
+
+                        </li>
+                      </>
+                    ))}
+                </ul>
               </>
             }
           </li>
@@ -108,7 +123,14 @@ const SideBar = () => {
               <>
                 <li className="sidebarCommunity">
                   <span className='sidebarCommunityName'>{community?.communityName}</span>
-                  <button className='sidebarJoinButton'>Join</button>
+                  {/* <button className='sidebarJoinButton'>Join</button> */}
+                  <Button
+                    variant="contained"
+                    className="sidebarJoinButton"
+                  // value={request._id}
+                  >
+                    Unjoin
+                  </Button>
                 </li>
               </>
             ))}

@@ -100,7 +100,7 @@ const CommunityFilter = (data) => {
         axios.get("http://localhost:3000/api/communities/getAllCommunities")
             .then(
                 resp => {
-                    // console.log(resp.data.allCommunities);
+                    console.log(resp.data.allCommunities);
                     setCommunities({ results: resp.data.allCommunities, loading: false, err: null });
                     // console.log(resp);
                 }
@@ -126,10 +126,12 @@ const CommunityFilter = (data) => {
     }, [posts.reload]);
 
     return (
-
-
         <div className='communityPage'>
-            <h1>Community</h1>
+        
+        {posts.loading == false &&
+        posts.results.map((post) => (
+                <h1>{post?.communityId.communityName} Community</h1>
+            ))}
             <div className="communityContainer">
                 <SideBar />
                 <div className='feed'>
@@ -138,9 +140,9 @@ const CommunityFilter = (data) => {
                             <div className='share'>
                                 <div className="shareContainer">
                                     <div className="shareTop">
-                                        {data.data &&
-                                            <Link reloadDocument to={"/communityProfile/" + data?.data._id} >
-                                                <img className='shareProfileImg' src={data?.data.image_url} />
+                                        {user &&
+                                            <Link reloadDocument to={"/communityProfile/" + user?._id} >
+                                                <img className='shareProfileImg' src={user?.image_url} />
                                             </Link>
                                         }
                                         <input
@@ -209,7 +211,18 @@ const CommunityFilter = (data) => {
                                                     <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                                 </div>
                                                 <div className="postTopRight">
-                                                    <img className='postTopRightImg' src="/img/option.png" />
+                                                    <img
+                                                        className="postTopRightImg"
+                                                        src="/img/option.png"
+                                                        onClick={() =>
+                                                            setCommentOpen(!commentOpen)
+                                                        }
+                                                    />
+                                                    {commentOpen &&
+                                                        <div className="deletePostContainer">
+                                                            <span>Delete Post</span>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                             <div className="postCenter">

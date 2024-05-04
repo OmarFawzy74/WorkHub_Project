@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
 import { processDate } from '../../Pages/messages/Messages'
+import swal from 'sweetalert'
 
 const Feed = (data) => {
   const user = getAuthUser()
@@ -115,7 +116,7 @@ const Feed = (data) => {
     axios.get("http://localhost:3000/api/posts/getAllPosts")
       .then(
         resp => {
-          // console.log(resp.data.posts);
+          console.log(resp.data.posts);
           setPosts({ results: resp.data.posts.reverse(), loading: false, err: null });
           // console.log(resp);
         }
@@ -124,6 +125,21 @@ const Feed = (data) => {
         console.log(err);
       })
   }, [posts.reload]);
+
+  const deletePost = (e) => {
+    e.preventDefault();
+    const category_id = e.target.value;
+    axios.delete("http://localhost:3000/api/posts/deletePost/" + category_id)
+        .then(
+            resp => {
+                console.log(resp);
+                swal(resp.data.msg, "", "success");
+                setPosts({ ...posts, reload: posts.reload + 1 });
+            }
+        ).catch(error => {
+            console.log(error);
+        })
+}
 
   return (
     <div className='feed'>
@@ -203,8 +219,19 @@ const Feed = (data) => {
                       <span className="postDate">{processDate(post?.creationDate)} ago</span>
                     </div>
                     <div className="postTopRight">
-                      <img className='postTopRightImg' src="/img/option.png" />
-                    </div>
+                      <img
+                          className="postTopRightImg"
+                          src="/img/option.png"
+                          onClick={() =>
+                              setCommentOpen(!commentOpen)
+                          }
+                      />
+                      {commentOpen &&
+                          <div className="deletePostContainer">
+                              <span onClick={deletePost}>Delete Post</span>
+                          </div>
+                      }
+                  </div>
                   </div>
                   <div className="postCenter">
                     <span className="postText">{post?.caption}</span>
