@@ -10,7 +10,7 @@ import { upload } from "../../middleware/uploadImages.js";
 const router = express.Router();
 
 router.get('/getAllPosts', getAllPosts); // auth(endPoints.admin)
-router.get('/getUserPosts/:id/:role', getUserPosts); // auth(endPoints.admin)
+router.get('/getUserPosts/:id', getUserPosts); // auth(endPoints.admin)
 router.post('/addPost', validation(postSchema), addPost); // auth(endPoints.allUsersExceptAdmin)
 router.put('/uploadPostMedia/:id', upload.single('media'), uploadPostMedia); // auth(endPoints.allUsersExceptAdmin)
 router.put('/addLike/:id', addLike); // auth(endPoints.allUsersExceptAdmin)

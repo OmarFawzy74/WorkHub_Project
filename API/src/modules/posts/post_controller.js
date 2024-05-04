@@ -42,9 +42,14 @@ export const getAllPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
     try {
         const userId = req.params.id;
-        const userRole = req.params.role;
 
-        const posts = await Postmodel.find({posterId: userId, posterType: userRole}).populate("communityId");
+        let userData = await freelancer_model.findById(userId);
+
+        if(!userData) {
+            userData = await client_model.findById(userId);
+        }
+
+        const posts = await Postmodel.find({posterId: userId, posterType: userData.role}).populate("communityId");
         const modifiedPosts = [];
 
         for (const post of posts) {
@@ -52,9 +57,9 @@ export const getUserPosts = async (req, res) => {
             let data;
 
             if (modifiedPost.posterType === "freelancer") {
-                data = await freelancer_model.findById(modifiedPost.posterId);
+                data = userData;
             } else if (modifiedPost.posterType === "client") {
-                data = await client_model.findById(modifiedPost.posterId);
+                data = userData;
             } else {
                 return res.status(404).json({ message: 'Invalid role' });
             }
@@ -80,11 +85,15 @@ export const addPost = async (req, res) => {
     try {
         const { communityId, posterId, posterType, caption } = req.body
 
+        const date = new Date();
+        const creationDate = date.getTime();
+
         const newpost = new Postmodel({
             communityId,
             posterId,
             posterType,
             caption,
+            creationDate
         });
 
         const savePost = await newpost.save();
