@@ -50,8 +50,13 @@
         .communityProfileRightBottom{
             display: flex;
 
+            .communityProfileRightBottomContainer{
+
+            }
+
             .postFormContainer {
                 margin-top: 20px;
+                
                 .share {
                     position: relative;
                     left: 30px;
@@ -249,9 +254,8 @@
                     }
     
                 }
-    
-    
             }
+            
         }
     }
 
