@@ -69,8 +69,8 @@
                 align-items: center;
 
                 .postProfileImg {
-                    width: 32px;
-                    height: 32px;
+                    width: 40px;
+                    height: 40px;
                     border-radius: 50%;
                     object-fit: cover;
                 }
@@ -79,10 +79,15 @@
                     font-size: 15px;
                     font-weight: 500;
                     margin: 0 10px;
+                    position: relative;
+                    bottom: 7px;
                 }
 
                 .postDate {
                     font-size: 12px;
+                    position: relative;
+                    top: 15px;
+                    right: 45px;
                 }
             }
 
