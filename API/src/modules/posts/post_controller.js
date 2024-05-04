@@ -4,13 +4,41 @@ import ClientModel from "../../../DB/models/client_model.js"
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import FreelancerModel from "../../../DB/models/freelancer_model.js"
 import Postmodel from "../../../DB/models/post_model.js"
-// import sendEmail from "../../../common/email"
 
 
-// const populateList=[{
-//     path:"userID",
-//     select:"email username freelancerImage_url"
-// }]
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Postmodel.find();
+        const modifiedPosts = [];
+
+        for (const post of posts) {
+            let modifiedPost = { ...post._doc };
+            let data;
+
+            if (modifiedPost.posterType === "freelancer") {
+                data = await freelancer_model.findById(modifiedPost.posterId);
+            } else if (modifiedPost.posterType === "client") {
+                data = await client_model.findById(modifiedPost.posterId);
+            } else {
+                return res.status(404).json({ message: 'Invalid role' });
+            }
+
+            modifiedPost.posterId = { ...data._doc };
+            modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
+            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+            modifiedPosts.push(modifiedPost);
+        }
+
+        if (modifiedPosts.length > 0) {
+            return res.status(200).json({ posts: modifiedPosts });
+        } else {
+            return res.status(404).json({ message: 'No posts found' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 export const addPost = async (req, res) => {
     try {
@@ -78,73 +106,6 @@ export const getPost = async (req, res) => {
     }
 
 
-};
-
-export const getAllPosts = async (req, res) => {
-    try {
-        var posts = await Postmodel.find();
-
-        const modifiedPosts = posts.map((post) => {
-
-            // const data = await freelancer_model.findById(post.posterId);
-
-            // const data = await client_model.findById(post.posterId);
-
-
-
-            var userData;
-
-            const modifiedPost = { ...post._doc }; // Create a copy of the service object
-
-
-            const getPosterData =  (req, res) => {
-                if (post.posterType == "freelancer") {
-                    const data =  freelancer_model.findById(post.posterId);
-                    userData = { ...data._doc };
-                    // userData = data;
-                    // console.log(data);
-                    // userData = data;
-                    return data;
-                }
-                if (post.posterType == "client") {
-                    const data =  client_model.findById(post.posterId);
-                    // console.log(data);
-                    // modifiedPost.posterId = data;
-
-                    userData = { ...data._doc };
-                    // userData = data;
-
-                    // userData = data;
-                    return data;
-                }
-                if (post.posterType !== "client" || post.posterType !== "freelancer") {
-                    return res.status(404).json({ message: 'Invalid role' });
-                }
-            }
-
-            getPosterData();
-
-            console.log(getPosterData());
-
-            modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
-            modifiedPost.posterId = userData;
-            // modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" +  modifiedPost.posterId.image_url;
-            return modifiedPost;
-        });
-
-        posts = modifiedPosts;
-
-        if (posts) {
-            return res.status(200).json({ posts });
-
-        }
-
-        res.status(404).json({ message: 'No posts found' });
-    }
-    catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
-        console.log(error);
-    }
 };
 
 export const addLike = async (req, res) => {

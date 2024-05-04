@@ -102,11 +102,9 @@ export default function App() {
     return (
       <>
         {
-          (auth.role == 'admin') ? 
+          (auth !== undefined) && (auth.role == 'admin') ? 
           <>
-          {/* <AdminHeader OpenSidebar={OpenSidebar}/> */}
           <div className={handleClasses(pathname)}>
-            {/* <AdminSidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} /> */}
             <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
             <Outlet />
           </div> 
@@ -118,51 +116,88 @@ export default function App() {
   }
 
   const Layout = () => {
-    // const scrollHandler = () => {
-    //   if (window.location.href == "http://localhost:3001/") {
-    //     if (window.scrollY > 600) {
-    //       window.scrollTo(0, 660);
-    //     }
-    //   }
-    //   else {
-    //     // window.scrollBy(0, -200);
-    //   }
-
-    //   // window.scrollTo(0, 0);
-
-    //   // console.log(window.location.href);
-
-    //   // var element = document.getElementById("appScroll");
-    //   // element.scrollBy(0, -element.scrollHeight);
-    // }
-
     const { pathname } = useLocation()
 
     const auth = getAuthUser();
+    console.log(auth);
 
     return (
       <>
-        {/* {
-          (auth.role == 'admin') && (
-            <Navigate to={'/adminDashboard'} />
-          )
-        } */}
 
-        {/* {
-          (auth.role == 'admin') ? <Outlet /> : <Navigate to={'/'} />
-        } */}
+        {
+          (auth !== undefined) && (auth.role == 'admin') && 
+          <Navigate to={'/adminDashboard'} />
+        }
 
-        {(pathname == "/test") ? <div id='appScroll' className="app">
-          <Outlet />
-        </div>  
-        :
-        <div id='appScroll' className="app">
-          <Navbar />
-          <Outlet />
-          <Footer />
-        </div>
+
+        {
+          (auth == undefined) &&
+          <div id='appScroll' className="app">
+            <Navbar />
+            <Outlet />
+            <Footer />
+          </div>
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'freelancer') && pathname !== "/login" && pathname !== "/" && pathname !== "/register" &&
+
+          <div id='appScroll' className="app">
+            <Navbar />
+            <Outlet />
+            <Footer />
+          </div>
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'client') && pathname !== "/login" && pathname !== "/" && pathname !== "/register" && pathname !== "/add" &&
+
+          <div id='appScroll' className="app">
+            <Navbar />
+            <Outlet />
+            <Footer />
+          </div>
+        }
+
+
+        {
+          (auth !== undefined) && (auth.role == 'freelancer') && pathname == "/login" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'freelancer') && pathname == "/register" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'freelancer') && pathname == "/" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+
+
+        {
+          (auth !== undefined) && (auth.role == 'client') && pathname == "/login" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'client') && pathname == "/register" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'client') && pathname == "/add" &&
+          <Navigate to={'/userDashboard'} />
+        }
+
+        {
+          (auth !== undefined) && (auth.role == 'client') && pathname == "/" &&
+          <Navigate to={'/userDashboard'} />
         }
         
+
       </>
     )
   }

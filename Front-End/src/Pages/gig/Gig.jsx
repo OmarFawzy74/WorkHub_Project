@@ -301,7 +301,7 @@ function Gig() {
                   <p>{service.results.freelancerId.desc}</p>
                 </div>
               </div>
-              <div className="reviews">
+              <div id='leaveReview' className="reviews">
                 <h2>Reviews</h2>
                 {reviews.loading == false &&
                   reviews.results.map((review, index) => (
