@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import "./Post.scss"
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const Post = () => {
   const [like, setLike] = useState(0)
   const [isLiked, setIsLiked] = useState(false)
+  const [commentOpen, setCommentOpen] = useState(false);
+
 
   const likeHandler = () => {
     setLike(isLiked ? like - 1 : like + 1)
@@ -60,9 +63,27 @@ const Post = () => {
                   <span className="postLikeCounter">{like} people like it</span>
                 </div>
                 <div className="postBottomRight">
-                  <span className="postCommentText">9 comments</span>
+                  <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+                    {/* <TextsmsOutlinedIcon /> */}
+                    <Link><img className='commentsImg' src="/img/comment.png" alt="" /></Link>  
+                    <span>Comments</span>
+                  </div>
                 </div>
               </div>
+              {commentOpen &&
+                <div className="write">
+                  <img className='profileImgComment' src="./img/profile.jpg" alt="" />
+                  <input
+                    type="text"
+                    placeholder="Write a comment"
+                  // value={desc}
+                  // onChange={(e) => setDesc(e.target.value)}
+                  />
+                  <img className='sendCommentImg' src="/img/sendComment.png" alt="" />
+                  {/* <button>Send</button> */}
+                  {/* onClick={handleClick} */}
+                </div>
+              }
             </>
           ))}
       </div>

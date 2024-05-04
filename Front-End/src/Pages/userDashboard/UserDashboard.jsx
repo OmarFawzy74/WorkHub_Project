@@ -315,6 +315,7 @@ const UserDashboard = () => {
                 <div className="newRequest">
                     <div className="title">
                         <h1>Requests</h1>
+                       {user.role == "client" && <Link className="requestOrderLink" reloadDocument to={"/gigs"}><button className="requestOrderBtn">Request Order</button> </Link>}
                     </div>
                     <table>
                         <tr>

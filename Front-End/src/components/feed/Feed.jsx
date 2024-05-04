@@ -130,9 +130,13 @@ const Feed = (data) => {
               <hr className='shareHr' />
               <div className="shareBottom">
                 <div className="shareOptions">
-                  <div className="shareOption">
+                  <div className="shareOptionImg">
                     <img className='shareIcon' src="/img/photo.png" alt="" />
-                    <input className='addPostImg' required type="file" ref={media} />
+                    {/* <input id="fileInput" className='addPostImg' required type="file" ref={media} /> */}
+                    <div className="fileInputContainer">
+                      <input className='addPostImg' required type="file" ref={media} />
+                      <span className="fileInputLabel">Upload Image</span>
+                    </div>
                   </div>
                   <div className="shareOption">
                     <img className='shareIcon' src="/img/groups.png" />

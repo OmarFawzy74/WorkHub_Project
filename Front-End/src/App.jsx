@@ -50,7 +50,7 @@ import UpdateService from './Pages/updateService/UpdateService';
 import SelectCommunity from './components/selectCommunity/SelectCommunity';
 import CommunityList from './Pages/admin/CommunityList';
 import AddCommunity from './Pages/admin/AddCommunity';
-import UserDashboard from './Pages/freelancerDashboard/UserDashboard';
+import UserDashboard from './Pages/userDashboard/UserDashboard';
 
 let dashboardData;
 

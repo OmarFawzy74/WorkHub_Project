@@ -63,23 +63,155 @@
             
                         .shareOptions{
                             display: flex;
-                            gap: 25px;
-            
-                            .shareOption{
+                            gap: 5px;
+
+                            .shareOptionImg:hover{
+                                border: 1px solid #1dbf73;
+                            }
+
+                            .shareOptionImg:focus{
+                                outline: 0;
+                                border: 1px solid #1dbf73;
+                            }
+
+
+                            .shareOptionImg{
                                 margin-left: 28px;
                                 display: flex;
                                 align-items: center;
-                                margin-right: 15px;
+                                // margin-right: 15px;
                                 cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
 
-                                .addPostImg{
-                                    width: 110px;
-                                    background-color: transparent !important;
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                  }
+                                  
+                                  .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                  }
+                                  
+                                  .fileInputLabel {
+                                    color: #000; 
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                  }
+            
+                                .shareIcon{
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
                                 }
+            
+                                .shareOptionText{
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }                            
+            
+                            .shareOption{
+                                // margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 25px;
+                                    // height: 100px;
+                                  }
+                                  
+                                  .addPostImg {
+                                    position: relative;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    bottom: 100px;
+                                    // left: 0;
+                                    // top: 0;
+                                  }
+                                  
+                                  .fileInputLabel {
+                                    // background-color: #007bff; // Example color
+                                    color: #000; // Example color
+                                    // padding: 10px 20px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                  }
+                                  
+                                  /* Optionally style hover and focus states */
+                                //   .fileInputLabel:hover,
+                                //   .fileInputLabel:focus {
+                                //     // background-color: #0056b3; // Example color on hover/focus
+                                //   }
+
+                                // .uploadButton {
+                                //     background-color: #007bff; // Example color
+                                //     color: #fff; // Example color
+                                //     padding: 10px 20px;
+                                //     border: none;
+                                //     border-radius: 5px;
+                                //     cursor: pointer;
+                                //     transition: background-color 0.3s;
+                                    
+                                //     &:hover {
+                                //       background-color: #0056b3; // Example color on hover
+                                //     }
+                                //   }
+
+                                // .addPostImg{
+                                //     width: 115px;
+                                //     background-color: transparent !important;
+                                // }
+
+                                // .addPostImg {
+                                //     padding: 10px;
+                                //     font-size: 16px;
+
+                                //     &::-webkit-file-upload-button {
+                                //         background: transparent; // Example color
+                                //         color: #000; // Example color
+                                //         padding: 9px;
+                                //         border: 1px solid rgb(220, 220, 220);
+                                //         border-radius: 5px;
+                                //         cursor: pointer;
+                                //         transition: background 0.3s;
+                                        
+                                //         &:hover {
+                                //         //   background: #1dbf73; 
+                                //           border: 1px solid #1dbf73;
+                                //           color: #000;
+                                //           // Example color on hover
+                                //         }
+                                //     }
+                                //     // You can add more styles as needed
+                                //   }
 
                                 select{
-                                    padding: 5px;
+                                    padding: 10px;
                                     border: 1px solid rgb(220, 220, 220);
+                                    border-radius: 10px;
 
                                     &:focus {
                                       outline: 0;
