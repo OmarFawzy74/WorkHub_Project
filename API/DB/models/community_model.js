@@ -12,12 +12,12 @@ const communitySchema = new Schema ({
         required: true
     },
     communityPosts: {
-        type: [Schema.Types.ObjectId],
+        type: [mongoose.Types.ObjectId],
         required: false,
         ref: "post"
     },
     clientMembers: {
-        type: [Schema.Types.ObjectId],
+        type: [mongoose.Types.ObjectId],
         required: false,
         ref: "client"
     },

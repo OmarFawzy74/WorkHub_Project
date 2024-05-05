@@ -43,11 +43,13 @@ const courseSchema = new Schema ({
     },
     enrolledFreelancersIds: {
         type: [mongoose.Types.ObjectId],
-        required: false
+        required: false,
+        ref: "freelancer"
     },
     enrolledClientsIds: {
         type: [mongoose.Types.ObjectId],
-        required: false
+        required: false,
+        ref: "client"
     }
 },{
     timestamps: true

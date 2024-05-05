@@ -4,8 +4,33 @@ import community from "../../../DB/models/community_model.js";
 // Get All Communities
 export const getAllCommunities = async (req, res) => {
     try {
-        const allCommunities = await community.find();
+        let allCommunities = await community.find().populate("freelancerMembers").populate("clientMembers").populate("communityPosts");
         if(allCommunities.length !== 0) {
+
+            const modifiedCommunities = allCommunities.map((community) => {
+                let modifiedCommunity = { ...community._doc }; // Create a copy of the service object
+                // modifiedCommunity.clientMembers = [{ ...modifiedCommunity.clientMembers[0] }];
+                // modifiedCommunity.freelancerMembers = { ...modifiedCommunity.freelancerMembers._doc };
+                // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+                // modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+
+                // modifiedCommunity.freelancerMembers = modifiedCommunity.freelancerMembers.map((freelancer) => {
+                //     freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;
+                // });
+                // console.log(modifiedCommunity);
+
+                console.log(modifiedCommunity.clientMembers);
+                // if (modifiedCommunity.clientMembers[0]) {
+                //     modifiedCommunity.clientMembers = modifiedCommunity.clientMembers.map((client) => {
+                //         client.image_url = "http://" + req.hostname + ":3000/" + client.image_url;
+                //     });
+                // }
+
+                return modifiedCommunity;
+            });
+
+            allCommunities = modifiedCommunities;
+
             res.status(200).json({ allCommunities });;
         }
         else {
@@ -112,11 +137,17 @@ export const updateCommunity = async (req, res) => {
     }
 }
 
+// Join Community
 export const joinCommunity = async (req, res) => {
     try {
-        const communityId = req.params.id;
+        const communityId = req.params.communityId;
+        const userId = req.params.userId;
         const role = req.params.role;
         const communityToUpdate = await community.findById(communityId);
+
+        if (!communityToUpdate) {
+            return res.status(404).json({ msg:"Community Not Found" });
+        }
 
         let members;
 
@@ -129,22 +160,30 @@ export const joinCommunity = async (req, res) => {
         }
 
         if(role !== "client" && role !== "freelancer") {
-            return res.status(404).json({ msg: "Invalid role!" });
+            return res.status(400).json({ msg: "Invalid role!" });
         }
 
-        if(communityToUpdate) {
-            const filter = { _id: communityId };
-            let update;
-            if (role == "freelancer") {
-                update = { $set: {  } };
+        members.map((memberId) => {
+            if (memberId == userId) {
+                return res.status(400).json({ msg: "You Have Already Joined The Community!" });     
             }
+        })
 
+        members.push(userId);
 
-            await community.updateOne(filter, update);
-            return res.status(200).json({ msg:"Community has been updated successfuly." });
+        const filter = { _id: communityId };
+        let update;
+
+        if (role == "freelancer") {
+            update = { $set: { freelancerMembers: members } };
         }
 
-        res.status(400).json({ msg:"Invalid Community ID" });
+        if (role == "client") {
+            update = { $set: { clientMembers: members } };
+        }
+
+        await community.updateOne(filter, update);
+        res.status(200).json({ msg:"Joined Community Successfuly." });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });
