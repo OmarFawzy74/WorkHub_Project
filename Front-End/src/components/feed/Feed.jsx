@@ -6,6 +6,8 @@ import { Link, useParams } from 'react-router-dom'
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
 import { processDate } from '../../Pages/messages/Messages'
+import swal from 'sweetalert'
+import Button from '@mui/material/Button';
 
 const Feed = (data) => {
   const user = getAuthUser()
@@ -15,6 +17,7 @@ const Feed = (data) => {
   const [like, setLike] = useState(0)
   const [isLiked, setIsLiked] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const likeHandler = () => {
     setLike(isLiked ? like - 1 : like + 1)
@@ -115,7 +118,7 @@ const Feed = (data) => {
     axios.get("http://localhost:3000/api/posts/getAllPosts")
       .then(
         resp => {
-          // console.log(resp.data.posts);
+          console.log(resp.data.posts);
           setPosts({ results: resp.data.posts.reverse(), loading: false, err: null });
           // console.log(resp);
         }
@@ -124,6 +127,23 @@ const Feed = (data) => {
         console.log(err);
       })
   }, [posts.reload]);
+
+  const deletePost = (e) => {
+    e.preventDefault();
+    const post_id = e.target.attributes.value.nodeValue;
+    console.log(post_id);
+    console.log(e);
+    axios.delete("http://localhost:3000/api/posts/deletePost/" + post_id)
+        .then(
+            resp => {
+                console.log(resp);
+                swal(resp.data.msg, "", "success");
+                setPosts({ ...posts, reload: posts.reload + 1 });
+            }
+        ).catch(error => {
+            console.log(error);
+        })
+}
 
   return (
     <div className='feed'>
@@ -203,8 +223,27 @@ const Feed = (data) => {
                       <span className="postDate">{processDate(post?.creationDate)} ago</span>
                     </div>
                     <div className="postTopRight">
-                      <img className='postTopRightImg' src="/img/option.png" />
-                    </div>
+                      <img
+                          value={post._id} 
+                          className="postTopRightImg"
+                          src="/img/option.png"
+                          onClick={() =>
+                            setDeleteOpen(!deleteOpen)
+                          }
+                      />
+                      {deleteOpen &&
+                          <ul className="deletePostContainer">
+                              <li
+                                variant="contained"
+                                className="sidebarDeleteList"
+                                value={post._id} 
+                                onClick={deletePost}     
+                              >
+                                Delete Post
+                              </li>
+                          </ul>
+                      }
+                  </div>
                   </div>
                   <div className="postCenter">
                     <span className="postText">{post?.caption}</span>
