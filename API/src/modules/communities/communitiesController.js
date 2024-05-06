@@ -1,5 +1,7 @@
 
+import client_model from "../../../DB/models/client_model.js";
 import community from "../../../DB/models/community_model.js";
+import freelancer_model from "../../../DB/models/freelancer_model.js";
 
 // Get All Communities
 export const getAllCommunities = async (req, res) => {
@@ -122,20 +124,103 @@ export const addCommunity = async (req, res) => {
     }
 }
 
-// Update Community
-export const updateCommunity = async (req, res) => {
+// Unjoin Community
+export const unjoinCommunity = async (req, res) => {
     try {
-        const communityId = req.params.id;
-        const communityToUpdate = await community.findById(communityId);
+        const communityId = req.params.communityId;
+        const userId = req.params.userId;
+        const role = req.params.role;
+        const communityData = await community.findById(communityId);
 
-        if(communityToUpdate) {
-            const filter = { _id: communityId };
-            const update = { $set: { communityName: req.body.communityName, communityCategory: req.body.communityCategory, communityPosts: req.body.communityPosts, clientMemberIds: req.body.clientMemberIds, freelancerMemberIds: req.body.freelancerMemberIds, membersCount: req.body.membersCount } };
-            await community.updateOne(filter, update);
-            return res.status(200).json({ msg:"Community has been updated successfuly." });
+        if(!communityData) {
+            return res.status(404).json({ msg: "Community Not Found!" });
         }
 
-        res.status(400).json({ msg:"There is no community with such id to update." });
+        if(role == "freelancer") {
+            if(userId == undefined) {
+                return res.status(404).json({ msg: "Freelancer id is required!" });
+            }
+
+            const freelancerData = await freelancer_model.findById(userId);
+
+            if(!freelancerData) {
+                return res.status(404).json({ msg: "Freelancer not found!" });
+            }
+    
+            const joinedCommunities = communityData.freelancerMembers;
+
+            let actualData = [];
+
+            joinedCommunities.filter((id) => {
+                if (id == userId) {
+                    actualData.push(userId);
+                }
+            })
+
+            if(actualData.length == 0) {
+                return res.status(400).json({ msg: "You Are Not Joined In This Community!" });
+            }
+    
+            let data = [];
+
+            joinedCommunities.filter((id) => {
+                if (id != userId) {
+                    data.push(userId);
+                }
+            });
+    
+            const filter = { _id: communityId };
+    
+            const update = { $set: { freelancerMembers: data} }
+    
+            await community.updateOne(filter, update);
+        }
+
+        if(role == "client") {
+            if(userId == undefined) {
+                return res.status(404).json({ msg: "Client id is required!" });
+            }
+
+            const clientData = await client_model.findById(userId);
+
+            if(!clientData) {
+                return res.status(404).json({ msg: "Client not found!" });
+            }
+    
+            const joinedCommunities = communityData.clientMembers;
+    
+            let actualData = [];
+
+            joinedCommunities.filter((id) => {
+                if (id == userId) {
+                    actualData.push(userId);
+                }
+            })
+
+            if(actualData.length == 0) {
+                return res.status(400).json({ msg: "You are not enrolled in this course!" });
+            }
+    
+            let data = [];
+
+            joinedCommunities.filter((id) => {
+                if (id != userId) {
+                    data.push(userId);
+                }
+            })
+    
+            const filter = { _id: communityId };
+    
+            const update = { $set: { clientMembers: data} }
+    
+            await community.updateOne(filter, update);
+        }
+
+        if(role !== "client" && role !== "freelancer") {
+            return res.status(404).json({ msg: "Invalid role!" });
+        }
+
+        res.status(200).json({ msg: "Unjoined Community Successfuly." });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });
@@ -189,6 +274,26 @@ export const joinCommunity = async (req, res) => {
 
         await community.updateOne(filter, update);
         res.status(200).json({ msg:"Joined Community Successfuly." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+// Update Community
+export const updateCommunity = async (req, res) => {
+    try {
+        const communityId = req.params.id;
+        const communityToUpdate = await community.findById(communityId);
+
+        if(communityToUpdate) {
+            const filter = { _id: communityId };
+            const update = { $set: { communityName: req.body.communityName, communityCategory: req.body.communityCategory, communityPosts: req.body.communityPosts, clientMemberIds: req.body.clientMemberIds, freelancerMemberIds: req.body.freelancerMemberIds, membersCount: req.body.membersCount } };
+            await community.updateOne(filter, update);
+            return res.status(200).json({ msg:"Community has been updated successfuly." });
+        }
+
+        res.status(400).json({ msg:"There is no community with such id to update." });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });

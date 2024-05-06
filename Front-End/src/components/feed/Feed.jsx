@@ -143,7 +143,35 @@ const Feed = (data) => {
         ).catch(error => {
             console.log(error);
         })
-}
+  }
+
+  let clickedIndex;
+  const handleOptionsMenu = (e) => {
+    console.log(e);
+    console.log(e.target.attributes.value.nodeValue);
+    // clickedValue = e.target.attributes.value.nodeValue;
+    setDeleteOpen(!deleteOpen);
+    clickedIndex = e.target.attributes.value.nodeValue;
+  }
+
+
+  function Panel({ title, children }) {
+    const [isActive, setIsActive] = useState(false);
+    return (
+      <section className="panel">
+        <h3>{title}</h3>
+        {isActive ? (
+          <p>{children}</p>
+        ) : (
+          <button onClick={() => setIsActive(true)}>
+            Show
+          </button>
+        )}
+      </section>
+    );
+  }
+
+  
 
   return (
     <div className='feed'>
@@ -212,9 +240,9 @@ const Feed = (data) => {
         </form>
 
         {posts.loading == false &&
-          posts.results.map((post) => ( 
+          posts.results.map((post, index) => ( 
             <>
-              <div className='post'>
+              <div key={index} className='post'>
                 <div className="postContainer">
                   <div className="postTop">
                     <div className="postTopLeft">
@@ -224,14 +252,12 @@ const Feed = (data) => {
                     </div>
                     <div className="postTopRight">
                       <img
-                          value={post._id} 
+                          value={index} 
                           className="postTopRightImg"
                           src="/img/option.png"
-                          onClick={() =>
-                            setDeleteOpen(!deleteOpen)
-                          }
+                          onClick={handleOptionsMenu}
                       />
-                      {deleteOpen &&
+                      {deleteOpen && index == clickedIndex &&
                           <ul className="deletePostContainer">
                               <li
                                 variant="contained"
