@@ -4,6 +4,7 @@ import "./SideBar.scss"
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
 import Button from '@mui/material/Button';
+import swal from 'sweetalert'
 
 const SideBar = () => {
   const user = getAuthUser()
@@ -17,6 +18,15 @@ const SideBar = () => {
     communityDesc: "",
     reload: 0
   });
+
+  const [joinedCommunities, setjoinedCommunities] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    caption: "",
+    reload: 0
+  });
+
 
   useEffect(() => {
     setCommunities({ ...communities, loading: true })
@@ -32,6 +42,68 @@ const SideBar = () => {
         console.log(err);
       })
   }, [communities.reload]);
+
+  const joinCommunity = (e) => {
+    const commmunity_id = e.target.value;
+    console.log(commmunity_id);
+    axios
+      .put("http://localhost:3000/api/communities/joinCommunity/" + commmunity_id + "/" + user._id + "/" + user.role)
+      .then((resp) => {
+        console.log(resp);
+        setjoinedCommunities({ reload: joinedCommunities.reload + 1 });
+        // window.location.replace("http://localhost:3001/course/" + id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    setjoinedCommunities({ ...joinedCommunities, loading: true })
+    axios.get("http://localhost:3000/api/communities/getJoinedCommunities/" + user._id + "/" + user.role)
+      .then(
+        resp => {
+          console.log(resp.data.communitiesData);
+          setjoinedCommunities({ results: resp.data.communitiesData, loading: false, err: null });
+          // console.log(resp);
+        }
+      ).catch(err => {
+        setjoinedCommunities({ ...joinedCommunities, loading: false, err: err.response.data.msg });
+        console.log(err);
+      })
+  }, [joinedCommunities.reload]);
+
+  const handelCommunityJoinBtn = (communityId) => {
+
+    let status = true;
+
+    // if (joinedCommunities.results.length > 0) {
+      joinedCommunities.results.filter((community) => {
+        if (communityId == community._id) {
+          status = false;
+        }
+      })
+    // }
+
+    return status;
+  }
+
+  const unjoinCommunity = (e) => {
+    e.preventDefault();
+    const community_id = e.target.value;
+    console.log(community_id);
+    console.log(e);
+    axios.delete("http://localhost:3000/api/communities/unjoinCommunity/" + community_id + "/" + user._id + "/" + user.role)
+        .then(
+            resp => {
+                console.log(resp);
+                swal(resp.data.msg, "", "success");
+                setjoinedCommunities({ ...joinedCommunities, reload: joinedCommunities.reload + 1 });
+            }
+        ).catch(error => {
+            console.log(error);
+        })
+}
 
   return (
     <div className='sidebar'>
@@ -68,7 +140,6 @@ const SideBar = () => {
 
             {communityListOpen &&
               <>
-
                 <ul className='communityList'>
                   {communities.loading == false &&
                     communities.err == null &&
@@ -80,15 +151,23 @@ const SideBar = () => {
                           <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id}>
                             {community?.communityName}
                           </Link>
-
-                          <Button
-                            variant="contained"
-                            className="approveBtn"
-                          // value={request._id}
-                          >
-                            Join
-                          </Button>
-
+                          {
+                            joinedCommunities.loading == false &&
+                            // joinedCommunities.err == null &&
+                            // joinedCommunities.results &&
+                            // joinedCommunities.results.length > 0 &&
+                            handelCommunityJoinBtn(community?._id) &&
+                            <>
+                              <Button
+                                variant="contained"
+                                className="approveBtn"
+                                value={community?._id}
+                                onClick={joinCommunity}
+                              >
+                                Join
+                              </Button>
+                            </>
+                          }
                         </li>
                       </>
                     ))}
@@ -115,19 +194,22 @@ const SideBar = () => {
         <span className='sidebaMenuText'>Joined Communities</span>
         <hr className='sidebarHr-2' />
         <ul className="sidebarCommunityList">
-          {communities.loading == false &&
-            communities.err == null &&
-            communities.results &&
-            communities.results.length > 0 &&
-            communities.results.map((community) => (
+          {joinedCommunities.loading == false &&
+            joinedCommunities.err == null &&
+            joinedCommunities.results &&
+            joinedCommunities.results.length > 0 &&
+            joinedCommunities.results.map((joinedCommunity) => (
               <>
                 <li className="sidebarCommunity">
-                  <span className='sidebarCommunityName'>{community?.communityName}</span>
+                  <Link className='sidebarLink' reloadDocument to={"/community/" + joinedCommunity?._id}>
+                    <span className='sidebarCommunityName'>{joinedCommunity?.communityName}</span>
+                  </Link>
                   {/* <button className='sidebarJoinButton'>Join</button> */}
                   <Button
                     variant="contained"
                     className="sidebarJoinButton"
-                  // value={request._id}
+                    value={joinedCommunity?._id}
+                    onClick={unjoinCommunity}
                   >
                     Unjoin
                   </Button>

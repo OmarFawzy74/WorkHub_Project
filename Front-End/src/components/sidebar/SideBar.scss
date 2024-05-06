@@ -115,6 +115,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            justify-content: space-between;
         }
 
         .sidebarCommunityName{
@@ -132,6 +133,8 @@
             color: rgb(0, 0, 0);
             margin-left: 40px;
             text-transform: none;
+            position: relative;
+            right: 50px;
 
         }
 

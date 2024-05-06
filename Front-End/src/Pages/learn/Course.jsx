@@ -234,7 +234,6 @@ function Course() {
                             <button className='deleteBtn'>Delete</button>
                         </div>
                     }
-
                 </div>
             </div>
         </div>
