@@ -147,11 +147,11 @@ export const unjoinCommunity = async (req, res) => {
                 return res.status(404).json({ msg: "Freelancer not found!" });
             }
     
-            const joinedCommunities = communityData.freelancerMembers;
+            const joinedMembers = communityData.freelancerMembers;
 
             let actualData = [];
 
-            joinedCommunities.filter((id) => {
+            joinedMembers.filter((id) => {
                 if (id == userId) {
                     actualData.push(userId);
                 }
@@ -163,7 +163,7 @@ export const unjoinCommunity = async (req, res) => {
     
             let data = [];
 
-            joinedCommunities.filter((id) => {
+            joinedMembers.filter((id) => {
                 if (id != userId) {
                     data.push(userId);
                 }
@@ -187,11 +187,11 @@ export const unjoinCommunity = async (req, res) => {
                 return res.status(404).json({ msg: "Client not found!" });
             }
     
-            const joinedCommunities = communityData.clientMembers;
+            const joinedMembers = communityData.clientMembers;
     
             let actualData = [];
 
-            joinedCommunities.filter((id) => {
+            joinedMembers.filter((id) => {
                 if (id == userId) {
                     actualData.push(userId);
                 }
@@ -203,7 +203,7 @@ export const unjoinCommunity = async (req, res) => {
     
             let data = [];
 
-            joinedCommunities.filter((id) => {
+            joinedMembers.filter((id) => {
                 if (id != userId) {
                     data.push(userId);
                 }
