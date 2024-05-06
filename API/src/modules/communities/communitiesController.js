@@ -45,10 +45,10 @@ export const getAllCommunities = async (req, res) => {
 // Get Joined Communities
 export const getJoinedCommunities = async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.params.id;
         const role = req.params.role;
     
-        const allCommunities = await course.find();
+        const allCommunities = await community.find();
 
         const modifiedCommunities = allCommunities.map((community) => {
             const modifiedCommunity = { ...community._doc }; // Create a copy of the service object
@@ -56,29 +56,34 @@ export const getJoinedCommunities = async (req, res) => {
             // modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
             return modifiedCommunity;
         });
+
+        // console.log(allCommunities);
+        // console.log(modifiedCommunities);
     
-        const communitiesData = [];
+        let communitiesData = [];
         // const coursesIds = [];
 
         if (role == "freelancer") {
             modifiedCommunities.map((community) => {
                 community.freelancerMembers.filter((id) => {
                     if (id == userId) {
-                        coursesData.push(community);
+                        communitiesData.push(community);
                     }
                 })
             })
         }
 
-        if(role == "client") [
+        if(role == "client") {
             modifiedCommunities.map((community) => {
                 community.clientMembers.filter((id) => {
                     if (id == userId) {
-                        coursesData.push(community);
+                        communitiesData.push(community);
                     }
                 })
             })
-        ]
+        }
+
+        // console.log(communitiesData);
     
         if(role !== "client" && role !== "freelancer") {
             return res.status(404).json({ msg: "Invalid role!" });
@@ -86,7 +91,7 @@ export const getJoinedCommunities = async (req, res) => {
 
 
         if (communitiesData.length == 0) {
-            return res.status(404).json({ msg: "No Courses Found!" });
+            return res.status(404).json({ msg: "No Communities Found!" });
         }
     
         res.status(200).json({ communitiesData });
