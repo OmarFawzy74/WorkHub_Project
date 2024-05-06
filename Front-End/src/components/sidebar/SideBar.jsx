@@ -92,13 +92,13 @@ const SideBar = () => {
     e.preventDefault();
     const community_id = e.target.value;
     console.log(community_id);
-    console.log(e);
-    axios.delete("http://localhost:3000/api/communities/unjoinCommunity/" + community_id + "/" + user._id + "/" + user.role)
+    // console.log(e);
+    axios.put("http://localhost:3000/api/communities/unjoinCommunity/" + community_id + "/" + user._id + "/" + user.role)
         .then(
             resp => {
                 console.log(resp);
                 swal(resp.data.msg, "", "success");
-                setjoinedCommunities({ ...joinedCommunities, reload: joinedCommunities.reload + 1 });
+                setjoinedCommunities({ reload: joinedCommunities.reload + 1 });
             }
         ).catch(error => {
             console.log(error);
@@ -195,7 +195,7 @@ const SideBar = () => {
         <hr className='sidebarHr-2' />
         <ul className="sidebarCommunityList">
           {joinedCommunities.loading == false &&
-            joinedCommunities.err == null &&
+            // joinedCommunities.err == null &&
             joinedCommunities.results &&
             joinedCommunities.results.length > 0 &&
             joinedCommunities.results.map((joinedCommunity) => (
