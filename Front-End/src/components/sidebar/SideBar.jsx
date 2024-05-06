@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import swal from 'sweetalert'
 
 const SideBar = () => {
-  const user = getAuthUser()
+  const user = getAuthUser();
   const [communityListOpen, setCommunityListOpen] = useState(false);
 
   const [communities, setCommunities] = useState({
@@ -47,7 +47,7 @@ const SideBar = () => {
     const commmunity_id = e.target.value;
     console.log(commmunity_id);
     axios
-      .put("http://localhost:3000/api/communities/joinCommunity/" + commmunity_id + "/" + user._id + "/" + user.role)
+      .put("http://localhost:3000/api/communities/joinCommunity/" + commmunity_id + "/" + user?._id + "/" + user?.role)
       .then((resp) => {
         console.log(resp);
         setjoinedCommunities({ reload: joinedCommunities.reload + 1 });
@@ -60,7 +60,8 @@ const SideBar = () => {
 
   useEffect(() => {
     setjoinedCommunities({ ...joinedCommunities, loading: true })
-    axios.get("http://localhost:3000/api/communities/getJoinedCommunities/" + user._id + "/" + user.role)
+    if (user) {
+      axios.get("http://localhost:3000/api/communities/getJoinedCommunities/" + user?._id + "/" + user?.role)
       .then(
         resp => {
           console.log(resp.data.communitiesData);
@@ -71,6 +72,7 @@ const SideBar = () => {
         setjoinedCommunities({ ...joinedCommunities, loading: false, err: err.response.data.msg });
         console.log(err);
       })
+    }
   }, [joinedCommunities.reload]);
 
   const handelCommunityJoinBtn = (communityId) => {

@@ -23,7 +23,8 @@ const AddCommunity = () => {
         })
         .then((resp) => {
             setCommunity({...community, loading: false, err: null});
-            swal(resp.data.msg,"","success");
+            // swal(resp.data.msg,"","success");
+            window.location = "http://localhost:3001/communityList";
             document.querySelector("#addCategoryForm").reset();
             // document.getElementById("categoryName").value = "";
             // document.getElementById("categoryDesc").value = "";
@@ -34,6 +35,11 @@ const AddCommunity = () => {
             swal(errors.response.data,"","error");
             setCommunity({...community, loading: false, err: errors.response.data.errors});
         })
+      }
+
+
+      const navigation = () => {
+        window.location = "http://localhost:3001/communityList";
       }
   return (
     <div className={sidebarStatus() ? 'addCommunityContainer' : 'addCommunityContainer sidebar-close-addCommunity'}>
@@ -67,9 +73,9 @@ const AddCommunity = () => {
                     <div className='btn-container'>
                         <button type="submit" className='add-button'>Add</button>
 
-                        <Link reloadDocument to={"/communityList"}>
-                            <button className='cancel-button'>Cancel</button>
-                        </Link>
+                        {/* <Link reloadDocument to={"/communityList"}> */}
+                            <button onClick={navigation} className='cancel-button'>Cancel</button>
+                        {/* </Link> */}
                     </div>
                 </form>
             </section>

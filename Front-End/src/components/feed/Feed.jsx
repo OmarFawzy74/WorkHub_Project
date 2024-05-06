@@ -148,10 +148,10 @@ const Feed = (data) => {
   let clickedIndex;
   const handleOptionsMenu = (e) => {
     console.log(e);
-    console.log(e.target.attributes.value.nodeValue);
+    // console.log(e.target.attributes.value.nodeValue);
     // clickedValue = e.target.attributes.value.nodeValue;
     setDeleteOpen(!deleteOpen);
-    clickedIndex = e.target.attributes.value.nodeValue;
+    // clickedIndex = e.target.attributes.value.nodeValue;
   }
 
 
@@ -159,19 +159,60 @@ const Feed = (data) => {
     const [isActive, setIsActive] = useState(false);
     return (
       <section className="panel">
-        <h3>{title}</h3>
+        <img
+          onClick={() => setIsActive(!isActive)}
+          className="postTopRightImg"
+          src="/img/option.png"
+        />
+
         {isActive ? (
-          <p>{children}</p>
-        ) : (
-          <button onClick={() => setIsActive(true)}>
-            Show
-          </button>
-        )}
+          <ul className="deletePostContainer">
+            <li
+              variant="contained"
+              className="sidebarDeleteList"
+              value={post._id}
+              onClick={deletePost}
+            >
+              Delete Post
+            </li>
+          </ul>
+        ) : null}
       </section>
     );
   }
 
 
+  function CommentsPanel({ title, children }) {
+    const [isActive, setIsActive] = useState(false);
+    return (
+      <section className="panel">
+        <div className="item" onClick={() => setIsActive(!isActive)}>
+          <img className="commentsImg" src="/img/comment.png" alt="" />
+          <span>Comments</span>
+        </div>
+
+        {isActive ? (
+          <div className="write">
+            <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+              <img
+                className="profileImgComment"
+                src={post?.posterId.image_url}
+                alt=""
+              />
+            </Link>
+            <input
+              type="text"
+              placeholder="Write a comment"
+              // value={desc}
+              // onChange={(e) => setDesc(e.target.value)}
+            />
+            <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
+            {/* <button onClick={handleClick}>Send</button> */}
+          </div>
+        ) : null}
+      </section>
+    );
+  }
 
   return (
     <div className='feed'>
@@ -180,9 +221,9 @@ const Feed = (data) => {
           <div className='share'>
             <div className="shareContainer">
               <div className="shareTop">
-                {data.data &&
-                  <Link reloadDocument to={"/communityProfile/" + data?.data._id} >
-                    <img className='shareProfileImg' src={data?.data.image_url} />
+                {user &&
+                  <Link reloadDocument to={"/communityProfile/" + user?._id} >
+                    <img className='shareProfileImg' src={user?.image_url} />
                   </Link>
                 }
                 <input
@@ -251,33 +292,7 @@ const Feed = (data) => {
                       <span className="postDate">{processDate(post?.creationDate)} ago</span>
                     </div>
                     <div className="postTopRight">
-
-                      <Panel title={index}>
-                        <img
-                            className="postTopRightImg"
-                            src="/img/option.png"
-                            onClick={handleOptionsMenu}
-                        />
-                      </Panel>
-
-                      <img
-                          value={index} 
-                          className="postTopRightImg"
-                          src="/img/option.png"
-                          onClick={handleOptionsMenu}
-                      />
-                      {deleteOpen &&
-                          <ul className="deletePostContainer">
-                              <li
-                                variant="contained"
-                                className="sidebarDeleteList"
-                                value={post._id} 
-                                onClick={deletePost}     
-                              >
-                                Delete Post
-                              </li>
-                          </ul>
-                      }
+                      <Panel title={index}></Panel>
                   </div>
                   </div>
                   <div className="postCenter">
@@ -290,26 +305,10 @@ const Feed = (data) => {
                       <span className="postLikeCounter">{like} people like it</span>
                     </div>
                     <div className="postBottomRight">
-                      <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-                        {/* <TextsmsOutlinedIcon /> */}
-                        <Link><img className='commentsImg' src="/img/comment.png" alt="" /></Link>
-                        <span>Comments</span>
-                      </div>
+                      <CommentsPanel data={post} title={index}></CommentsPanel>
                     </div>
                   </div>
-                  {commentOpen &&
-                    <div className="write">
-                      <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='profileImgComment' src={post?.posterId.image_url} alt="" /></Link>
-                      <input
-                        type="text"
-                        placeholder="Write a comment"
-                      // value={desc}
-                      // onChange={(e) => setDesc(e.target.value)}
-                      />
-                      <img className='sendCommentImg' src="/img/sendComment.png" alt="" />
-                      {/* <button onClick={handleClick}>Send</button> */}
-                    </div>
-                  }
+
 
                 </div>
               </div>
