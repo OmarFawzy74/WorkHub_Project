@@ -22,7 +22,7 @@ const communitySchema = new Schema ({
         ref: "client"
     },
     freelancerMembers: {
-        type: [Schema.Types.ObjectId],
+        type: [mongoose.Types.ObjectId],
         required: false,
         ref: "freelancer"
     }

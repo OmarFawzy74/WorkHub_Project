@@ -171,7 +171,7 @@ const Feed = (data) => {
     );
   }
 
-  
+
 
   return (
     <div className='feed'>
@@ -251,13 +251,22 @@ const Feed = (data) => {
                       <span className="postDate">{processDate(post?.creationDate)} ago</span>
                     </div>
                     <div className="postTopRight">
+
+                      <Panel title={index}>
+                        <img
+                            className="postTopRightImg"
+                            src="/img/option.png"
+                            onClick={handleOptionsMenu}
+                        />
+                      </Panel>
+
                       <img
                           value={index} 
                           className="postTopRightImg"
                           src="/img/option.png"
                           onClick={handleOptionsMenu}
                       />
-                      {deleteOpen && index == clickedIndex &&
+                      {deleteOpen &&
                           <ul className="deletePostContainer">
                               <li
                                 variant="contained"
