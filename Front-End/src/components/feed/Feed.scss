@@ -1,6 +1,28 @@
 .feed {
     flex: 5.5;
 
+    .communityProfileAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+    .communityFilterAlert{
+        .css-hu7tqv-MuiPaper-root-MuiAlert-root {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 605px;
+            margin-left: 35px;
+            margin-top: 50px;
+        }
+    }
+
+
     .feedContainer {
         padding: 20px 0px;
 
@@ -75,6 +97,69 @@
                                 border: 1px solid #1dbf73;
                             }
 
+                            .communityfilterShareOptionImg{
+                                width: 180px;
+                                margin-left: 28px;
+                                display: flex;
+                                align-items: center;
+                                // margin-right: 15px;
+                                cursor: pointer;
+                                height: 40px;
+                                border: 1px solid rgb(196, 195, 195);
+                                padding: 10px;
+                                border-radius: 10px;
+                                position: relative;
+                                left: 50px;
+
+                                .fileInputContainer {
+                                    // overflow: hidden;
+                                    width: 100%;
+                                    position: relative;
+                                    bottom: 15px;
+                                    cursor: pointer;
+                                }
+
+                                .addPostImg {
+                                    position: relative;
+                                    top: 27px;
+                                    padding: 0;
+                                    opacity: 0;
+                                    width: 100px;
+                                    height: 100%;
+                                    z-index: 9999999;
+                                    cursor: pointer;
+                                }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    // right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
+
+                                .fileInputLabel {
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+
+                                .shareIcon {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 7px;
+                                }
+
+                                .shareOptionText {
+                                    font-weight: 500;
+                                    font-size: 16px;
+                                    color: rgb(107, 107, 107);
+                                }
+                            }
+
 
                             .shareOptionImg {
                                 margin-left: 28px;
@@ -105,6 +190,16 @@
                                     z-index: 9999999;
                                     cursor: pointer;
                                 }
+
+                                .communityfilterFileInputLabel{
+                                    position: relative;
+                                    right: 80px;
+                                    color: #000;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s;
+                                }
+                                
 
                                 .fileInputLabel {
                                     color: #000;
@@ -180,6 +275,18 @@
                                     color: rgb(107, 107, 107);
                                 }
                             }
+                        }
+
+                        .communityfilterShareButton{
+                            width: 180px;
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: #1dbf73;
+                            font-weight: 500;
+                            color: white;
+                            position: relative;
+                            right: 70px;
                         }
 
                         .shareButton {

@@ -62,16 +62,16 @@ const SideBar = () => {
     setjoinedCommunities({ ...joinedCommunities, loading: true })
     if (user) {
       axios.get("http://localhost:3000/api/communities/getJoinedCommunities/" + user?._id + "/" + user?.role)
-      .then(
-        resp => {
-          console.log(resp.data.communitiesData);
-          setjoinedCommunities({ results: resp.data.communitiesData, loading: false, err: null });
-          // console.log(resp);
-        }
-      ).catch(err => {
-        setjoinedCommunities({ ...joinedCommunities, loading: false, err: err.response.data.msg });
-        console.log(err);
-      })
+        .then(
+          resp => {
+            console.log(resp.data.communitiesData);
+            setjoinedCommunities({ results: resp.data.communitiesData, loading: false, err: null });
+            // console.log(resp);
+          }
+        ).catch(err => {
+          setjoinedCommunities({ ...joinedCommunities, loading: false, err: err.response.data.msg });
+          console.log(err);
+        })
     }
   }, [joinedCommunities.reload]);
 
@@ -96,132 +96,142 @@ const SideBar = () => {
     console.log(community_id);
     // console.log(e);
     axios.put("http://localhost:3000/api/communities/unjoinCommunity/" + community_id + "/" + user._id + "/" + user.role)
-        .then(
-            resp => {
-                console.log(resp);
-                swal(resp.data.msg, "", "success");
-                setjoinedCommunities({ reload: joinedCommunities.reload + 1 });
-            }
-        ).catch(error => {
-            console.log(error);
-        })
-}
+      .then(
+        resp => {
+          console.log(resp);
+          swal(resp.data.msg, "", "success");
+          setjoinedCommunities({ reload: joinedCommunities.reload + 1 });
+        }
+      ).catch(error => {
+        console.log(error);
+      })
+  }
 
   return (
-    <div className='sidebar'>
-      <div className="sidebarContainer">
-        <ul className="sidebarList">
-          <li className="sidebarListItem">
+    <>
+      {/* {!user && ( */}
+        <div className={user ? 'sidebar' : 'guestSidebar'}>
+          <div className="sidebarContainer">
+            <ul className="sidebarList">
+              <li className="sidebarListItem">
+                {user &&
+                  <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
+                    <img className='sidebarProfileImg' src={user?.image_url} />
+                    <span className='sidebarListItemText'>{user?.name}</span>
+                  </Link>
+                }
+              </li>
+
+              <li className="sidebarListItem">
+                <Link reloadDocument className='sidebarLink' to="/community">
+                  <img className='sidebarIcon' src="/img/feed.png" />
+                  <span className='sidebarListItemText'>Feeds</span>
+                </Link>
+              </li>
+
+              {/* <li className="sidebarListItem">
+                {user &&
+                  <Link reloadDocument className='sidebarLink' to="/">
+                    <img className='sidebarIcon' src="/img/chat.png" />
+                    <span className='sidebarListItemText'>Chats</span>
+                  </Link>
+                }
+              </li> */}
+
+              <li className="sidebarListItem">
+                <div onClick={() => setCommunityListOpen(!communityListOpen)} className='sidebarLink'>
+                  <img className='sidebarIcon' src="/img/groups.png" />
+                  <span className='sidebarListItemText'>Communities</span>
+                </div>
+
+                {communityListOpen &&
+                  <>
+                    <ul className='communityList'>
+                      {communities.loading == false &&
+                        communities.err == null &&
+                        communities.results &&
+                        communities.results.length > 0 &&
+                        communities.results.map((community) => (
+                          <>
+                            <li className='communityListContent'>
+                              <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id}>
+                                {community?.communityName}
+                              </Link>
+                              {
+                                joinedCommunities.loading == false &&
+                                // joinedCommunities.err == null &&
+                                // joinedCommunities.results &&
+                                // joinedCommunities.results.length > 0 &&
+                                handelCommunityJoinBtn(community?._id) &&
+                                <>
+                                  <Button
+                                    variant="contained"
+                                    className="approveBtn"
+                                    value={community?._id}
+                                    onClick={joinCommunity}
+                                  >
+                                    Join
+                                  </Button>
+                                </>
+                              }
+                            </li>
+                          </>
+                        ))}
+                    </ul>
+                  </>
+                }
+              </li>
+
+              <li className="sidebarListItem">
+                <Link reloadDocument className='sidebarLink' to="/gigs">
+                  <img className='sidebarIcon' src="/img/marketplace.png" />
+                  <span className='sidebarListItemText'>Marketplace</span>
+                </Link>
+              </li>
+
+              <li className="sidebarListItem">
+                <Link reloadDocument className='sidebarLink' to="/learn">
+                  <img className='sidebarIcon' src="/img/course.png" />
+                  <span className='sidebarListItemText'>Courses</span>
+                </Link>
+              </li>
+            </ul>
             {user &&
-              <Link reloadDocument className='sidebarLink' to={"/communityProfile/" + user?._id} >
-                <img className='sidebarProfileImg' src={user?.image_url} />
-                <span className='sidebarListItemText'>{user?.name}</span>
-              </Link>
-            }
-          </li>
-
-          <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/community">
-              <img className='sidebarIcon' src="/img/feed.png" />
-              <span className='sidebarListItemText'>Feeds</span>
-            </Link>
-          </li>
-
-          <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/">
-              <img className='sidebarIcon' src="/img/chat.png" />
-              <span className='sidebarListItemText'>Chats</span>
-            </Link>
-          </li>
-
-          <li className="sidebarListItem">
-            <div onClick={() => setCommunityListOpen(!communityListOpen)} className='sidebarLink'>
-              <img className='sidebarIcon' src="/img/groups.png" />
-              <span className='sidebarListItemText'>Communities</span>
-            </div>
-
-            {communityListOpen &&
               <>
-                <ul className='communityList'>
-                  {communities.loading == false &&
-                    communities.err == null &&
-                    communities.results &&
-                    communities.results.length > 0 &&
-                    communities.results.map((community) => (
+                <hr className='sidebarHr-1' />
+                <span className='sidebaMenuText'>Joined Communities</span>
+                <hr className='sidebarHr-2' />
+                <ul className="sidebarCommunityList">
+                  {joinedCommunities.loading == false &&
+                    // joinedCommunities.err == null &&
+                    joinedCommunities.results &&
+                    joinedCommunities.results.length > 0 &&
+                    joinedCommunities.results.map((joinedCommunity) => (
                       <>
-                        <li className='communityListContent'>
-                          <Link className='sidebarLink' reloadDocument to={"/community/" + community?._id}>
-                            {community?.communityName}
+                        <li className="sidebarCommunity">
+                          <Link className='unjoinLink' reloadDocument to={"/community/" + joinedCommunity?._id}>
+                            <span className='sidebarCommunityName'>{joinedCommunity?.communityName}</span>
                           </Link>
-                          {
-                            joinedCommunities.loading == false &&
-                            // joinedCommunities.err == null &&
-                            // joinedCommunities.results &&
-                            // joinedCommunities.results.length > 0 &&
-                            handelCommunityJoinBtn(community?._id) &&
-                            <>
-                              <Button
-                                variant="contained"
-                                className="approveBtn"
-                                value={community?._id}
-                                onClick={joinCommunity}
-                              >
-                                Join
-                              </Button>
-                            </>
-                          }
+                          {/* <button className='sidebarJoinButton'>Join</button> */}
+                          <Button
+                            variant="contained"
+                            className="sidebarJoinButton"
+                            value={joinedCommunity?._id}
+                            onClick={unjoinCommunity}
+                          >
+                            Unjoin
+                          </Button>
                         </li>
                       </>
                     ))}
                 </ul>
               </>
             }
-          </li>
-
-          <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/gigs">
-              <img className='sidebarIcon' src="/img/marketplace.png" />
-              <span className='sidebarListItemText'>Marketplace</span>
-            </Link>
-          </li>
-
-          <li className="sidebarListItem">
-            <Link reloadDocument className='sidebarLink' to="/learn">
-              <img className='sidebarIcon' src="/img/course.png" />
-              <span className='sidebarListItemText'>Courses</span>
-            </Link>
-          </li>
-        </ul>
-        <hr className='sidebarHr-1' />
-        <span className='sidebaMenuText'>Joined Communities</span>
-        <hr className='sidebarHr-2' />
-        <ul className="sidebarCommunityList">
-          {joinedCommunities.loading == false &&
-            // joinedCommunities.err == null &&
-            joinedCommunities.results &&
-            joinedCommunities.results.length > 0 &&
-            joinedCommunities.results.map((joinedCommunity) => (
-              <>
-                <li className="sidebarCommunity">
-                  <Link className='sidebarLink' reloadDocument to={"/community/" + joinedCommunity?._id}>
-                    <span className='sidebarCommunityName'>{joinedCommunity?.communityName}</span>
-                  </Link>
-                  {/* <button className='sidebarJoinButton'>Join</button> */}
-                  <Button
-                    variant="contained"
-                    className="sidebarJoinButton"
-                    value={joinedCommunity?._id}
-                    onClick={unjoinCommunity}
-                  >
-                    Unjoin
-                  </Button>
-                </li>
-              </>
-            ))}
-        </ul>
-      </div>
-      <span></span>
-    </div>
+          </div>
+          <span></span>
+        </div>
+      {/* )} */}
+    </>
   )
 }
 

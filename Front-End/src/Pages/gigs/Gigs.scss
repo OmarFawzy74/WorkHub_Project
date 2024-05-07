@@ -141,7 +141,7 @@
         display: grid;
         grid-template-columns: auto auto auto auto;
         justify-content: start;
-        column-gap: 70px !important;
+        column-gap: 50px !important;
       }
 }
 
@@ -154,9 +154,14 @@
   margin-left: 100px;
 
   .marketplaceTitle{
-    margin-left: 100px;
+    margin-left: 250px;
     position: relative;
     left: 100px;
+    color: #0e9184;
+    font-size: 45px;
+    font-weight: bold;
+    line-height: 120px;
+    margin-bottom: 20px;
   }
 
   .breadcrumbs{
@@ -275,7 +280,7 @@
     // position: relative;
     // right: 160px;
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     justify-content: start;
     column-gap: 70px !important;
   }

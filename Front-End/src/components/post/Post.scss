@@ -39,7 +39,7 @@
                     font-size: 12px;
                     position: relative;
                     top: 15px;
-                    right: 45px;
+                    right: 91px;
                 }
             }
 
@@ -116,16 +116,56 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 400px;
+
+            .activePostBottomLeft{
+                display: flex;
+                align-items: center;
+                position: relative;
+                bottom: 44px;
+                // width: 100%;
+                // margin-bottom: 80px;
+
+                .heartIcon {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                }
+
+                .redHeartIcon{
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    position: relative;
+                    top: 2px;
+                }
+
+                .postLikeCounter{
+                    font-size: 15px;
+                    width: 110px;
+                }
+            }
 
             .postBottomLeft {
                 display: flex;
                 align-items: center;
 
-                .likeIcon {
+                .heartIcon {
                     width: 24px;
                     height: 24px;
                     margin-right: 5px;
                     cursor: pointer;
+                }
+
+                .redHeartIcon{
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 5px;
+                    cursor: pointer;
+                    position: relative;
+                    top: 1.5px;
                 }
 
                 .postLikeCounter{
@@ -134,6 +174,70 @@
             }
 
             .postBottomRight{
+                position: relative;
+                right: 100px;
+
+                .activeItem{
+                        display: flex;
+                        gap: 5px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        color: black;
+                        position: relative;
+                        left: 465px;
+                        width: 70px;
+    
+                        .commentsImg{
+                            width: 25px;
+                            height: 25px;
+                        }
+                }
+
+                .activeWrite{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    margin: 20px 0px;
+                    position: relative;
+                    right: 35px;
+        
+                    .profileImgComment{
+                        border-radius: 50%;
+                        width: 35px;
+                        height: 35px;
+                        // position: relative;
+                        // right: 310px;
+                    }
+        
+                    .sendCommentImg{
+                        width: 25px;
+                        height: 25px;
+                        cursor: pointer;
+                    }
+              
+                    input{
+                    //   flex:5;
+                      width: 500px;
+                      padding: 10px;
+                      border: 1px solid themed("border");
+                      background-color: transparent;
+                      color: themed("textColor");
+                      border: 2px solid rgb(210, 210, 210);
+                      border-radius: 10px;
+    
+                    
+                    }
+        
+                    input:hover{
+                        border: 2px solid #1dbf73;
+                    }
+        
+                    input:focus{
+                        outline: 0;
+                        border: 2px solid #1dbf73;
+                    }
+                }
 
                 .write{
                     display: flex;
@@ -146,6 +250,9 @@
                         border-radius: 50%;
                         width: 30px;
                         height: 30px;
+                        position: relative;
+                        right: 300px;
+                        // margin-top: 50px;
                     }
         
                     .sendCommentImg{
@@ -162,6 +269,7 @@
                       color: themed("textColor");
                       border: 2px solid rgb(210, 210, 210);
                       border-radius: 10px;
+                    
                     }
         
                     input:hover{
@@ -172,15 +280,6 @@
                         outline: 0;
                         border: 2px solid #1dbf73;
                     }
-              
-                    // button{
-                    //   border: none;
-                    //   background-color: #5271ff;
-                    //   color: white;
-                    //   padding: 10px;
-                    //   cursor: pointer;
-                    //   border-radius: 3px;
-                    // }
                   }
 
                 .item {
@@ -189,6 +288,8 @@
                     cursor: pointer;
                     font-size: 14px;
                     color: black;
+                    position: relative;
+                    left: 301px;
 
                     .commentsImg{
                         width: 25px;
