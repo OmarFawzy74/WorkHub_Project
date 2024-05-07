@@ -79,13 +79,13 @@ const SideBar = () => {
 
     let status = true;
 
-    // if (joinedCommunities.results.length > 0) {
+    if (joinedCommunities.results) {
       joinedCommunities.results.filter((community) => {
         if (communityId == community._id) {
           status = false;
         }
       })
-    // }
+    }
 
     return status;
   }

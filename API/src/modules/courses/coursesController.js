@@ -183,8 +183,7 @@ export const enrollCourse = async (req, res) => {
 export const unenrollCourse = async (req, res) => {
     try {
         const courseId = req.params.courseId;
-        const freelancerId = req.params.userId;
-        const clientId = req.params.userId;
+        const userId = req.params.userId;
         const role = req.params.role;
         const courseData = await course.findById(courseId);
 
@@ -193,38 +192,38 @@ export const unenrollCourse = async (req, res) => {
         }
 
         if(role == "freelancer") {
-            if(freelancerId == undefined) {
+            if(userId == undefined) {
                 return res.status(404).json({ msg: "Freelancer id is required!" });
             }
 
-            const freelancerData = await freelancer_model.findById(freelancerId);
+            const freelancerData = await freelancer_model.findById(userId);
 
             if(!freelancerData) {
                 return res.status(404).json({ msg: "Freelancer not found!" });
             }
     
-            const enrollCourses = courseData.enrolledFreelancersIds;
+            const enrolledCourses = courseData.enrolledFreelancersIds;
 
             let actualData = [];
 
-            enrollCourses.filter((id) => {
-                if (id == freelancerId) {
-                    actualData.push(freelancerId);
+            enrolledCourses.filter((id) => {
+                if (id.valueOf() == userId) {
+                    actualData.push(userId);
                 }
             })
 
             if(actualData.length == 0) {
                 return res.status(400).json({ msg: "You are not enrolled in this course!" });
             }
-    
-            let data = [];
 
-            enrollCourses.filter((id) => {
-                if (id != freelancerId) {
-                    data.push(freelancerId);
+            let data = [];
+    
+            enrolledCourses.filter((id) => {
+                if (id.valueOf() !== userId) {
+                    data.push(id);
                 }
             })
-    
+                
             const filter = { _id: courseId };
     
             const update = { $set: { enrolledFreelancersIds: data} }
@@ -233,11 +232,11 @@ export const unenrollCourse = async (req, res) => {
         }
 
         if(role == "client") {
-            if(clientId == undefined) {
+            if(userId == undefined) {
                 return res.status(404).json({ msg: "Client id is required!" });
             }
 
-            const clientData = await Client_Model.findById(clientId);
+            const clientData = await Client_Model.findById(userId);
 
             if(!clientData) {
                 return res.status(404).json({ msg: "Client not found!" });
@@ -248,8 +247,8 @@ export const unenrollCourse = async (req, res) => {
             let actualData = [];
 
             enrollCourses.filter((id) => {
-                if (id == clientId) {
-                    actualData.push(clientId);
+                if (id.valueOf() == userId) {
+                    actualData.push(userId);
                 }
             })
 
@@ -260,8 +259,8 @@ export const unenrollCourse = async (req, res) => {
             let data = [];
 
             enrollCourses.filter((id) => {
-                if (id != clientId) {
-                    data.push(clientId);
+                if (id.valueOf() != userId) {
+                    data.push(userId);
                 }
             })
     

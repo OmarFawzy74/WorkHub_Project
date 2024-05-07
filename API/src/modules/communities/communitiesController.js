@@ -152,7 +152,7 @@ export const unjoinCommunity = async (req, res) => {
             let actualData = [];
 
             joinedMembers.filter((id) => {
-                if (id == userId) {
+                if (id.valueOf() == userId) {
                     actualData.push(userId);
                 }
             })
@@ -164,7 +164,7 @@ export const unjoinCommunity = async (req, res) => {
             let data = [];
 
             joinedMembers.filter((id) => {
-                if (id != userId) {
+                if (id.valueOf() !== userId) {
                     data.push(userId);
                 }
             });
@@ -192,7 +192,7 @@ export const unjoinCommunity = async (req, res) => {
             let actualData = [];
 
             joinedMembers.filter((id) => {
-                if (id == userId) {
+                if (id.valueOf() == userId) {
                     actualData.push(userId);
                 }
             })
@@ -204,7 +204,7 @@ export const unjoinCommunity = async (req, res) => {
             let data = [];
 
             joinedMembers.filter((id) => {
-                if (id != userId) {
+                if (id.valueOf() != userId) {
                     data.push(userId);
                 }
             })
