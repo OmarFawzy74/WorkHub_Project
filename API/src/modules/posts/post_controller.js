@@ -191,13 +191,35 @@ export const getPost = async (req, res) => {
 
 export const addLike = async (req, res) => {
     try {
-        const postId = req.params.id;
+        const postId = req.params.postId;
+        const userId = req.params.userId;
+        const role = req.params.role;
+
+        let userData;
+
+        if(role == "freelancer") {
+            userData = await freelancer_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Freelancer Not Found" });
+            }
+        }
+
+        if(role == "client") {
+            userData = await client_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Client Not Found" });
+            }
+        }
+
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {
-            let likes = postToUpdate.likes
+            let likes = postToUpdate.likes;
+
+            likes.push(userId);
+
             const filter = { _id: postId };
-            const update = { $set: { likes: likes + 1 } };
+            const update = { $set: { likes: likes } };
 
             await Postmodel.updateOne(filter, update);
 
@@ -213,20 +235,52 @@ export const addLike = async (req, res) => {
 
 export const removeLike = async (req, res) => {
     try {
-        const postId = req.params.id;
+        const postId = req.params.postId;
+        const userId = req.params.userId;
+        const role = req.params.role;
+
+        let userData;
+
+        if(role == "freelancer") {
+            userData = await freelancer_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Freelancer Not Found" });
+            }
+        }
+
+        if(role == "client") {
+            userData = await client_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Client Not Found" });
+            }
+        }
+
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {
-            let likes = postToUpdate.likes
+            let likes = postToUpdate.likes;
+
+            let newLikes = [];
+
+            likes.filter((id) => {
+                // console.log(id);
+                // console.log(userData._id);
+                if(id.valueOf() !== userData._id.valueOf()) {
+                    newLikes.push(id);
+                }
+            });
+
+            // console.log(newLikes);
+
             const filter = { _id: postId };
-            const update = { $set: { likes: likes - 1 } };
+            const update = { $set: { likes: newLikes } };
 
             await Postmodel.updateOne(filter, update);
 
             return res.status(200).json({ msg: "post like removed successfuly." });
         }
 
-        res.status(400).json({ msg: "There is no post with such id to update." });
+        res.status(404).json({ msg: "Post Not Found" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -236,6 +290,9 @@ export const removeLike = async (req, res) => {
 export const addComment = async (req, res) => {
     try {
         const postId = req.params.id;
+        const userId = req.params.userId;
+        const role = req.params.role;
+
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {

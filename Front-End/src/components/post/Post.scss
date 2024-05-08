@@ -39,7 +39,7 @@
                     font-size: 12px;
                     position: relative;
                     top: 15px;
-                    right: 91px;
+                    right: 45px;
                 }
             }
 
@@ -122,9 +122,9 @@
                 display: flex;
                 align-items: center;
                 position: relative;
-                bottom: 44px;
-                // width: 100%;
-                // margin-bottom: 80px;
+                bottom: 43px;
+                left: 5px;                
+
 
                 .heartIcon {
                     width: 24px;
@@ -151,6 +151,8 @@
             .postBottomLeft {
                 display: flex;
                 align-items: center;
+                position: relative;
+                left: 5px;
 
                 .heartIcon {
                     width: 24px;
@@ -184,7 +186,7 @@
                         font-size: 14px;
                         color: black;
                         position: relative;
-                        left: 465px;
+                        left: 454px;
                         width: 70px;
     
                         .commentsImg{
@@ -289,7 +291,7 @@
                     font-size: 14px;
                     color: black;
                     position: relative;
-                    left: 301px;
+                    left: 290px;
 
                     .commentsImg{
                         width: 25px;

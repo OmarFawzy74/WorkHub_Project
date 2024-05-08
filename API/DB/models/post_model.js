@@ -25,12 +25,11 @@ const postSchema = new Schema({
         required: false
     },
     likes: {
-        type: Number,
+        type: [mongoose.Types.ObjectId],
         required: false,
-        default: 0
     },
     comments: {
-        type: [String],
+        type: [mongoose.Types.ObjectId],
     },
     creationDate: {
         type: String,

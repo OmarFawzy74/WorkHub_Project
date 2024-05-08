@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
 const Feed = (data) => {
-  const user = getAuthUser()
+  const user = getAuthUser();
 
   let { id } = useParams();
 
@@ -20,38 +20,7 @@ const Feed = (data) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const likeHandler = (e) => {
-    setLike(isLiked ? like - 1 : like + 1)
-    setIsLiked(!isLiked)
-    const post_id = e.target.attributes.value.nodeValue;
-    console.log(e);
-        // setLike({ ...like, loading: true, err: null });
-        if (!isLiked) {
-          axios
-          .put("http://localhost:3000/api/posts/addLike/" + post_id
-          )
-          .then((resp) => {
-            console.log(resp);
-            // setLike({ reload: like.reload + 1 });
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
-        }
-        else {
-          axios
-          .put("http://localhost:3000/api/posts/removeLike/" + post_id
-          )
-          .then((resp) => {
-            console.log(resp);
-            // setLike({ reload: like.reload + 1 });
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
-        }
 
-  }
 
   const [posts, setPosts] = useState({
     loading: true,
@@ -201,14 +170,108 @@ const Feed = (data) => {
     );
   }
 
+
+  function LikeHandler({ data }) {
+    const [isLiked, setIsLiked] = useState(false);
+
+    // let checkIfLiked = [];
+
+    // data.likes.filter((id) => {
+    //   if(id.valueOf() == user._id) {
+    //     checkIfLiked.push(user._id);
+    //   }
+    // });
+
+    // if(checkIfLiked[0]) {
+    //   setIsLiked(!isLiked);
+    // }
+
+    // console.log(data);
+
+    useEffect(() => {
+      // Check if the user has already liked the post
+      const checkIfLiked = data.likes.some(id => id === user._id);
+      setIsLiked(checkIfLiked);
+    }, [data.likes, user._id]);
+
+    const likeHandling = (e) => {
+      const postId = e.target.attributes.value.nodeValue;
+      console.log(e);
+      // setLike({ ...like, loading: true, err: null });
+      if (isLiked == false) {
+        axios
+          .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
+          .then((resp) => {
+            console.log(resp);
+            setIsLiked(!isLiked);
+            setPosts({reload: posts.reload + 1});
+            // setLike({ reload: like.reload + 1 });
+          })
+          .catch((errors) => {
+            console.log(errors);
+          });
+      } else {
+        axios
+          .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
+          .then((resp) => {
+            console.log(resp);
+            setIsLiked(!isLiked);
+            setPosts({reload: posts.reload + 1});
+          })
+          .catch((errors) => {
+            console.log(errors);
+          });
+      }
+    };
+
+    return (
+      <>
+        {/* <img
+          onClick={() => setIsActive(!isLiked)}
+          className="postTopRightImg"
+          src="/img/option.png"
+        /> */}
+
+        {/* <img
+          value={data._id}
+          className={isLiked ? "redHeartIcon" : "heartIcon"}
+          src={isLiked ? "/img/redHeart.png" : "/img/heart.png"}
+          onClick={() => setIsLiked(!isLiked)}
+        /> */}
+
+        <img
+          value={data._id}
+          className={isLiked ? "redHeartIcon" : "heartIcon"}
+          src={isLiked ? "/img/redHeart.png" : "/img/heart.png"}
+          onClick={likeHandling}
+        />
+
+        <span className="postLikeCounter">{data.likes.length} Likes</span>
+
+
+        {/* {isLiked ? (
+          <ul className="deletePostContainer">
+            <li
+              variant="contained"
+              className="sidebarDeleteList"
+              value={data._id}
+              onClick={deletePost}
+            >
+              Delete Post
+            </li>
+          </ul>
+        ) : null} */}
+      </>
+    );
+  }
+
   function CommentsPanel({ data }) {
     const [isActive, setIsActive] = useState(false);
     return (
-      // <section className="panel">
       <div className="postBottom">
         <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
-          <img value={data._id} className={like > 0 ? 'redHeartIcon' : 'heartIcon'} src={like > 0 ? "/img/redHeart.png" : "/img/heart.png"} onClick={likeHandler} />
-          <span className="postLikeCounter">{data.likes} Likes</span>
+          {/* <img value={data._id} className={isLiked ? 'redHeartIcon' : 'heartIcon'} src={isLiked? "/img/redHeart.png" : "/img/heart.png"} onClick={likeHandler} /> */}
+          <LikeHandler data={data}></LikeHandler>
         </div>
         <div className='postBottomRight'>
 
@@ -229,16 +292,12 @@ const Feed = (data) => {
               <input
                 type="text"
                 placeholder="Write a comment"
-              // value={desc}
-              // onChange={(e) => setDesc(e.target.value)}
               />
               <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
-              {/* <button onClick={handleClick}>Send</button> */}
             </div>
           ) : null}
         </div>
       </div>
-      // </section>
     );
   }
 
