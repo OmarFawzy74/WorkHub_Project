@@ -29,7 +29,7 @@ const postSchema = new Schema({
         required: false,
     },
     comments: {
-        type: [mongoose.Types.ObjectId],
+        type: [Object],
     },
     creationDate: {
         type: String,

@@ -5,6 +5,7 @@ import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 import fs from "fs";
 
+// Get All Posts
 export const getAllPosts = async (req, res) => {
     try {
         const posts = await Postmodel.find();
@@ -39,6 +40,7 @@ export const getAllPosts = async (req, res) => {
     }
 };
 
+// Get User Posts
 export const getUserPosts = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -81,6 +83,7 @@ export const getUserPosts = async (req, res) => {
     }
 };
 
+// Get Community Posts
 export const getCommunityPosts = async (req, res) => {
     try {
         const communityId = req.params.id;
@@ -117,6 +120,7 @@ export const getCommunityPosts = async (req, res) => {
     }
 };
 
+// Add Post
 export const addPost = async (req, res) => {
     try {
         const { communityId, posterId, posterType, caption } = req.body
@@ -141,6 +145,7 @@ export const addPost = async (req, res) => {
     }
 };
 
+// Upload Media
 export const uploadPostMedia = async (req, res) => {
     try {
 
@@ -168,6 +173,7 @@ export const uploadPostMedia = async (req, res) => {
     }
 };
 
+// Get Post By ID
 export const getPost = async (req, res) => {
     try {
         const { id } = req.params
@@ -189,6 +195,7 @@ export const getPost = async (req, res) => {
 
 };
 
+// Add Like To Post
 export const addLike = async (req, res) => {
     try {
         const postId = req.params.postId;
@@ -233,6 +240,7 @@ export const addLike = async (req, res) => {
     }
 };
 
+// Remove Like From Post
 export const removeLike = async (req, res) => {
     try {
         const postId = req.params.postId;
@@ -287,30 +295,58 @@ export const removeLike = async (req, res) => {
     }
 };
 
+// Add Comment to Post
 export const addComment = async (req, res) => {
     try {
-        const postId = req.params.id;
+        const postId = req.params.postId;
         const userId = req.params.userId;
         const role = req.params.role;
+        const comment = req.body.comment;
+
+        let userData;
+
+        if(role == "freelancer") {
+            userData = await freelancer_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Freelancer Not Found" });
+            }
+        }
+
+        if(role == "client") {
+            userData = await client_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Client Not Found" });
+            }
+        }
 
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {
+
+            const allComments = postToUpdate.comments;
+
+            const modifiedUser = { ...userData._doc }; // Create a copy of the service object
+            modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
+            modifiedUser.comment = comment;
+
+            allComments.push(modifiedUser);
+            
             const filter = { _id: postId };
-            const update = { $set: { comments: req.body.comment } };
+            const update = { $set: { comments: allComments } };
 
             await Postmodel.updateOne(filter, update);
 
             return res.status(200).json({ msg: "post comment added successfuly." });
         }
 
-        res.status(400).json({ msg: "There is no post with such id to update." });
+        res.status(404).json({ msg: "Post Not Found!" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
+// Update Post
 export const updatePost = async (req, res) => {
     try {
         const postId = req.params.id;
@@ -330,6 +366,7 @@ export const updatePost = async (req, res) => {
     }
 }
 
+// Delete Post
 export const deletePost = async (req, res, next) => {
     try {
         const { id } = req.params;
