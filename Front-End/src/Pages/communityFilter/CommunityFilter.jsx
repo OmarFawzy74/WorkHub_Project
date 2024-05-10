@@ -186,23 +186,32 @@ const CommunityFilter = (data) => {
                     </div>
 
                     {isActive ? (
-                        <div className={isActive ? "activeWrite" : "write"}>
-                            <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
-                                <img
-                                    className="profileImgComment"
-                                    src={data?.posterId.image_url}
-                                    alt=""
+                        <>
+                            <div className="commentList">
+                                <h1>bhbjhbcjbj</h1>
+                                <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                                    <img
+                                        className="profileImgComment"
+                                        src={data?.posterId.image_url}
+                                    />
+                                </Link>
+                                <span>{data.comments}nnjcnjnjsnj</span>
+                            </div>
+                            <div className={isActive ? "activeWrite" : "write"}>
+                                <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                                    <img
+                                        className="profileImgComment"
+                                        src={data?.posterId.image_url}
+                                        alt=""
+                                    />
+                                </Link>
+                                <input
+                                    type="text"
+                                    placeholder="Write a comment"
                                 />
-                            </Link>
-                            <input
-                                type="text"
-                                placeholder="Write a comment"
-                            // value={desc}
-                            // onChange={(e) => setDesc(e.target.value)}
-                            />
-                            <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
-                            {/* <button onClick={handleClick}>Send</button> */}
-                        </div>
+                                <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
+                            </div>
+                        </>
                     ) : null}
                 </div>
             </div>
@@ -269,8 +278,8 @@ const CommunityFilter = (data) => {
                                                 <div className="postTopLeft">
                                                     <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
                                                     <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
-                                                    <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                                 </div>
+                                                <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                                 <div className="postTopRight">
                                                     <Panel data={post} title={index}></Panel>
                                                 </div>

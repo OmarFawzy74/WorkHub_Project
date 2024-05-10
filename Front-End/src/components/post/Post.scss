@@ -34,13 +34,13 @@
                     position: relative;
                     bottom: 7px;
                 }
+            }
 
-                .postDate {
-                    font-size: 12px;
-                    position: relative;
-                    top: 15px;
-                    right: 45px;
-                }
+            .postDate {
+                font-size: 12px;
+                position: absolute;
+                top: 35px;
+                left: 62px;
             }
 
             .postTopRight {
@@ -138,13 +138,17 @@
                     height: 24px;
                     margin-right: 5px;
                     cursor: pointer;
-                    position: relative;
-                    top: 2px;
+                    position: absolute;
+                    bottom: 50px;
                 }
 
                 .postLikeCounter{
                     font-size: 15px;
                     width: 110px;
+                    position: absolute;
+                    bottom: 52px;
+                    left: 30px;
+
                 }
             }
 
@@ -193,6 +197,22 @@
                             width: 25px;
                             height: 25px;
                         }
+                }
+
+                .commentList{
+                    margin-bottom: 100px;
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    left: 108px;
+                    top: 20px;
+
+                    .profileImgCommentList{
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                    }
+
                 }
 
                 .activeWrite{
