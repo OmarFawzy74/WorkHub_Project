@@ -164,9 +164,14 @@ export const uploadPostMedia = async (req, res) => {
         const filter = { _id: id };
         const update = { $set: { media_url: media_url } };
 
-        await Postmodel.updateOne(filter, update);
+        const process =  await Postmodel.updateOne(filter, update);
 
-        res.json({ message: 'Media uploaded successfully' });
+        if(process) {
+            res.json({ message: 'Media uploaded successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Somthing Went Wrong!' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -345,6 +350,57 @@ export const addComment = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+// // Add Comment to Post
+// export const getPostComments = async (req, res) => {
+//     try {
+//         const postId = req.params.postId;
+//         const userId = req.params.userId;
+//         const role = req.params.role;
+//         const comment = req.body.comment;
+
+//         let userData;
+
+//         if(role == "freelancer") {
+//             userData = await freelancer_model.findById(userId);
+//             if(!userData) {
+//                 return res.status(404).json({ msg: "Freelancer Not Found" });
+//             }
+//         }
+
+//         if(role == "client") {
+//             userData = await client_model.findById(userId);
+//             if(!userData) {
+//                 return res.status(404).json({ msg: "Client Not Found" });
+//             }
+//         }
+
+//         const postToUpdate = await Postmodel.findById(postId);
+
+//         if (postToUpdate) {
+
+//             const allComments = postToUpdate.comments;
+
+//             const modifiedUser = { ...userData._doc }; // Create a copy of the service object
+//             modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
+//             modifiedUser.comment = comment;
+
+//             allComments.push(modifiedUser);
+            
+//             const filter = { _id: postId };
+//             const update = { $set: { comments: allComments } };
+
+//             await Postmodel.updateOne(filter, update);
+
+//             return res.status(200).json({ msg: "post comment added successfuly." });
+//         }
+
+//         res.status(404).json({ msg: "Post Not Found!" });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// };
 
 // Update Post
 export const updatePost = async (req, res) => {
