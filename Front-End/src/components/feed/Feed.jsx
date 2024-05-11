@@ -67,7 +67,7 @@ const Feed = (data) => {
         console.log(resp);
         document.querySelector("#addPostForm").reset();
         document.getElementById("selectCategory").value = "";
-
+        setPosts({ reload: posts.reload + 1 });
       })
       .catch((errors) => {
         // swal(errors.response.data.message, "", "error");
@@ -89,7 +89,6 @@ const Feed = (data) => {
       })
       .then((resp) => {
         console.log(resp);
-        setPosts({ reload: posts.reload + 1 });
         const postId = resp.data.savePost._id;
         uploadMedia(postId);
       })
@@ -135,7 +134,6 @@ const Feed = (data) => {
     }
   }, [joinedCommunities.reload]);
 
-
   useEffect(() => {
     setPosts({ ...posts, loading: true })
     axios.get("http://localhost:3000/api/posts/getAllPosts")
@@ -168,62 +166,74 @@ const Feed = (data) => {
   function Panel({ data }) {
     const [isActive, setIsActive] = useState(false);
     return (
-      <section className="panel">
-        <img
-          onClick={() => setIsActive(!isActive)}
-          className="postTopRightImg"
-          src="/img/option.png"
-        />
+      <>
+        {user && user._id == data.posterId._id &&
+          <section className="panel">
+            <img
+              onClick={() => setIsActive(!isActive)}
+              className="postTopRightImg"
+              src="/img/option.png"
+            />
 
-        {isActive ? (
-          <ul className="deletePostContainer">
-            <li
-              variant="contained"
-              className="sidebarDeleteList"
-              value={data._id}
-              onClick={deletePost}
-            >
-              Delete Post
-            </li>
-          </ul>
-        ) : null}
-      </section>
+            {isActive ? (
+              <ul className="deletePostContainer">
+                <li
+                  variant="contained"
+                  className="sidebarDeleteList"
+                  value={data._id}
+                  onClick={deletePost}
+                >
+                  Delete Post
+                </li>
+              </ul>
+            ) : null}
+          </section>
+        }
+      </>
     );
   }
 
 
   function LikeHandler({ data }) {
     const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(false);
 
     useEffect(() => {
-      const checkIfLiked = data.likes.some(id => id === user._id);
-      setIsLiked(checkIfLiked);
-    }, [data.likes, user._id]);
+      if (user) {
+        const checkIfLiked = data.likes.some(id => id === user._id);
+        setIsLiked(checkIfLiked);
+      }
+    }, [data.likes]);
 
     const likeHandling = (e) => {
       const postId = e.target.attributes.value.nodeValue;
-      if (isLiked == false) {
-        axios
-          .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
-          .then((resp) => {
-            // console.log(resp);
-            setIsLiked(!isLiked);
-            setPosts({ reload: posts.reload + 1 });
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
-      } else {
-        axios
-          .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
-          .then((resp) => {
-            // console.log(resp);
-            setIsLiked(!isLiked);
-            setPosts({ reload: posts.reload + 1 });
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
+      if (!user) {
+        window.location = "http://localhost:3001/login"
+      }
+      else {
+        if (isLiked == false) {
+          axios
+            .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
+            .then((resp) => {
+              // console.log(resp);
+              setIsLiked(!isLiked);
+              // setPosts({ reload: posts.reload + 1 });
+            })
+            .catch((errors) => {
+              console.log(errors);
+            });
+        } else {
+          axios
+            .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
+            .then((resp) => {
+              // console.log(resp);
+              setIsLiked(!isLiked);
+              setPosts({ reload: posts.reload + 1 });
+            })
+            .catch((errors) => {
+              console.log(errors);
+            });
+        }
       }
     };
 
@@ -255,7 +265,7 @@ const Feed = (data) => {
     const addCommentData = async (e) => {
       e.preventDefault();
       const postId = e.target.attributes.value.nodeValue;
-
+      console.log(postId);
       setComment({ ...comment, loading: true, err: null });
       axios
         .put("http://localhost:3000/api/posts/addComment/" + postId + "/" + user._id + "/" + user.role, {
@@ -270,75 +280,86 @@ const Feed = (data) => {
         });
     };
 
-    // const [comments, setComments] = useState({
-    //   loading: true,
-    //   err: null,
-    //   reload: 0,
-    //   results: ""
-    // });
-
-    // useEffect(() => {
-    //   setComments({ ...comments, loading: true })
-    //   axios.get("http://localhost:3000/api/posts/getAllPosts")
-    //     .then(
-    //       resp => {
-    //         setComments({ results: resp.data.comments, loading: false, err: null });
-    //       }
-    //     ).catch(err => {
-    //       setComments({ ...comments, loading: false, err: err.response.data.message });
-    //       console.log(err);
-    //     })
-    // }, [comments.reload]);
+    const deleteComment = (e) => {
+      e.preventDefault();
+      const comment_id = e.target.attributes.value.nodeValue;
+      console.log(comment_id);
+      axios.delete("http://localhost:3000/api/posts/deleteComment/" + comment_id)
+        .then(
+          resp => {
+            swal(resp.data.msg, "", "success");
+            setPosts({ reload: posts.reload + 1 });
+          }
+        ).catch(error => {
+          console.log(error);
+        })
+    }
 
     return (
       <div className="postBottom">
         <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
-          <LikeHandler data={data}></LikeHandler>
-        </div>
-        <div className='postBottomRight'>
-
+          <div>
+            <LikeHandler data={data}></LikeHandler>
+          </div>
           <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
             <img className="commentsImg" src="/img/comment.png" alt="" />
-            <span>Comments</span>
+            <span>{data.comments.length} Comments</span>
           </div>
-
+        </div>
+        <div className='postBottomRight'>
           {isActive ? (
             <>
               {data.comments &&
-                <div className="commentList">
-                  {data.comments.map((user) => (
-                    <>
-                      <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
-                        <img
-                          className="profileImgCommentList"
-                          src={user?.image_url}
-                        />
-                      </Link>
-                      <span className='commentListUsername'>{user?.name}</span>
-                      <span>{user.comment}</span>
-                    </>
+                <ul className="commentList">
+                  {data.comments.map((userComment) => (
+                    <li>
+                      <div className='userInfoCommentList'>
+                        <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
+                          <img
+                            className="profileImgCommentList"
+                            src={userComment?.image_url}
+                          />
+                        </Link>
+                      </div>
+                      <div className='nameCommentContainer'>
+                        <div className='commentInfoAndDeleteComment'>
+                          <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
+                            <span className='commentListUsername'>{userComment?.name}</span>
+                          </Link>
+                        </div>
+                        <p className='commentContent'>{userComment.comment}</p>
+                      </div>
+                      <div className='commentListDateAndDelete'>
+                        <div><span className='commentListDate'>50 m ago</span></div>
+                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={user._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
+                      </div>
+                    </li>
                   ))}
+                </ul>
+              }
+              {user &&
+                <div className={isActive ? "activeWrite" : "write"}>
+                  <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
+                    <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
+                      <img
+                        className="profileImgComment"
+                        src={user?.image_url}
+                        alt=""
+                      />
+                    </Link>
+                    <input
+                      type="text"
+                      placeholder="Write a comment"
+                      required
+                      onChange={(e) =>
+                        setComment({ ...comment, commentDesc: e.target.value })
+                      }
+                    />
+                    <button type='submit' className='sendCommentButton'><img className="sendCommentImg" src="/img/sendComment.png" alt="" /></button>
+
+                  </form>
                 </div>
               }
-              <div className={isActive ? "activeWrite" : "write"}>
-                {/* <form  onSubmit={addCommentData}> */}
-                <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
-                  <img
-                    className="profileImgComment"
-                    src={data?.posterId.image_url}
-                    alt=""
-                  />
-                </Link>
-                <input
-                  type="text"
-                  placeholder="Write a comment"
-                  onChange={(e) =>
-                    setComment({ ...comment, commentDesc: e.target.value })
-                  }
-                />
-                <img onClick={addCommentData} value={data._id} className="sendCommentImg" src="/img/sendComment.png" alt="" />
-                {/* </form> */}
-              </div>
             </>
           ) : null}
         </div>
@@ -356,7 +377,7 @@ const Feed = (data) => {
     else {
       return "image"
     }
-   }
+  }
 
   return (
     <div className='feed'>
@@ -387,7 +408,7 @@ const Feed = (data) => {
                       <img className='shareIcon' src="/img/photo.png" alt="" />
                       <div className="fileInputContainer">
                         <input className='addPostImg' type="file" accept="video/,image/" ref={media} />
-                        <span className="fileInputLabel">Upload Image</span>
+                        <span className="fileInputLabel">Upload Media</span>
                       </div>
                     </div>
                     <div className="shareOption">
@@ -445,11 +466,10 @@ const Feed = (data) => {
                   </div>
                   <div className="postCenter">
                     <span className="postText">{post?.caption}</span>
-
                     {checkMedia(post?.media_url) == "image" ?
-                      <img className='postImg' src={post?.media_url}/>
+                      <img className='postImg' src={post?.media_url} />
                       :
-                      <video className='postImg' src={post?.media_url} controls></video>
+                      <video className='postImg' src={post.media_url} controls></video>
                     }
                   </div>
                   <CommentsPanel data={post} title={index}></CommentsPanel>

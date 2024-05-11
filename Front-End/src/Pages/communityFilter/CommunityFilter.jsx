@@ -145,87 +145,195 @@ const CommunityFilter = (data) => {
     function Panel({ data }) {
         const [isActive, setIsActive] = useState(false);
         return (
-            <section className="panel">
-                <img
-                    onClick={() => setIsActive(!isActive)}
-                    className="postTopRightImg"
-                    src="/img/option.png"
-                />
+            <>
+                {user && user._id == data.posterId._id &&
+                    <section className="panel">
+                        <img
+                            onClick={() => setIsActive(!isActive)}
+                            className="postTopRightImg"
+                            src="/img/option.png"
+                        />
 
-                {isActive ? (
-                    <ul className="deletePostContainer">
-                        <li
-                            variant="contained"
-                            className="sidebarDeleteList"
-                            value={data._id}
-                            onClick={deletePost}
-                        >
-                            Delete Post
-                        </li>
-                    </ul>
-                ) : null}
-            </section>
+                        {isActive ? (
+                            <ul className="deletePostContainer">
+                                <li
+                                    variant="contained"
+                                    className="sidebarDeleteList"
+                                    value={data._id}
+                                    onClick={deletePost}
+                                >
+                                    Delete Post
+                                </li>
+                            </ul>
+                        ) : null}
+                    </section>
+                }
+            </>
         );
     }
 
+    function LikeHandler({ data }) {
+        const [isLiked, setIsLiked] = useState(false);
+
+        useEffect(() => {
+            const checkIfLiked = data.likes.some(id => id === user._id);
+            setIsLiked(checkIfLiked);
+        }, [data.likes, user._id]);
+
+        const likeHandling = (e) => {
+            const postId = e.target.attributes.value.nodeValue;
+            if (isLiked == false) {
+                axios
+                    .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
+                    .then((resp) => {
+                        // console.log(resp);
+                        setIsLiked(!isLiked);
+                        setPosts({ reload: posts.reload + 1 });
+                    })
+                    .catch((errors) => {
+                        console.log(errors);
+                    });
+            } else {
+                axios
+                    .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
+                    .then((resp) => {
+                        // console.log(resp);
+                        setIsLiked(!isLiked);
+                        setPosts({ reload: posts.reload + 1 });
+                    })
+                    .catch((errors) => {
+                        console.log(errors);
+                    });
+            }
+        };
+
+        return (
+            <>
+                <img
+                    value={data._id}
+                    className={isLiked ? "redHeartIcon" : "heartIcon"}
+                    src={isLiked ? "/img/redHeart.png" : "/img/heart.png"}
+                    onClick={likeHandling}
+                />
+
+                <span className="postLikeCounter">{data.likes.length} Likes</span>
+            </>
+        );
+    }
+
+
+
     function CommentsPanel({ data }) {
         const [isActive, setIsActive] = useState(false);
-        console.log(data);
+
+        const [comment, setComment] = useState({
+            loading: true,
+            err: null,
+            commentDesc: "",
+            reload: 0,
+            results: ""
+        });
+
+        const addCommentData = async (e) => {
+            e.preventDefault();
+            const postId = e.target.attributes.value.nodeValue;
+            console.log(postId);
+            setComment({ ...comment, loading: true, err: null });
+            axios
+                .put("http://localhost:3000/api/posts/addComment/" + postId + "/" + user._id + "/" + user.role, {
+                    comment: comment.commentDesc,
+                })
+                .then((resp) => {
+                    setComment({ results: resp.data, reload: posts.reload + 1 });
+                    console.log(resp);
+                })
+                .catch((errors) => {
+                    console.log(errors);
+                });
+        };
+
         return (
-            // <section className="panel">
             <div className="postBottom">
                 <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
-                    <img className={like > 0 ? 'redHeartIcon' : 'heartIcon'} src={like > 0 ? "/img/redHeart.png" : "/img/heart.png"} onClick={likeHandler} />
-                    <span className="postLikeCounter">{like} Likes</span>
-                </div>
-                <div className='postBottomRight'>
-
+                    <div>
+                        <LikeHandler data={data}></LikeHandler>
+                    </div>
                     <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
                         <img className="commentsImg" src="/img/comment.png" alt="" />
-                        <span>Comments</span>
+                        <span>{data.comments.length} Comments</span>
                     </div>
-
+                </div>
+                <div className='postBottomRight'>
                     {isActive ? (
                         <>
-                            <div className="commentList">
-                                <h1>bhbjhbcjbj</h1>
-                                <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
-                                    <img
-                                        className="profileImgComment"
-                                        src={data?.posterId.image_url}
-                                    />
-                                </Link>
-                                <span>{data.comments}nnjcnjnjsnj</span>
-                            </div>
+                            {data.comments &&
+                                <ul className="commentList">
+                                    {data.comments.map((user) => (
+                                        <li>
+                                            <div className='userInfoCommentList'>
+                                                <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + user?._id}>
+                                                    <img
+                                                        className="profileImgCommentList"
+                                                        src={user?.image_url}
+                                                    />
+                                                </Link>
+                                            </div>
+                                            <div className='nameCommentContainer'>
+                                                <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + user?._id}>
+                                                    <span className='commentListUsername'>{user?.name}</span>
+                                                </Link>
+                                                <span>{user.comment}</span>
+                                            </div>
+                                            <span className='commentListDate'>50 m</span>
+                                            <button className='deleteCommentBtn'><img className='deleteCommentImg' src="/img/delete.png"/></button> 
+                                        </li>
+                                    ))}
+                                </ul>
+                            }
                             <div className={isActive ? "activeWrite" : "write"}>
-                                <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
-                                    <img
-                                        className="profileImgComment"
-                                        src={data?.posterId.image_url}
-                                        alt=""
+                                <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
+                                    <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
+                                        <img
+                                            className="profileImgComment"
+                                            src={data?.posterId.image_url}
+                                            alt=""
+                                        />
+                                    </Link>
+                                    <input
+                                        type="text"
+                                        placeholder="Write a comment"
+                                        required
+                                        onChange={(e) =>
+                                            setComment({ ...comment, commentDesc: e.target.value })
+                                        }
                                     />
-                                </Link>
-                                <input
-                                    type="text"
-                                    placeholder="Write a comment"
-                                />
-                                <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
+                                    <button type='submit' className='sendCommentButton'><img className="sendCommentImg" src="/img/sendComment.png" alt="" /></button>
+
+                                </form>
                             </div>
                         </>
                     ) : null}
                 </div>
             </div>
-            // </section>
         );
+    }
+
+    const checkMedia = (data) => {
+        const processedData = data.split(".");
+        console.log(processedData);
+        if (processedData[1] == "mp4") {
+            return "video"
+        }
+        else {
+            return "image"
+        }
     }
 
     return (
         <div className='communityPage'>
-            {posts.loading == false &&
-                posts.results &&
-                posts.results.map((post) => (
-                    <h1>{post?.communityId.communityName} Community</h1>
-                ))}
+            {posts.results[0] &&
+                <h1>{posts?.results[0].communityId.communityName} Community</h1>
+            }
             <div className="communityContainer">
                 <SideBar />
                 <div className='feed'>
@@ -255,8 +363,8 @@ const CommunityFilter = (data) => {
                                                 <div className="communityfilterShareOptionImg">
                                                     <img className='shareIcon' src="/img/photo.png" alt="" />
                                                     <div className="fileInputContainer">
-                                                        <input className='addPostImg' required type="file" ref={media} />
-                                                        <span className="communityfilterFileInputLabel">Upload Image</span>
+                                                        <input className='addPostImg' required type="file" accept="video/,image/" ref={media} />
+                                                        <span className="communityfilterFileInputLabel">Upload Media</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,8 +394,11 @@ const CommunityFilter = (data) => {
                                             </div>
                                             <div className="postCenter">
                                                 <span className="postText">{post?.caption}</span>
-                                                <img className='postImg' src={post?.media_url} alt="" />
-                                            </div>
+                                                {checkMedia(post?.media_url) == "image" ?
+                                                    <img className='postImg' src={post?.media_url} />
+                                                    :
+                                                    <video className='postImg' src={post.media_url} controls></video>
+                                                }                                            </div>
                                             <CommentsPanel data={post} title={index}></CommentsPanel>
                                         </div>
                                     </div>
