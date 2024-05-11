@@ -283,13 +283,14 @@ const Feed = (data) => {
     const deleteComment = (e) => {
       e.preventDefault();
       const postId = e.target.attributes.data.nodeValue;
-      const comment_id = e.target.attributes.value.nodeValue;
+      const commentId = e.target.attributes.value.nodeValue;
       console.log(e);
-      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + comment_id )
+      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
         .then(
           resp => {
-            swal(resp.data.msg, "", "success");
-            setPosts({ reload: posts.reload + 1 });
+            console.log(resp);
+            // swal(resp.data.msg, "", "success");
+            // setPosts({ reload: posts.reload + 1 });
           }
         ).catch(error => {
           console.log(error);
