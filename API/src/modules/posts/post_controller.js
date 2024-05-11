@@ -351,56 +351,57 @@ export const addComment = async (req, res) => {
     }
 };
 
-// // Add Comment to Post
-// export const getPostComments = async (req, res) => {
-//     try {
-//         const postId = req.params.postId;
-//         const userId = req.params.userId;
-//         const role = req.params.role;
-//         const comment = req.body.comment;
+// Delete Post
+export const deleteComment = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
 
-//         let userData;
+        if (!mongoose.Types.ObjectId.isValid(postId)) {
+            return res.status(400).json({ message: 'Invalid Post ID' });
+        }
 
-//         if(role == "freelancer") {
-//             userData = await freelancer_model.findById(userId);
-//             if(!userData) {
-//                 return res.status(404).json({ msg: "Freelancer Not Found" });
-//             }
-//         }
+        if (!mongoose.Types.ObjectId.isValid(commentId)) {
+            return res.status(400).json({ message: 'Invalid Comment ID' });
+        }
 
-//         if(role == "client") {
-//             userData = await client_model.findById(userId);
-//             if(!userData) {
-//                 return res.status(404).json({ msg: "Client Not Found" });
-//             }
-//         }
+        const postData = await Postmodel.findById(postId);
 
-//         const postToUpdate = await Postmodel.findById(postId);
+        const commentsData = postData.comments;
 
-//         if (postToUpdate) {
+        let newCommentsData = [];
 
-//             const allComments = postToUpdate.comments;
+        commentsData.filter((userComment) => {
+            if(userComment._id.valueOf() !== commentId) {
+                newCommentsData.push(userComment);
+            }
+        });
 
-//             const modifiedUser = { ...userData._doc }; // Create a copy of the service object
-//             modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
-//             modifiedUser.comment = comment;
+        const filter = { _id: postId };
+        const update = { $set: { comments: newCommentsData } };
 
-//             allComments.push(modifiedUser);
-            
-//             const filter = { _id: postId };
-//             const update = { $set: { comments: allComments } };
+        await Postmodel.updateOne(filter, update);
 
-//             await Postmodel.updateOne(filter, update);
+        return res.status(200).json({ msg: "Post Comment Deleted Successfuly." });
 
-//             return res.status(200).json({ msg: "post comment added successfuly." });
-//         }
+        // if (!data) {
+        //     return res.status(404).json({ message: 'Post Not Found' });
+        // }
 
-//         res.status(404).json({ msg: "Post Not Found!" });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// };
+        // const filter = { _id: id }
+        // const process = await Postmodel.deleteOne(filter);
+
+        // if (process) {
+        //     fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
+
+        //     return res.status(200).json({ msg: "Post deleted successfully" });
+        // }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
 
 // Update Post
 export const updatePost = async (req, res) => {
@@ -423,7 +424,7 @@ export const updatePost = async (req, res) => {
 }
 
 // Delete Post
-export const deletePost = async (req, res, next) => {
+export const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
 
