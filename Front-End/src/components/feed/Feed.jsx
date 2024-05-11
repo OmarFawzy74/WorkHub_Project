@@ -285,7 +285,7 @@ const Feed = (data) => {
       const postId = e.target.attributes.data.nodeValue;
       const comment_id = e.target.attributes.value.nodeValue;
       console.log(e);
-      axios.delete("http://localhost:3000/api/posts/deleteComment/" + postId + comment_id )
+      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + comment_id )
         .then(
           resp => {
             swal(resp.data.msg, "", "success");
