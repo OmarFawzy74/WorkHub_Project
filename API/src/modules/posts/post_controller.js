@@ -351,6 +351,58 @@ export const addComment = async (req, res) => {
     }
 };
 
+// Delete Post
+export const deleteComment = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
+
+        if (!mongoose.Types.ObjectId.isValid(postId)) {
+            return res.status(400).json({ message: 'Invalid Post ID' });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(commentId)) {
+            return res.status(400).json({ message: 'Invalid Comment ID' });
+        }
+
+        const postData = await Postmodel.findById(postId);
+
+        const commentsData = postData.comments;
+
+        let newCommentsData = [];
+
+        commentsData.filter((userComment) => {
+            if(userComment._id.valueOf() !== commentId) {
+                newCommentsData.push(userComment);
+            }
+        });
+
+        const filter = { _id: postId };
+        const update = { $set: { comments: newCommentsData } };
+
+        await Postmodel.updateOne(filter, update);
+
+        return res.status(200).json({ msg: "Post Comment Deleted Successfuly." });
+
+        // if (!data) {
+        //     return res.status(404).json({ message: 'Post Not Found' });
+        // }
+
+        // const filter = { _id: id }
+        // const process = await Postmodel.deleteOne(filter);
+
+        // if (process) {
+        //     fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
+
+        //     return res.status(200).json({ msg: "Post deleted successfully" });
+        // }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
 // Update Post
 export const updatePost = async (req, res) => {
     try {
@@ -372,7 +424,7 @@ export const updatePost = async (req, res) => {
 }
 
 // Delete Post
-export const deletePost = async (req, res, next) => {
+export const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
 

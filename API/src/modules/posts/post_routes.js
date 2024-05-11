@@ -1,7 +1,7 @@
 
 import express from "express";
 import auth from '../../middleware/auth.middleware.js';
-import { addPost, getPost, getAllPosts, addLike, updatePost, addComment, uploadPostMedia, removeLike, getUserPosts, getCommunityPosts, deletePost } from './post_controller.js'
+import { addPost, getPost, getAllPosts, addLike, updatePost, addComment, uploadPostMedia, removeLike, getUserPosts, getCommunityPosts, deletePost, deleteComment } from './post_controller.js'
 import endPoints from "../../middleware/endPoints.js";
 import { postSchema } from "./post.schema.js";
 import { validation } from "../../middleware/val.middleware.js";
@@ -16,9 +16,9 @@ router.post('/addPost', validation(postSchema), addPost); // auth(endPoints.allU
 router.put('/uploadPostMedia/:id', upload.single('media'), uploadPostMedia); // auth(endPoints.allUsersExceptAdmin)
 router.put('/addLike/:postId/:userId/:role', addLike); // auth(endPoints.allUsersExceptAdmin)
 router.put('/removeLike/:postId/:userId/:role', removeLike); // auth(endPoints.allUsersExceptAdmin)
+router.put('/deleteComment/:postId/:commentId', deleteComment); // auth(endPoints.allUsersExceptAdmin)
 router.put('/addComment/:postId/:userId/:role', addComment); // auth(endPoints.allUsersExceptAdmin)
 router.put('/updatePost/:id', updatePost); // auth(endPoints.allUsersExceptAdmin)
 router.delete('/deletePost/:id', deletePost); // auth(endPoints.allUsersExceptAdmin)
-
 
 export default router;
