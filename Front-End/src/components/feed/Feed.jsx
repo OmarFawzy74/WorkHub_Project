@@ -282,9 +282,10 @@ const Feed = (data) => {
 
     const deleteComment = (e) => {
       e.preventDefault();
+      const postId = e.target.attributes.data.nodeValue;
       const comment_id = e.target.attributes.value.nodeValue;
-      console.log(comment_id);
-      axios.delete("http://localhost:3000/api/posts/deleteComment/" + comment_id)
+      console.log(e);
+      axios.delete("http://localhost:3000/api/posts/deleteComment/" + postId + comment_id )
         .then(
           resp => {
             swal(resp.data.msg, "", "success");
@@ -331,7 +332,7 @@ const Feed = (data) => {
                       </div>
                       <div className='commentListDateAndDelete'>
                         <div><span className='commentListDate'>50 m ago</span></div>
-                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={user._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
+                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment._id} data={data._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
                       </div>
                     </li>
                   ))}
