@@ -235,7 +235,6 @@ const Navbar = () => {
               {openExplore && <div className="exploreOptions">
                 <>
                   <Link reloadDocument className='link' to="/gigs"><span>Marketplace</span></Link>
-                  <Link reloadDocument className='link' to="/community">Community</Link>
                   <Link reloadDocument className='link' to="/learn">Learn</Link>
                 </>
               </div>}
