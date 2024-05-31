@@ -197,11 +197,7 @@ const Feed = (data) => {
     const [likeCount, setLikeCount] = useState(false);
 
     useEffect(() => {
-<<<<<<< HEAD
       if(user) {
-=======
-      if (user) {
->>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
         const checkIfLiked = data.likes.some(id => id === user._id);
         setIsLiked(checkIfLiked);
       }
@@ -209,13 +205,8 @@ const Feed = (data) => {
 
     const likeHandling = (e) => {
       const postId = e.target.attributes.value.nodeValue;
-<<<<<<< HEAD
       if(!user) {
         window.location = "http://localhost:3001/login";
-=======
-      if (!user) {
-        window.location = "http://localhost:3001/login"
->>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
       }
       else {
         if (isLiked == false) {
@@ -224,11 +215,7 @@ const Feed = (data) => {
             .then((resp) => {
               // console.log(resp);
               setIsLiked(!isLiked);
-<<<<<<< HEAD
               setPosts({reload: posts.reload + 1});
-=======
-              // setPosts({ reload: posts.reload + 1 });
->>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
             })
             .catch((errors) => {
               console.log(errors);
@@ -239,11 +226,7 @@ const Feed = (data) => {
             .then((resp) => {
               // console.log(resp);
               setIsLiked(!isLiked);
-<<<<<<< HEAD
               setPosts({reload: posts.reload + 1});
-=======
-              setPosts({ reload: posts.reload + 1 });
->>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
             })
             .catch((errors) => {
               console.log(errors);
@@ -399,18 +382,7 @@ const Feed = (data) => {
   return (
     <div className='feed'>
       <div className="feedContainer">
-<<<<<<< HEAD
         {user && user.role != "admin" ?
-            <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
-              <div className='share'>
-                <div className="shareContainer">
-                  <div className="shareTop">
-                    {user &&
-                      <Link reloadDocument to={"/communityProfile/" + user?._id} >
-                        <img className='shareProfileImg' src={user?.image_url} />
-                      </Link>
-=======
-        {user ?
           <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
             <div className='share'>
               <div className="shareContainer">
@@ -426,7 +398,6 @@ const Feed = (data) => {
                     required
                     onChange={(e) =>
                       setPost({ ...post, caption: e.target.value })
->>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
                     }
                   />
                 </div>
