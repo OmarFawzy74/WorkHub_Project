@@ -264,6 +264,10 @@ export default function App() {
         {
           path: "/adminCommunity",
           element: <AdminCommunity />
+        },        
+        {
+          path: "/communityList",
+          element: <CommunityList />
         },
         {
           path: "/addCommunity",

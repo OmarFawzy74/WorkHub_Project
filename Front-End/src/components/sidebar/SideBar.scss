@@ -160,8 +160,6 @@
     background-color: rgb(179, 179, 179);
 }
 
-
-
 .sidebar {
     flex: 3;
     height: calc(90vh - 50px);
@@ -318,28 +316,15 @@
     }
 
 }
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(179, 179, 179);
-}
-
-
-
 
 .AdminSidebarActive {
     flex: 4;
-    height: calc(50vh);
+    height: calc(52vh);
     padding-left: 15px;
     padding-top: 15px;
     overflow-y: scroll;
     margin-right: 20px;
+    margin-top: 50px;
     position: sticky;
     top: 97px;
     margin-bottom: 50px;
@@ -564,11 +549,9 @@
 
 }
 
-
-
 .AdminSidebar {
     flex: 3.5 1;
-    height: 50vh;
+    height: 52vh;
     padding-left: 15px;
     padding-top: 15px;
     overflow-y: scroll;
@@ -796,19 +779,6 @@
     }
 
 }
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(179, 179, 179);
-}
-
-
 
 .sidebar {
     flex: 3;
@@ -965,15 +935,4 @@
         // }
     }
 
-}
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: rgb(179, 179, 179);
 }

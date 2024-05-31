@@ -53,7 +53,7 @@ const Category = () => {
                     <h1>Category List</h1>
                 </div>
                 <div className='contain-table'>
-                    <Link reloadDocument to={'/addCategory'}>
+                    <Link to={'/addCategory'}>
                         <button className='addCategoryButton' onClick={clicked}>
                             Add Category
                         </button>

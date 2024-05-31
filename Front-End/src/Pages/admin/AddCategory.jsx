@@ -36,7 +36,7 @@ const AddCategory = () => {
         })
       }
   return (
-    <div className={sidebarStatus() ? 'addCategoryContainer' : 'addCategoryContainer sidebar-close-addCategory'}>
+    <div className={sidebarStatus() ? 'addCategoryContainerActive' : 'addCategoryContainer sidebar-close-addCategory'}>
             <section className='AddCategoryPage'>
                 <div>
                     <h1>Add Category</h1>

@@ -34,7 +34,7 @@ const ClientList = () => {
 
   return (
     <>
-      <section className={sidebarStatus() ? 'ClientsListPage' : 'ClientsListPage sidebar-close-client'}>
+      <section className={sidebarStatus() ? 'ClientsListPageActive' : 'ClientsListPage sidebar-close-client'}>
         <div>
           <h1>Clients List</h1>
         </div>

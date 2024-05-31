@@ -59,7 +59,7 @@ const ManageLearn = () => {
                 <h1>Course List</h1>
             </div>
             <div className='courseContain-table'>
-                <Link reloadDocument to={'/addCourse'}>
+                <Link to={'/addCourse'}>
                     <button className='addCourseButton' onClick={clicked}>
                         Add Course
                     </button>

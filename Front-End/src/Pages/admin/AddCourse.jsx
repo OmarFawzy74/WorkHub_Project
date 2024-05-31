@@ -135,7 +135,7 @@ const AddCourse = () => {
           });
     }
     return (
-        <div className={sidebarStatus() ? 'addCourseContainer' : 'addCourseContainer sidebar-close-addCourse'}>
+        <div className={sidebarStatus() ? 'addCourseContainerActive' : 'addCourseContainer sidebar-close-addCourse'}>
             <section className='AddCoursePage'>
                 <div>
                     <h1>Add Course</h1>

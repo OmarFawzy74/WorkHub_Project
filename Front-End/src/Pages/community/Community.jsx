@@ -10,7 +10,7 @@ const Community = () => {
 
     return (
         <div className='communityPage'>
-            <h1 className={user && user.role == "admin" ? "adminCommunityHeader" : "userCommunityHeader"}>Community</h1>
+            <h1 className="userCommunityHeader">Community</h1>
             <div className="communityContainer">
                 <SideBar />
                 <Feed data={user}/>

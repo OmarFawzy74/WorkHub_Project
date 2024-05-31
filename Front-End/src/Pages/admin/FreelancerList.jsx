@@ -34,7 +34,7 @@ const FreelancerList = () => {
 
   return (
     <>
-      <section className={sidebarStatus() ? 'FreelancerListPage' : 'FreelancerListPage sidebar-close-freelancer'}>
+      <section className={sidebarStatus() ? 'FreelancerListPageActive' : 'FreelancerListPage sidebar-close-freelancer'}>
         <div>
           <h1>Freelancers List</h1>
         </div>
