@@ -20,8 +20,6 @@ const Feed = (data) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-
-
   const [posts, setPosts] = useState({
     loading: true,
     results: [],
