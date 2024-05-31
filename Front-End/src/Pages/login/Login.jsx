@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import { getAuthUser, setAuthUser } from '../../localStorage/storage';
+import { Link } from "react-router-dom";
 
 
 function Login() {
@@ -80,6 +81,7 @@ function Login() {
           <h1>Success starts here</h1>
           <p><img className="loginCheck" src="/img/loginCheck.png" />Over 600 categories</p>
           <p><img className="loginCheck" src="/img/loginCheck.png" />Pay per project, not per hour</p>
+          <p><img className="loginCheck" src="/img/loginCheck.png" />Courses Platform</p>
           <p><img className="loginCheck" src="/img/loginCheck.png" />Access to talent and businesses across the globe</p>
         </div>
         <img className="loginPic" src="/img/loginPic.png" />
@@ -89,7 +91,7 @@ function Login() {
 
           <form onSubmit={userLoginFun}>
             <h1>Sign in to your account</h1>
-            <label className="emailLabel" htmlFor="">Email or Username</label>
+            <label className="emailLabel" htmlFor="">Email</label>
             <input
               name="username"
               required
@@ -110,6 +112,7 @@ function Login() {
               onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
             />
             <button type="submit">Login</button>
+            <span className="alreadyHaveAccount">New to WorHub ?<Link reloadDocument to={"/register"} className="alreadyHaveAccountLink"> Sign Up</Link></span> 
             {error && error}
           </form>
         </div>

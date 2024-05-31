@@ -92,7 +92,7 @@ function Register() {
         // );
         console.log(resp.data.message);
         console.log(resp.data.userData);
-        if(user?.role == "freelancer") {
+        if (user?.role == "freelancer") {
           resp.data.userData.skills = processData(resp.data.userData.skills);
           resp.data.userData.languages = processData(resp.data.userData.languages);
         }
@@ -152,154 +152,169 @@ function Register() {
   }
 
   return (
-    <div className="registerContainer">
-      <div className="register">
-        <form onSubmit={addUserData}>
-          <div className="left">
-            <h1 className="createAccount">Create a new account</h1>
-            <label className="singupDesc" htmlFor="">
-              Name
-            </label>
-            <input
-              className="Input"
-              name="name"
-              type="text"
-              placeholder="Fawzy"
-              required
-              onChange={(e) => setUser({ ...user, name: e.target.value })}
-            />
-            <label className="singupDesc" htmlFor="">
-              Email
-            </label>
-            <input
-              className="Input"
-              name="email"
-              type="email"
-              placeholder="email"
-              required
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-            />
-            <label className="singupDesc" htmlFor="">
-              Password
-            </label>
-            <input
-              className="Input"
-              name="password"
-              type="password"
-              required
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-            />
-
-            <label className="singupDesc" htmlFor="">
-              Profile Picture
-            </label>
-            <input className="Input" type="file" ref={image} />
-            <label className="singupDesc" htmlFor="">
-              Country
-            </label>
-            <select
-              name="country"
-              type="text"
-              required
-              onChange={(e) => setUser({ ...user, country: e.target.value })}
-            >
-              <option value={""} disabled selected>
-                Select Country
-              </option>
-              <option value="Egypt">Egypt</option>
-              <option value="United States">United States</option>
-              <option value="England">England</option>
-              <option value="France">France</option>
-            </select>
-
-            <button className="registerButton" type="submit">
-              Register
-            </button>
-          </div>
-          <div className="right">
-            <h1 className="becomeSeller">I want to become a seller</h1>
-            <div className="toggle">
-              <label htmlFor="">Activate the seller account</label>
-              <label className="switch">
-                <input type="checkbox" onChange={handleRole} />
-                <span className="slider round"></span>
+    <div className="registerPage">
+      <h1 className="signUpTitle">Sign Up</h1>
+      <div className="registerContainer">
+        <div className="register">
+          <form onSubmit={addUserData}>
+            <div className="left">
+              <h1 className="createAccount">Create a new account</h1>
+              <label className="singupDesc" htmlFor="">
+                Name
               </label>
-            </div>
+              <input
+                className="Input"
+                name="name"
+                type="text"
+                placeholder="Enter your Name"
+                required
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+              />
+              <label className="singupDesc" htmlFor="">
+                Email
+              </label>
+              <input
+                className="Input"
+                name="email"
+                type="email"
+                placeholder="Enter your Email"
+                required
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+              />
+              <label className="singupDesc" htmlFor="">
+                Password
+              </label>
+              <input
+                className="Input"
+                name="password"
+                type="password"
+                placeholder="Enter your Password"
+                required
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+              />
 
-            {user?.role == "freelancer" && (
-              <>
-                <label className="phoneNo" htmlFor="">
-                  Phone Number
+              <label className="singupDesc" htmlFor="">
+                Profile Picture
+              </label>
+              <input className="Input" type="file" ref={image} />
+              <label className="singupDesc" htmlFor="">
+                Country
+              </label>
+              <select
+                name="country"
+                type="text"
+                required
+                onChange={(e) => setUser({ ...user, country: e.target.value })}
+              >
+                <option value={""} disabled selected>
+                  Select Country
+                </option>
+                <option value="Egypt">Egypt</option>
+                <option value="United States">United States</option>
+                <option value="England">England</option>
+                <option value="France">France</option>
+              </select>
+
+              <button className="registerButton" type="submit">
+                Register
+              </button>
+            </div>
+            <div className="right">
+              <h1 className="becomeSeller">I want to become a seller</h1>
+              <div className="toggle">
+                <label htmlFor="">Activate the seller account</label>
+                <label className="switch">
+                  <input type="checkbox" onChange={handleRole} />
+                  <span className="slider round"></span>
                 </label>
-                <input
-                  className="phoneNoInput"
-                  name="phoneNumber"
-                  type="text"
-                  placeholder="+20 1090559824"
-                  required
-                  onChange={(e) =>
-                    setUser({ ...user, phoneNumber: e.target.value })
-                  }
-                />
-                <label className="singupDesc" htmlFor="">
-                  Description
-                </label>
-                <textarea
-                  placeholder="A short desc of yourself"
-                  name="desc"
-                  id=""
-                  cols="30"
-                  rows="10"
-                  required
-                  onChange={(e) => setUser({ ...user, desc: e.target.value })}
-                ></textarea>
-                <label className="singupDesc" htmlFor="">
-                  Skills
-                </label>
-                <Stack spacing={3} sx={{ width: 500 }}>
-                  <Autocomplete
-                    className="skillsInput"
-                    multiple
-                    id="tags-outlined"
-                    options={top100Skills}
-                    getOptionLabel={(option) => option}
-                    value={selectedSkillsOptions}
-                    onChange={handleSkillsChange}
-                    // onInputChange={handleInputChange}
-                    // onClose={handleCloseAutocomplete}
-                    // filterSelectedOptions
-                    renderInput={(params) => (
-                      <TextField {...params} label="" placeholder="Add Skill" />
-                    )}
+              </div>
+              {user?.role == "freelancer" && (
+                <>
+                  <label className="phoneNo" htmlFor="">
+                    Phone Number
+                  </label>
+                  <input
+                    className="phoneNoInput"
+                    name="phoneNumber"
+                    type="text"
+                    placeholder="+20 1090559824"
+                    required
+                    onChange={(e) =>
+                      setUser({ ...user, phoneNumber: e.target.value })
+                    }
                   />
-                </Stack>
-                <label className="singupDesc" htmlFor="">
-                  Languages
-                </label>
-                <Stack spacing={3} sx={{ width: 500 }}>
-                  <Autocomplete
-                    multiple
-                    id="tags-outlined"
-                    options={top100Languages}
-                    getOptionLabel={(option) => option}
-                    value={selectedLanguagesOptions}
-                    onChange={handleLanguagesChange}
-                    // onInputChange={handleInputChange}
-                    // onClose={handleCloseAutocomplete}
-                    // filterSelectedOptions
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=""
-                        placeholder="Add Language"
-                      />
-                    )}
+                  <label className="singupDesc" htmlFor="">
+                    Description
+                  </label>
+                  <textarea
+                    placeholder="A short desc of yourself"
+                    name="desc"
+                    id=""
+                    cols="30"
+                    rows="10"
+                    required
+                    onChange={(e) => setUser({ ...user, desc: e.target.value })}
+                  ></textarea>
+                  <label className="singupDesc" htmlFor="">
+                    Specialization
+                  </label>
+                  <input
+                    className="Input"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your Specialization"
+                    required
+                    onChange={(e) => setUser({ ...user, email: e.target.value })}
                   />
-                </Stack>
-              </>
-            )}
-          </div>
-        </form>
+                  <label className="singupDesc" htmlFor="">
+                    Skills
+                  </label>
+                  <Stack spacing={3} sx={{ width: 500 }}>
+                    <Autocomplete
+                      className="skillsInput"
+                      multiple
+                      id="tags-outlined"
+                      options={top100Skills}
+                      getOptionLabel={(option) => option}
+                      value={selectedSkillsOptions}
+                      onChange={handleSkillsChange}
+                      // onInputChange={handleInputChange}
+                      // onClose={handleCloseAutocomplete}
+                      // filterSelectedOptions
+                      renderInput={(params) => (
+                        <TextField {...params} label="" placeholder="Add Skill" />
+                      )}
+                    />
+                  </Stack>
+                  <label className="singupDesc" htmlFor="">
+                    Languages
+                  </label>
+                  <Stack spacing={3} sx={{ width: 500 }}>
+                    <Autocomplete
+                      className="skillsInput"
+                      multiple
+                      id="tags-outlined"
+                      options={top100Languages}
+                      getOptionLabel={(option) => option}
+                      value={selectedLanguagesOptions}
+                      onChange={handleLanguagesChange}
+                      // onInputChange={handleInputChange}
+                      // onClose={handleCloseAutocomplete}
+                      // filterSelectedOptions
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label=""
+                          placeholder="Add Language"
+                        />
+                      )}
+                    />
+                  </Stack>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

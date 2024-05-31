@@ -1,14 +1,27 @@
-.registerContainer{
+.registerPage{
+
+  .signUpTitle{
+    margin-top: 30px;
+    margin-bottom: 0px !important;
+    margin-left: 670px;
+    font-weight: 500;
+    font-size: 42px;
+    color: #74767e;
+    margin-bottom: 15px;
+  }
+
+  .registerContainer{
     display: flex;
     background-color: #ffffff;
-    width: 72%;
+    width: 71%;
     height: 100%;
     margin-left: 200px;
     border: 1px solid #e9e9e9;
-    padding: 10px;
+    padding: 7px;
+    padding-bottom: 0px;
     box-shadow: 3px 5px 20px 5px #e9e9e9;
     border-radius: 20px;
-    margin-bottom: 100px;
+    margin-bottom: 120px;
     margin-top: 50px;
 
     .register {
@@ -37,12 +50,13 @@
 
             .createAccount{
               position: relative;
-              bottom: 30px;
+              bottom: 40px;
             }
             
             .becomeSeller{
               position: relative;
-              bottom: 30px;
+              bottom: 40px;
+              width: 460px;
             }
       
             label {
@@ -52,13 +66,14 @@
     
             .phoneNo{
                 position: relative;
-                top: 50px;
+                top: 10px;
             }
     
             .phoneNoInput{
                 border: 1px solid rgb(216, 214, 214) !important;
-                position: relative;
-                top: 30px;
+                // position: relative;
+                // top: 30px;
+                width: 400px;
             }
 
             .phoneNoInput:hover {
@@ -74,16 +89,28 @@
     
             .singupDesc{
                 position: relative;
-                top: 20px;
+                top: 10px;
             }
-      
-            textarea,
+
+            textarea {
+              width: 400px;
+              height: 120px;
+              padding: 10px;
+              border: 1px solid rgb(216, 214, 214);
+            }
+  
             select {
               padding: 10px;
               border: 1px solid rgb(216, 214, 214);
             }
             .Input {
+              width: 400px;
               border: 1px solid rgb(216, 214, 214) !important;
+            }
+
+            .skillsInput {
+              width: 400px;
+              // border: 1px solid rgb(216, 214, 214) !important;
             }
 
             .Input:hover {
@@ -130,7 +157,7 @@
               align-items: center;
               gap: 10px;
               position: absolute;
-              bottom: 350px;
+              bottom: 320px;
               
             
               .switch {
@@ -191,4 +218,5 @@
         }
       }
       
+}
 }

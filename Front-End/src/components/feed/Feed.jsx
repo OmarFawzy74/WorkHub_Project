@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import "./Feed.scss"
 import Share from '../share/Share'
 import Post from '../post/Post'
-import { Link, useParams } from 'react-router-dom'
+import { Form, Link, useParams } from 'react-router-dom'
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
 import { processDate } from '../../Pages/messages/Messages'
@@ -19,8 +19,6 @@ const Feed = (data) => {
   const [isLiked, setIsLiked] = useState(false)
   const [commentOpen, setCommentOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-
-
 
   const [posts, setPosts] = useState({
     loading: true,
@@ -64,10 +62,10 @@ const Feed = (data) => {
       .then((resp) => {
         // image.current.value = null;
         // swal(resp.data.message, "", "success");
-        // console.log(resp);
+        console.log(resp);
         document.querySelector("#addPostForm").reset();
         document.getElementById("selectCategory").value = "";
-
+        setPosts({ reload: posts.reload + 1 });
       })
       .catch((errors) => {
         // swal(errors.response.data.message, "", "error");
@@ -88,10 +86,9 @@ const Feed = (data) => {
         communityId: post.communityId,
       })
       .then((resp) => {
-        setPosts({ reload: posts.reload + 1 });
+        console.log(resp);
         const postId = resp.data.savePost._id;
         uploadMedia(postId);
-        // console.log(resp);
       })
       .catch((errors) => {
         console.log(errors);
@@ -135,12 +132,12 @@ const Feed = (data) => {
     }
   }, [joinedCommunities.reload]);
 
-
   useEffect(() => {
     setPosts({ ...posts, loading: true })
     axios.get("http://localhost:3000/api/posts/getAllPosts")
       .then(
         resp => {
+          console.log(resp);
           setPosts({ results: resp.data.posts.reverse(), loading: false, err: null });
         }
       ).catch(err => {
@@ -167,35 +164,44 @@ const Feed = (data) => {
   function Panel({ data }) {
     const [isActive, setIsActive] = useState(false);
     return (
-      <section className="panel">
-        <img
-          onClick={() => setIsActive(!isActive)}
-          className="postTopRightImg"
-          src="/img/option.png"
-        />
+      <>
+        {user && user._id == data.posterId._id &&
+          <section className="panel">
+            <img
+              onClick={() => setIsActive(!isActive)}
+              className="postTopRightImg"
+              src="/img/option.png"
+            />
 
-        {isActive ? (
-          <ul className="deletePostContainer">
-            <li
-              variant="contained"
-              className="sidebarDeleteList"
-              value={data._id}
-              onClick={deletePost}
-            >
-              Delete Post
-            </li>
-          </ul>
-        ) : null}
-      </section>
+            {isActive ? (
+              <ul className="deletePostContainer">
+                <li
+                  variant="contained"
+                  className="sidebarDeleteList"
+                  value={data._id}
+                  onClick={deletePost}
+                >
+                  Delete Post
+                </li>
+              </ul>
+            ) : null}
+          </section>
+        }
+      </>
     );
   }
 
 
   function LikeHandler({ data }) {
     const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(false);
 
     useEffect(() => {
+<<<<<<< HEAD
       if(user) {
+=======
+      if (user) {
+>>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
         const checkIfLiked = data.likes.some(id => id === user._id);
         setIsLiked(checkIfLiked);
       }
@@ -203,8 +209,13 @@ const Feed = (data) => {
 
     const likeHandling = (e) => {
       const postId = e.target.attributes.value.nodeValue;
+<<<<<<< HEAD
       if(!user) {
         window.location = "http://localhost:3001/login";
+=======
+      if (!user) {
+        window.location = "http://localhost:3001/login"
+>>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
       }
       else {
         if (isLiked == false) {
@@ -213,7 +224,11 @@ const Feed = (data) => {
             .then((resp) => {
               // console.log(resp);
               setIsLiked(!isLiked);
+<<<<<<< HEAD
               setPosts({reload: posts.reload + 1});
+=======
+              // setPosts({ reload: posts.reload + 1 });
+>>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
             })
             .catch((errors) => {
               console.log(errors);
@@ -224,7 +239,11 @@ const Feed = (data) => {
             .then((resp) => {
               // console.log(resp);
               setIsLiked(!isLiked);
+<<<<<<< HEAD
               setPosts({reload: posts.reload + 1});
+=======
+              setPosts({ reload: posts.reload + 1 });
+>>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
             })
             .catch((errors) => {
               console.log(errors);
@@ -249,42 +268,138 @@ const Feed = (data) => {
 
   function CommentsPanel({ data }) {
     const [isActive, setIsActive] = useState(false);
+
+    const [comment, setComment] = useState({
+      loading: true,
+      err: null,
+      commentDesc: "",
+      reload: 0,
+      results: ""
+    });
+
+    const addCommentData = async (e) => {
+      e.preventDefault();
+      const postId = e.target.attributes.value.nodeValue;
+      console.log(postId);
+      setComment({ ...comment, loading: true, err: null });
+      axios
+        .put("http://localhost:3000/api/posts/addComment/" + postId + "/" + user._id + "/" + user.role, {
+          comment: comment.commentDesc,
+        })
+        .then((resp) => {
+          setComment({ results: resp.data, reload: posts.reload + 1 });
+          console.log(resp);
+        })
+        .catch((errors) => {
+          console.log(errors);
+        });
+    };
+
+    const deleteComment = (e) => {
+      e.preventDefault();
+      const postId = e.target.attributes.data.nodeValue;
+      const commentId = e.target.attributes.value.nodeValue;
+      console.log(e);
+      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
+        .then(
+          resp => {
+            console.log(resp);
+            // swal(resp.data.msg, "", "success");
+            // setPosts({ reload: posts.reload + 1 });
+          }
+        ).catch(error => {
+          console.log(error);
+        })
+    }
+
     return (
       <div className="postBottom">
         <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
-          <LikeHandler data={data}></LikeHandler>
-        </div>
-        <div className='postBottomRight'>
-
+          <div>
+            <LikeHandler data={data}></LikeHandler>
+          </div>
           <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
             <img className="commentsImg" src="/img/comment.png" alt="" />
-            <span>Comments</span>
+            <span>{data.comments.length} Comments</span>
           </div>
-
+        </div>
+        <div className='postBottomRight'>
           {isActive ? (
-            <div className={isActive ? "activeWrite" : "write"}>
-              <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
-                <img
-                  className="profileImgComment"
-                  src={data?.posterId.image_url}
-                  alt=""
-                />
-              </Link>
-              <input
-                type="text"
-                placeholder="Write a comment"
-              />
-              <img className="sendCommentImg" src="/img/sendComment.png" alt="" />
-            </div>
+            <>
+              {data.comments &&
+                <ul className="commentList">
+                  {data.comments.map((userComment) => (
+                    <li>
+                      <div className='userInfoCommentList'>
+                        <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
+                          <img
+                            className="profileImgCommentList"
+                            src={userComment?.image_url}
+                          />
+                        </Link>
+                      </div>
+                      <div className='nameCommentContainer'>
+                        <div className='commentInfoAndDeleteComment'>
+                          <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
+                            <span className='commentListUsername'>{userComment?.name}</span>
+                          </Link>
+                        </div>
+                        <p className='commentContent'>{userComment.comment}</p>
+                      </div>
+                      <div className='commentListDateAndDelete'>
+                        <div><span className='commentListDate'>50 m ago</span></div>
+                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment._id} data={data._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              }
+              {user &&
+                <div className={isActive ? "activeWrite" : "write"}>
+                  <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
+                    <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
+                      <img
+                        className="profileImgComment"
+                        src={user?.image_url}
+                        alt=""
+                      />
+                    </Link>
+                    <input
+                      type="text"
+                      placeholder="Write a comment"
+                      required
+                      onChange={(e) =>
+                        setComment({ ...comment, commentDesc: e.target.value })
+                      }
+                    />
+                    <button type='submit' className='sendCommentButton'><img className="sendCommentImg" src="/img/sendComment.png" alt="" /></button>
+
+                  </form>
+                </div>
+              }
+            </>
           ) : null}
         </div>
       </div>
     );
   }
 
+
+  const checkMedia = (data) => {
+    const processedData = data.split(".");
+    console.log(processedData);
+    if (processedData[1] == "mp4") {
+      return "video"
+    }
+    else {
+      return "image"
+    }
+  }
+
   return (
     <div className='feed'>
       <div className="feedContainer">
+<<<<<<< HEAD
         {user && user.role != "admin" ?
             <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
               <div className='share'>
@@ -294,60 +409,71 @@ const Feed = (data) => {
                       <Link reloadDocument to={"/communityProfile/" + user?._id} >
                         <img className='shareProfileImg' src={user?.image_url} />
                       </Link>
+=======
+        {user ?
+          <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
+            <div className='share'>
+              <div className="shareContainer">
+                <div className="shareTop">
+                  {user &&
+                    <Link reloadDocument to={"/communityProfile/" + user?._id} >
+                      <img className='shareProfileImg' src={user?.image_url} />
+                    </Link>
+                  }
+                  <input
+                    placeholder={"What's on your mind " + user?.name + " ?"}
+                    className='shareInput'
+                    required
+                    onChange={(e) =>
+                      setPost({ ...post, caption: e.target.value })
+>>>>>>> 166a2c2c0befb327ea689e294a972fca1df2db04
                     }
-                    <input
-                      placeholder={"What's on your mind " + user?.name + " ?"}
-                      className='shareInput'
-                      required
-                      onChange={(e) =>
-                        setPost({ ...post, caption: e.target.value })
-                      }
-                    />
-                  </div>
-                  <hr className='shareHr' />
-                  <div className="shareBottom">
-                    <div className="shareOptions">
-                      <div className="shareOptionImg">
-                        <img className='shareIcon' src="/img/photo.png" alt="" />
-                        <div className="fileInputContainer">
-                          <input className='addPostImg' required type="file" ref={media} />
-                          <span className="fileInputLabel">Upload Image</span>
-                        </div>
-                      </div>
-                      <div className="shareOption">
-                        <img className='shareIcon' src="/img/groups.png" />
-
-                        <select
-                          name="serviceCategoryId"
-                          required
-                          onChange={(e) =>
-                            setPost({ ...post, communityId: e.target.value })
-                          }
-                          id="selectCategory"
-                        >
-                          <option value={""} disabled selected>
-                            Select Community
-                          </option>
-                          {joinedCommunities.loading == false &&
-                            joinedCommunities.err == null &&
-                            joinedCommunities.results &&
-                            joinedCommunities.results.length > 0 &&
-                            joinedCommunities.results.map((community) => (
-                              <>
-                                <option value={community._id}>
-                                  {community.communityName}
-                                </option>
-                              </>
-                            ))}
-                        </select>
+                  />
+                </div>
+                <hr className='shareHr' />
+                <div className="shareBottom">
+                  <div className="shareOptions">
+                    <div className="shareOptionImg">
+                      <img className='shareIcon' src="/img/photo.png" alt="" />
+                      <div className="fileInputContainer">
+                        <input className='addPostImg' type="file" accept="video/,image/" ref={media} />
+                        <span className="fileInputLabel">Upload Media</span>
                       </div>
                     </div>
-                    <button type='submit' className='shareButton'>Post</button>
+                    <div className="shareOption">
+                      <img className='shareIcon' src="/img/groups.png" />
+
+                      <select
+                        name="serviceCategoryId"
+                        required
+                        onChange={(e) =>
+                          setPost({ ...post, communityId: e.target.value })
+                        }
+                        id="selectCategory"
+                      >
+                        <option value={""} disabled selected>
+                          Select Community
+                        </option>
+                        {joinedCommunities.loading == false &&
+                          joinedCommunities.err == null &&
+                          joinedCommunities.results &&
+                          joinedCommunities.results.length > 0 &&
+                          joinedCommunities.results.map((community) => (
+                            <>
+                              <option value={community._id}>
+                                {community.communityName}
+                              </option>
+                            </>
+                          ))}
+                      </select>
+                    </div>
                   </div>
+                  <button type='submit' className='shareButton'>Post</button>
                 </div>
               </div>
-            </form>
-        : null
+            </div>
+          </form>
+          : null
         }
 
 
@@ -364,15 +490,20 @@ const Feed = (data) => {
                     <div className="postTopLeft">
                       <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
                       <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
-                      <span className="postDate">{processDate(post?.creationDate)} ago</span>
                     </div>
+                    <span className="postDate">{processDate(post?.creationDate)} ago</span>
+
                     <div className="postTopRight">
                       <Panel data={post} title={index}></Panel>
                     </div>
                   </div>
                   <div className="postCenter">
                     <span className="postText">{post?.caption}</span>
-                    <img className='postImg' src={post?.media_url} alt="" />
+                    {checkMedia(post?.media_url) == "image" ?
+                      <img className='postImg' src={post?.media_url} />
+                      :
+                      <video className='postImg' src={post.media_url} controls></video>
+                    }
                   </div>
                   <CommentsPanel data={post} title={index}></CommentsPanel>
                 </div>
