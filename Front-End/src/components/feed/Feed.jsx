@@ -195,34 +195,41 @@ const Feed = (data) => {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-      const checkIfLiked = data.likes.some(id => id === user._id);
-      setIsLiked(checkIfLiked);
-    }, [data.likes, user._id]);
+      if(user) {
+        const checkIfLiked = data.likes.some(id => id === user._id);
+        setIsLiked(checkIfLiked);
+      }
+    }, [data.likes]);
 
     const likeHandling = (e) => {
       const postId = e.target.attributes.value.nodeValue;
-      if (isLiked == false) {
-        axios
-          .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
-          .then((resp) => {
-            // console.log(resp);
-            setIsLiked(!isLiked);
-            setPosts({reload: posts.reload + 1});
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
-      } else {
-        axios
-          .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
-          .then((resp) => {
-            // console.log(resp);
-            setIsLiked(!isLiked);
-            setPosts({reload: posts.reload + 1});
-          })
-          .catch((errors) => {
-            console.log(errors);
-          });
+      if(!user) {
+        window.location = "http://localhost:3001/login";
+      }
+      else {
+        if (isLiked == false) {
+          axios
+            .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
+            .then((resp) => {
+              // console.log(resp);
+              setIsLiked(!isLiked);
+              setPosts({reload: posts.reload + 1});
+            })
+            .catch((errors) => {
+              console.log(errors);
+            });
+        } else {
+          axios
+            .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
+            .then((resp) => {
+              // console.log(resp);
+              setIsLiked(!isLiked);
+              setPosts({reload: posts.reload + 1});
+            })
+            .catch((errors) => {
+              console.log(errors);
+            });
+        }
       }
     };
 
@@ -278,7 +285,7 @@ const Feed = (data) => {
   return (
     <div className='feed'>
       <div className="feedContainer">
-        {user ?
+        {user && user.role != "admin" ?
             <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
               <div className='share'>
                 <div className="shareContainer">
@@ -342,6 +349,10 @@ const Feed = (data) => {
             </form>
         : null
         }
+
+
+        {/* {user && user.role == "admin" && <h1>All Posts</h1>} */}
+
 
         {posts.loading == false &&
           posts.results &&

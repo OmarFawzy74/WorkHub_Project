@@ -86,6 +86,7 @@
             // border-bottom: 1px solid rgb(223, 221, 221);
             background-color: #ffffff;
             color: #74767e;
+            border-bottom: 1px #e7e7e7 solid;
     
             .links {
                 position: relative;
@@ -125,7 +126,8 @@
                 width: 65px;
                 height: 65px;
                 position: relative;
-                bottom: 10px;
+                bottom: 5px;
+                right: 3px;
             }
 
             .text {
@@ -243,17 +245,15 @@
 
     .menu {
         border-top: 1px solid rgb(223, 221, 221);
-        border-bottom: 1px solid rgb(223, 221, 221);
         position: relative;
+        top: 20px;
         width: 1519px;
         display: flex;
         height: 40px;
-        // justify-content: space-between;
         font-weight: 500;
         color: rgb(0, 0, 0);
         background-color: #fff;
         padding: 0 90px;
-        // margin-top: -10px;
         text-decoration: none !important;
 
         .downMenuImg{
@@ -276,6 +276,7 @@
             margin-right: 40px;
             position: relative;
             left: 70px;
+            padding-bottom: 10px;
         }
         .menuLink:hover{
             border-bottom: 4px solid #1dbf73;

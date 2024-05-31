@@ -16,8 +16,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -27,20 +25,11 @@ import Person4Icon from '@mui/icons-material/Person4';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
 import "./test.scss";
-
-
-
-// import "./Gigs.scss";
-import { gigs } from "../../data";
-import GigCard from "../../components/GigCard/GigCard";
 import axios from "axios";
-import swal from "sweetalert";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAuthUser, removeAuthUser } from '../../localStorage/storage';
 import { useEffect, useRef, useState } from "react";
-import Gigs from '../gigs/Gigs';
 import { sidebarStatus } from '../../App';
 
 
@@ -116,21 +105,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 //   return sidebarData;
 // }
 
+
 export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) {
   const theme = useTheme();
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleDrawerOpen = () => {
-  //   setOpen(true);
-  //   sidebarData = !open;
-  //   console.log(sidebarData);
-  // };
-
-  // const handleDrawerClose = () => {
-  //   setOpen(false);
-  //   sidebarData = !open;
-  //   console.log(sidebarData);
-  // };
 
   const user = getAuthUser();
 
@@ -210,7 +187,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
     }
 
     if (text == "Community") {
-      return navigate("/communityList");
+      return navigate("/adminCommunity");
     }
 
     if(text == "") {
@@ -252,7 +229,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
     }
 
     if(text == "PeopleIcon") {
-      return navigate("/communityList");
+      return navigate("/adminCommunity");
     }
 
     if(text == "Person4Icon") {
@@ -383,101 +360,9 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
               </ListItemButton>
             </ListItem>
         </List>
-        {/* <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <DashboardIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {/* <Typography paragraph> */}
-
-        {/* <div className="gigs">
-      <div className={open ? "gigsContainer" : "allGigsContainer"}>
-        <div className="breadcrumbs">
-          {user == undefined ? <Link className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="./img/homeIcon.png" /> Home {'>'}</Link> : null}
-        </div>
-
-        {category !== undefined ?
-          <>
-            <h1 >Web Development</h1>
-            <p>
-              Explore the boundaries of art and technology with WorkHub's AI artists
-            </p>
-          </>
-          : null}
-
-        <div className="menu">
-          <div className="left">
-            <span>Budget</span>
-            <input ref={minRef} type="number" placeholder="min" />
-            <input ref={maxRef} type="number" placeholder="max" />
-            <button onClick={apply}>Apply</button>
-          </div>
-          <div className="right">
-            <span className="sortBy">Sort by</span>
-            <span className="sortType">
-              {sort === "sales" ? "Best Selling" : "Newest"}
-            </span>
-            <img src="./img/down.png" alt="" onClick={() => setOpenSortMenu(!openSortMenu)} />
-            {openSortMenu && (
-              <div className="rightMenu">
-                {sort === "sales" ? (
-                  <span onClick={() => reSort("createdAt")}>Newest</span>
-                ) : (
-                  <span onClick={() => reSort("sales")}>Best Selling</span>
-                )}
-                <span onClick={() => reSort("sales")}>Popular</span>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className={open ? "gigsCards": "allGigsCards"}>
-          {services.loading == false &&
-            services.err == null &&
-            services.results &&
-            services.results.length > 0 &&
-            services.results.map((service) => (
-              <GigCard key={service._id} item={service} />
-            ))}
-        </div>
-      </div>
-    </div> */}
-        {/* </Typography> */}
-        {/* <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography> */}
       </Box>
     </Box>
   );

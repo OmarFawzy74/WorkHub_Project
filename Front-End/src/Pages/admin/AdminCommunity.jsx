@@ -1,23 +1,23 @@
 import React from 'react'
-import "./Community.scss"
+import "../community/Community.scss"
 import SideBar from '../../components/sidebar/SideBar'
 import Feed from '../../components/feed/Feed'
 import RightBar from '../../components/rightbar/RightBar'
 import { getAuthUser } from '../../localStorage/storage'
 
-const Community = () => {
-    const user = getAuthUser()
+const AdminCommunity = () => {
+    const user = getAuthUser();
 
     return (
         <div className='communityPage'>
-            <h1 className={user && user.role == "admin" ? "adminCommunityHeader" : "userCommunityHeader"}>Community</h1>
+            <h1>Community</h1>
             <div className="communityContainer">
                 <SideBar />
-                <Feed data={user}/>
-                <RightBar />
+                <Feed/>
+                {/* <RightBar /> */}
             </div>
         </div>
     )
 }
 
-export default Community
+export default AdminCommunity
