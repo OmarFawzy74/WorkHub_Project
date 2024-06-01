@@ -289,7 +289,7 @@ export default function App() {
           element: <Gigs />
         },
         {
-          path: "/gigs/:category",
+          path: "/gigs?:id",
           element: <Gigs />
         },
         {
