@@ -78,6 +78,10 @@ const login = async (req, res) => {
 
     userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
 
+    if(userData.coverImage_url != undefined) {
+      userData.coverImage_url = "http://" + req.hostname + ":3000/" + userData.coverImage_url;
+    }
+
     res.status(200).json({ msg: "Sign in successful" , userData});
   } catch (error) {
     console.error(error);
