@@ -23,7 +23,7 @@ const CommunityProfile = (data) => {
         const formData = new FormData();
         formData.append("coverImage", coverImage_url.current.files[0]);
         axios
-          .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id, formData)
+          .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id + "/" + user.role, formData)
           .then((resp) => {
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
