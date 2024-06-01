@@ -180,8 +180,11 @@ const Profile = () => {
                                 src={freelancer?.results.image_url}
                                 alt=""
                             />
+                            <img className="onlineImg" src={freelancer?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                             <div className="info">
                                 <span className='myName'>{freelancer?.results.name}</span>
+                                <div className="freelancerSpecialization"><span>{freelancer?.results.specialization}</span></div>
+
                                 <div className="userInfo">
                                     <img
                                         className="locationIcon"
@@ -215,8 +218,10 @@ const Profile = () => {
                                                 src={freelancer?.results.image_url}
                                                 alt=""
                                             />
+                                            <img className="onlineImg" src={freelancer?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                             <div className="rightInfo">
                                                 <span className='rightMyName'>{freelancer?.results.name}</span>
+                                                <span className="onlineStatus">{freelancer?.results.activityStatus}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -283,6 +288,7 @@ const Profile = () => {
                                 src={client?.results.image_url}
                                 alt=""
                             />
+                            <img className="onlineImg" src={client?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                             <div className="info">
                                 <span className='myName'>{client?.results.name}</span>
                                 <div className="userInfo">
@@ -318,8 +324,10 @@ const Profile = () => {
                                                 src={client?.results.image_url}
                                                 alt=""
                                             />
+                                            <img className="onlineImg" src={client?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                             <div className="rightInfo">
                                                 <span className='rightMyName'>{client?.results.name}</span>
+                                                <span className="onlineStatus">{client?.results.activityStatus}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -31,6 +31,14 @@
                 // flex-direction: column;
                 gap: 20px;
 
+                .onlineImg{
+                    width: 20px;
+                    height: 20px;
+                    position: relative;
+                    right: 55px;
+                    top: 125px;
+                }
+
                 .rightContainer{
                     display: flex;
                     flex-direction: column;
@@ -98,6 +106,14 @@
                             .rightProfileUser {
                                 display: flex;
                                 gap: 20px;
+
+                                .onlineImg{
+                                    width: 14px;
+                                    height: 14px;
+                                    position: absolute;
+                                    right: 385px;
+                                    top: 285px;
+                                }
         
                                 img {
                                     width: 75px;
@@ -109,16 +125,23 @@
                                 .rightInfo {
                                     display: flex;
                                     flex-direction: column;
-                                    gap: 15px;
+                                    gap: 0px;
                                     margin-top: 20px;
         
                                     .rightMyName {
                                         font-size: 26px;
                                         font-weight: 700;
                                         color: #222325;
-                                        font-size: 24px;
                                         line-height: 32px;
-                                        margin-bottom: 30px;
+                                    }
+
+                                    .onlineStatus{
+                                        font-size: 16px !important;
+                                        font-weight: 500;
+                                        color: #222325;
+                                        line-height: 32px;
+                                        margin-left: 10px;
+                                        text-transform: capitalize;
                                     }
                                 }
                             }
@@ -170,6 +193,12 @@
                     gap: 15px;
                     margin-top: 20px;
 
+                    .freelancerSpecialization{
+                        font-weight: 500;
+                        font-size: 18px;
+                        color: rgb(78, 78, 78);  
+                    }
+
                     .myName {
                         font-size: 26px;
                         font-weight: 700;
@@ -183,6 +212,7 @@
                         align-items: center;
                         gap: 5px;
                         margin-bottom: 20px;
+                        width: 300px;
 
                         .languageContainer{
                             width: 60%;

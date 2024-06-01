@@ -180,11 +180,23 @@
                 cursor: pointer;
                 position: relative;
 
-                img {
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    object-fit: cover;
+                .onlineImgContainerNavbar {
+                    position: relative;
+    
+                    img {
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+    
+                    .onlineImg {
+                        width: 8px;
+                        height: 8px;
+                        position: absolute;
+                        left: 23px;
+                        top: 24px;
+                    }
                 }
 
                 .options {

@@ -309,6 +309,23 @@ const CommunityProfile = (data) => {
             });
         };
     
+        const deleteComment = (e) => {
+          e.preventDefault();
+          const postId = e.target.attributes.data.nodeValue;
+          const commentId = e.target.attributes.value.nodeValue;
+          console.log(e);
+          axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
+            .then(
+              resp => {
+                console.log(resp);
+                // swal(resp.data.msg, "", "success");
+                // setPosts({ reload: posts.reload + 1 });
+              }
+            ).catch(error => {
+              console.log(error);
+            })
+        }
+    
         return (
           <div className="postBottom">
             <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
@@ -333,18 +350,21 @@ const CommunityProfile = (data) => {
                                 className="profileImgCommentList"
                                 src={userComment?.image_url}
                               />
+                              <img className="onlineImg" src={userComment?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                             </Link>
                           </div>
                           <div className='nameCommentContainer'>
-                          <div className='commentInfoAndDeleteComment'>
+                            <div className='commentInfoAndDeleteComment'>
                               <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
-                                  <span className='commentListUsername'>{userComment?.name}</span>
+                                <span className='commentListUsername'>{userComment?.name}</span>
                               </Link>
-                              <div>{user && user._id == userComment._id && <button className='deleteCommentBtn'><img className='deleteCommentImg' src="/img/delete.png"/></button>}</div>
-                          </div>  
+                            </div>
                             <p className='commentContent'>{userComment.comment}</p>
                           </div>
-                          <span className='commentListDate'>50 m</span>
+                          <div className='commentListDateAndDelete'>
+                            <div><span className='commentListDate'>50 m ago</span></div>
+                            <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment._id} data={data._id} className='deleteCommentImg' src="../img/delete.png"/>}</div>
+                          </div>
                         </li>
                       ))}
                     </ul>
@@ -358,6 +378,7 @@ const CommunityProfile = (data) => {
                             src={user?.image_url}
                             alt=""
                           />
+                          <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                         </Link>
                         <input
                           type="text"
@@ -459,6 +480,7 @@ const CommunityProfile = (data) => {
                                                                         className="shareProfileImg"
                                                                         src={freelancer?.results.image_url}
                                                                     />
+                                                                    <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                                                 </Link>
                                                             )}
                                                             <input
@@ -546,7 +568,10 @@ const CommunityProfile = (data) => {
                                                         <div className="postContainer">
                                                             <div className="postTop">
                                                                 <div className="postTopLeft">
-                                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
+                                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                                                                        <img className='postProfileImg' src={post?.posterId.image_url} />
+                                                                        <img className="onlineImg" src={post?.posterId.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                                                                        </Link>
                                                                     <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                                                                     <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                                                 </div>

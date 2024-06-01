@@ -166,6 +166,7 @@ const SideBar = () => {
                     to={"/communityProfile/" + user?._id}
                   >
                     <img className="sidebarProfileImg" src={user?.image_url} />
+                    <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                     <span className="sidebarListItemText">{user?.name}</span>
                   </Link>
                 )}

@@ -319,6 +319,7 @@ const Feed = (data) => {
                             className="profileImgCommentList"
                             src={userComment?.image_url}
                           />
+                          <img className="onlineImg" src={userComment?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                         </Link>
                       </div>
                       <div className='nameCommentContainer'>
@@ -346,6 +347,7 @@ const Feed = (data) => {
                         src={user?.image_url}
                         alt=""
                       />
+                      <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                     </Link>
                     <input
                       type="text"
@@ -390,6 +392,7 @@ const Feed = (data) => {
                   {user &&
                     <Link reloadDocument to={"/communityProfile/" + user?._id} >
                       <img className='shareProfileImg' src={user?.image_url} />
+                      <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                     </Link>
                   }
                   <input
@@ -459,7 +462,10 @@ const Feed = (data) => {
                 <div className="postContainer">
                   <div className="postTop">
                     <div className="postTopLeft">
-                      <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
+                      <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                        <img className='postProfileImg' src={post?.posterId.image_url} />
+                        <img className="onlineImg" src={post?.posterId.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                      </Link>
                       <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                     </div>
                     <span className="postDate">{processDate(post?.creationDate)} ago</span>

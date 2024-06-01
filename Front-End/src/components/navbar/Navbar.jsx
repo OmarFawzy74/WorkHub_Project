@@ -140,8 +140,12 @@ const Navbar = () => {
 
               {currentUser?.activity !== "online" && <Link reloadDocument className='link' to="/register"><button className='joinButton'>Join</button></Link>}
               {currentUser && (
+                <>
                 <div className="user" onClick={() => setOpen(!open)}>
+                <div className='onlineImgContainerNavbar'>
                   <img src={user.image_url} />
+                  <img className="onlineImg" src={currentUser?.activity == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                </div>
                   <span>{currentUser?.name}</span>
                   {open && <div className="options">
                     <Link reloadDocument className='link' to="/userDashboard"><span>Dashboard</span></Link>
@@ -158,6 +162,7 @@ const Navbar = () => {
                     <Link reloadDocument className='link' onClick={userLogout}>Logout</Link>
                   </div>}
                 </div>
+                </>
               )}
             </div>
           </div>
