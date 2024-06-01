@@ -47,6 +47,10 @@ const freelancerSchema = new Schema ({
         type: [String],
         required: false
     },
+    Specialization: {
+        type: String,
+        required: true
+    },
     role: {
         type: String,
         default: 'freelancer'

@@ -178,7 +178,7 @@ const Navbar = () => {
                 {categories.loading == false && categories.err == null && (
                   categories.results.map((category => (
                     <>
-                      <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:category">
+                      <li className='category'><Link reloadDocument className='menuLink' to="/gigs?:id">
                         {category.categoryName}</Link>
                       </li>
                     </>
@@ -286,7 +286,7 @@ const Navbar = () => {
               {categories.loading == false && categories.err == null && (
                 categories.results.map((category => (
                   <>
-                    <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:category">
+                    <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:id">
                       {category.categoryName}</Link>
                     </li>
                   </>
