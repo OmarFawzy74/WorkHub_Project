@@ -6,7 +6,6 @@ import swal from "sweetalert";
 import { setAuthUser } from "../../localStorage/storage";
 // import Skills from "../../components/skills/Skills";
 // import Languages from "../../components/languages/Languages";
-
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -31,6 +30,7 @@ function Register() {
     languages: "",
     desc: "",
     phoneNumber: "",
+    specialization: "",
   });
 
   // const processData = (data) => {
@@ -77,6 +77,7 @@ function Register() {
     formData.append("desc", user.desc);
     formData.append("skills", selectedSkillsOptions);
     formData.append("languages", selectedLanguagesOptions);
+    formData.append("specialization", user.specialization);
 
     axios
       .post("http://localhost:3000/api/auth/signup/" + user.role, formData, {
@@ -220,9 +221,9 @@ function Register() {
               </button>
             </div>
             <div className="right">
-              <h1 className="becomeSeller">I want to become a seller</h1>
+              <h1 className="becomeSeller">I want to become a freelancer</h1>
               <div className="toggle">
-                <label htmlFor="">Activate the seller account</label>
+                <label htmlFor="">Activate the freelancer account</label>
                 <label className="switch">
                   <input type="checkbox" onChange={handleRole} />
                   <span className="slider round"></span>
@@ -260,11 +261,11 @@ function Register() {
                   </label>
                   <input
                     className="Input"
-                    name="email"
-                    type="email"
+                    name="specialization"
+                    type="text"
                     placeholder="Enter your Specialization"
                     required
-                    onChange={(e) => setUser({ ...user, email: e.target.value })}
+                    onChange={(e) => setUser({ ...user, specialization: e.target.value })}
                   />
                   <label className="singupDesc" htmlFor="">
                     Skills
