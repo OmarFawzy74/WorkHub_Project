@@ -20,6 +20,9 @@ const clientSchema = new Schema({
         type: String,
        
     },
+    coverImage_url: {
+        type: String,
+    },
     country: {
         type: String,
         required: true,

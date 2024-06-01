@@ -338,10 +338,21 @@ export const uploadCoverImage = async (req, res, next) => {
         const filter = { _id: id };
         const update = { $set: { coverImage_url: cover_url } };
 
-        await freelancer_model.updateOne(filter, update);
+        const role = req.params.role;
 
+        let data;
 
-        res.status(200).json({ msg: "Cover image uploaded successfuly" });
+        if(role == "freelancer") {
+            await freelancer_model.updateOne(filter, update);
+            data = await freelancer_model.findById(id);
+        }
+
+        if(role == "client") {
+            await client_model.updateOne(filter, update);
+            data = await client_model.findById(id);
+        }
+
+        res.status(200).json({ msg: "Cover image uploaded successfuly", data});
     } catch (error) {
         console.log(error);
         res.status(404).json({ success: false, message: "Server Error" });
