@@ -480,7 +480,7 @@ const CommunityProfile = (data) => {
                                                                         className="shareProfileImg"
                                                                         src={freelancer?.results.image_url}
                                                                     />
-                                                                    <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                                                                    <img className="onlineImg" src={freelancer?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                                                 </Link>
                                                             )}
                                                             <input
@@ -671,6 +671,7 @@ const CommunityProfile = (data) => {
                                                                         className="shareProfileImg"
                                                                         src={client?.results.image_url}
                                                                     />
+                                                                    <img className="onlineImg" src={client?.results.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                                                 </Link>
                                                             )}
                                                             <input
@@ -757,7 +758,10 @@ const CommunityProfile = (data) => {
                                                         <div className="postContainer">
                                                             <div className="postTop">
                                                                 <div className="postTopLeft">
-                                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
+                                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                                                                        <img className='postProfileImg' src={post?.posterId.image_url} />
+                                                                        <img className="onlineImg" src={post?.posterId.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                                                                        </Link>
                                                                     <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                                                                     <span className="postDate">{processDate(post?.creationDate)} ago</span>
                                                                 </div>

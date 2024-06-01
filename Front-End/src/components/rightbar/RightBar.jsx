@@ -1,7 +1,10 @@
 import React from 'react'
 import "./RightBar.scss"
+import { getAuthUser } from '../../localStorage/storage';
 
 const RightBar = ({ profile, item }) => {
+  const user = getAuthUser();
+
 
   const HomeRightbar = () => {
     return (
@@ -29,6 +32,12 @@ const RightBar = ({ profile, item }) => {
             <span className="rightbarInfoKey">Country:</span>
             <span className="rightbarInfoValue">{item.country}</span>
           </div>
+         {user && user.role == "freelancer" && 
+            <div className="rightbarInfoItem">
+                <span className="rightbarInfoKey">Specialization:</span>
+                <span className="rightbarInfoValue">{item.specialization}</span>
+              </div>
+          }
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Email:</span>
             <span className="rightbarInfoValue">{item.email}</span>

@@ -225,98 +225,123 @@ const CommunityFilter = (data) => {
 
     function CommentsPanel({ data }) {
         const [isActive, setIsActive] = useState(false);
-
+    
         const [comment, setComment] = useState({
-            loading: true,
-            err: null,
-            commentDesc: "",
-            reload: 0,
-            results: ""
+          loading: true,
+          err: null,
+          commentDesc: "",
+          reload: 0,
+          results: ""
         });
-
+    
         const addCommentData = async (e) => {
-            e.preventDefault();
-            const postId = e.target.attributes.value.nodeValue;
-            console.log(postId);
-            setComment({ ...comment, loading: true, err: null });
-            axios
-                .put("http://localhost:3000/api/posts/addComment/" + postId + "/" + user._id + "/" + user.role, {
-                    comment: comment.commentDesc,
-                })
-                .then((resp) => {
-                    setComment({ results: resp.data, reload: posts.reload + 1 });
-                    console.log(resp);
-                })
-                .catch((errors) => {
-                    console.log(errors);
-                });
+          e.preventDefault();
+          const postId = e.target.attributes.value.nodeValue;
+          console.log(postId);
+          setComment({ ...comment, loading: true, err: null });
+          axios
+            .put("http://localhost:3000/api/posts/addComment/" + postId + "/" + user._id + "/" + user.role, {
+              comment: comment.commentDesc,
+            })
+            .then((resp) => {
+              setComment({ results: resp.data, reload: posts.reload + 1 });
+              console.log(resp);
+            })
+            .catch((errors) => {
+              console.log(errors);
+            });
         };
-
+    
+        const deleteComment = (e) => {
+          e.preventDefault();
+          const postId = e.target.attributes.data.nodeValue;
+          const commentId = e.target.attributes.value.nodeValue;
+          console.log(e);
+          axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
+            .then(
+              resp => {
+                console.log(resp);
+                // swal(resp.data.msg, "", "success");
+                // setPosts({ reload: posts.reload + 1 });
+              }
+            ).catch(error => {
+              console.log(error);
+            })
+        }
+    
         return (
-            <div className="postBottom">
-                <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
-                    <div>
-                        <LikeHandler data={data}></LikeHandler>
-                    </div>
-                    <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
-                        <img className="commentsImg" src="/img/comment.png" alt="" />
-                        <span>{data.comments.length} Comments</span>
-                    </div>
-                </div>
-                <div className='postBottomRight'>
-                    {isActive ? (
-                        <>
-                            {data.comments &&
-                                <ul className="commentList">
-                                    {data.comments.map((user) => (
-                                        <li>
-                                            <div className='userInfoCommentList'>
-                                                <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + user?._id}>
-                                                    <img
-                                                        className="profileImgCommentList"
-                                                        src={user?.image_url}
-                                                    />
-                                                </Link>
-                                            </div>
-                                            <div className='nameCommentContainer'>
-                                                <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + user?._id}>
-                                                    <span className='commentListUsername'>{user?.name}</span>
-                                                </Link>
-                                                <span>{user.comment}</span>
-                                            </div>
-                                            <span className='commentListDate'>50 m</span>
-                                            <button className='deleteCommentBtn'><img className='deleteCommentImg' src="/img/delete.png"/></button> 
-                                        </li>
-                                    ))}
-                                </ul>
-                            }
-                            <div className={isActive ? "activeWrite" : "write"}>
-                                <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
-                                    <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
-                                        <img
-                                            className="profileImgComment"
-                                            src={data?.posterId.image_url}
-                                            alt=""
-                                        />
-                                    </Link>
-                                    <input
-                                        type="text"
-                                        placeholder="Write a comment"
-                                        required
-                                        onChange={(e) =>
-                                            setComment({ ...comment, commentDesc: e.target.value })
-                                        }
-                                    />
-                                    <button type='submit' className='sendCommentButton'><img className="sendCommentImg" src="/img/sendComment.png" alt="" /></button>
-
-                                </form>
-                            </div>
-                        </>
-                    ) : null}
-                </div>
+          <div className="postBottom">
+            <div className={isActive ? "activePostBottomLeft" : "postBottomLeft"}>
+              <div>
+                <LikeHandler data={data}></LikeHandler>
+              </div>
+              <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
+                <img className="commentsImg" src="/img/comment.png" alt="" />
+                <span>{data.comments.length} Comments</span>
+              </div>
             </div>
+            <div className='postBottomRight'>
+              {isActive ? (
+                <>
+                  {data.comments &&
+                    <ul className="commentList">
+                      {data.comments.map((userCommentFilter) => (
+                        <li>
+                          <div className='userInfoCommentList'>
+                            <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userCommentFilter?._id}>
+                              <img
+                                className="profileImgCommentList"
+                                src={userCommentFilter?.image_url}
+                              />
+                              <img className="onlineImg" src={userCommentFilter?.activityStatus == "online" ? "../img/online.png" : "../img/offline.png"}/>
+                            </Link>
+                          </div>
+                          <div className='nameCommentContainer'>
+                            <div className='commentInfoAndDeleteComment'>
+                              <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userCommentFilter?._id}>
+                                <span className='commentListUsername'>{userCommentFilter?.name}</span>
+                              </Link>
+                            </div>
+                            <p className='commentContent'>{userCommentFilter.comment}</p>
+                          </div>
+                          <div className='commentListDateAndDelete'>
+                            <div><span className='commentListDate'>50 m ago</span></div>
+                            <div>{user && user._id == userCommentFilter._id && <img onClick={deleteComment} value={userCommentFilter._id} data={data._id} className='deleteCommentImg' src="../img/delete.png"/>}</div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  }
+                  {user &&
+                    <div className={isActive ? "activeWrite" : "write"}>
+                      <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
+                        <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
+                          <img
+                            className="profileImgComment"
+                            src={user?.image_url}
+                            alt=""
+                          />
+                          <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                        </Link>
+                        <input
+                          type="text"
+                          placeholder="Write a comment"
+                          required
+                          onChange={(e) =>
+                            setComment({ ...comment, commentDesc: e.target.value })
+                          }
+                        />
+                        <button type='submit' className='sendCommentButton'><img className="sendCommentImg" src="/img/sendComment.png" alt="" /></button>
+    
+                      </form>
+                    </div>
+                  }
+                </>
+              ) : null}
+            </div>
+          </div>
         );
-    }
+      }
 
     const checkMedia = (data) => {
         const processedData = data.split(".");
@@ -346,6 +371,7 @@ const CommunityFilter = (data) => {
                                             {user &&
                                                 <Link reloadDocument to={"/communityProfile/" + user?._id} >
                                                     <img className='shareProfileImg' src={user?.image_url} />
+                                                    <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
                                                 </Link>
                                             }
                                             <input
@@ -384,7 +410,11 @@ const CommunityFilter = (data) => {
                                         <div className="postContainer">
                                             <div className="postTop">
                                                 <div className="postTopLeft">
-                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}><img className='postProfileImg' src={post?.posterId.image_url} /></Link>
+                                                    <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                                                        <img className='postProfileImg' src={post?.posterId.image_url} />
+                                                        <img className="onlineImg" src={post?.posterId.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+
+                                                        </Link>
                                                     <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                                                 </div>
                                                 <span className="postDate">{processDate(post?.creationDate)} ago</span>
