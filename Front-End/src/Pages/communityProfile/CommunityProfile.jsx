@@ -16,6 +16,26 @@ const CommunityProfile = (data) => {
 
     const user = getAuthUser()
 
+    const coverImage_url = useRef(null);
+
+    const uploadCoverImage = () => {
+
+        const formData = new FormData();
+        formData.append("coverImage", coverImage_url.current.files[0]);
+        axios
+          .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id, formData)
+          .then((resp) => {
+            // image.current.value = null;
+            // swal(resp.data.message, "", "success");
+            console.log(resp);
+          })
+          .catch((errors) => {
+            // swal(errors.response.data.message, "", "error");
+            console.log(errors);
+            // console.log(errors.response.data.message);
+          });
+      }
+
     let { id } = useParams();
 
     const [commentOpen, setCommentOpen] = useState(false);
@@ -411,6 +431,8 @@ const CommunityProfile = (data) => {
         }
     }
 
+    
+
     return (
         <div className="communityContainer">
             <div className="communityProfile">
@@ -426,7 +448,7 @@ const CommunityProfile = (data) => {
                                         alt=""
                                     /> */}
                                     {user && user._id == id &&
-                                        <form>
+                                        <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
                                                     <div className='addCoverImgInput'>
@@ -435,7 +457,7 @@ const CommunityProfile = (data) => {
                                                             required
                                                             type="file"
                                                             accept="video/,image/"
-                                                            ref={media}
+                                                            ref={coverImage_url}
                                                         />
                                                     </div>
                                                     <div>
@@ -445,7 +467,7 @@ const CommunityProfile = (data) => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <button className='addCoverImageBtn'>Add Image</button>
+                                                    <button type='submit' className='addCoverImageBtn'>Add Image</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -624,7 +646,7 @@ const CommunityProfile = (data) => {
                                                             required
                                                             type="file"
                                                             accept="video/,image/"
-                                                            ref={media}
+                                                            ref={coverImage_url}
                                                         />
                                                     </div>
                                                     <div>
