@@ -135,7 +135,7 @@ export const logout = async (req, res) => {
 export const signup = async (req, res) => {
     try {
       const { role } = req.params;
-      const { name, email, password, country, desc, phoneNumber, skills, languages, Specialization} = req.body;
+      const { name, email, password, country, desc, phoneNumber, skills, languages, specialization} = req.body;
       let image_url;
   
       if(req.file) {
@@ -190,7 +190,7 @@ export const signup = async (req, res) => {
           newUser = new ClientModel({ name, email, password: hashedPassword, country, image_url });
           break;
         case 'freelancer':
-          newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber, skills, languages, Specialization });
+          newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber, skills, languages, specialization });
           break;
       }
   
