@@ -321,7 +321,7 @@ export const deleteCommunity = async (req, res) => {
     }
 }
 
-export const uploadCoverImage = async (req, res, next) => {
+export const uploadCoverImage = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(404).send({ success: false, message: "Cover image is required" });

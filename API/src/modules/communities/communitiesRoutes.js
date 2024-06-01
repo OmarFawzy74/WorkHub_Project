@@ -16,7 +16,7 @@ router.post("/addCommunity", validation(communitySchema), asyncHandler(addCommun
 router.put("/updateCommunity/:id", validation(updateCommunitySchema), validateParams(), asyncHandler(updateCommunity))
 router.put("/joinCommunity/:communityId/:userId/:role", asyncHandler(joinCommunity));
 router.put("/unjoinCommunity/:communityId/:userId/:role", asyncHandler(unjoinCommunity));
-router.put("/uploadCoverImage/:id", upload.single('coverImage'), asyncHandler(uploadCoverImage));
+router.put("/uploadCoverImage/:id/:role", upload.single('coverImage'), asyncHandler(uploadCoverImage));
 router.delete("/deleteCommunity/:id", validateParams(), asyncHandler(deleteCommunity));
 
 export default router;
