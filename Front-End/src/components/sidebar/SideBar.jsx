@@ -10,7 +10,7 @@ import { sidebarStatus } from '../../App';
 
 const SideBar = () => {
   const user = getAuthUser();
-  const [communityListOpen, setCommunityListOpen] = useState(false);
+  const [communityListOpen, setCommunityListOpen] = useState(true);
 
   const [communities, setCommunities] = useState({
     loading: true,
@@ -148,8 +148,8 @@ const SideBar = () => {
   };
 
 
-  const addCommunity = () => {
-    window.location = "http://localhost:3001/addCommunity";
+  const manageCommunity = () => {
+    window.location = "http://localhost:3001/communityList";
   }
 
   return (
@@ -331,9 +331,9 @@ const SideBar = () => {
                   <Button
                       variant="contained"
                       className="addCommunityBtn"
-                      onClick={addCommunity}
+                      onClick={manageCommunity}
                     >
-                      Add
+                      Manage
                   </Button>
                 </div>
 
@@ -354,7 +354,7 @@ const SideBar = () => {
                               >
                                 {community?.communityName}
                               </Link>
-                              {joinedCommunities.loading == false &&
+                              {/* {joinedCommunities.loading == false &&
                                 // joinedCommunities.err == null &&
                                 // joinedCommunities.results &&
                                 // joinedCommunities.results.length > 0 &&
@@ -379,7 +379,7 @@ const SideBar = () => {
                                     </Button>
                                   </div>
                                   
-                                )}
+                                )} */}
                             </li>
                           </>
                         ))}

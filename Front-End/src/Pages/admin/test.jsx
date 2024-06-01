@@ -290,6 +290,7 @@ export default function MiniDrawer({open, handleDrawerOpen, handleDrawerClose}) 
                 <div className='sidebar-brand'>
                     <img src="/img/Logo.png" className='icon_header'/>
                     <h1 className='adminLogoName'>WorkHub</h1>
+                    <span className='dot'>.</span>
                 </div>
           </Typography>
         </Toolbar>
