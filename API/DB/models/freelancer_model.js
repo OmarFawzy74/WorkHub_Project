@@ -19,6 +19,9 @@ const freelancerSchema = new Schema ({
     image_url: {
         type: String,
     },
+    coverImage_url: {
+        type: String,
+    },
     phoneNumber: {
         type: String,
         required: true

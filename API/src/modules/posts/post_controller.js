@@ -30,6 +30,26 @@ export const getAllPosts = async (req, res) => {
             modifiedPost.posterId = { ...data._doc };
             modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
             modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+
+            const commentsData = [];
+
+            const postComments = modifiedPost.comments;
+
+            for (let index = 0; index < postComments.length; index++) {
+                const userId = postComments[index];
+
+                let data
+                data = await freelancer_model.findById(userId);
+
+                if(!data) {
+                    data = await client_model.findById(userId);
+                }
+
+                commentsData.push(data)
+            }
+
+            modifiedPost.comments = commentsData;
+
             modifiedPosts.push(modifiedPost);
         }
 
@@ -335,7 +355,7 @@ export const addComment = async (req, res) => {
             modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
             modifiedUser.comment = comment;
 
-            allComments.push(modifiedUser);
+            allComments.push(modifiedUser._id);
             
             const filter = { _id: postId };
             const update = { $set: { comments: allComments } };

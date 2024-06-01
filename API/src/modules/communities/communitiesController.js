@@ -320,3 +320,30 @@ export const deleteCommunity = async (req, res) => {
         res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
+
+export const uploadCoverImage = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(404).send({ success: false, message: "Cover image is required" });
+        }
+
+        const id = req.params.id;
+
+        if (id == undefined) {
+            return res.status(404).send({ success: false, message: "id is required" });
+        }
+
+        const cover_url = req.file.filename;
+
+        const filter = { _id: id };
+        const update = { $set: { coverImage_url: cover_url } };
+
+        await freelancer_model.updateOne(filter, update);
+
+
+        res.status(200).json({ msg: "Cover image uploaded successfuly" });
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
+};
