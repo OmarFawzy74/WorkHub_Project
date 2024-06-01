@@ -36,16 +36,18 @@ export const getAllPosts = async (req, res) => {
             const postComments = modifiedPost.comments;
 
             for (let index = 0; index < postComments.length; index++) {
-                const userId = postComments[index];
+                const userId = postComments[index]._id;
 
-                let data
+                let data;
                 data = await freelancer_model.findById(userId);
 
                 if(!data) {
                     data = await client_model.findById(userId);
                 }
 
-                commentsData.push(data)
+                postComments[index].activityStatus = data.activityStatus;
+
+                commentsData.push(postComments[index]);
             }
 
             modifiedPost.comments = commentsData;
@@ -355,7 +357,7 @@ export const addComment = async (req, res) => {
             modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
             modifiedUser.comment = comment;
 
-            allComments.push(modifiedUser._id);
+            allComments.push(modifiedUser);
             
             const filter = { _id: postId };
             const update = { $set: { comments: allComments } };
