@@ -1,10 +1,12 @@
 import React from 'react'
 import "./RightBar.scss"
 import { getAuthUser } from '../../localStorage/storage';
+import { Link, useParams } from 'react-router-dom';
 
 const RightBar = ({ profile, item }) => {
   const user = getAuthUser();
 
+  let { id } = useParams();
 
   const HomeRightbar = () => {
     return (
@@ -32,7 +34,7 @@ const RightBar = ({ profile, item }) => {
             <span className="rightbarInfoKey">Country:</span>
             <span className="rightbarInfoValue">{item.country}</span>
           </div>
-         {user && user.role == "freelancer" && 
+         {user && item.role == "freelancer" && 
             <div className="rightbarInfoItem">
                 <span className="rightbarInfoKey">Specialization:</span>
                 <span className="rightbarInfoValue">{item.specialization}</span>
@@ -41,6 +43,10 @@ const RightBar = ({ profile, item }) => {
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">Email:</span>
             <span className="rightbarInfoValue">{item.email}</span>
+          </div>
+          <div className="rightbarInfoItem">
+            <span className="rightbarInfoKey">Go to WorkHub Profile:</span>
+            <span className="rightbarInfoValue"><Link className='goToProfileLink' reloadDocument to={"/profile/" + id}>{item.name}'s Profile</Link></span>
           </div>
         </div>
       </>

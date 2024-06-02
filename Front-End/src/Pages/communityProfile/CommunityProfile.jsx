@@ -28,6 +28,7 @@ const CommunityProfile = (data) => {
           .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id + "/" + user.role, formData)
           .then((resp) => {
             setAuthUser(resp.data.data)
+            window.location = "http://localhost:3001/communityProfile/" + user._id;
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
             console.log(resp.data.data);
@@ -40,7 +41,6 @@ const CommunityProfile = (data) => {
             // console.log(errors.response.data.message);
           });
     }
-    console.log(user.coverImage_url);
 
     let { id } = useParams();
 
@@ -74,8 +74,8 @@ const CommunityProfile = (data) => {
             .get("http://localhost:3000/api/freelancers/getFreelancerById/" + id)
             .then((resp) => {
                 setFreelancer({ results: resp.data.freelancer, loading: false, err: null });
-                // console.log(resp);
-                // console.log(resp.data.freelancer);
+                console.log(resp);
+                console.log(resp.data.freelancer);
             })
             .catch((err) => {
                 console.log(err);
@@ -84,19 +84,19 @@ const CommunityProfile = (data) => {
     }, [freelancer.reload]);
 
 
-    // useEffect(() => {
-    //     axios
-    //         .get("http://localhost:3000/api/clients/getClientById/" + id)
-    //         .then((resp) => {
-    //             setClient({ results: resp.data.client, loading: false, err: null });
-    //             // console.log(resp);
-    //             // console.log(resp.data.client);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //             // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
-    //         });
-    // }, [client.reload]);
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/api/clients/getClientById/" + id)
+            .then((resp) => {
+                setClient({ results: resp.data.client, loading: false, err: null });
+                // console.log(resp);
+                // console.log(resp.data.client);
+            })
+            .catch((err) => {
+                console.log(err);
+                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+            });
+    }, [client.reload]);
 
     const [post, setPost] = useState({
         loading: true,
@@ -438,8 +438,6 @@ const CommunityProfile = (data) => {
         }
     }
 
-    
-
     return (
         <div className="communityContainer">
             <div className="communityProfile">
@@ -449,12 +447,14 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                                 <div className="profileCover">
-                                    <img
-                                        className="profileCoverImg"
-                                        src={user.coverImage_url}
-                                        alt=""
-                                    />
-                                    {user && user._id == id && user.coverImage_url !== undefined &&
+                                    {freelancer && freelancer.coverImage_url !== undefined &&
+                                        <img
+                                            className="profileCoverImg"
+                                            src={freelancer.coverImage_url}
+                                            alt=""
+                                        />
+                                    }
+                                    {user && user._id == id && freelancer.coverImage_url == undefined &&
                                         <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
@@ -637,14 +637,16 @@ const CommunityProfile = (data) => {
                     {client?.loading == false && (
                         <>
                             <div className="communityProfileRightTop">
-                                <div className="profileCover">
-                                    {/* <img
-                                        className="profileCoverImg"
-                                        src="/img/image_2.jpg"
-                                        alt=""
-                                    /> */}
-                                    {user && user._id == id &&
-                                        <form>
+                            <div className="profileCover">
+                                    {client && client.coverImage_url !== undefined &&
+                                        <img
+                                            className="profileCoverImg"
+                                            src={client.coverImage_url}
+                                            alt=""
+                                        />
+                                    }
+                                    {user && user._id == id && client.coverImage_url == undefined &&
+                                        <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
                                                     <div className='addCoverImgInput'>
@@ -663,7 +665,7 @@ const CommunityProfile = (data) => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <button className='addCoverImageBtn'>Add Image</button>
+                                                    <button type='submit' className='addCoverImageBtn'>Add Image</button>
                                                 </div>
                                             </div>
                                         </form>
