@@ -45,6 +45,8 @@ export const getClientById = async (req, res, next) => {
     }
   
     client.image_url = "http://" + req.hostname + ":3000/" + client.image_url;
+    client.coverImage_url = "http://" + req.hostname + ":3000/" + client.coverImage_url;
+    
     res.status(200).json({ client });
     } catch (error) {
       console.log(error);
