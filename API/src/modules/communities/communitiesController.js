@@ -350,6 +350,8 @@ export const uploadCoverImage = async (req, res) => {
         if(role == "client") {
             await client_model.updateOne(filter, update);
             data = await client_model.findById(id);
+            data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
+            data.coverImage_url = "http://" + req.hostname + ":3000/" + data.coverImage_url;
         }
 
         res.status(200).json({ msg: "Cover image uploaded successfuly", data});

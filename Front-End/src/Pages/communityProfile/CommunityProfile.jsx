@@ -18,7 +18,10 @@ const CommunityProfile = (data) => {
 
     const coverImage_url = useRef(null);
 
-    const uploadCoverImage = () => {
+    const uploadCoverImage = (e) => {
+        
+
+        console.log("e7na hena");
 
         const formData = new FormData();
         formData.append("coverImage", coverImage_url.current.files[0]);
@@ -28,13 +31,15 @@ const CommunityProfile = (data) => {
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
             console.log(resp);
+            console.log("a7a");
           })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
             console.log(errors);
+            console.log("a7atayn");
             // console.log(errors.response.data.message);
           });
-      }
+    }
 
     let { id } = useParams();
 
@@ -56,20 +61,6 @@ const CommunityProfile = (data) => {
         reload: 0,
     });
 
-    useEffect(() => {
-        axios
-            .get("http://localhost:3000/api/freelancers/getFreelancerById/" + id)
-            .then((resp) => {
-                setFreelancer({ results: resp.data.freelancer, loading: false, err: null });
-                console.log(resp);
-                console.log(resp.data.freelancer);
-            })
-            .catch((err) => {
-                console.log(err);
-                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
-            });
-    }, [freelancer.reload]);
-
     const [client, setClient] = useState({
         loading: true,
         results: null,
@@ -79,17 +70,32 @@ const CommunityProfile = (data) => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/api/clients/getClientById/" + id)
+            .get("http://localhost:3000/api/freelancers/getFreelancerById/" + id)
             .then((resp) => {
-                setClient({ results: resp.data.client, loading: false, err: null });
-                console.log(resp);
-                console.log(resp.data.client);
+                setFreelancer({ results: resp.data.freelancer, loading: false, err: null });
+                // console.log(resp);
+                // console.log(resp.data.freelancer);
             })
             .catch((err) => {
                 console.log(err);
                 // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
             });
-    }, [client.reload]);
+    }, [freelancer.reload]);
+
+
+    // useEffect(() => {
+    //     axios
+    //         .get("http://localhost:3000/api/clients/getClientById/" + id)
+    //         .then((resp) => {
+    //             setClient({ results: resp.data.client, loading: false, err: null });
+    //             // console.log(resp);
+    //             // console.log(resp.data.client);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+    //         });
+    // }, [client.reload]);
 
     const [post, setPost] = useState({
         loading: true,
@@ -125,7 +131,7 @@ const CommunityProfile = (data) => {
             .then((resp) => {
                 // image.current.value = null;
                 // swal(resp.data.message, "", "success");
-                console.log(resp);
+                // console.log(resp);
                 document.querySelector("#addPostForm").reset();
                 document.getElementById("selectCategory").value = "";
                 setPosts({ reload: posts.reload + 1 });
@@ -152,7 +158,7 @@ const CommunityProfile = (data) => {
                 setPosts({ reload: posts.reload + 1 });
                 const postId = resp.data.savePost._id
                 uploadMedia(postId);
-                console.log(resp);
+                // console.log(resp);
             })
             .catch((errors) => {
                 console.log(errors);
@@ -188,7 +194,7 @@ const CommunityProfile = (data) => {
         axios.get("http://localhost:3000/api/posts/getUserPosts/" + id)
             .then(
                 resp => {
-                    console.log(resp.data.posts);
+                    // console.log(resp.data.posts);
                     setPosts({ results: resp.data.posts.reverse(), loading: false, err: null });
                     // console.log(resp);
                 }
@@ -204,7 +210,7 @@ const CommunityProfile = (data) => {
         axios.delete("http://localhost:3000/api/posts/deletePost/" + post_id)
             .then(
                 resp => {
-                    console.log(resp);
+                    // console.log(resp);
                     swal(resp.data.msg, "", "success");
                     setPosts({ reload: posts.reload + 1 });
                 }
@@ -322,7 +328,7 @@ const CommunityProfile = (data) => {
             })
             .then((resp) => {
               setComment({ results: resp.data, reload: posts.reload + 1 });
-              console.log(resp);
+            //   console.log(resp);
             })
             .catch((errors) => {
               console.log(errors);
@@ -333,11 +339,11 @@ const CommunityProfile = (data) => {
           e.preventDefault();
           const postId = e.target.attributes.data.nodeValue;
           const commentId = e.target.attributes.value.nodeValue;
-          console.log(e);
+        //   console.log(e);
           axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
             .then(
               resp => {
-                console.log(resp);
+                // console.log(resp);
                 // swal(resp.data.msg, "", "success");
                 // setPosts({ reload: posts.reload + 1 });
               }
