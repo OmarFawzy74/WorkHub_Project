@@ -28,11 +28,11 @@ const CommunityProfile = (data) => {
           .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id + "/" + user.role, formData)
           .then((resp) => {
             setAuthUser(resp.data.data)
-            window.location = "http://localhost:3001/communityProfile/" + user._id;
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
-            console.log(resp.data.data);
+            console.log(resp);
             console.log(user.coverImage_url);
+            // window.location = "http://localhost:3001/communityProfile/" + user._id;
           })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
@@ -447,14 +447,22 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                                 <div className="profileCover">
-                                    {freelancer && freelancer.coverImage_url !== undefined &&
+                                {user && user._id !== id && freelancer && freelancer.results.coverImage_url !== undefined &&
                                         <img
                                             className="profileCoverImg"
-                                            src={freelancer.coverImage_url}
+                                            src={freelancer.results.coverImage_url}
                                             alt=""
                                         />
                                     }
-                                    {user && user._id == id && freelancer.coverImage_url == undefined &&
+
+                                     {user && user._id == id && user.coverImage_url !== undefined &&
+                                        <img
+                                            className="profileCoverImg"
+                                            src={user.coverImage_url}
+                                            alt=""
+                                        />
+                                    }
+                                    {user && user._id == id && user.coverImage_url == undefined &&
                                         <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
@@ -638,14 +646,23 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                             <div className="profileCover">
-                                    {client && client.coverImage_url !== undefined &&
+                                    {user && user._id !== id && client && client.results.coverImage_url !== undefined &&
                                         <img
                                             className="profileCoverImg"
-                                            src={client.coverImage_url}
+                                            src={client.results.coverImage_url}
                                             alt=""
                                         />
                                     }
-                                    {user && user._id == id && client.coverImage_url == undefined &&
+
+                                     {user && user._id == id && user.coverImage_url !== undefined &&
+                                        <img
+                                            className="profileCoverImg"
+                                            src={user.coverImage_url}
+                                            alt=""
+                                        />
+                                    }
+
+                                    {user && user._id == id && user.coverImage_url == undefined &&
                                         <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
