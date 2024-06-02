@@ -7,7 +7,7 @@ import RightBar from '../../components/rightbar/RightBar';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { getAuthUser } from '../../localStorage/storage';
+import { getAuthUser, setAuthUser } from '../../localStorage/storage';
 import { processDate } from '../messages/Messages';
 import swal from 'sweetalert';
 import Alert from '@mui/material/Alert';
@@ -18,16 +18,20 @@ const CommunityProfile = (data) => {
 
     const coverImage_url = useRef(null);
 
-    const uploadCoverImage = () => {
+    const uploadCoverImage = (e) => {
+
+        e.preventDefault();
 
         const formData = new FormData();
         formData.append("coverImage", coverImage_url.current.files[0]);
         axios
           .put("http://localhost:3000/api/communities/uploadCoverImage/" + user._id + "/" + user.role, formData)
           .then((resp) => {
+            setAuthUser(resp.data.data)
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
-            console.log(resp);
+            console.log(resp.data.data);
+            console.log(user.coverImage_url);
           })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
@@ -442,12 +446,12 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                                 <div className="profileCover">
-                                    {/* <img
+                                    <img
                                         className="profileCoverImg"
-                                        src="/img/image_2.jpg"
+                                        src={user.coverImage_url}
                                         alt=""
-                                    /> */}
-                                    {user && user._id == id &&
+                                    />
+                                    {user && user._id == id && user.coverImage_url == undefined &&
                                         <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
