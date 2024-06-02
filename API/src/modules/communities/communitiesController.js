@@ -340,19 +340,23 @@ export const uploadCoverImage = async (req, res) => {
 
         const role = req.params.role;
 
+        let userData;
         let data;
 
         if(role == "freelancer") {
             await freelancer_model.updateOne(filter, update);
-            data = await freelancer_model.findById(id);
+            userData = await freelancer_model.findById(id);
         }
 
         if(role == "client") {
             await client_model.updateOne(filter, update);
-            data = await client_model.findById(id);
-            data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
-            data.coverImage_url = "http://" + req.hostname + ":3000/" + data.coverImage_url;
+            userData = await client_model.findById(id);
         }
+
+        data = { ...userData._doc };
+
+        data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
+        data.coverImage_url = "http://" + req.hostname + ":3000/" + data.coverImage_url;
 
         res.status(200).json({ msg: "Cover image uploaded successfuly", data});
     } catch (error) {
