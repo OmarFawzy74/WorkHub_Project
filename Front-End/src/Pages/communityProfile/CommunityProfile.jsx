@@ -40,6 +40,7 @@ const CommunityProfile = (data) => {
             // console.log(errors.response.data.message);
           });
     }
+    console.log(user.coverImage_url);
 
     let { id } = useParams();
 
@@ -453,7 +454,7 @@ const CommunityProfile = (data) => {
                                         src={user.coverImage_url}
                                         alt=""
                                     />
-                                    {user && user._id == id && user.coverImage_url == undefined &&
+                                    {user && user._id == id && user.coverImage_url !== undefined &&
                                         <form onSubmit={uploadCoverImage}>
                                             <div className="addCoverImgInputContainer">
                                                 <div>
