@@ -19,14 +19,8 @@ const CommunityProfile = (data) => {
     const coverImage_url = useRef(null);
 
     const uploadCoverImage = (e) => {
-<<<<<<< HEAD
 
         e.preventDefault();
-=======
-        
-
-        console.log("e7na hena");
->>>>>>> e839e37c5432c2375a15fe0b95a413a1294b069b
 
         const formData = new FormData();
         formData.append("coverImage", coverImage_url.current.files[0]);
@@ -36,13 +30,8 @@ const CommunityProfile = (data) => {
             setAuthUser(resp.data.data)
             // image.current.value = null;
             // swal(resp.data.message, "", "success");
-<<<<<<< HEAD
             console.log(resp.data.data);
             console.log(user.coverImage_url);
-=======
-            console.log(resp);
-            console.log("a7a");
->>>>>>> e839e37c5432c2375a15fe0b95a413a1294b069b
           })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
