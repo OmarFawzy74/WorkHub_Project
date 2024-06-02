@@ -43,6 +43,8 @@ export const getFreelancerById = async (req, res, next) => {
   }
 
   freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;
+  freelancer.coverImage_url = "http://" + req.hostname + ":3000/" + freelancer.coverImage_url;
+
   res.status(200).json({ freelancer });
   } catch (error) {
     console.log(error);
