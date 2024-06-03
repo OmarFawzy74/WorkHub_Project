@@ -10,7 +10,7 @@ import { sidebarStatus } from "../../App";
 
 const OrdersList = () => {
 
-    const [categories, setCategories] = useState({
+    const [orders, setOrders] = useState({
         loading: true,
         results: [],
         err: null,
@@ -18,46 +18,28 @@ const OrdersList = () => {
     });
 
     useEffect(() => {
-        setCategories({ ...categories, loading: true })
-        axios.get("http://localhost:3000/api/clients/getAllClients")
+        setOrders({ ...orders, loading: true })
+        axios.get("http://localhost:3000/api/orders/getAllOrders")
             .then(
                 resp => {
                     console.log(resp.data);
-                    setCategories({ results: resp.data, loading: false, err: null });
+                    setOrders({ results: resp.data, loading: false, err: null });
                     console.log(resp);
                 }
             ).catch(err => {
-                setCategories({ ...categories, loading: false, err: err.response.data.msg });
+                setOrders({ ...orders, loading: false, err: err.response.data.msg });
                 console.log(err);
             })
-    }, [categories.reload]);
-
-    const deleteCategory = (e) => {
-        e.preventDefault();
-        const category_id = e.target.value;
-        axios.delete("http://localhost:3000/api/categories/deleteCategory/:id", {
-            params: {
-                id: category_id,
-            }
-        })
-            .then(
-                resp => {
-                    swal(resp.data.msg, "", "success");
-                    setCategories({ ...categories, reload: categories.reload + 1 });
-                }
-            ).catch(error => {
-                console.log(error);
-            })
-    }
+    }, [orders.reload]);
 
     return (
         <>
-            <section className={sidebarStatus() ? 'OrdersListPage' : 'OrdersListPage sidebar-close-orders'}>
+            <section className={sidebarStatus() ? 'OrdersListPageActive' : 'OrdersListPage sidebar-close-orders'}>
                 <div>
                     <h1>Orders List</h1>
                 </div>
                 <div className='contain-table'>
-                    {/* {categories.loading == false && categories.err == null && ( */}
+                {orders.loading == false && orders.err == null && (
                     <Table striped>
                         <thead>
                             <tr>
@@ -79,36 +61,36 @@ const OrdersList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {categories.loading == false && categories.err == null && ( */}
-                            {/* categories.results.map((category => ( */}
+                            {orders.loading == false && orders.err == null && ( 
+                            orders.results.map((order => (
                             <tr>
                                 <td>
-                                    {/* {category.categoryDesc} */} Client
+                                    {order.clientId.name}
                                 </td>
                                 <td className="desc">
-                                    {/* {category.categoryDesc} */} Freelancer
+                                    {order.freelancerId.name} 
                                 </td>
                                 <td className="desc">
-                                    {/* {category.categoryDesc} */}Website
+                                    {order.serviceId.serviceTitle}
                                 </td>
                                 <td className="desc">
-                                    {/* {category.categoryDesc} */}100$
+                                    {order.serviceId.servicePrice} $
                                 </td>
                                 <td className="test">
-                                    Pending
+                                    {order.orderStatus}
                                 </td>
                             </tr>
-                            {/* ))) */}
-                            {/* )
-              } */}
+                            ))) 
+                             
+                )} 
                         </tbody>
                     </Table>
-                    {/* ) */}
-                    {/* } */}
+                    )
+                    }
                     {
-                        categories.loading == false && categories.err !== null && (
+                        orders.loading == false && orders.err !== null && (
                             <Alert variant={'danger'} className='err-msg-custom'>
-                                {categories.err}
+                                {orders.err}
                             </Alert>
                         )
                     }

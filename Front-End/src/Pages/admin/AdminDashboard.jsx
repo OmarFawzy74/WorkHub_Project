@@ -68,36 +68,36 @@ function AdminDashboard() {
                     <h3>SERVICES</h3>
                     <BsFillArchiveFill className='card_icon'/>
                 </div>
-                <h1>300</h1>
+                <h1>50</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
                     <h3>CATEGORIES</h3>
                     <BsFillGrid3X3GapFill className='card_icon'/>
                 </div>
-                <h1>12</h1>
+                <h1>8</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
                     <h3>FREELANCERS</h3>
                     <BsPeopleFill className='card_icon'/>
                 </div>
-                <h1>33</h1>
+                <h1>10</h1>
             </div>
             <div className='card'>
                 <div className='card-inner'>
                     <h3>CLIENTS</h3>
                     <BsPeopleFill className='card_icon'/>
                 </div>
-                <h1>40</h1>
+                <h1>20</h1>
             </div>
-            {/* <div className='card'>
+            <div className='card'>
                 <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <BsFillBellFill className='card_icon'/>
+                    <h3>COURSES</h3>
+                    <BsFillGrid3X3GapFill className='card_icon'/>
                 </div>
-                <h1>42</h1>
-            </div> */}
+                <h1>12</h1>
+            </div>
         </div>
 
         <div className='charts'>

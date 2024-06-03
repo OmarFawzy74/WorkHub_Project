@@ -140,7 +140,7 @@ function Course() {
                                     className="hourIcon"
                                     src="/img/hour.png"
                                 />
-                                <span>{course.results.courseDuration} Minutes</span>
+                                <span>{course.results.courseDuration} Hours</span>
                             </div>
                             {course.enrollStatus == true &&
                                 <Container>
