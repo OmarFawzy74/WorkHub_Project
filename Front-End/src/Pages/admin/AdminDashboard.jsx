@@ -93,7 +93,7 @@ function AdminDashboard() {
 
     const [courses, setCourses] = useState({
         loading: false,
-        results: null,
+        results: [],
         err: null,
         reload: 0,
     });
@@ -113,11 +113,57 @@ function AdminDashboard() {
     }, [courses.reload]);
 
 
+        const [orders, setOrders] = useState({
+        loading: true,
+        results: [],
+        err: null,
+        reload: 0
+    });
+
+    useEffect(() => {
+        setOrders({ ...orders, loading: true })
+        axios.get("http://localhost:3000/api/orders/getAllOrders")
+            .then(
+                resp => {
+                    console.log(resp.data);
+                    setOrders({ results: resp.data, loading: false, err: null });
+                    console.log(resp);
+                }
+            ).catch(err => {
+                setOrders({ ...orders, loading: false, err: err.response.data.msg });
+                console.log(err);
+            })
+    }, [orders.reload]);
+
+
+    const [services, setServices] = useState({
+        loading: false,
+        results: [],
+        err: null,
+        reload: 0,
+      });
+    
+      useEffect(() => {
+        axios
+          .get("http://localhost:3000/api/services/getAllServices")
+          .then((resp) => {
+            setServices({ results: resp.data.services, loading: false, err: null });
+            console.log(resp.data.services);
+          })
+          .catch((err) => {
+            console.log(err);
+            // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+          });
+      }, [services.reload]);
+
+
   const data = [
-    { value: 5, label: "A" },
-    { value: 10, label: "B" },
-    { value: 15, label: "C" },
-    { value: 20, label: "D" },
+    { value: freelancers.results.length, label: "F" },
+    { value: clients.results.length, label: "C" },
+    { value: orders.results.length, label: "O" },
+    { value: categories.results.length, label: "Cat" },
+    { value: courses.results.length, label: "Course" },
+    { value: services.results.length, label: "S" },
   ];
 
   const size = {
@@ -131,7 +177,6 @@ function AdminDashboard() {
         series={[
           {
             arcLabel: (item) => `${item.label} (${item.value})`,
-            arcLabelMinAngle: 30,
             data,
             highlightScope: { faded: "global", highlighted: "item" },
             faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
