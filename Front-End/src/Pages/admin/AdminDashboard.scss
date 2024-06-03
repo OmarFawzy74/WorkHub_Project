@@ -13,6 +13,26 @@
   margin-top: 70px;
 
   .chartsContainer {
+
+    .clientsLabel{
+      position: relative;
+      left: 570px;
+      bottom: 70px;
+      font-size: 16px;
+      color: rgb(255, 99, 132);
+      font-weight: bold;
+    }
+
+    .ordersLabel{
+      position: relative;
+      right: 30px;
+      bottom: 330px;
+      transform: rotate(270deg);
+      font-size: 16px;
+      color: rgb(255, 99, 132);
+      font-weight: bold;
+    }
+
     .pieChart {
       margin-bottom: 200px;
       margin-left: 220px;

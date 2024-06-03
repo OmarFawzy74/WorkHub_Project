@@ -219,6 +219,9 @@ function AdminDashboard() {
       title: {
         display: true,
         text: 'Clients Order',
+        font: {
+          size: 28
+        },
       },
     },
   };
@@ -247,7 +250,7 @@ function AdminDashboard() {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Data',
         data: ordersCount,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -278,6 +281,9 @@ function AdminDashboard() {
         </div>
 
         <Line options={options} data={lineChartData} />
+        <label className="clientsLabel">Clients</label>
+        <label className="ordersLabel">Orders</label>
+
 
 
       </div>
