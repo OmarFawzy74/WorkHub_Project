@@ -175,7 +175,7 @@ const Add = () => {
           list[i].value = "";
           handleFeaturesRemove(i);
         }
-        window.location = "http://localhost:3001/gigs";
+        // window.location = "http://localhost:3001/gigs";
         // console.log(list);
         // window.location.reload();
         // for (let i = 0; i < featureList.length; i++) {

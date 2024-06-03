@@ -35,9 +35,8 @@
       margin-bottom: 200px;
       margin-left: 220px;
 
-      .MuiChartsLegend-root {
-        position: relative;
-        left: 400px;
+      .MuiChartsLegend-series {
+        display: none;
       }
     }
 
