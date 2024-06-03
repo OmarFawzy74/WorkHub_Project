@@ -15,7 +15,7 @@ const LearnCard = ({ item }) => {
                 className="hourIconOut"
                 src="/img/hour.png"
               />
-              <span className="courseDurationNo">{item.courseDuration} Minutes</span>
+              <span className="courseDurationNo">{item.courseDuration} Hours</span>
             </div>
           </div>
           <p>{item.courseTitle}</p>
