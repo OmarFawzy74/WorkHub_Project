@@ -52,6 +52,13 @@ export const getAllPosts = async (req, res) => {
 
             modifiedPost.comments = commentsData;
 
+            console.log(modifiedPost._id);
+
+            const filter = { _id: modifiedPost._id };
+            const update = { $set: { comments: commentsData } };
+
+            await Postmodel.updateOne(filter, update);
+
             modifiedPosts.push(modifiedPost);
         }
 
@@ -223,6 +230,26 @@ export const getPost = async (req, res) => {
 
 };
 
+// Get Post Likes Count By Post ID
+export const getPostlikesCount = async (req, res) => {
+    try {
+        const { id } = req.params
+        const post = await Postmodel.findById({ _id: id })
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const likesCount = post.likes.length;
+
+        res.status(200).json({ message: 'Post found', likesCount });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 // Add Like To Post
 export const addLike = async (req, res) => {
     try {
@@ -350,12 +377,15 @@ export const addComment = async (req, res) => {
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {
+            const date = new Date();
+            const commentCreationDate = date.getTime();
 
             const allComments = postToUpdate.comments;
 
             const modifiedUser = { ...userData._doc }; // Create a copy of the service object
             modifiedUser.image_url = "http://" + req.hostname + ":3000/" + modifiedUser.image_url;
             modifiedUser.comment = comment;
+            modifiedUser.commentDate = commentCreationDate;
 
             allComments.push(modifiedUser);
             
@@ -364,7 +394,7 @@ export const addComment = async (req, res) => {
 
             await Postmodel.updateOne(filter, update);
 
-            return res.status(200).json({ msg: "post comment added successfuly." });
+            return res.status(200).json({ msg: "post comment added successfuly." , allComments});
         }
 
         res.status(404).json({ msg: "Post Not Found!" });
@@ -378,14 +408,10 @@ export const addComment = async (req, res) => {
 export const deleteComment = async (req, res) => {
     try {
         const postId = req.params.postId;
-        const commentId = req.params.commentId;
+        const commentText = req.params.commentText;
 
         if (!mongoose.Types.ObjectId.isValid(postId)) {
             return res.status(400).json({ message: 'Invalid Post ID' });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(commentId)) {
-            return res.status(400).json({ message: 'Invalid Comment ID' });
         }
 
         const postData = await Postmodel.findById(postId);
@@ -395,7 +421,9 @@ export const deleteComment = async (req, res) => {
         let newCommentsData = [];
 
         commentsData.filter((userComment) => {
-            if(userComment._id.valueOf() !== commentId) {
+            console.log(userComment.comment);
+            console.log(commentText);
+            if(userComment.comment !== commentText) {
                 newCommentsData.push(userComment);
             }
         });
@@ -405,20 +433,7 @@ export const deleteComment = async (req, res) => {
 
         await Postmodel.updateOne(filter, update);
 
-        return res.status(200).json({ msg: "Post Comment Deleted Successfuly." });
-
-        // if (!data) {
-        //     return res.status(404).json({ message: 'Post Not Found' });
-        // }
-
-        // const filter = { _id: id }
-        // const process = await Postmodel.deleteOne(filter);
-
-        // if (process) {
-        //     fs.unlinkSync("./src/middleware/upload/" + data.media_url); //delete old image
-
-        //     return res.status(200).json({ msg: "Post deleted successfully" });
-        // }
+        return res.status(200).json({ msg: "Comment Deleted Successfuly.", newCommentsData });
 
     } catch (error) {
         console.log(error);

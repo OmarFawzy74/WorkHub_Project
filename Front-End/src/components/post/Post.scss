@@ -239,14 +239,30 @@
                    
                     }
 
-                    .commentListDate{
-                       position: relative;
-                       left: 15px;     
-                    }
-
                     .commentListDateAndDelete{
                         display: flex;
                         gap: 275px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .commentListDateAndDeleteTwo{
+                        display: flex;
+                        gap: 265px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
                     }
 
                     .nameCommentContainer{
@@ -311,9 +327,9 @@
                             .onlineImg{
                                 width: 8px;
                                 height: 8px;
-                                position: absolute;
-                                right: 369px;
-                                top: 55px;
+                                position: relative;
+                                right: 39px;
+                                top: 43px;
                             }
                         }
                     }

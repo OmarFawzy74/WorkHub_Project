@@ -1,153 +1,195 @@
-import './AdminDashboard.scss'
-import React from 'react'
-import 
-{ BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill}
- from 'react-icons/bs'
-import { useLocation } from 'react-router-dom';
- import 
- { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
- from 'recharts';
-import { sidebarStatus } from '../../App';
-// import { sidebarStatus } from './test';
+import "./AdminDashboard.scss";
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  BsFillArchiveFill,
+  BsFillGrid3X3GapFill,
+  BsPeopleFill,
+  BsFillBellFill,
+} from "react-icons/bs";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { sidebarStatus } from "../../App";
+import { LineChart } from '@mui/x-charts/LineChart';
+import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 
 function AdminDashboard() {
+    const [freelancers, setfreelancers] = useState({
+      loading: true,
+      results: [],
+      err: null,
+      reload: 0,
+    });
 
-    const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
+    useEffect(() => {
+      setfreelancers({ ...freelancers, loading: true });
+      axios
+        .get("http://localhost:3000/api/freelancers/getAllFreelancers")
+        .then((resp) => {
+          console.log(resp.data);
+          setfreelancers({
+            results: resp.data.freelancers,
+            loading: false,
+            err: null,
+          });
+          console.log(resp);
+        })
+        .catch((err) => {
+          setfreelancers({
+            ...freelancers,
+            loading: false,
+            err: err.response.data.msg,
+          });
+          console.log(err);
+        });
+    }, [freelancers.reload]);
+
+
+    const [clients, setClients] = useState({
+        loading: true,
+        results: [],
+        err: null,
+        reload: 0
+      });
+    
+      useEffect(() => {
+        setClients({ ...clients, loading: true })
+        axios.get("http://localhost:3000/api/clients/getAllClients")
+          .then(
+            resp => {
+              console.log(resp.data);
+              setClients({ results: resp.data, loading: false, err: null });
+              console.log(resp);
+            }
+          ).catch(err => {
+            setClients({ ...clients, loading: false, err: err.response.data.msg });
+            console.log(err);
+          })
+      }, [clients.reload]);
+
+
+      const [categories, setCategories] = useState({
+        loading: true,
+        results: [],
+        err: null,
+        reload: 0
+    });
+
+
+      useEffect(() => {
+        setCategories({ ...categories, loading: true })
+        axios.get("http://localhost:3000/api/categories/getAllCategories")
+            .then(
+                resp => {
+                    console.log(resp.data);
+                    setCategories({ results: resp.data, loading: false, err: null });
+                    console.log(resp);
+                }
+            ).catch(err => {
+                setCategories({ ...categories, loading: false, err: err.response.data.msg });
+                console.log(err);
+            })
+    }, [categories.reload]);
+    
+
+    const [courses, setCourses] = useState({
+        loading: false,
+        results: null,
+        err: null,
+        reload: 0,
+    });
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/api/courses/getAllCourses")
+            .then((resp) => {
+                setCourses({ results: resp.data.modifiedCourses, loading: false, err: null });
+                console.log(resp.data.modifiedCourses);
+                console.log(resp);
+            })
+            .catch((err) => {
+                console.log(err);
+                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+            });
+    }, [courses.reload]);
+
+
+  const data = [
+    { value: 5, label: "A" },
+    { value: 10, label: "B" },
+    { value: 15, label: "C" },
+    { value: 20, label: "D" },
+  ];
+
+  const size = {
+    width: 700,
+    height: 700,
+  };
+
+  function PieArcLabel() {
+    return (
+      <PieChart
+        series={[
+          {
+            arcLabel: (item) => `${item.label} (${item.value})`,
+            arcLabelMinAngle: 30,
+            data,
+            highlightScope: { faded: "global", highlighted: "item" },
+            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+          },
+        ]}
+        sx={{
+          [`& .${pieArcLabelClasses.root}`]: {
+            fill: "white",
+            fontWeight: "bold",
+            fontSize: "10px",
+          },
+        }}
+        {...size}
+      />
+    );
+  }
+
+
+  function GridDemo() {
+    return (
+      <LineChart
+        xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+        series={[
+          {
+            data: [2, 5.5, 2, 8.5, 1.5, 5],
+          },
+        ]}
+        width={900}
+        height={400}
+        margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
+        grid={{ vertical: true, horizontal: true }}
+      />
+    );
+  }
+
   return (
-    <main className={sidebarStatus() ? 'main-container sidebar-open-dashboard' : 'main-container sidebar-close-dashboard'}>
-        <div>
-            <h3 className='dashboardTitle'>DASHBOARD</h3>
+    <main
+      className={
+        sidebarStatus()
+          ? "main-container sidebar-open-dashboard"
+          : "main-container sidebar-close-dashboard"
+      }
+    >
+      <div>
+        <h3 className="dashboardTitle">DASHBOARD</h3>
+      </div>
+
+      <div className="chartsContainer">
+        <div className="pieChart">
+            <PieArcLabel></PieArcLabel>
         </div>
 
-        <div className='main-cards'>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>SERVICES</h3>
-                    <BsFillArchiveFill className='card_icon'/>
-                </div>
-                <h1>300</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>CATEGORIES</h3>
-                    <BsFillGrid3X3GapFill className='card_icon'/>
-                </div>
-                <h1>12</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>FREELANCERS</h3>
-                    <BsPeopleFill className='card_icon'/>
-                </div>
-                <h1>33</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>CLIENTS</h3>
-                    <BsPeopleFill className='card_icon'/>
-                </div>
-                <h1>40</h1>
-            </div>
-            {/* <div className='card'>
-                <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <BsFillBellFill className='card_icon'/>
-                </div>
-                <h1>42</h1>
-            </div> */}
+        <div className="lineChart">
+            <GridDemo></GridDemo>
         </div>
-
-        <div className='charts'>
-            <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-            }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-                </BarChart>
-            </ResponsiveContainer>
-
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-                >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                </LineChart>
-            </ResponsiveContainer>
-
-        </div>
+      </div>
     </main>
-  )
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;

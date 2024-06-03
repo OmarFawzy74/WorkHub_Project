@@ -193,8 +193,9 @@ const Feed = (data) => {
 
 
   function LikeHandler({ data }) {
+    const [likesCount, setLikesCount] = useState(data.likes.length);
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(false);
+
 
     useEffect(() => {
       if(user) {
@@ -205,6 +206,18 @@ const Feed = (data) => {
 
     const likeHandling = (e) => {
       const postId = e.target.attributes.value.nodeValue;
+
+      const getPostlikesCount = () => {
+        axios
+        .get("http://localhost:3000/api/posts/getPostlikesCount/" + postId)
+        .then((resp) => {
+          setLikesCount(resp.data.likesCount);
+        })
+        .catch((errors) => {
+          console.log(errors);
+        });
+      }
+
       if(!user) {
         window.location = "http://localhost:3001/login";
       }
@@ -213,9 +226,8 @@ const Feed = (data) => {
           axios
             .put("http://localhost:3000/api/posts/addLike/" + postId + "/" + user._id + "/" + user.role)
             .then((resp) => {
-              // console.log(resp);
               setIsLiked(!isLiked);
-              setPosts({reload: posts.reload + 1});
+              getPostlikesCount();
             })
             .catch((errors) => {
               console.log(errors);
@@ -224,9 +236,8 @@ const Feed = (data) => {
           axios
             .put("http://localhost:3000/api/posts/removeLike/" + postId + "/" + user._id + "/" + user.role)
             .then((resp) => {
-              // console.log(resp);
               setIsLiked(!isLiked);
-              setPosts({reload: posts.reload + 1});
+              getPostlikesCount();
             })
             .catch((errors) => {
               console.log(errors);
@@ -244,12 +255,13 @@ const Feed = (data) => {
           onClick={likeHandling}
         />
 
-        <span className="postLikeCounter">{data.likes.length} Likes</span>
+        <span className="postLikeCounter">{likesCount} Likes</span>
       </>
     );
   }
 
   function CommentsPanel({ data }) {
+    // console.log(data);
     const [isActive, setIsActive] = useState(false);
 
     const [comment, setComment] = useState({
@@ -257,7 +269,7 @@ const Feed = (data) => {
       err: null,
       commentDesc: "",
       reload: 0,
-      results: ""
+      results: data.comments
     });
 
     const addCommentData = async (e) => {
@@ -270,8 +282,17 @@ const Feed = (data) => {
           comment: comment.commentDesc,
         })
         .then((resp) => {
-          setComment({ results: resp.data, reload: posts.reload + 1 });
-          console.log(resp);
+          setComment({ results: resp.data.allComments});
+          // setComment({ ...comment, commentDesc: ""});
+          for (let index = 0; index < document.querySelectorAll("#addCommentForm").length; index++) {
+            document.querySelectorAll("#addCommentForm")[index].reset();
+          }
+          // document.querySelectorAll("#addCommentForm")[0].reset();
+          // console.log(document.querySelectorAll("#addCommentForm"));
+          // document.getElementsByClassName("commentListForm").reset();
+          // e.target.value = ""
+          // document.getElementById("addCommentForm").reset();
+
         })
         .catch((errors) => {
           console.log(errors);
@@ -281,14 +302,13 @@ const Feed = (data) => {
     const deleteComment = (e) => {
       e.preventDefault();
       const postId = e.target.attributes.data.nodeValue;
-      const commentId = e.target.attributes.value.nodeValue;
-      console.log(e);
-      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentId )
+      const commentText = e.target.attributes.value.nodeValue;
+      // console.log(e);
+      axios.put("http://localhost:3000/api/posts/deleteComment/" + postId + "/" + commentText )
         .then(
           resp => {
+            setComment({ results: resp.data.newCommentsData });
             console.log(resp);
-            // swal(resp.data.msg, "", "success");
-            // setPosts({ reload: posts.reload + 1 });
           }
         ).catch(error => {
           console.log(error);
@@ -303,15 +323,15 @@ const Feed = (data) => {
           </div>
           <div className={isActive ? "activeItem" : "item"} onClick={() => setIsActive(!isActive)}>
             <img className="commentsImg" src="/img/comment.png" alt="" />
-            <span>{data.comments.length} Comments</span>
+            <span>{comment.results.length} Comments</span>
           </div>
         </div>
         <div className='postBottomRight'>
           {isActive ? (
             <>
-              {data.comments &&
+              {comment.results &&
                 <ul className="commentList">
-                  {data.comments.map((userComment) => (
+                  {comment?.results.map((userComment) => (
                     <li>
                       <div className='userInfoCommentList'>
                         <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
@@ -319,7 +339,10 @@ const Feed = (data) => {
                             className="profileImgCommentList"
                             src={userComment?.image_url}
                           />
-                          <img className="onlineImg" src={userComment?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                          {/* <img className="onlineImg" src={userComment.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/> */}
+                          {/* <img className="onlineImg" src={"/img/" + userComment.activityStatus + ".png"}/> */}
+                          {userComment.activityStatus == "online" && <img className="onlineImg" src="/img/online.png"/>}
+                          {userComment.activityStatus == "offline" && <img className="onlineImg" src="/img/offline.png"/>}
                         </Link>
                       </div>
                       <div className='nameCommentContainer'>
@@ -330,9 +353,9 @@ const Feed = (data) => {
                         </div>
                         <p className='commentContent'>{userComment.comment}</p>
                       </div>
-                      <div className='commentListDateAndDelete'>
-                        <div><span className='commentListDate'>50 m ago</span></div>
-                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment._id} data={data._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
+                      <div className={parseInt(processDate(userComment.commentDate).substring(0, 2)) >= 10 ? "commentListDateAndDeleteTwo" : 'commentListDateAndDelete'}>
+                        <div className='dateContainer'><span className='commentListDate'>{processDate(userComment.commentDate)} ago</span></div>
+                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment.comment} data={data._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
                       </div>
                     </li>
                   ))}
@@ -340,7 +363,7 @@ const Feed = (data) => {
               }
               {user &&
                 <div className={isActive ? "activeWrite" : "write"}>
-                  <form value={data._id} onSubmit={addCommentData} className='commentListForm'>
+                  <form id='addCommentForm' value={data._id} onSubmit={addCommentData} className='commentListForm'>
                     <Link reloadDocument to={"/communityProfile/" + data?.posterId._id}>
                       <img
                         className="profileImgComment"

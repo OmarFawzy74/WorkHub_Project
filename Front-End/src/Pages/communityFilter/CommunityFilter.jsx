@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import "../../components/feed/Feed.scss"
+import "./CommunityFilter.scss"
 import { Link, useParams } from 'react-router-dom'
 import { getAuthUser } from '../../localStorage/storage'
 import axios from 'axios'
@@ -357,7 +358,7 @@ const CommunityFilter = (data) => {
     return (
         <div className='communityPage'>
             {posts.results[0] &&
-                <h1>{posts?.results[0].communityId.communityName} Community</h1>
+                <h1 className='communityFilterHeader'>{posts?.results[0].communityId.communityName} Community</h1>
             }
             <div className="communityContainer">
                 <SideBar />

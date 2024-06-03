@@ -16,6 +16,34 @@
   margin-left: 220px;
   margin-top: 70px;
 
+  .chartsContainer {
+    // position: relative;
+    // bottom: 100px;
+    // margin-bottom: 200px !important;
+    // display: flex;
+
+    // .css-y6ff8p-MuiResponsiveChart-container {
+    //   position: relative;
+    //   // bottom: 200px;
+    // }
+
+    // .css-172kpif-MuiResponsiveChart-container {
+    //   margin-bottom: 100px !important;
+    // }
+
+    .pieChart {
+      margin-bottom: 200px;
+      margin-left: 220px;
+    }
+
+    .lineChart {
+      position: relative;
+      bottom: 100px;
+      left: 120px;
+      margin-bottom: 100px !important;
+    }
+  }
+
   .dashboardTitle {
     text-align: center;
     color: #0e9184;
@@ -23,6 +51,7 @@
     font-weight: bold;
     line-height: 120px;
     margin-bottom: 20px;
+    margin-left: 120px;
     // margin-left: 470px;    
     // margin-top: 50px; 
   }
@@ -66,13 +95,5 @@
         }
       }
     }
-  }
-
-  .charts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 60px;
-    height: 300px;
   }
 }

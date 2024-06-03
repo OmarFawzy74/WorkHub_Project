@@ -32,7 +32,7 @@ const CommunityProfile = (data) => {
             // swal(resp.data.message, "", "success");
             console.log(resp);
             console.log(user.coverImage_url);
-            // window.location = "http://localhost:3001/communityProfile/" + user._id;
+            window.location = "http://localhost:3001/communityProfile/" + user._id;
           })
           .catch((errors) => {
             // swal(errors.response.data.message, "", "error");
@@ -447,7 +447,7 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                                 <div className="profileCover">
-                                {user && user._id !== id && freelancer && freelancer.results.coverImage_url !== undefined &&
+                                {user && user._id !== id && freelancer && freelancer.results.coverImage_url !== "http://localhost:3000/undefined" &&
                                         <img
                                             className="profileCoverImg"
                                             src={freelancer.results.coverImage_url}
@@ -646,7 +646,7 @@ const CommunityProfile = (data) => {
                         <>
                             <div className="communityProfileRightTop">
                             <div className="profileCover">
-                                    {user && user._id !== id && client && client.results.coverImage_url !== undefined &&
+                                    {user && user._id !== id && client && client.results.coverImage_url !== "http://localhost:3000/undefined" &&
                                         <img
                                             className="profileCoverImg"
                                             src={client.results.coverImage_url}
