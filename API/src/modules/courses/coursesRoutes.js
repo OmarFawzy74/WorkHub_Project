@@ -4,9 +4,8 @@ import auth from '../../middleware/auth.middleware.js'
 import { validateParams, validation } from "../../middleware/val.middleware.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { addCourse, deleteCourse, enrollCourse, getAllCourses, getCourseById, getEnrolledCourses, unenrollCourse, updateCourse, uploadCourseCoverImage, uploadProffImage } from "./coursesController.js";
-import { CoursesSchema, updateCoursesSchema } from "./CoursesSchema.js";
+import { CoursesSchema, updateCoursesSchema } from "./coursesSchema.js";
 import { upload } from "../../middleware/uploadImages.js";
-import endPoints from "../../middleware/endPoints.js";
 
 const router = express.Router();
 
