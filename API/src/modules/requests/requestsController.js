@@ -1,4 +1,5 @@
 
+import client_model from "../../../DB/models/client_model.js";
 import order_model from "../../../DB/models/order_model.js";
 import request_model from "../../../DB/models/request_model.js";
 import service_model from "../../../DB/models/service_model.js";
@@ -185,6 +186,12 @@ export const updateRequestStatus = async (req, res) => {
                     update = { $set: { orders: orders} };
                     process = await service_model.updateOne(filter, update);
 
+                    const clientToUpdate = await client_model.findById(clientId);
+
+                    filter = { _id: clientId };
+                    update = { $set: { ordersCount: clientToUpdate.ordersCount + 1} };
+                    process = await client_model.updateOne(filter, update);
+
                     return res.status(200).json({ msg:"Request Approved Successfuly." });
                 }
                 else {
@@ -220,71 +227,3 @@ export const deleteRequest = async (req, res) => {
         res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
-
-// // Approve Request
-// export const updateRequestStatus = async (req, res) => {
-//     try {
-//         const requestId = req.params.id;
-//         const requestToUpdate = await request.findById(requestId);
-
-//         if(requestToUpdate) {
-//             const filter = { _id: requestId };
-//             const update = { $set: { requestStatus: req.body.requestStatus} };
-//             const process = await request.updateOne(filter, update);
-
-//             if(process) {
-//                 if(req.body.requestStatus === "approved") {
-//                     const freelancerId = req.body.freelancerId;
-//                     const clientId = req.body.clientId;
-//                     const serviceId = req.body.serviceId;
-//                     const serviceData = await request.findById(serviceId);
-
-//                     addOrder();
-//                     return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
-//                 }
-//                 else {
-//                     return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
-//                 }
-//             }
-//             res.status(400).send("Request status update failed");
-//         }
-//         res.status(404).send("Request not found!");
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send("Somthing went wrong!");
-//     }
-// }
-
-// // Decline Request
-// export const updateRequestStatus = async (req, res) => {
-//     try {
-//         const requestId = req.params.id;
-//         const requestToUpdate = await request.findById(requestId);
-
-//         if(requestToUpdate) {
-//             const filter = { _id: requestId };
-//             const update = { $set: { requestStatus: req.body.requestStatus} };
-//             const process = await request.updateOne(filter, update);
-
-//             if(process) {
-//                 if(req.body.requestStatus === "approved") {
-//                     const freelancerId = req.body.freelancerId;
-//                     const clientId = req.body.clientId;
-//                     const serviceId = req.body.serviceId;
-//                     const serviceData = await request.findById(serviceId);
-
-//                     addOrder();
-//                     return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
-//                 }
-//                 else {
-//                     return res.status(200).send("Request " + req.body.requestStatus + " successfuly.");
-//                 }
-//             }
-//             res.status(400).send("Request status update failed");
-//         }
-//         res.status(404).send("Request not found!");
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send("Somthing went wrong!");
-//     }
-// }

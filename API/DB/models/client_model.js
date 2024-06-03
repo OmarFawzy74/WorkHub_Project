@@ -43,6 +43,11 @@ const clientSchema = new Schema({
     token: {
         type: String,
         required: false
+    },
+    ordersCount: {
+        type: Number,
+        required: false,
+        default: 0
     }
 },{
     timestamps: true
