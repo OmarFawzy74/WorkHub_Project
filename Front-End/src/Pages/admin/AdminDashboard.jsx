@@ -158,7 +158,7 @@ function AdminDashboard() {
 
 
   const data = [
-    { value: freelancers.results.length, label: "Freelancers" },
+    { value: freelancers.results.length, label: "Freelancer" },
     { value: clients.results.length, label: "Clients" },
     { value: orders.results.length, label: "Orders" },
     { value: categories.results.length, label: "Categories" },
@@ -186,7 +186,7 @@ function AdminDashboard() {
           [`& .${pieArcLabelClasses.root}`]: {
             fill: "white",
             fontWeight: "bold",
-            fontSize: "10px",
+            fontSize: "13px",
           },
         }}
         {...size}
