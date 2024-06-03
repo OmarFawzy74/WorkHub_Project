@@ -116,6 +116,8 @@ const AddCourse = () => {
             const courseId = resp.data.newCourse._id;
             uploadCourseImage(courseId);
             uploadProfessorImage(courseId);
+            window.location.reload();
+            window.location = "http://localhost:3001/manageLearn";
             // document.getElementById("serviceFrom").reset();
             // document.getElementById("service").value = "";
             // let list = document.querySelectorAll('#service')

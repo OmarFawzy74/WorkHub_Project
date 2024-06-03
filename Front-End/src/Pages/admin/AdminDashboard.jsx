@@ -158,17 +158,17 @@ function AdminDashboard() {
 
 
   const data = [
-    { value: freelancers.results.length, label: "F" },
-    { value: clients.results.length, label: "C" },
-    { value: orders.results.length, label: "O" },
-    { value: categories.results.length, label: "Cat" },
-    { value: courses.results.length, label: "Course" },
-    { value: services.results.length, label: "S" },
+    { value: freelancers.results.length, label: "Freelancers" },
+    { value: clients.results.length, label: "Clients" },
+    { value: orders.results.length, label: "Orders" },
+    { value: categories.results.length, label: "Categories" },
+    { value: courses.results.length, label: "Courses" },
+    { value: services.results.length, label: "Services" },
   ];
 
   const size = {
-    width: 700,
-    height: 700,
+    width: 800,
+    height: 500,
   };
 
   function PieArcLabel() {
@@ -198,10 +198,10 @@ function AdminDashboard() {
   function GridDemo() {
     return (
       <LineChart
-        xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+        xAxis={[{ data: [1, 2, 3] }]}
         series={[
           {
-            data: [2, 5.5, 2, 8.5, 1.5, 5],
+            data: [2, 5.5, 2],
           },
         ]}
         width={900}
