@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { sidebarStatus } from "../../App";
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
+import {Chart} from "chart.js";
 
 function AdminDashboard() {
     const [freelancers, setfreelancers] = useState({
@@ -158,7 +159,7 @@ function AdminDashboard() {
 
 
   const data = [
-    { value: freelancers.results.length, label: "Freelancer" },
+    { value: freelancers.results.length, label: "Freelacers" },
     { value: clients.results.length, label: "Clients" },
     { value: orders.results.length, label: "Orders" },
     { value: categories.results.length, label: "Categories" },
@@ -212,6 +213,110 @@ function AdminDashboard() {
     );
   }
 
+//   const lineChartData = {
+//     labels: ['Omar Fawzy', 'Mana Afify', 'Hosam Omar', 'Abdo Mo3awad', 'Eslam', 'Ziad'],
+//     datasets: [
+//       {
+//         label: 'Dataset',
+//         data: [1, 2, 3, 4, 5, 6, 7, 9, 10],
+//         borderColor: Utils.CHART_COLORS.red,
+//         backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+//         pointStyle: 'circle',
+//         pointRadius: 10,
+//         pointHoverRadius: 15
+//       }
+//     ]
+//   };
+
+
+//   const config = {
+//     type: 'line',
+//     data: data,
+//     options: {
+//       responsive: true,
+//       plugins: {
+//         title: {
+//           display: true,
+//           text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+//         }
+//       }
+//     }
+//   };
+
+
+  const lineChart = () => {
+    const ctx = document.getElementsByClassName('lineChart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: ['App Store','Play Store','AppGallery'],
+        datasets: [{
+            label: 'My Orange',
+            data: [3.3,3.7,3.5],
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            borderColor: ['rgba(255, 92, 0, 0.75)'],
+            backgroundColor: ['rgba(255, 92, 0, 0.75)'],
+            borderWidth: 0
+        },
+        {
+            label: 'Ana Vodafone',
+            data: [3.2,4.4,4.4],
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            borderColor: ['rgba(248, 2, 2, 0.75)'],
+            backgroundColor: ['rgba(248, 2, 2, 0.75)'],
+            borderWidth: 0
+        },
+        {
+            label: 'My Etisalat',
+            data: [4.2,4.5,4.3],
+            borderColor: ['rgba(11, 0, 0, 0.84)'],
+            backgroundColor: ['rgba(11, 0, 0, 0.84)'],
+            pointRadius: 10,
+            pointHoverRadius: 15,
+            borderWidth: 0
+        }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        },
+        animations: {
+            tension: {
+            duration: 1000,
+            easing: 'linear',
+            from: 1,
+            to: 0,
+            loop: false
+            },
+            borderWidth: {
+            duration: 1000,
+            from: 4,
+            to: 1,
+            loop: false
+            }
+        },
+        scales: {
+            x: {},
+            y: {
+            grace: '10%',
+            }
+        },
+        }
+    });
+  }
+
+  lineChart();
+
+
   return (
     <main
       className={
@@ -230,8 +335,10 @@ function AdminDashboard() {
         </div>
 
         <div className="lineChart">
-            <GridDemo></GridDemo>
+            {/* <GridDemo></GridDemo> */}
         </div>
+
+        <config></config>
       </div>
     </main>
   );
