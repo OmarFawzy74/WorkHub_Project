@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { sidebarStatus } from "../../App";
-import { LineChart } from '@mui/x-charts/LineChart';
+// import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import {
   Chart as ChartJS,
@@ -16,6 +16,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import FreelancerChart from '../../components/lineChart/freelancerChart';
 
 function AdminDashboard() {
 
@@ -218,7 +219,7 @@ function AdminDashboard() {
       },
       title: {
         display: true,
-        text: 'Clients Order',
+        text: 'Client Orders',
         font: {
           size: 28
         },
@@ -236,21 +237,11 @@ function AdminDashboard() {
     ordersCount.push(clients.results[index].ordersCount);
   }
 
-//   orders.results.map((order) => {
-//     labels.push(order.clientId.name);
-//   });
-
-//   orders.results.map((order) => {
-//     labels.push(order.clientId.name);
-//   });
-
-//   console.log(labels);
-  
   const lineChartData = {
     labels,
     datasets: [
       {
-        label: 'Data',
+        label: 'Orders',
         data: ordersCount,
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -276,15 +267,17 @@ function AdminDashboard() {
             <PieArcLabel></PieArcLabel>
         </div>
 
-        <div className="lineChart">
-            {/* <GridDemo></GridDemo> */}
+        <div className="clientLineChart">
+            <Line options={options} data={lineChartData} />
+            <label className="clientsLabel">Clients</label>
+            <label className="ordersLabel">Orders</label>
         </div>
 
-        <Line options={options} data={lineChartData} />
-        <label className="clientsLabel">Clients</label>
-        <label className="ordersLabel">Orders</label>
-
-
+        <div className="freelancerLineChart">
+            <FreelancerChart data={freelancers?.results}></FreelancerChart>
+            <label className="freelancersLabel">Freelancers</label>
+            <label className="servicesLabel">Services</label>
+        </div>
 
       </div>
     </main>

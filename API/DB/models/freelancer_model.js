@@ -50,6 +50,11 @@ const freelancerSchema = new Schema ({
         type: [String],
         required: false
     },
+    servicesCount: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     specialization: {
         type: String,
         required: false

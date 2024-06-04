@@ -37,7 +37,7 @@ export const getAllServices = async (req, res, next) => {
 // Create a new service
 export const createService = async (req, res) => {
     try {
-        const { serviceTitle, serviceShortDesc, deliveryTime, revisionNumber, freelancerId, serviceShortTitle, serviceCategoryId, serviceDesc, servicePrice, features } = req.body
+        const { serviceTitle, serviceShortDesc, deliveryTime, revisionNumber, freelancerId, serviceShortTitle, serviceCategoryId, serviceDesc, servicePrice, features } = req.body;
 
         const isService = await Service.find({ serviceTitle });
         if (isService.length !== 0) {
@@ -58,17 +58,23 @@ export const createService = async (req, res) => {
         };
 
         const newService = new Service(newServiceData);
-
         await newService.save();
+
+        const freelancer = await freelancer_model.findById(freelancerId);
+        if (!freelancer) {
+            return res.status(404).json({ success: false, message: "Freelancer not found" });
+        }
+
+        freelancer.servicesCount += 1;
+        await freelancer.save();
 
         res.status(201).json({ success: true, message: "Service created successfully", newService });
     } catch (error) {
-        // console.log(req);
         console.log(req.body);
         console.log(error);
-        res.status(404).json({ success: false, message: "Server Error" });
+        res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+};
 
 // Update a service by ID
 export const updateService = async (req, res) => {
