@@ -1,16 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import "./Navbar.scss"
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { getAuthUser, removeAuthUser } from '../../localStorage/storage';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Navbar = () => {
 
+  // const [search, setSearch] = useState("");
+
+  let { id } = useParams();
+
   const [active, setActive] = useState(false)
   const [activeMenu, setActiveMenu] = useState(false)
   const [learnMenu, setLearnMenu] = useState(false)
 
+  const [filterService, setFilterService] = useState({
+    loading: true,
+    results: null,
+    err: null,
+    reload: 0,
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/services/getServicesByCategoryId/" + id)
+      .then((resp) => {
+        setFilterService({ results: resp.data, loading: false, err: null });
+        // console.log(resp);
+        console.log(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+      });
+  }, [filterService.reload]);
 
   const [open, setOpen] = useState(false)
 
@@ -191,31 +215,6 @@ const Navbar = () => {
                 )
                 }
               </ul>
-
-              {/* <Link className='menuLink' to="/">
-              Video & Animation
-            </Link>
-            <Link className='menuLink' to="/">
-              Writing & Translation
-            </Link>
-            <Link className='menuLink' to="/">
-              AI Services
-            </Link>
-            <Link className='menuLink' to="/">
-              Digital Marketing
-            </Link>
-            <Link className='menuLink' to="/">
-              Music & Audio
-            </Link>
-            <Link className='menuLink' to="/">
-              Programming & Tech
-            </Link>
-            <Link className='menuLink' to="/">
-              Business
-            </Link>
-            <Link className='menuLink' to="/">
-              Lifestyle
-            </Link> */}
             </>
           )}
         </div>
