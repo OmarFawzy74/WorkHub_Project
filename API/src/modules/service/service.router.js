@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/getAllServices", asyncHandler(serviceController.getAllServices));
 router.get("/getFreelancerServices/:id", asyncHandler(serviceController.getFreelancerServices));
 router.get("/getServiceById/:id", asyncHandler(serviceController.getServiceById));
+router.get("/getServicesByCategoryId/:id", asyncHandler(serviceController.getServicesByCategoryId));
 router.put("/updateService/:id", asyncHandler(serviceController.updateService));
 router.post("/createService", validation(createService), asyncHandler(serviceController.createService));
 router.put("/uploadCoverImage/:id", upload.single('coverImage'), asyncHandler(serviceController.uploadCoverImage));

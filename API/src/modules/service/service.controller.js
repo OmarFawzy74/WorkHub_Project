@@ -34,6 +34,35 @@ export const getAllServices = async (req, res, next) => {
     }
 };
 
+// Get Services By Category ID
+export const getServicesByCategoryId = async (req, res, next) => {
+    try {
+        const categoryId = req.params.id;
+
+        const services = await Service.find({serviceCategoryId: categoryId}).populate("freelancerId").populate("serviceCategoryId").populate("reviews").populate("orders");
+        if (services.length == 0) {
+            return next(new Error("No services found", { cause: 404 }));
+        }
+
+        const modifiedServices = services.map((service) => {
+            const modifiedService = { ...service._doc }; // Create a copy of the service object
+            modifiedService.freelancerId = { ...modifiedService.freelancerId._doc }; // Create a copy of the freelancerId object
+            modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
+            modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
+            modifiedService.serviceImages_url = modifiedService.serviceImages_url.map((image_url) => {
+                return "http://" + req.hostname + ":3000/" + image_url;
+            });
+            return modifiedService;
+        });
+    
+        res.status(200).json({ success: true, message: "here u r", services: modifiedServices });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({ success: false, message: "Server Error" });
+    }
+};
+
 // Create a new service
 export const createService = async (req, res) => {
     try {
