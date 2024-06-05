@@ -68,12 +68,19 @@
                 position: relative;
                 top: 10px;
             }
-    
-            .phoneNoInput{
+
+            .phoneNumberContainer{
+              display: flex;
+
+              .countryCodeSelect{
+                width: 71px;
+              }
+
+              .phoneNoInput{
                 border: 1px solid rgb(216, 214, 214) !important;
                 // position: relative;
                 // top: 30px;
-                width: 400px;
+                width: 329px;
             }
 
             .phoneNoInput:hover {
@@ -86,6 +93,7 @@
             border: 1px solid #1dbf73 !important;
             transition: .2s ease-in-out;
         }
+            }
     
             .singupDesc{
                 position: relative;
