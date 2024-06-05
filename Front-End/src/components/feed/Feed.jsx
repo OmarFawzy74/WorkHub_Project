@@ -615,6 +615,7 @@ const Feed = (data) => {
                       <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                     </div>
                     <span className="postDate">{processDate(post?.creationDate)}</span>
+                    <span className="postSpecialization">{post?.posterId.specialization}</span>
 
                     <div className="postTopRight">
                       <Panel data={post} title={index}></Panel>
