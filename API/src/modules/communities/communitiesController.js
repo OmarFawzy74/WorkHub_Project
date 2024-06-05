@@ -10,24 +10,7 @@ export const getAllCommunities = async (req, res) => {
         if(allCommunities.length !== 0) {
 
             const modifiedCommunities = allCommunities.map((community) => {
-                let modifiedCommunity = { ...community._doc }; // Create a copy of the service object
-                // modifiedCommunity.clientMembers = [{ ...modifiedCommunity.clientMembers[0] }];
-                // modifiedCommunity.freelancerMembers = { ...modifiedCommunity.freelancerMembers._doc };
-                // modifiedService.freelancerId.image_url = "http://" + req.hostname + ":3000/" + modifiedService.freelancerId.image_url;
-                // modifiedService.serviceCover_url = "http://" + req.hostname + ":3000/" + modifiedService.serviceCover_url;
-
-                // modifiedCommunity.freelancerMembers = modifiedCommunity.freelancerMembers.map((freelancer) => {
-                //     freelancer.image_url = "http://" + req.hostname + ":3000/" + freelancer.image_url;
-                // });
-                // console.log(modifiedCommunity);
-
-                console.log(modifiedCommunity.clientMembers);
-                // if (modifiedCommunity.clientMembers[0]) {
-                //     modifiedCommunity.clientMembers = modifiedCommunity.clientMembers.map((client) => {
-                //         client.image_url = "http://" + req.hostname + ":3000/" + client.image_url;
-                //     });
-                // }
-
+                let modifiedCommunity = { ...community._doc };
                 return modifiedCommunity;
             });
 
@@ -102,6 +85,54 @@ export const getJoinedCommunities = async (req, res) => {
         res.status(500).json({ msg:"Somthing went wrong!" });
     }
 }
+
+// Get All Member Joined in Communities
+export const getAllJoinedMembersCommunities = async (req, res) => {
+    try {
+        const allCommunities = await community.find()
+            .populate("freelancerMembers")
+            .populate("clientMembers");
+
+        let allMembers = new Set();
+
+        allCommunities.forEach((community) => {
+            if (Array.isArray(community.freelancerMembers)) {
+                community.freelancerMembers.forEach((member) => {
+                    allMembers.add(member);
+                });
+            }
+            if (Array.isArray(community.clientMembers)) {
+                community.clientMembers.forEach((member) => {
+                    allMembers.add(member);
+                });
+            }
+        });
+
+        const modifiedMembers = [];
+
+        const members = Array.from(allMembers);
+
+        members.forEach(member => {
+            const modifiedMember = { ...member._doc };
+            modifiedMember.image_url = "http://" + req.hostname + ":3000/" + modifiedMember.image_url;
+
+            if(modifiedMember.coverImage_url !== undefined) {
+                modifiedMember.coverImage_url = "http://" + req.hostname + ":3000/" + modifiedMember.coverImage_url;
+            }
+
+            modifiedMembers.push(modifiedMember);
+        });
+
+        if(!modifiedMembers[0]) {
+            return res.status(404).json({ msg: "No Members Found!" });
+        }
+
+        res.status(200).json({ modifiedMembers });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Something went wrong!" });
+    }
+};
 
 // Add Community
 export const addCommunity = async (req, res) => {

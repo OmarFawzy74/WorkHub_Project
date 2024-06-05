@@ -9,6 +9,7 @@ import { processDate } from '../../Pages/messages/Messages'
 import swal from 'sweetalert'
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import { sidebarStatus } from '../../App'
 
 const Feed = (data) => {
   const user = getAuthUser();
@@ -410,7 +411,11 @@ const Feed = (data) => {
   }
 
   return (
-    <div className='feed'>
+    <>
+    {
+      user && user.role !== "admin" 
+      ? 
+      <div className='feed'>
       <div className="feedContainer">
         {user && user.role != "admin" ?
           <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
@@ -438,7 +443,7 @@ const Feed = (data) => {
                     <div className="shareOptionImg">
                       <img className='shareIcon' src="/img/photo.png" alt="" />
                       <div className="fileInputContainer">
-                        <input className='addPostImg' type="file" accept="video/,image/" ref={media} />
+                        <input required className='addPostImg' type="file" accept="video/,image/" ref={media} />
                         <span className="fileInputLabel">Upload Media</span>
                       </div>
                     </div>
@@ -521,6 +526,122 @@ const Feed = (data) => {
         </div>
       }
     </div>
+      :
+
+      <div className={sidebarStatus() ? 'adminFeedActive' : 'adminFeed'}>
+      <div className="feedContainer">
+        {user && user.role != "admin" ?
+          <form id='addPostForm' className='postFormContainer' onSubmit={addPostData} >
+            <div className='share'>
+              <div className="shareContainer">
+                <div className="shareTop">
+                  {user &&
+                    <Link reloadDocument to={"/communityProfile/" + user?._id} >
+                      <img className='shareProfileImg' src={user?.image_url} />
+                      <img className="onlineImg" src={user?.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                    </Link>
+                  }
+                  <input
+                    placeholder={"What's on your mind " + user?.name + " ?"}
+                    className='shareInput'
+                    required
+                    onChange={(e) =>
+                      setPost({ ...post, caption: e.target.value })
+                    }
+                  />
+                </div>
+                <hr className='shareHr' />
+                <div className="shareBottom">
+                  <div className="shareOptions">
+                    <div className="shareOptionImg">
+                      <img className='shareIcon' src="/img/photo.png" alt="" />
+                      <div className="fileInputContainer">
+                        <input required className='addPostImg' type="file" accept="video/,image/" ref={media} />
+                        <span className="fileInputLabel">Upload Media</span>
+                      </div>
+                    </div>
+                    <div className="shareOption">
+                      <img className='shareIcon' src="/img/groups.png" />
+
+                      <select
+                        name="serviceCategoryId"
+                        required
+                        onChange={(e) =>
+                          setPost({ ...post, communityId: e.target.value })
+                        }
+                        id="selectCategory"
+                      >
+                        <option value={""} disabled selected>
+                          Select Community
+                        </option>
+                        {joinedCommunities.loading == false &&
+                          joinedCommunities.err == null &&
+                          joinedCommunities.results &&
+                          joinedCommunities.results.length > 0 &&
+                          joinedCommunities.results.map((community) => (
+                            <>
+                              <option value={community._id}>
+                                {community.communityName}
+                              </option>
+                            </>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+                  <button type='submit' className='shareButton'>Post</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          : null
+        }
+
+
+        {/* {user && user.role == "admin" && <h1>All Posts</h1>} */}
+
+
+        {posts.loading == false &&
+          posts.results &&
+          posts.results.map((post, index) => (
+            <>
+              <div key={index} className={sidebarStatus() ? "adminPostActive" :'post'}>
+                <div className="postContainer">
+                  <div className="postTop">
+                    <div className="postTopLeft">
+                      <Link reloadDocument to={"/communityProfile/" + post?.posterId._id}>
+                        <img className='postProfileImg' src={post?.posterId.image_url} />
+                        <img className="onlineImg" src={post?.posterId.activityStatus == "online" ? "/img/online.png" : "/img/offline.png"}/>
+                      </Link>
+                      <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
+                    </div>
+                    <span className="postDate">{processDate(post?.creationDate)}</span>
+
+                    <div className="postTopRight">
+                      <Panel data={post} title={index}></Panel>
+                    </div>
+                  </div>
+                  <div className="postCenter">
+                    <span className="postText">{post?.caption}</span>
+                    {checkMedia(post?.media_url) == "image" ?
+                      <img className='postImg' src={post?.media_url} />
+                      :
+                      <video className='postImg' src={post.media_url} controls></video>
+                    }
+                  </div>
+                  <CommentsPanel data={post} title={index}></CommentsPanel>
+                </div>
+              </div>
+            </>
+          ))}
+      </div>
+      {posts.err !== null &&
+        <div className='communityFilterAlert'>
+          <Alert severity="info">{posts.err}</Alert>
+        </div>
+      }
+    </div>
+    }
+    </>
   )
 }
 

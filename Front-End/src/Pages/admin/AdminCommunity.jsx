@@ -15,7 +15,7 @@ const AdminCommunity = () => {
             <div className="communityContainer">
                 <SideBar />
                 <Feed/>
-                {/* <RightBar /> */}
+                <RightBar />
             </div>
         </div>
     )
