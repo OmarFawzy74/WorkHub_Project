@@ -89,7 +89,7 @@ export const getUserRequests = async (req, res) => {
             var allRequests = await request_model.find({clientId: userId}).populate("freelancerId").populate("serviceId");
         }
         else {
-            return res.status(404).json({ msg:"Unauthorized!" });
+            return res.status(401).json({ msg:"Unauthorized!" });
         }
 
         if(allRequests.length == 0) {

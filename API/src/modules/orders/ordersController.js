@@ -9,7 +9,7 @@ export const getAllOrders = async (req, res) => {
             res.status(200).json(allOrders);
         }
         else {
-            res.status(200).json("No orders found!");
+            res.status(404).json({ msg: "No orders found!" });
         }
     } catch (error) {
         console.log(error);
@@ -31,7 +31,7 @@ export const getUserOrders = async (req, res) => {
             Orders = await order_model.find({clientId: userId}).populate("clientId").populate("serviceId").populate("freelancerId");
         }
         else {
-            return res.status(404).json({ msg:"Unauthorized!" });
+            return res.status(401).json({ msg:"Unauthorized!" });
         }
 
         if(Orders.length == 0) {

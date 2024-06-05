@@ -19,6 +19,7 @@
             .postTopLeft {
                 display: flex;
                 align-items: center;
+                margin-bottom: 10px;
 
                 .postProfileImg {
                     width: 40px;
@@ -44,11 +45,21 @@
                 }
             }
 
+            .postSpecialization{
+                font-size: 12px;
+                position: absolute;
+                top: 33px;
+                left: 62px;
+                font-weight: 500;
+                color: #737373;
+            }
+
             .postDate {
                 font-size: 12px;
                 position: absolute;
                 top: 35px;
                 left: 62px;
+                margin-top: 15px;
             }
 
             .postTopRight {
@@ -241,7 +252,20 @@
 
                     .commentListDateAndDelete{
                         display: flex;
-                        gap: 275px;
+                        gap: 315px;
+
+                        .dateContainer {
+                            
+                            .commentListDate{
+                                position: relative;
+                                left: 15px;
+                            }
+                        }
+                    }
+
+                    .commentListDateJustNow{
+                        display: flex;
+                        gap: 280px;
 
                         .dateContainer {
                             
@@ -254,7 +278,7 @@
 
                     .commentListDateAndDeleteTwo{
                         display: flex;
-                        gap: 265px;
+                        gap: 305px;
 
                         .dateContainer {
                             
@@ -292,6 +316,17 @@
                         .userInfoCommentListLink {
                             display: inherit;
                             text-decoration: none;
+
+                            .commentSpecialization{
+                                display: inherit;
+                                color: rgb(67, 67, 67);
+                                font-size: 12px !important;
+                                margin-top: 20px;
+                                margin-bottom: 10px;
+                                position: relative;
+                                right: 87px;
+                                font-weight: 500;
+                            }
 
                             .commentListUsername {
                                 display: inherit;

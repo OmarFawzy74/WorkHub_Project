@@ -30,15 +30,15 @@ export const processDate = (messageTime) => {
     if(Math.round(differenceInMinutes) >= 60) {
       if(Math.round(differenceInHours) >= 24) {
         if(Math.round(differenceInDays) >= 30) {
-          return Math.round(differenceInMonths) + " month";
+          return Math.round(differenceInMonths) + "mos";
         }
-        return Math.round(differenceInDays) + " day";
+        return Math.round(differenceInDays) + "d";
       }
-      return Math.round(differenceInHours) + " hours";
+      return Math.round(differenceInHours) + "h";
     }
-    return Math.round(differenceInMinutes) + " min";
+    return Math.round(differenceInMinutes) + "m";
   }
-  return Math.round(differenceInSeconds) + " sec";
+  return "Just now";
 };
 
 const Messages = () => {

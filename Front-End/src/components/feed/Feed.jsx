@@ -13,6 +13,8 @@ import Alert from '@mui/material/Alert';
 const Feed = (data) => {
   const user = getAuthUser();
 
+  const media = useRef(null);
+
   let { id } = useParams();
 
   const [like, setLike] = useState(0)
@@ -45,8 +47,6 @@ const Feed = (data) => {
     caption: "",
     reload: 0
   });
-
-  const media = useRef(null);
 
   const uploadMedia = (id) => {
 
@@ -146,7 +146,6 @@ const Feed = (data) => {
       })
   }, [posts.reload]);
 
-
   const deletePost = (e) => {
     e.preventDefault();
     const post_id = e.target.attributes.value.nodeValue;
@@ -190,7 +189,6 @@ const Feed = (data) => {
       </>
     );
   }
-
 
   function LikeHandler({ data }) {
     const [likesCount, setLikesCount] = useState(data.likes.length);
@@ -349,14 +347,22 @@ const Feed = (data) => {
                         <div className='commentInfoAndDeleteComment'>
                           <Link className='userInfoCommentListLink' reloadDocument to={"/communityProfile/" + userComment?._id}>
                             <span className='commentListUsername'>{userComment?.name}</span>
+                            <span className="commentSpecialization">{userComment?.specialization}</span>
                           </Link>
                         </div>
                         <p className='commentContent'>{userComment.comment}</p>
                       </div>
-                      <div className={parseInt(processDate(userComment.commentDate).substring(0, 2)) >= 10 ? "commentListDateAndDeleteTwo" : 'commentListDateAndDelete'}>
-                        <div className='dateContainer'><span className='commentListDate'>{processDate(userComment.commentDate)} ago</span></div>
-                        <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment.comment} data={data._id} className='deleteCommentImg' src="./img/delete.png"/>}</div>
-                      </div>
+                      {processDate(userComment.commentDate) == "Just now" ? 
+                            <div className='commentListDateJustNow'>
+                                <div className='dateContainer'><span className='commentListDate'>{processDate(userComment.commentDate)}</span></div>
+                                <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment.comment} data={data._id} className='deleteCommentImg' src="../img/delete.png"/>}</div>
+                            </div>
+                            :
+                            <div className={parseInt(processDate(userComment.commentDate).substring(0, 2)) >= 10 ? "commentListDateAndDeleteTwo" : 'commentListDateAndDelete'}>
+                                <div className='dateContainer'><span className='commentListDate'>{processDate(userComment.commentDate)}</span></div>
+                                <div>{user && user._id == userComment._id && <img onClick={deleteComment} value={userComment.comment} data={data._id} className='deleteCommentImg' src="../img/delete.png"/>}</div>
+                            </div>
+                        }
                     </li>
                   ))}
                 </ul>
@@ -391,7 +397,6 @@ const Feed = (data) => {
       </div>
     );
   }
-
 
   const checkMedia = (data) => {
     const processedData = data.split(".");
@@ -472,10 +477,8 @@ const Feed = (data) => {
           </form>
           : null
         }
-
-
+        
         {/* {user && user.role == "admin" && <h1>All Posts</h1>} */}
-
 
         {posts.loading == false &&
           posts.results &&
@@ -491,7 +494,8 @@ const Feed = (data) => {
                       </Link>
                       <Link className='link' reloadDocument to={"/communityProfile/" + post?.posterId._id}><span className="postUsername">{post?.posterId.name}</span></Link>
                     </div>
-                    <span className="postDate">{processDate(post?.creationDate)} ago</span>
+                    <span className="postSpecialization">{post?.posterId.specialization}</span>
+                    <span className="postDate">{processDate(post?.creationDate)}</span>
 
                     <div className="postTopRight">
                       <Panel data={post} title={index}></Panel>

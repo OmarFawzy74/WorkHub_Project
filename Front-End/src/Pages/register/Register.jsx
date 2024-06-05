@@ -29,6 +29,7 @@ function Register() {
     skills: "",
     languages: "",
     desc: "",
+    countryCode: "",
     phoneNumber: "",
     specialization: "",
   });
@@ -73,7 +74,7 @@ function Register() {
     formData.append("password", user.password);
     formData.append("country", user.country);
     formData.append("image", image.current.files[0]);
-    formData.append("phoneNumber", user.phoneNumber);
+    formData.append("phoneNumber", user.countryCode + user.phoneNumber);
     formData.append("desc", user.desc);
     formData.append("skills", selectedSkillsOptions);
     formData.append("languages", selectedLanguagesOptions);
@@ -426,12 +427,10 @@ function Register() {
                     defaultValue="+44"
                     required
                     onChange={(e) => {
-                      const phoneInput = document.querySelector('.phoneNoInput');
-                      phoneInput.value = e.target.value + phoneInput.value.replace(/^\+\d*\s*/, '');
-                      setUser({ ...user, phoneNumber: phoneInput.value });
+                      setUser({ ...user, countryCode: e.target.value });
                     }}
                   >
-                    {/* <option value="" disabled selected>+20</option> */}
+                    <option value="" disabled selected>Select Country Code</option>
                     <option value="+44">+44 (UK)</option>
                     <option value="+1">+1 (USA)</option>
                     <option value="+20">+20 (Egypt)</option>
@@ -491,13 +490,13 @@ function Register() {
                         name="phoneNumber"
                         type="tel"
                         required
-                        pattern="^\+?[1-9]\d{1,14}$"
+                        pattern="^+\?[1-9]\d{1,14}$"
                         placeholder="123-456-7890"
                         onChange={(e) =>
                           setUser({ ...user, phoneNumber: e.target.value })
                         }
                         onInput={(e) => {
-                          e.target.value = e.target.value.replace(/[^0-9+]/g, '');
+                          e.target.value = e.target.value.replace(/[^0-9]/g, '');
                         }}
                     />
                   </div>

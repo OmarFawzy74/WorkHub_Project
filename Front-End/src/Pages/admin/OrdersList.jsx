@@ -61,25 +61,28 @@ const OrdersList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.loading == false && orders.err == null && ( 
+                            {orders.loading == false &&
+                            orders.err == null &&
+                            orders.results &&
+                            orders.results.length > 0 && ( 
                             orders.results.map((order => (
-                            <tr>
-                                <td>
-                                    {order.clientId.name}
-                                </td>
-                                <td className="desc">
-                                    {order.freelancerId.name} 
-                                </td>
-                                <td className="desc">
-                                    {order.serviceId.serviceTitle}
-                                </td>
-                                <td className="desc">
-                                    {order.serviceId.servicePrice} $
-                                </td>
-                                <td className="test">
-                                    {order.orderStatus}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        {order.clientId.name}
+                                    </td>
+                                    <td className="desc">
+                                        {order.freelancerId.name} 
+                                    </td>
+                                    <td className="desc">
+                                        {order.serviceId.serviceTitle}
+                                    </td>
+                                    <td className="desc">
+                                        {order.serviceId.servicePrice} $
+                                    </td>
+                                    <td className="test">
+                                        {order.orderStatus}
+                                    </td>
+                                </tr>
                             ))) 
                              
                 )} 
@@ -99,14 +102,4 @@ const OrdersList = () => {
         </>
     )
 }
-
-
-const clicked = () => {
-    $(".addCategoryButton").addClass("clicked");
-
-    setTimeout(() => {
-        $(".addCategoryButton").removeClass("clicked");
-    }, 0.05);
-}
-
 export default OrdersList;
