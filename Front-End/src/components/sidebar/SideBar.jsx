@@ -331,7 +331,7 @@ const SideBar = () => {
 
                   <Button
                       variant="contained"
-                      className="addCommunityBtn"
+                      className="manageCommunityBtn"
                       onClick={manageCommunity}
                     >
                       Manage

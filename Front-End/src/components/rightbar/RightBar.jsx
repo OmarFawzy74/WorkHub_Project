@@ -1,12 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from "axios";
 import "./RightBar.scss"
 import { getAuthUser } from '../../localStorage/storage';
 import { Link, useParams } from 'react-router-dom';
+import Button from "@mui/material/Button";
+import { sidebarStatus } from '../../App';
 
 const RightBar = ({ profile, item }) => {
   const user = getAuthUser();
 
   let { id } = useParams();
+
+
+  const [members, setMembers] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0,
+  });
+
+  useEffect(() => {
+    setMembers({ ...members, loading: true });
+    axios
+      .get("http://localhost:3000/api/communities/getAllJoinedMembersCommunities")
+      .then((resp) => {
+        console.log(resp.data);
+        setMembers({
+          results: resp.data.modifiedMembers,
+          loading: false,
+          err: null,
+        });
+        console.log(resp);
+      })
+      .catch((err) => {
+        setMembers({
+          ...members,
+          loading: false,
+          err: err.response.data.msg,
+        });
+        console.log(err);
+      });
+  }, [members.reload]);
+
+
 
   const HomeRightbar = () => {
     return (
@@ -52,13 +88,48 @@ const RightBar = ({ profile, item }) => {
       </>
     )
   }
+
+  const AdminRightbar = () => {
+    return (
+      <>
+        <ul className="membersList">
+          {members.loading == false &&
+            members.err == null &&
+            members.results.map((member) => (
+              <li className="memberContainer">
+                <Link className="memberInfo" to={""}>
+                  <img src={member.image_url} className="memberImage" />
+                  <span className="memberName">{member.name}</span>
+                </Link>
+
+                <Button variant="contained" className="blockBtn">
+                  Block
+                </Button>
+              </li>
+            ))}
+        </ul>
+      </>
+    );
+  };
+
   return (
-    <div className='rightbar'>
-      <div className="rightbarContainer">
-      {profile ? <ProfileRightbar /> : <HomeRightbar />}
-      </div>
-    </div>
-  )
+    <>
+      {user && user.role == "admin" ? (
+        <div className={sidebarStatus() ? "adminRightbarActive" : "adminRightbar"}>
+          <div className="adminRightbarContainer">
+            <h6 className='membersListHeader'>Members</h6>
+            <AdminRightbar></AdminRightbar>
+          </div>
+        </div>
+      ) : (
+        <div className="rightbar">
+          <div className="rightbarContainer">
+            {profile ? <ProfileRightbar /> : <HomeRightbar />}
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default RightBar
