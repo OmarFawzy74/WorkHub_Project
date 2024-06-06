@@ -4,7 +4,7 @@ import "./CatCard.scss";
 
 function CatCard({ card }) {
   return (
-    <Link reloadDocument to="/gigs?cat=design">
+    <Link reloadDocument to={"/gigsFilter/" + card.id}>
       <div className="catCard">
         <img src={card.img} alt="" />
         <span className="desc">{card.desc}</span>
