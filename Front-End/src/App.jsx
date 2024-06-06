@@ -55,9 +55,10 @@ import CommunityFilter from './Pages/communityFilter/CommunityFilter';
 import AdminCommunity from './Pages/admin/AdminCommunity';
 import GigsFilter from './Pages/gigs/GigsFilter';
 
+import Chatbot from './components/chatbot/Chatbot';
 let dashboardData;
 
-export function sidebarStatus(){
+export function sidebarStatus() {
   return dashboardData;
 }
 
@@ -70,7 +71,7 @@ export default function App() {
   // }
 
 
-
+  // return <Chatbot />
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -90,11 +91,11 @@ export default function App() {
     const { pathname } = useLocation();
 
     const handleClasses = (pathname) => {
-      if (pathname=="/adminDashboard") {
-        return 'grid-container' 
+      if (pathname == "/adminDashboard") {
+        return 'grid-container'
       }
       else {
-        if (pathname=="/manageLearn") {
+        if (pathname == "/manageLearn") {
           return "adminManageLearn"
         }
         return sidebarStatus() ? 'adminGigsContainer' : 'adminGigsContainer sidebar-close-gigsContainer'
@@ -105,14 +106,14 @@ export default function App() {
     return (
       <>
         {
-          (auth !== undefined) && (auth.role == 'admin') ? 
-          <>
-          <div className={handleClasses(pathname)}>
-            <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
-            <Outlet />
-          </div> 
-          </>
-          : <Navigate to={'/'} />
+          (auth !== undefined) && (auth.role == 'admin') ?
+            <>
+              <div className={handleClasses(pathname)}>
+                <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                <Outlet />
+              </div>
+            </>
+            : <Navigate to={'/'} />
         }
       </>
     )
@@ -123,12 +124,11 @@ export default function App() {
 
     const auth = getAuthUser();
     console.log(auth);
-
     return (
       <>
 
         {
-          (auth !== undefined) && (auth.role == 'admin') && 
+          (auth !== undefined) && (auth.role == 'admin') &&
           <Navigate to={'/adminDashboard'} />
         }
 
@@ -199,7 +199,7 @@ export default function App() {
           (auth !== undefined) && (auth.role == 'client') && pathname == "/" &&
           <Navigate to={'/userDashboard'} />
         }
-        
+
 
       </>
     )
@@ -265,7 +265,7 @@ export default function App() {
         {
           path: "/adminCommunity",
           element: <AdminCommunity />
-        },        
+        },
         {
           path: "/communityList",
           element: <CommunityList />
@@ -387,7 +387,7 @@ export default function App() {
 
   return (
     <div>
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </div>
   );
 }

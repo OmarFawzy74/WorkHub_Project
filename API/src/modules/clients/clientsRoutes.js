@@ -10,7 +10,6 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { deleteClient, getAllClients } from "./clientsController.js";
 import { updateInfoSchema } from "./clientsSchema.js";
 import { upload } from "../../middleware/uploadImages.js";
-import logout from "../../../logout.js";
 
 const router = express.Router();
 
