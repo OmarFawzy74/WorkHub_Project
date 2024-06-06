@@ -10,7 +10,6 @@ const GigCard = ({ item }) => {
   const { pathname } = useLocation();
   const user = getAuthUser();
 
-
   return (
     <div className="gigCardContainer">
       {pathname !== "/gigs" &&

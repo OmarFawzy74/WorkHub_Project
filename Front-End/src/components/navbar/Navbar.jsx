@@ -15,31 +15,11 @@ const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false)
   const [learnMenu, setLearnMenu] = useState(false)
 
-  const [filterService, setFilterService] = useState({
-    loading: true,
-    results: null,
-    err: null,
-    reload: 0,
-  });
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/services/getServicesByCategoryId/" + id)
-      .then((resp) => {
-        setFilterService({ results: resp.data, loading: false, err: null });
-        // console.log(resp);
-        console.log(resp.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
-      });
-  }, [filterService.reload]);
-
   const [open, setOpen] = useState(false)
 
   const [openExplore, setOpenExplore] = useState(false)
 
+  const [openCategoryList, setOpenCategoryList] = useState(false)
 
   const { pathname } = useLocation()
 
@@ -119,13 +99,21 @@ const Navbar = () => {
         resp => {
           // console.log(resp.data);
           setCategories({ results: resp.data, loading: false, err: null });
-          // console.log(resp);
+          console.log(resp);
         }
       ).catch(err => {
         setCategories({ ...categories, loading: false, err: err.response.data.msg });
         console.log(err);
       })
   }, [categories.reload]);
+
+  const [categoriesLength, setCategoriesLength] = useState(8);
+
+  const showMoreCategories = (e) => {
+    e.preventDefault();
+    setCategoriesLength(categories?.results.length);
+    // console.log(skillsArrayLength);
+  }
 
   return (
     <>
@@ -192,12 +180,12 @@ const Navbar = () => {
           </div>
           {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-          {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
+          {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigsFilter/" + id)) && (
 
             <>
               <div className="search">
                 <div className="searchInput">
-                  <img src="./img/search.png" alt="" />
+                  <img src="../img/search.png" alt="" />
                   <input type="text" placeholder='What service are you looking for today?' />
                 </div>
                 <button>Search</button>
@@ -205,14 +193,40 @@ const Navbar = () => {
 
               <ul className='menu'>
                 {categories.loading == false && categories.err == null && (
-                  categories.results.map((category => (
+                  categories.results.slice(0, categoriesLength).map((category => (
                     <>
-                      <li className='category'><Link reloadDocument className='menuLink' to="/gigs?:id">
-                        {category.categoryName}</Link>
+                      <li className='category'>
+                        <Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id }>
+                            {category.categoryName}
+                        </Link>
                       </li>
                     </>
                   )))
                 )
+                }
+
+
+                {/* {openCategoryList && categories.loading == false && categories.err == null && (
+                  categories.results.slice(0, categoriesLength).map((category => (
+                    <>
+                      <li className='category'>
+                        <Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id }>
+                            {category.categoryName}
+                        </Link>
+                      </li>
+                    </>
+                  )))
+                )
+                } */}
+
+
+
+                {categories?.results.length > categoriesLength &&
+                <>
+                <div className='openCategoryListContainer' onClick={() => setOpenCategoryList(!openCategoryList)}>
+                 <Link onClick={showMoreCategories} className="showMore"><img className='downMenuImg' src="/img/downMenu.png"/>{categories?.results.length - 8}</Link>
+                </div>
+                </>
                 }
               </ul>
             </>
@@ -274,12 +288,12 @@ const Navbar = () => {
         </div>
         {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-        {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
+        {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigsFilter/" + id)) && (
 
           <>
             <div className="search">
               <div className="searchInput">
-                <img src="./img/search.png" alt="" />
+                <img src="../img/search.png" alt="" />
                 <input type="text" placeholder='What service are you looking  for today?' />
               </div>
               <button>Search</button>

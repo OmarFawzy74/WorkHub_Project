@@ -53,6 +53,8 @@ import AddCommunity from './Pages/admin/AddCommunity';
 import UserDashboard from './Pages/userDashboard/UserDashboard';
 import CommunityFilter from './Pages/communityFilter/CommunityFilter';
 import AdminCommunity from './Pages/admin/AdminCommunity';
+import GigsFilter from './Pages/gigs/GigsFilter';
+import Data from './data'; // Import Data to initialize the data fetch
 
 let dashboardData;
 
@@ -137,6 +139,7 @@ export default function App() {
           <div id='appScroll' className="app">
             <Navbar />
             <Outlet />
+            <Data />
             <Footer />
           </div>
         }
@@ -289,8 +292,8 @@ export default function App() {
           element: <Gigs />
         },
         {
-          path: "/gigs?:id",
-          element: <Gigs />
+          path: "/gigsFilter/:id",
+          element: <GigsFilter />
         },
         {
           path: "/gig/:id",

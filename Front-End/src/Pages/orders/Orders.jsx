@@ -6,6 +6,7 @@ import { getAuthUser, setAuthUser } from "../../localStorage/storage";
 import { HashLink } from 'react-router-hash-link';
 import axios from "axios";
 import swal from "sweetalert";
+import Alert from "@mui/material/Alert";
 
 const Orders = () => {
   const currentUser = {
@@ -61,6 +62,7 @@ const Orders = () => {
       })
       .catch((err) => {
         console.log(err);
+        setOrders({ ...orders, loading: false, err: err.response.data.msg });
       });
   }, [orders.reload]);
 
@@ -224,6 +226,11 @@ const Orders = () => {
               </tr>
             ))}
         </table>
+        {orders.err !== null &&
+            <div className='communityFilterAlert'>
+              <Alert severity="info">{orders.err}</Alert>
+            </div>
+        }
       </div>
     </div>
   );

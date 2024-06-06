@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { getAuthUser, setAuthUser } from "../../localStorage/storage";
 import axios from "axios";
 import swal from "sweetalert";
+import Alert from "@mui/material/Alert";
 
 const Requests = () => {
   const currentUser = {
@@ -42,7 +43,7 @@ const Requests = () => {
       })
       .catch((err) => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+        setRequests({ ...requests, loading: false, err: err.response.data.msg });
       });
   }, [requests.reload]);
 
@@ -207,6 +208,11 @@ const Requests = () => {
             </tr>
           ))}
         </table>
+        {requests.err !== null &&
+            <div className='communityFilterAlert'>
+              <Alert severity="info">{requests.err}</Alert>
+            </div>
+          }
       </div>
     </div>
   );

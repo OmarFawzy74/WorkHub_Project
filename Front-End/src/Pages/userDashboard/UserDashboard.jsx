@@ -44,9 +44,9 @@ const UserDashboard = () => {
     axios
       .get(
         "http://localhost:3000/api/requests/getUserRequests/" +
-          user.role +
-          "/" +
-          user._id
+        user.role +
+        "/" +
+        user._id
       )
       .then((resp) => {
         console.log(resp);
@@ -57,7 +57,7 @@ const UserDashboard = () => {
       })
       .catch((err) => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+        setRequests({ ...requests, loading: false, err: err.response.data.msg });
       });
   }, [requests.reload]);
 
@@ -133,9 +133,9 @@ const UserDashboard = () => {
     axios
       .get(
         "http://localhost:3000/api/orders/getUserOrders/" +
-          user.role +
-          "/" +
-          user._id
+        user.role +
+        "/" +
+        user._id
       )
       .then((resp) => {
         console.log(resp);
@@ -144,6 +144,7 @@ const UserDashboard = () => {
       })
       .catch((err) => {
         console.log(err);
+        setOrders({ ...orders, loading: false, err: err.response.data.msg });
       });
   }, [orders.reload]);
 
@@ -253,7 +254,7 @@ const UserDashboard = () => {
     axios
       .get(
         "http://localhost:3000/api/conversations/getConversationsByUserId/" +
-          user._id
+        user._id
       )
       .then((resp) => {
         // console.log(resp);
@@ -269,7 +270,7 @@ const UserDashboard = () => {
       })
       .catch((err) => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+        setConversations({ ...conversations, loading: false, err: err.response.data.msg });
       });
   }, [conversations.reload]);
 
@@ -305,14 +306,14 @@ const UserDashboard = () => {
     const orderId = e.target.value;
 
     axios
-    .put("http://localhost:3000/api/orders/updateOrderStatus/" + orderId)
-    .then((resp) => {
-      console.log(resp);
-      setOrders({ reload: orders.reload + 1 });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .put("http://localhost:3000/api/orders/updateOrderStatus/" + orderId)
+      .then((resp) => {
+        console.log(resp);
+        setOrders({ reload: orders.reload + 1 });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -320,62 +321,62 @@ const UserDashboard = () => {
       <div className="freelancerDashboardContainer">
         <h1 className="freelancerDashboardTitle">Dashboard</h1>
 
-                <div className="newRequest">
-                    <div className="title">
-                        <h1>Requests</h1>
-                       {user.role == "client" && <Link className="requestOrderLink" reloadDocument to={"/gigs"}><button className="requestOrderBtn">Request Order</button> </Link>}
-                    </div>
-                    <table>
-                        <tr>
-                            <th>{user.role == "client" ? "Freelancer" : "Client"}</th>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            {pathname == "/orders" && <th>Contact</th>}
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        {requests.results && requests.err == null && requests.loading == false &&
-                            requests.results.map((request) => (
-                                <tr>
-                                    <td><Link className="link" reloadDocument to={user?.role == "client" ? "/profile/" + request?.freelancerId._id : "/profile/" + request?.clientId._id}><p>{user.role == "client" ? request?.freelancerId.name : request?.clientId.name}</p></Link></td>
-                                    <td>
-                                        <Link reloadDocument to={"/gig/" + request?.serviceId._id}>
-                                            <img
-                                                className="image"
-                                                src={request.serviceId.serviceCover_url}
-                                                alt=""
-                                            />
-                                        </Link>
-                                    </td>
-                                    <td>{request.serviceId.serviceTitle}</td>
-                                    <td>{request.serviceId.servicePrice}</td>
-                                    {pathname == "/orders" && (
-                                        <td>
-                                            <img className="message" src="./img/message.png" alt="" />
-                                        </td>
-                                    )}
-                                    <td>{request.requestStatus}</td>
-                                    {user.role !== "client" && request.requestStatus == "Pending" && (
-                                        <td>
-                                            <Button
-                                                variant="contained"
-                                                className="approveBtn"
-                                                value={request._id}
-                                                onClick={approve}
-                                            >
-                                                Approve
-                                            </Button>
-                                            <Button
-                                                variant="contained"
-                                                className="delcineBtn"
-                                                value={request._id}
-                                                onClick={decline}
-                                            >
-                                                Decline
-                                            </Button>
-                                        </td>
-                                    )}
+        <div className="newRequest">
+          <div className="title">
+            <h1>Requests</h1>
+            {user.role == "client" && <Link className="requestOrderLink" reloadDocument to={"/gigs"}><button className="requestOrderBtn">Request Order</button> </Link>}
+          </div>
+          <table>
+            <tr>
+              <th>{user.role == "client" ? "Freelancer" : "Client"}</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Price</th>
+              {pathname == "/orders" && <th>Contact</th>}
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            {requests.results && requests.err == null && requests.loading == false &&
+              requests.results.map((request) => (
+                <tr>
+                  <td><Link className="link" reloadDocument to={user?.role == "client" ? "/profile/" + request?.freelancerId._id : "/profile/" + request?.clientId._id}><p>{user.role == "client" ? request?.freelancerId.name : request?.clientId.name}</p></Link></td>
+                  <td>
+                    <Link reloadDocument to={"/gig/" + request?.serviceId._id}>
+                      <img
+                        className="image"
+                        src={request.serviceId.serviceCover_url}
+                        alt=""
+                      />
+                    </Link>
+                  </td>
+                  <td>{request.serviceId.serviceTitle}</td>
+                  <td>{request.serviceId.servicePrice}</td>
+                  {pathname == "/orders" && (
+                    <td>
+                      <img className="message" src="./img/message.png" alt="" />
+                    </td>
+                  )}
+                  <td>{request.requestStatus}</td>
+                  {user.role !== "client" && request.requestStatus == "Pending" && (
+                    <td>
+                      <Button
+                        variant="contained"
+                        className="approveBtn"
+                        value={request._id}
+                        onClick={approve}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        variant="contained"
+                        className="delcineBtn"
+                        value={request._id}
+                        onClick={decline}
+                      >
+                        Decline
+                      </Button>
+                    </td>
+                  )}
 
                   {user.role == "client" &&
                     request.requestStatus == "Pending" && (
@@ -395,6 +396,11 @@ const UserDashboard = () => {
                 </tr>
               ))}
           </table>
+          {requests.err !== null &&
+            <div className='communityFilterAlert'>
+              <Alert severity="info">{requests.err}</Alert>
+            </div>
+          }
         </div>
 
         <div className="newOrders">
@@ -443,23 +449,23 @@ const UserDashboard = () => {
                   </td>
                   <td>{order.serviceId.serviceTitle}</td>
                   <td>{order.serviceId.servicePrice}</td>
-                    <td>
-                      <button
-                        value={
-                          user.role == "freelancer"
-                            ? order.clientId._id
-                            : order.freelancerId._id
-                        }
-                        onClick={message}
-                        className="messageBtn"
-                      >
-                        <img
-                          className="message"
-                          src="./img/message.png"
-                          alt=""
-                        />
-                      </button>
-                    </td>
+                  <td>
+                    <button
+                      value={
+                        user.role == "freelancer"
+                          ? order.clientId._id
+                          : order.freelancerId._id
+                      }
+                      onClick={message}
+                      className="messageBtn"
+                    >
+                      <img
+                        className="message"
+                        src="./img/message.png"
+                        alt=""
+                      />
+                    </button>
+                  </td>
                   <td>{order.orderStatus}</td>
                   <td>
                     {user.role == "client" &&
@@ -507,6 +513,11 @@ const UserDashboard = () => {
                 </tr>
               ))}
           </table>
+          {orders.err !== null &&
+            <div className='communityFilterAlert'>
+              <Alert severity="info">{orders.err}</Alert>
+            </div>
+          }
         </div>
 
         <div className="newMessages">
@@ -602,6 +613,11 @@ const UserDashboard = () => {
                     </>
                   ))}
               </table>
+              {conversations.err !== null &&
+                <div className='communityFilterAlert'>
+                  <Alert severity="info">{conversations.err}</Alert>
+                </div>
+              }
             </div>
           </div>
         </div>

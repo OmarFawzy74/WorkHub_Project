@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Messages.scss";
 import { getAuthUser } from "../../localStorage/storage";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
 
 export const processDate = (messageTime) => {
 
@@ -73,7 +74,7 @@ const Messages = () => {
         }
       ).catch(err => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+        setConversations({ ...conversations, loading: false, err: err.response.data.msg });
       })
   }, [conversations.reload]);
 
@@ -179,6 +180,11 @@ const Messages = () => {
               </>
             ))}
         </table>
+        {conversations.err !== null &&
+                <div className='communityFilterAlert'>
+                  <Alert severity="info">{conversations.err}</Alert>
+                </div>
+        }
       </div>
     </div>
   );
