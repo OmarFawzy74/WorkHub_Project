@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import "./Navbar.scss"
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { getAuthUser, removeAuthUser } from '../../localStorage/storage';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const Navbar = () => {
 
+  // const [search, setSearch] = useState("");
+
+  let { id } = useParams();
+
   const [active, setActive] = useState(false)
   const [activeMenu, setActiveMenu] = useState(false)
   const [learnMenu, setLearnMenu] = useState(false)
-
 
   const [open, setOpen] = useState(false)
 
   const [openExplore, setOpenExplore] = useState(false)
 
+  const [openCategoryList, setOpenCategoryList] = useState(false)
 
   const { pathname } = useLocation()
 
@@ -95,13 +99,21 @@ const Navbar = () => {
         resp => {
           // console.log(resp.data);
           setCategories({ results: resp.data, loading: false, err: null });
-          // console.log(resp);
+          console.log(resp);
         }
       ).catch(err => {
         setCategories({ ...categories, loading: false, err: err.response.data.msg });
         console.log(err);
       })
   }, [categories.reload]);
+
+  const [categoriesLength, setCategoriesLength] = useState(8);
+
+  const showMoreCategories = (e) => {
+    e.preventDefault();
+    setCategoriesLength(categories?.results.length);
+    // console.log(skillsArrayLength);
+  }
 
   return (
     <>
@@ -168,12 +180,12 @@ const Navbar = () => {
           </div>
           {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-          {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
+          {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigsFilter/" + id)) && (
 
             <>
               <div className="search">
                 <div className="searchInput">
-                  <img src="./img/search.png" alt="" />
+                  <img src="../img/search.png" alt="" />
                   <input type="text" placeholder='What service are you looking for today?' />
                 </div>
                 <button>Search</button>
@@ -181,41 +193,42 @@ const Navbar = () => {
 
               <ul className='menu'>
                 {categories.loading == false && categories.err == null && (
-                  categories.results.map((category => (
+                  categories.results.slice(0, categoriesLength).map((category => (
                     <>
-                      <li className='category'><Link reloadDocument className='menuLink' to="/gigs?:id">
-                        {category.categoryName}</Link>
+                      <li className='category'>
+                        <Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id }>
+                            {category.categoryName}
+                        </Link>
                       </li>
                     </>
                   )))
                 )
                 }
-              </ul>
 
-              {/* <Link className='menuLink' to="/">
-              Video & Animation
-            </Link>
-            <Link className='menuLink' to="/">
-              Writing & Translation
-            </Link>
-            <Link className='menuLink' to="/">
-              AI Services
-            </Link>
-            <Link className='menuLink' to="/">
-              Digital Marketing
-            </Link>
-            <Link className='menuLink' to="/">
-              Music & Audio
-            </Link>
-            <Link className='menuLink' to="/">
-              Programming & Tech
-            </Link>
-            <Link className='menuLink' to="/">
-              Business
-            </Link>
-            <Link className='menuLink' to="/">
-              Lifestyle
-            </Link> */}
+
+                {/* {openCategoryList && categories.loading == false && categories.err == null && (
+                  categories.results.slice(0, categoriesLength).map((category => (
+                    <>
+                      <li className='category'>
+                        <Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id }>
+                            {category.categoryName}
+                        </Link>
+                      </li>
+                    </>
+                  )))
+                )
+                } */}
+
+
+
+                {categories?.results.length > categoriesLength &&
+                <>
+                <div className='openCategoryListContainer' onClick={() => setOpenCategoryList(!openCategoryList)}>
+                 <Link onClick={showMoreCategories} className="showMore"><img className='downMenuImg' src="/img/downMenu.png"/>{categories?.results.length - 8}</Link>
+                </div>
+                </>
+                }
+              </ul>
             </>
           )}
         </div>
@@ -275,12 +288,12 @@ const Navbar = () => {
         </div>
         {/* {(activeMenu && pathname !== "/learn" && pathname == "/" || pathname == "/gigs" && pathname == "/gigs/:category" ) && ( */}
 
-        {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigs/")) && (
+        {(activeMenu || pathname == "/gigs" || pathname.startsWith("/gigsFilter/" + id)) && (
 
           <>
             <div className="search">
               <div className="searchInput">
-                <img src="./img/search.png" alt="" />
+                <img src="../img/search.png" alt="" />
                 <input type="text" placeholder='What service are you looking  for today?' />
               </div>
               <button>Search</button>

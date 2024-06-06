@@ -4,6 +4,7 @@ import "./MyCourses.scss";
 import { getAuthUser } from "../../localStorage/storage";
 import axios from "axios";
 import LearnCard from "../../components/LearnCard/LearnCard";
+import Alert from "@mui/material/Alert";
 
 function MyCourses() {
   const user = getAuthUser();
@@ -34,6 +35,8 @@ function MyCourses() {
       })
       .catch((err) => {
         console.log(err);
+        setCourses({ ...courses, loading: false, err: err.response.data.msg });
+
       });
   }, [courses.reload]);
 
@@ -51,6 +54,11 @@ function MyCourses() {
             <LearnCard key={course._id} item={course} />
           ))}
       </div>
+      {courses.err !== null &&
+        <div className='communityFilterAlert'>
+          <Alert severity="info">{courses.err}</Alert>
+        </div>
+      }
     </div>
   );
 }

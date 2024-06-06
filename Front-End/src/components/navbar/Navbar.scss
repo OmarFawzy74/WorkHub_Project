@@ -42,7 +42,7 @@
                 }
 
                 input{
-                    width: 300px;
+                    width: 310px;
                     border: none;
                     outline: none;
                 }
@@ -268,9 +268,21 @@
         padding: 0 90px;
         text-decoration: none !important;
 
-        .downMenuImg{
-            width: 20px;
-            height: 20px;
+        .openCategoryListContainer{
+
+                .showMore{
+                    margin-top: 7px;
+                    margin-left: 55px;
+                    color: rgb(0, 0, 0);
+                    text-decoration: none;
+        
+        
+                    .downMenuImg{
+                        width: 20px;
+                        height: 20px;
+                    }
+                    
+                }
         }
     }
 

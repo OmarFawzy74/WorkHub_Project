@@ -148,24 +148,24 @@ useEffect(() => {
               <img src="./img/check.png" alt="" />
               Count on 24/7 support
             </div>
-              <p>Our round-the-clock support team is available to help anytime, anywhere.</p>
+            <p>Our round-the-clock support team is available to help anytime, anywhere.</p>
           </div>
-           <div className="right">
+          <div className="right">
             <video src="./img/video.mp4" controls></video>
-           </div>
+          </div>
         </div>
       </div>
       <div className='proCardHeader'><h2>Inspiring work made on WorkHub</h2></div>
-      <div className="project1">
-          {projects1.map((card) => (
-            <ProjectCard key={card.id} card={card} />
-          ))}
+      {/* <div className="project1">
+        {projects1.map((card) => (
+          <ProjectCard key={card.id} card={card} />
+        ))}
       </div>
       <div className="project2">
-          {projects2.map((card) => (
-            <ProjectCard key={card.id} card={card} />
-          ))}
-      </div>
+        {projects2.map((card) => (
+          <ProjectCard key={card.id} card={card} />
+        ))}
+      </div> */}
     </div>
   )
 }

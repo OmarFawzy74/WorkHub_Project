@@ -53,6 +53,7 @@ import AddCommunity from './Pages/admin/AddCommunity';
 import UserDashboard from './Pages/userDashboard/UserDashboard';
 import CommunityFilter from './Pages/communityFilter/CommunityFilter';
 import AdminCommunity from './Pages/admin/AdminCommunity';
+import GigsFilter from './Pages/gigs/GigsFilter';
 
 let dashboardData;
 
@@ -289,8 +290,8 @@ export default function App() {
           element: <Gigs />
         },
         {
-          path: "/gigs?:id",
-          element: <Gigs />
+          path: "/gigsFilter/:id",
+          element: <GigsFilter />
         },
         {
           path: "/gig/:id",

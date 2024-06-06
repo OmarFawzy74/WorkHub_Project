@@ -52,17 +52,6 @@ function Footer() {
                   )))
                 )
                 }
-                {/* <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>Video & Animation</span>
-            <span>Music & Audio</span>
-            <span>Programming & Tech</span>
-            <span>Data</span>
-            <span>Business</span>
-            <span>Lifestyle</span>
-            <span>Photography</span>
-            <span>Sitemap</span> */}
               </div>
               <div className="item">
                 <h2>About</h2>
@@ -113,7 +102,7 @@ function Footer() {
         </div>
       }
 
-{!user &&
+      {!user &&
         <div className="footer">
           <div className="footerContainer">
             <div className="top">
