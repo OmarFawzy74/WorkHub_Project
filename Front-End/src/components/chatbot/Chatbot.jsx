@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import "./Chatbot.scss";
 import { Link } from 'react-router-dom';
-// import socket from '../../connection/socket.js'
+import socket from '../../connection/socket.js'
 import { getAuthUser } from '../../localStorage/storage';
+import ChatbotResponse from './chatResponseHandler.jsx';
+
+// const isCode = (text) => {
+//     const codePattern = /function\s+\w+\s*\(/; // Simplistic check for JS function
+//     return codePattern.test(text);
+//   };
 
 const Chatbot = () => {
     const [message, setMessage] = useState("");
     const [isThinking, setIsThinking] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [responseMessage, setResponseMessage] = useState(false);
 
     const user = getAuthUser();
 
@@ -17,19 +24,20 @@ const Chatbot = () => {
             return;
         }
         console.log(message);
-        // socket.emit("message", message);
+        socket.emit("message", message);
         setMessages((m) => [...m, message]);
         setIsThinking(true);
     }
-    // useEffect(() => {
-    //     socket.on("response", (response) => {
-    //         console.log(response);
-    //         setIsThinking(false);
-    //     })
-    //     return () => {
-    //         socket.off("response");
-    //     };
-    // }, [])
+    useEffect(() => {
+        socket.on("response", (response) => {
+            console.log(response);
+            setResponseMessage(response);
+            setIsThinking(false);
+        })
+        return () => {
+            socket.off("response");
+        };
+    }, [])
 
     return (
         <>
@@ -46,16 +54,18 @@ const Chatbot = () => {
                                     messages.loading == false && messages.err == null && messages.results && messages.results.length > 0 && (
                                         messages.results.map((message) => (
                                             <> */}
+                                            {message &&
                                                 <div className="item owner">
                                                     {/* <Link reloadDocument to={message.senderType == "client" ? "/profile/" + conversationData.results.client._id : "/profile/" + conversationData.results.freelancer._id}> */}
                                                         <img
-                                                            src={user.image_url}
+                                                            // src={user.image_url}
                                                         />
                                                     {/* </Link> */}
                                                     <p>
-                                                        Hi
+                                                        {message}
                                                     </p>
                                                 </div>
+                                                }
 
                                                 <div className="item">
                                                     {/* <Link reloadDocument to={message.senderType == "client" ? "/profile/" + conversationData.results.client._id : "/profile/" + conversationData.results.freelancer._id}> */}
@@ -68,7 +78,11 @@ const Chatbot = () => {
                                                             <p>
                                                                 Thinking...
                                                             </p>
-                                                        : <></>}
+                                                        : <>
+                                                            <p>
+                                                                <ChatbotResponse response={responseMessage}/>
+                                                            </p>
+                                                        </>}
                                                     </div>
                                                 </div>
                                             {/* </>
