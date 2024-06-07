@@ -443,7 +443,7 @@ const Feed = (data) => {
                     <div className="shareOptionImg">
                       <img className='shareIcon' src="/img/photo.png" alt="" />
                       <div className="fileInputContainer">
-                        <input required className='addPostImg' type="file" accept="video/,image/" ref={media} />
+                        <input required className='addPostImg' type="file" accept="image/*,video/*" ref={media} />
                         <span className="fileInputLabel">Upload Media</span>
                       </div>
                     </div>

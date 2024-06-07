@@ -48,11 +48,11 @@
           input {
             position: relative;
             right:  18px;
-            width: 70%;
+            width: 84%;
             height: 50px;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid lightgray;
-            border-radius: 10px;
+            border-radius: 30px;
           }
   
           input:hover{
@@ -73,19 +73,29 @@
   
         .sendButton {
           position: relative;
-          right: 63px;
-          background-color: #1dbf73;
+          top: 5px;
+          right: 75px;
+          background-color: transparent;
           color: white;
           font-weight: 500;
           border: none;
-          border-radius: 10px;
+          border-radius: 50%;
           cursor: pointer;
-          width: 150px;
-          height: 60px;
+          width: 40px;
+          height: 40px;
+
+
+          img{
+            width: 40px;
+            height: 40px;
+            position: relative;
+            right: 6px;
+            bottom: 1px;
+          }
         }
   
         .sendButton:hover {
-          background-color: #24dc86;
+          background-color: transparent;
         }
       }
   

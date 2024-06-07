@@ -236,9 +236,9 @@ const Add = () => {
                   ))}
               </select>
               <label htmlFor="">Cover Image</label>
-              <input required type="file" ref={coverImage} />
+              <input required type="file" accept="image/*" ref={coverImage} />
               <label htmlFor="">Upload Images</label>
-              <input required type="file" multiple ref={images} />
+              <input required accept="image/*" type="file" multiple ref={images} />
               <label htmlFor="">Description</label>
               <textarea
                 name="serviceDesc"

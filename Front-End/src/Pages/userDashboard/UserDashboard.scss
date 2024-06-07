@@ -7,9 +7,48 @@
         width: 1200px;
         padding: 50px 0px;
 
+        .chatbotImgContainer{
+            width: 70px;
+            height: 70px;
+            position: sticky;
+            top: 630px;
+            margin-left: 1250px;
+            left: 1400px;
+            transition: width 2s, height 2s, transform 1.5s;
+
+            .chatbotImgLink{
+
+                .chatbotImg{
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 3px solid #1dbf73;
+                    padding: 10px;
+                    width: 70px;
+                    height: 70px;
+                }
+            }
+        }
+
+        .chatbotImgContainer:hover{
+            width: 70px;
+            height: 70px;
+            animation: rotate360 1.5s forwards;
+            opacity: 65%;
+            transition: all ease 0.4s;
+        }
+
+        @keyframes rotate360 {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+     
         .freelancerDashboardTitle {
             text-align: center;
-            margin-bottom: 80px;
+            // margin-bottom: 80px;
         }
 
         .freelancerDashboardMyServices {
@@ -248,7 +287,7 @@
         }
 
         .newRequest {
-            margin-bottom: 70px;
+            margin-bottom: 100px;
 
             .breadcrumbsLink {
                 text-decoration: none;
