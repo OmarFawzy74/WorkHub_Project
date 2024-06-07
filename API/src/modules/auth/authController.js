@@ -26,11 +26,11 @@ const login = async (req, res) => {
       }
     }
 
-    if(user.activityStatus === "online") {
+    if (user.activityStatus === "online") {
       return res.status(400).json({ msg: "Already loged in" });
     }
 
-    if(user.activityStatus === "online" && user.lastLogin === undefined) {
+    if (user.activityStatus === "online" && user.lastLogin === undefined) {
       return res.status(400).json({ msg: "Already loged in" });
     }
 
@@ -78,11 +78,11 @@ const login = async (req, res) => {
 
     userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
 
-    if(userData.coverImage_url != undefined) {
+    if (userData.coverImage_url != undefined) {
       userData.coverImage_url = "http://" + req.hostname + ":3000/" + userData.coverImage_url;
     }
 
-    res.status(200).json({ msg: "Sign in successful" , userData});
+    res.status(200).json({ msg: "Sign in successful", userData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Internal server error" });
@@ -90,152 +90,155 @@ const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-    try {
-        const id = req.params.id
-        let data;
+  try {
+    const id = req.params.id
+    let data;
 
-        data = await AdminModel.findById(id);
+    data = await AdminModel.findById(id);
+    if (!data) {
+      data = await ClientModel.findById(id);
+      if (!data) {
+        data = await FreelancerModel.findById(id);
         if (!data) {
-          data = await ClientModel.findById(id);
-          if (!data) {
-            data = await FreelancerModel.findById(id);
-            if (!data) {
-              return res.status(400).json({ msg: "User not found" });
-            }
-          }
+          return res.status(400).json({ msg: "User not found" });
         }
-
-        const filter = { _id: id };
-        const update = { $set: { activityStatus: "offline", token: "null"} }
-
-        let user;
-
-        if(data){
-            if(data.activityStatus === "online") {
-                switch (data.role) {
-                    case "admin":
-                        user = await AdminModel.updateOne(filter, update);
-                      break;
-                    case "client":
-                        user = await ClientModel.updateOne(filter, update);
-                      break;
-                    case "freelancer":
-                        user = await FreelancerModel.updateOne(filter, update);
-                      break;
-                    default:
-                      return res.status(400).json({ msg: "Role undefined" });
-                }
-                return res.status(200).json({ msg: "loged out successfuly."});
-            }
-            return res.status(400).json({ msg: "already loged out"});
-        }
-        res.status(400).json({ msg: "Invalid id"});
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Somthing went wrong!");
+      }
     }
+
+    const filter = { _id: id };
+    const update = { $set: { activityStatus: "offline", token: "null" } }
+
+    let user;
+
+    if (data) {
+      if (data.activityStatus === "online") {
+        switch (data.role) {
+          case "admin":
+            user = await AdminModel.updateOne(filter, update);
+            break;
+          case "client":
+            user = await ClientModel.updateOne(filter, update);
+            break;
+          case "freelancer":
+            user = await FreelancerModel.updateOne(filter, update);
+            break;
+          default:
+            return res.status(400).json({ msg: "Role undefined" });
+        }
+        return res.status(200).json({ msg: "loged out successfuly." });
+      }
+      return res.status(400).json({ msg: "already loged out" });
+    }
+    res.status(400).json({ msg: "Invalid id" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Somthing went wrong!");
+  }
 };
 
 export const signup = async (req, res) => {
-    try {
-      const { role } = req.params;
-      const { name, email, password, country, desc, phoneNumber, skills, languages, specialization} = req.body;
-      let image_url;
-  
-      if(req.file) {
-        image_url = req.file.filename;
-      }
+  try {
+    const { role } = req.params;
+    const { name, email, password, country, desc, phoneNumber, skills, languages, specialization } = req.body;
+    let image_url;
 
-      const adminEmail = await AdminModel.findOne({ email });
-  
-      if(adminEmail) {
-        return res.status(400).json({ message: "This Email is used" });
-      }
-
-      const clientEmail = await ClientModel.findOne({ email });
-
-      if(clientEmail) {
-        return res.status(400).json({ message: "This Email is used" });
-      }
-
-      const freelancerEmail = await FreelancerModel.findOne({ email });
-
-      if(freelancerEmail) {
-        return res.status(400).json({ message: "This Email is used" });
-      }
-  
-      // Validate role
-      if (!['client', 'freelancer'].includes(role)) {
-        return res.status(400).json({ message: 'Invalid role' });
-      }
-  
-      // Check if the user already exists in any of the models
-      // let existingUser;
-      // switch (role) {
-      //   case 'client':
-      //     existingUser = await ClientModel.findOne({ email });
-      //     break;
-      //   case 'freelancer':
-      //     existingUser = await FreelancerModel.findOne({ email });
-      //     break;
-      // }
-  
-      // if (existingUser) {
-      //   return res.status(400).json({ message: 'User already exists' });
-      // }
-  
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));
-  
-      // Create a new user instance based on the role
-      let newUser;
-      switch (role) {
-        case 'client':
-          newUser = new ClientModel({ name, email, password: hashedPassword, country, image_url });
-          break;
-        case 'freelancer':
-          newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber, skills, languages, specialization });
-          break;
-      }
-  
-      await newUser.save();
-  
-      const token = await generateToken(newUser._id, role);
-      const filter = { _id: newUser._id };
-      const update = { $set: { token: token, activityStatus: "online" } }
-      let query;
-  
-      switch (role) {
-        case 'client':
-          query = await ClientModel.updateOne(filter, update);
-          break;
-        case 'freelancer':
-          query = await FreelancerModel.updateOne(filter, update);
-          break;
-      }
-  
-      let userData;
-      switch (role) {
-        case 'client':
-          userData = await ClientModel.findOne({ email });
-          break;
-        case 'freelancer':
-          userData = await FreelancerModel.findOne({ email });
-          break;
-      }
-
-
-      userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
-
-      // userData.map((user) => {
-      //   user.image_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;
-      // });
-  
-      return res.status(201).json({ message: 'User created successfully', userData });
-    } catch (error) {
-      console.error('Error:', error);
-      return res.status(500).json({ message: 'Internal server error' });
+    if (!password) {
+      return res.status(400).json({ message: "You should enter password" });
     }
+    if (req.file) {
+      image_url = req.file.filename;
+    }
+
+    const adminEmail = await AdminModel.findOne({ email });
+
+    if (adminEmail) {
+      return res.status(400).json({ message: "This Email is used" });
+    }
+
+    const clientEmail = await ClientModel.findOne({ email });
+
+    if (clientEmail) {
+      return res.status(400).json({ message: "This Email is used" });
+    }
+
+    const freelancerEmail = await FreelancerModel.findOne({ email });
+
+    if (freelancerEmail) {
+      return res.status(400).json({ message: "This Email is used" });
+    }
+
+    // Validate role
+    if (!['client', 'freelancer'].includes(role)) {
+      return res.status(400).json({ message: 'Invalid role' });
+    }
+
+    // Check if the user already exists in any of the models
+    // let existingUser;
+    // switch (role) {
+    //   case 'client':
+    //     existingUser = await ClientModel.findOne({ email });
+    //     break;
+    //   case 'freelancer':
+    //     existingUser = await FreelancerModel.findOne({ email });
+    //     break;
+    // }
+
+    // if (existingUser) {
+    //   return res.status(400).json({ message: 'User already exists' });
+    // }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUND));
+
+    // Create a new user instance based on the role
+    let newUser;
+    switch (role) {
+      case 'client':
+        newUser = new ClientModel({ name, email, password: hashedPassword, country, image_url });
+        break;
+      case 'freelancer':
+        newUser = new FreelancerModel({ name, email, password: hashedPassword, country, image_url, desc, phoneNumber, skills, languages, specialization });
+        break;
+    }
+
+    await newUser.save();
+
+    const token = await generateToken(newUser._id, role);
+    const filter = { _id: newUser._id };
+    const update = { $set: { token: token, activityStatus: "online" } }
+    let query;
+
+    switch (role) {
+      case 'client':
+        query = await ClientModel.updateOne(filter, update);
+        break;
+      case 'freelancer':
+        query = await FreelancerModel.updateOne(filter, update);
+        break;
+    }
+
+    let userData;
+    switch (role) {
+      case 'client':
+        userData = await ClientModel.findOne({ email });
+        break;
+      case 'freelancer':
+        userData = await FreelancerModel.findOne({ email });
+        break;
+    }
+
+
+    userData.image_url = "http://" + req.hostname + ":3000/" + userData.image_url;
+
+    // userData.map((user) => {
+    //   user.image_url = "http://" + req.hostname + ":3000/" + services.serviceCover_url;
+    // });
+
+    return res.status(201).json({ message: 'User created successfully', userData });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 export default login

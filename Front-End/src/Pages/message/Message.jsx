@@ -93,7 +93,6 @@ const Message = () => {
       })
   }, [messages.reload]);
 
-
   return (
     <div className="message">
       {conversationData.results &&
