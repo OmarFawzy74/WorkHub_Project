@@ -56,11 +56,11 @@ const Chatbot = () => {
                                             <> */}
                                             {message &&
                                                 <div className="item owner">
-                                                    {/* <Link reloadDocument to={message.senderType == "client" ? "/profile/" + conversationData.results.client._id : "/profile/" + conversationData.results.freelancer._id}> */}
+                                                    <Link reloadDocument to={"/profile/" + user._id}>
                                                         <img
                                                             src={user.image_url}
                                                         />
-                                                    {/* </Link> */}
+                                                    </Link>
                                                     <p>
                                                         {message}
                                                     </p>
@@ -94,10 +94,10 @@ const Chatbot = () => {
                         <hr />
                         <div className="sendContainer">
                             <div className="write">
-                                <input type="text" onChange={(e) => setMessage(e.target.value)} />
+                                <input required placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
                             </div>
                             <>
-                                <button type="submit" className="sendButton">Send</button>
+                                <button type="submit" className="sendButton"><img src="./img/uploading.png" alt="" /></button>
                             </>
                         </div>
                     </div>

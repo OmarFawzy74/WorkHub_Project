@@ -320,7 +320,11 @@ const UserDashboard = () => {
     <div className="freelancerDashboard">
       <div className="freelancerDashboardContainer">
         <h1 className="freelancerDashboardTitle">Dashboard</h1>
-
+        <div className="chatbotImgContainer">
+            <Link reloadDocument to={"/chatbot"} className="chatbotImgLink">
+              <img className="chatbotImg" src="./img/chatbot1.png"/>
+            </Link>
+        </div>
         <div className="newRequest">
           <div className="title">
             <h1>Requests</h1>

@@ -198,7 +198,13 @@ function Register() {
               <label className="singupDesc" htmlFor="">
                 Profile Picture
               </label>
-              <input required className="Input" type="file" ref={image} />
+              <input 
+              required 
+              className="Input" 
+              type="file" 
+              ref={image} 
+              accept="image/*" 
+              />              
               <label className="singupDesc" htmlFor="">
                 Country
               </label>
