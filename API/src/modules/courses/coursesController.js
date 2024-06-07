@@ -35,10 +35,35 @@ export const getCourseById = async (req, res) => {
         if (!courseData) {
             return res.status(404).json({ msg: "No Courses Found!" });
         }
+        
 
         courseData.proffImage_url = "http://" + req.hostname + ":3000/" + courseData.proffImage_url;
 
         res.status(200).json({ courseData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg:"Somthing went wrong!" });
+    }
+}
+
+// Get Courses By Category ID
+export const getCoursesByCategoryId = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const coursesData = await course.find({ categoryId: id}).populate("categoryId");
+
+        if (!coursesData) {
+            return res.status(404).json({ msg: "No Courses Found!" });
+        }
+
+        const modifiedCourses = coursesData.map((course) => {
+            const modifiedCourse = { ...course._doc }; // Create a copy of the service object
+            modifiedCourse.courseCoverImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.courseCoverImage_url;
+            modifiedCourse.proffImage_url = "http://" + req.hostname + ":3000/" + modifiedCourse.proffImage_url;
+            return modifiedCourse;
+        });
+
+        res.status(200).json({ modifiedCourses });
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg:"Somthing went wrong!" });
