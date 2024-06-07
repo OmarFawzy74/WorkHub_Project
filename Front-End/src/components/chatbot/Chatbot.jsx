@@ -58,7 +58,7 @@ const Chatbot = () => {
                                                 <div className="item owner">
                                                     <Link reloadDocument to={"/profile/" + user._id}>
                                                         <img
-                                                            // src={user.image_url}
+                                                            src={user.image_url}
                                                         />
                                                     </Link>
                                                     <p>
@@ -94,7 +94,7 @@ const Chatbot = () => {
                         <hr />
                         <div className="sendContainer">
                             <div className="write">
-                                <input placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
+                                <input required placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
                             </div>
                             <>
                                 <button type="submit" className="sendButton"><img src="./img/uploading.png" alt="" /></button>
