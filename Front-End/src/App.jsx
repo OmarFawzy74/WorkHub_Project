@@ -381,6 +381,10 @@ export default function App() {
           path: "/userDashboard",
           element: <UserDashboard />
         },
+        {
+          path: "/chatbot",
+          element: <Chatbot />
+        },
       ]
     },
   ]);
