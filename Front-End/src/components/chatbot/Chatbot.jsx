@@ -58,7 +58,7 @@ const Chatbot = () => {
                                                 <div className="item owner">
                                                     {/* <Link reloadDocument to={message.senderType == "client" ? "/profile/" + conversationData.results.client._id : "/profile/" + conversationData.results.freelancer._id}> */}
                                                         <img
-                                                            // src={user.image_url}
+                                                            src={user.image_url}
                                                         />
                                                     {/* </Link> */}
                                                     <p>
