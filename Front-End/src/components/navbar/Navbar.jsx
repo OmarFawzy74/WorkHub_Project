@@ -222,11 +222,11 @@ const Navbar = () => {
 
 
                 {categories?.results.length > categoriesLength &&
-                <>
-                <div className='openCategoryListContainer' onClick={() => setOpenCategoryList(!openCategoryList)}>
-                 <Link onClick={showMoreCategories} className="showMore"><img className='downMenuImg' src="/img/downMenu.png"/>{categories?.results.length - 8}</Link>
-                </div>
-                </>
+                  <>
+                    <div className='openCategoryListContainer' onClick={() => setOpenCategoryList(!openCategoryList)}>
+                    <Link onClick={showMoreCategories} className="showMore"><img className='downMenuImg' src="/img/downMenu.png"/>{categories?.results.length - 8}</Link>
+                    </div>
+                  </>
                 }
               </ul>
             </>

@@ -8,11 +8,11 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
 import { sidebarStatus } from "../../App";
 
-const LearnMenu = () => {
+const FilterLearnMenu = () => {
 
     const user = getAuthUser();
 
-    let { category } = useParams();
+    let { id } = useParams();
 
     const [courses, setCourses] = useState({
         loading: false,
@@ -23,7 +23,7 @@ const LearnMenu = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3000/api/courses/getAllCourses")
+            .get("http://localhost:3000/api/courses/getCoursesByCategoryId/" + id)
             .then((resp) => {
                 setCourses({ results: resp.data.modifiedCourses, loading: false, err: null });
                 console.log(resp.data.modifiedCourses);
@@ -102,4 +102,4 @@ const LearnMenu = () => {
         </div>
     )
 }
-export default LearnMenu
+export default FilterLearnMenu
