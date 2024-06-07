@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 import { LlamaModel, LlamaContext, LlamaChatSession } from "node-llama-cpp";
 import path from "path";
 import { fileURLToPath } from "url";
-
 import freelancersRoutes from './src/modules/freelancer/freelancer_routes.js'
 import adminRoutes from './src/modules/admin/admin_routes.js'
 import categoriesRoute from './src/modules/categories/categoriesRoutes.js'
@@ -71,24 +70,24 @@ const server = app.listen(port, () => {
 /******************************************************************************************************************/
 /******************************************************************************************************************/
 /******************************************************************************************************************/
-// const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// const model = new LlamaModel({
-//     modelPath: path.join(__dirname, "model", "capybarahermes-2.5-mistral-7b.Q4_K_M.gguf")
-// });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const model = new LlamaModel({
+    modelPath: path.join(__dirname, "model", "capybarahermes-2.5-mistral-7b.Q4_K_M.gguf")
+});
 
-// const io = new Server(server, {
-//     cors: {
-//         origin: "*"
-//     }
-// });
-// io.on("connection", (soc) => {
-//     const context = new LlamaContext({ model });
-//     const session = new LlamaChatSession({ context });
-//     console.log("There is a new connection");
-//     soc.on("message", async (msg) => {
-//         const bot_reply = await session.prompt(msg);
-//         soc.emit("response", bot_reply);
-//     })
-// });
+const io = new Server(server, {
+    cors: {
+        origin: "*"
+    }
+});
+io.on("connection", (soc) => {
+    const context = new LlamaContext({ model });
+    const session = new LlamaChatSession({ context });
+    console.log("There is a new connection");
+    soc.on("message", async (msg) => {
+        const bot_reply = await session.prompt(msg);
+        soc.emit("response", bot_reply);
+    })
+});
 
-//open source large language model
+// open source large language model

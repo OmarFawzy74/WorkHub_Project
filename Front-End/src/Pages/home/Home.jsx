@@ -42,27 +42,27 @@ useEffect(() => {
 
                 setCards1({ results : [
                   {
-                    id: categories.results[0]._id,
-                    title: categories.results[0].categoryName,
-                    desc: categories.results[0].categoryDesc,
+                    id: categories.results[0]?._id,
+                    title: categories.results[0]?.categoryName,
+                    desc: categories.results[0]?.categoryDesc,
                     img: "https://images.pexels.com/photos/7532110/pexels-photo-7532110.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[1]._id,
-                    title: categories.results[1].categoryName,
-                    desc: categories.results[1].categoryDesc,
+                    id: categories.results[1]?._id,
+                    title: categories.results[1]?.categoryName,
+                    desc: categories.results[1]?.categoryDesc,
                     img: "https://images.pexels.com/photos/11295165/pexels-photo-11295165.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[2]._id,
-                    title: categories.results[2].categoryName,
-                    desc: categories.results[2].categoryDesc,
+                    id: categories.results[2]?._id,
+                    title: categories.results[2]?.categoryName,
+                    desc: categories.results[2]?.categoryDesc,
                     img: "https://images.pexels.com/photos/4371669/pexels-photo-4371669.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[3]._id,
-                    title: categories.results[3].categoryName,
-                    desc: categories.results[3].categoryDesc,
+                    id: categories.results[3]?._id,
+                    title: categories.results[3]?.categoryName,
+                    desc: categories.results[3]?.categoryDesc,
                     img: "https://images.pexels.com/photos/7608079/pexels-photo-7608079.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   }
                 ]});
@@ -70,27 +70,27 @@ useEffect(() => {
 
                 setCards2({ results : [
                   {
-                    id: categories.results[4]._id,
-                    title: categories.results[4].categoryName,
-                    desc: categories.results[4].categoryDesc,
+                    id: categories.results[4]?._id,
+                    title: categories.results[4]?.categoryName,
+                    desc: categories.results[4]?.categoryDesc,
                     img: "https://images.pexels.com/photos/13388047/pexels-photo-13388047.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[5]._id,
-                    title: categories.results[5].categoryName,
-                    desc: categories.results[5].categoryDesc,
+                    id: categories.results[5]?._id,
+                    title: categories.results[5]?.categoryName,
+                    desc: categories.results[5]?.categoryDesc,
                     img: "https://images.pexels.com/photos/11378899/pexels-photo-11378899.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[6]._id,
-                    title: categories.results[6].categoryName,
-                    desc: categories.results[6].categoryDesc,
+                    id: categories.results[6]?._id,
+                    title: categories.results[6]?.categoryName,
+                    desc: categories.results[6]?.categoryDesc,
                     img: "https://images.pexels.com/photos/4820241/pexels-photo-4820241.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   },
                   {
-                    id: categories.results[7]._id,
-                    title: categories.results[7].categoryName,
-                    desc: categories.results[7].categoryDesc,
+                    id: categories.results[7]?._id,
+                    title: categories.results[7]?.categoryName,
+                    desc: categories.results[7]?.categoryDesc,
                     img: "https://images.pexels.com/photos/15032623/pexels-photo-15032623.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
                   }
                 ]});
