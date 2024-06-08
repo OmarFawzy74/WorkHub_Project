@@ -138,43 +138,43 @@ useEffect(() => {
           username: services.results[0].freelancerId.name,
         },
         {
+          id: services.results[2]._id,
+          img: services.results[2].serviceCover_url,
+          pp: services.results[2].freelancerId.image_url,
+          cat: services.results[2].serviceCategoryId.categoryName,
+          username: services.results[2].freelancerId.name,
+        },
+        {
           id: services.results[1]._id,
           img: services.results[1].serviceCover_url,
           pp: services.results[1].freelancerId.image_url,
           cat: services.results[1].serviceCategoryId.categoryName,
           username: services.results[1].freelancerId.name,
         },
-        // {
-        //   id: services.results[2]._id,
-        //   img: services.results[2].serviceCover_url,
-        //   pp: services.results[2].freelancerId.image_url,
-        //   cat: services.results[2].serviceCategoryId.categoryName,
-        //   username: services.results[2].freelancerId.name,
-        // },
-        // {
-        //   id: services.results[3]._id,
-        //   img: services.results[3].serviceCover_url,
-        //   pp: services.results[3].freelancerId.image_url,
-        //   cat: services.results[3].serviceCategoryId.categoryName,
-        //   username: services.results[3].freelancerId.name,
-        // },
+        {
+          id: services.results[3]._id,
+          img: services.results[3].serviceCover_url,
+          pp: services.results[3].freelancerId.image_url,
+          cat: services.results[3].serviceCategoryId.categoryName,
+          username: services.results[3].freelancerId.name,
+        },
       ]})
 
       setProjects2({ results: [
       
-        {
-          id: services.results[4]._id,
-          img: services.results[4].serviceCover_url,
-          pp: services.results[4].freelancerId.image_url,
-          cat: services.results[4].serviceCategoryId.categoryName,
-          username: services.results[4].freelancerId.name,
-        },
         {
           id: services.results[5]._id,
           img: services.results[5].serviceCover_url,
           pp: services.results[5].freelancerId.image_url,
           cat: services.results[5].serviceCategoryId.categoryName,
           username: services.results[5].freelancerId.name,
+        },
+        {
+          id: services.results[4]._id,
+          img: services.results[4].serviceCover_url,
+          pp: services.results[4].freelancerId.image_url,
+          cat: services.results[4].serviceCategoryId.categoryName,
+          username: services.results[4].freelancerId.name,
         },
         {
           id: services.results[6]._id,

@@ -283,7 +283,7 @@
 
         .showMore{
             position: absolute;
-            top: 40px;
+            top: 45px;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -295,6 +295,8 @@
             width: 180px;
             font-weight: 500;
             z-index: 999;
+            right: -40px;
+
 
             .menuLink {
                 text-decoration: none;

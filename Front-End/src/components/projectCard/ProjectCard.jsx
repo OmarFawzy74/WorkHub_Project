@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function ProjectCard({ card }) {
   return (
-    <Link className="projectCard">
+    <Link className="projectCard" reloadDocument to= {"/gig/" + card.id}>
       <img src={card.img} alt="" />
       <div className="info">
         <img src={card.pp} alt="" />

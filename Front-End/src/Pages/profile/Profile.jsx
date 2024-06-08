@@ -246,7 +246,10 @@ const Profile = () => {
                                     <h2 className='skillsHeader'>Skills</h2>
                                     <ul className='skillsDesc'>
                                         {freelancer?.results.skills.slice(0, skillsArrayLength).map((skill) => (
-                                            <li className={skill.split(" ").length > 2 ? "style" : null}>{skill}</li>
+                                            <>
+                                            <li className={skill.split(" ").length == 2 ? "style" : null}>{skill}</li>
+                                            {/* <li>{skill.split(" ").length}</li> */}
+                                            </>
                                         ))}
                                     </ul>
                                     {freelancer?.results.skills.length > skillsArrayLength && <Link onClick={showMoreSkills} className="showMore">+{freelancer?.results.skills.length - 5}</Link>}

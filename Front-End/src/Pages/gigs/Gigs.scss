@@ -299,6 +299,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 50px;
+
 
   .allGigsContainer {
       width: 1000px;
@@ -447,6 +449,7 @@
           grid-template-columns: auto auto auto auto;
           justify-content: start;
           column-gap: 46.5px !important;
+          row-gap: 50px;
         }
   }
 
