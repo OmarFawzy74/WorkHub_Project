@@ -22,6 +22,7 @@ import servicesRoutes from './src/modules/service/service.router.js'
 import reviewsRoutes from './src/modules/reviews/reviewRouter.js'
 import coursesRoutes from './src/modules/courses/coursesRoutes.js'
 import chatbotConversationRoutes from './src/modules/chatbotConversation/chatbotConversationRoutes.js'
+import chatbotMessagesRoutes from './src/modules/chatbotMessages/chatbotMessagesRoutes.js'
 
 
 dotenv.config();
@@ -49,7 +50,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/services", servicesRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/courses", coursesRoutes);
-app.use("/api/chatbotConversationRoutes", chatbotConversationRoutes);
+app.use("/api/chatbotConversations", chatbotConversationRoutes);
+app.use("/api/chatbotMessages", chatbotMessagesRoutes);
 
 
 // app.all("*", (req, res) => {

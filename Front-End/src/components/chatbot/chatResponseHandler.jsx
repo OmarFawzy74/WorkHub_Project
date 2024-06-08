@@ -3,6 +3,8 @@ import ReactMarkdown from 'react-markdown';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import axios from "axios";
+
 
 // A component to render code blocks with syntax highlighting
 // const CodeBlock = ({ language, value }) => {

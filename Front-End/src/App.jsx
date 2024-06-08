@@ -382,7 +382,7 @@ export default function App() {
           element: <UserDashboard />
         },
         {
-          path: "/chatbot",
+          path: "/chatbot/:id",
           element: <Chatbot />
         },
       ]
