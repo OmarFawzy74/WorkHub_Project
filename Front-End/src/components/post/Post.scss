@@ -510,6 +510,23 @@
             align-items: center;
             justify-content: space-between;
 
+            .postDate {
+                font-size: 12px;
+                position: absolute;
+                top: 35px;
+                left: 62px;
+                margin-top: 15px;
+            }
+
+            .postSpecialization {
+                font-size: 12px;
+                position: absolute;
+                top: 33px;
+                left: 62px;
+                font-weight: 500;
+                color: #737373;
+            }
+
             .postTopLeft {
                 display: flex;
                 align-items: center;
@@ -598,7 +615,7 @@
         }
 
         .postCenter {
-            margin: 20px 0;
+            margin: 30px 0;
 
             .postText {
                 margin-left: 5px;
