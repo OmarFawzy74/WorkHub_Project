@@ -339,6 +339,7 @@ const UserDashboard = () => {
             <Link className="chatbotImgLink">
               <img className="chatbotImg" src="./img/chatbot1.png"/>
             </Link>
+            <span className="chatbotText">ChatBot</span>
         </div>
         <div className="newRequest">
           <div className="title">

@@ -11,10 +11,16 @@
             width: 70px;
             height: 70px;
             position: sticky;
-            top: 630px;
-            margin-left: 1250px;
+            top: 625px;
+            margin-left: 1260px;
             left: 1400px;
             transition: width 2s, height 2s, transform 1.5s;
+
+            .chatbotText{
+                color: #1dbf73;
+                font-weight: bold;
+                font-size: 18px;
+            }
 
             .chatbotImgLink{
 

@@ -38,6 +38,13 @@
             width: 152px;
             font-weight: 500;
             z-index: 999;
+
+            .link{
+                .updateServiceLink{
+                    text-decoration: none;
+                    color: #000000;
+                }
+            }
         }
 
     }

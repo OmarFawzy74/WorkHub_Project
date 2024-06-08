@@ -319,8 +319,7 @@
 
             .addNewServiceBtn{
                 position: relative;
-                left: 1250px;
-                // width: 100%;
+                left: 1160px;
                 background-color: #1dbf73;
                 padding: 10px;
                 color: white;
@@ -355,7 +354,7 @@
                 display: grid;
                 grid-template-columns: auto auto auto auto;
                 justify-content: start;
-                column-gap: 70px;
+                column-gap: 40px;
             }
         }
     }
