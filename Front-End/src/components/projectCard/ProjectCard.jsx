@@ -1,9 +1,10 @@
 import React from "react";
 import "./ProjectCard.scss";
+import { Link } from "react-router-dom";
 
 function ProjectCard({ card }) {
   return (
-    <div className="projectCard">
+    <Link className="projectCard">
       <img src={card.img} alt="" />
       <div className="info">
         <img src={card.pp} alt="" />
@@ -12,7 +13,7 @@ function ProjectCard({ card }) {
           <span>{card.username}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

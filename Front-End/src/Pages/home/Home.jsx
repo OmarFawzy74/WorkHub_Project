@@ -3,7 +3,6 @@ import axios from 'axios';
 import "./Home.scss";
 import Featured from '../../components/featured/Featured';
 import TrustedBy from "../../components/trustedBy/TrustedBy";
-import {projects1, projects2} from "../../data";
 import CatCard from '../../components/catCard/CatCard';
 import ProjectCard from '../../components/projectCard/ProjectCard';
 
@@ -102,6 +101,104 @@ useEffect(() => {
 }, [categories.reload]);
 
 
+const [projects1, setProjects1] = useState({
+  loading: true,
+  results: [],
+  err: null,
+  reload: 0
+});
+
+const [projects2, setProjects2] = useState({
+  loading: true,
+  results: [],
+  err: null,
+  reload: 0
+});
+
+const [services, setServices] = useState({
+  loading: true,
+  results: [],
+  err: null,
+  reload: 0
+});
+
+useEffect(() => {
+  axios
+    .get("http://localhost:3000/api/services/getAllServices")
+    .then((resp) => {
+      setServices({ results: resp.data.services, loading: false, err: null });
+      console.log(resp.data.services);
+
+      setProjects1({ results: [
+        {
+          id: services.results[0]._id,
+          img: services.results[0].serviceCover_url,
+          pp: services.results[0].freelancerId.image_url,
+          cat: services.results[0].serviceCategoryId.categoryName,
+          username: services.results[0].freelancerId.name,
+        },
+        {
+          id: services.results[1]._id,
+          img: services.results[1].serviceCover_url,
+          pp: services.results[1].freelancerId.image_url,
+          cat: services.results[1].serviceCategoryId.categoryName,
+          username: services.results[1].freelancerId.name,
+        },
+        // {
+        //   id: services.results[2]._id,
+        //   img: services.results[2].serviceCover_url,
+        //   pp: services.results[2].freelancerId.image_url,
+        //   cat: services.results[2].serviceCategoryId.categoryName,
+        //   username: services.results[2].freelancerId.name,
+        // },
+        // {
+        //   id: services.results[3]._id,
+        //   img: services.results[3].serviceCover_url,
+        //   pp: services.results[3].freelancerId.image_url,
+        //   cat: services.results[3].serviceCategoryId.categoryName,
+        //   username: services.results[3].freelancerId.name,
+        // },
+      ]})
+
+      setProjects2({ results: [
+      
+        {
+          id: services.results[4]._id,
+          img: services.results[4].serviceCover_url,
+          pp: services.results[4].freelancerId.image_url,
+          cat: services.results[4].serviceCategoryId.categoryName,
+          username: services.results[4].freelancerId.name,
+        },
+        {
+          id: services.results[5]._id,
+          img: services.results[5].serviceCover_url,
+          pp: services.results[5].freelancerId.image_url,
+          cat: services.results[5].serviceCategoryId.categoryName,
+          username: services.results[5].freelancerId.name,
+        },
+        {
+          id: services.results[6]._id,
+          img: services.results[6].serviceCover_url,
+          pp: services.results[6].freelancerId.image_url,
+          cat: services.results[6].serviceCategoryId.categoryName,
+          username: services.results[6].freelancerId.name,
+        },
+        {
+          id: services.results[7]._id,
+          img: services.results[7].serviceCover_url,
+          pp: services.results[7].freelancerId.image_url,
+          cat: services.results[7].serviceCategoryId.categoryName,
+          username: services.results[7].freelancerId.name,
+        },
+      ]})
+    })
+    .catch((err) => {
+      console.log(err);
+      // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+    });
+}, [services.reload]);
+
+
 
   return (
     <div className='home'>
@@ -151,21 +248,22 @@ useEffect(() => {
             <p>Our round-the-clock support team is available to help anytime, anywhere.</p>
           </div>
           <div className="right">
-            <video src="./img/video.mp4" controls></video>
+            {/* <video src="./img/video.mp4" controls></video> */}
+            <img className='rightImg' src="./img/pexels-pixabay-461064.jpg" alt="" />
           </div>
         </div>
       </div>
       <div className='proCardHeader'><h2>Inspiring work made on WorkHub</h2></div>
-      {/* <div className="project1">
-        {projects1.map((card) => (
+      <div className="project1">
+        {projects1.results.map((card) => (
           <ProjectCard key={card.id} card={card} />
         ))}
       </div>
       <div className="project2">
-        {projects2.map((card) => (
+        {projects2.results.map((card) => (
           <ProjectCard key={card.id} card={card} />
         ))}
-      </div> */}
+      </div>
     </div>
   )
 }

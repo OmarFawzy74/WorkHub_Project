@@ -305,7 +305,7 @@ const Navbar = () => {
               {categories.loading == false && categories.err == null && (
                 categories.results.slice(0, 8).map((category => (
                   <>
-                    <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:id">
+                    <li className='category'><Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id}>
                       {category.categoryName}</Link>
                     </li>
                   </>
@@ -315,13 +315,13 @@ const Navbar = () => {
 
 
             <div className="showMoreContainer" onClick={() => setShowMore(!showMore)}>
-              <img className='downMenuStyle' src="./img/downMenu.png" alt="" />
+              <img className='downMenuStyle' src="../img/downMenu.png" alt="" />
               {showMore && <div className="showMore">
 
                 {categories.loading == false && categories.err == null && (
                 categories.results.slice(8).map((category => (
                   <>
-                    <Link reloadDocument className='menuLink' to="/gigsFilter/:id">
+                    <Link reloadDocument className='menuLink' to={"/gigsFilter/" + category._id}>
                       {category.categoryName}
                     </Link>
                   </>

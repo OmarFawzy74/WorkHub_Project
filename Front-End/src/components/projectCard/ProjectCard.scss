@@ -5,6 +5,8 @@
   overflow: hidden;
   cursor: pointer;
   margin-bottom: 60px;
+  text-decoration: none;
+  color: black;
   border: 1px solid rgb(225, 225, 225);
 
   img {
@@ -38,4 +40,9 @@
       }
     }
   }
+}
+
+.projectCard:hover {
+  text-decoration: none;
+  color: rgb(90, 90, 90);
 }
