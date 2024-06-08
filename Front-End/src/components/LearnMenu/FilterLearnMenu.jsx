@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
 import { sidebarStatus } from "../../App";
+import Alert from "@mui/material/Alert";
 
 const FilterLearnMenu = () => {
 
@@ -14,7 +15,7 @@ const FilterLearnMenu = () => {
 
     let { id } = useParams();
 
-    const [courses, setCourses] = useState({
+    const [filterCourses, setFilterCourses] = useState({
         loading: false,
         results: null,
         err: null,
@@ -25,15 +26,15 @@ const FilterLearnMenu = () => {
         axios
             .get("http://localhost:3000/api/courses/getCoursesByCategoryId/" + id)
             .then((resp) => {
-                setCourses({ results: resp.data.modifiedCourses, loading: false, err: null });
+                setFilterCourses({ results: resp.data.modifiedCourses, loading: false, err: null });
                 console.log(resp.data.modifiedCourses);
                 console.log(resp);
             })
             .catch((err) => {
                 console.log(err);
-                // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+                setFilterCourses({ ...filterCourses, loading: false, err: err.response.data.msg });
             });
-    }, [courses.reload]);
+    }, [filterCourses.reload]);
 
     // const [sort, setSort] = useState("sales");
     // const [open, setOpen] = useState(false);
@@ -78,12 +79,12 @@ const FilterLearnMenu = () => {
     return (
         <div className='learnMenuContainer'>
             {
-                (pathname == "/learn") &&
+                (pathname == "/filterLearn/" + id) &&
                 <div className='learnMenu'>
                     {categories.loading == false && categories.err == null && (
                         categories.results.map((category => (
                             <>
-                            <div className='category'><Link className='learnMenuLink' to={"/filterLearn/" + category._id}>{category.categoryName}</Link></div>
+                                <div className='category'><Link reloadDocument className='learnMenuLink' to={"/filterLearn/" + category._id}>{category.categoryName}</Link></div>
                             </>
                         )))
                     )
@@ -91,14 +92,19 @@ const FilterLearnMenu = () => {
                 </div>
             }
             <div className={sidebarStatus() ? "learnCards" : "allLearnCards"}>
-                {courses.loading == false &&
-                    courses.err == null &&
-                    courses.results &&
-                    courses.results.length > 0 &&
-                    courses.results.map((course) => (
+                {filterCourses.loading == false &&
+                    filterCourses.err == null &&
+                    filterCourses.results &&
+                    filterCourses.results.length > 0 &&
+                    filterCourses.results.map((course) => (
                         <LearnCard key={course._id} item={course} />
                     ))}
             </div>
+            {filterCourses.err !== null &&
+                <div className='courseFilterAlert'>
+                    <Alert severity="info">{filterCourses.err}</Alert>
+                </div>
+            }
         </div>
     )
 }

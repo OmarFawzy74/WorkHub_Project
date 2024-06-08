@@ -6,7 +6,7 @@ const LearnFeatured = () => {
     return (
         <div className='learnFeatured'>
             <div className='topLearn'>
-                <img src="./img/learnFeatured.jpg" />
+                <img src="../img/learnFeatured.jpg" />
             </div>
             <div className='firstText'>
                 <h1>
@@ -20,7 +20,7 @@ const LearnFeatured = () => {
             <div className="learnSearchContainer">
                 <div className="searchLearn">
                     <div className="searchInputLearn">
-                        <img src="./img/search.png" alt="" />
+                        <img src="../img/search.png" alt="" />
                         <input type="text" placeholder='Search for any service...' />
                     </div>
                     <button>Search</button>
