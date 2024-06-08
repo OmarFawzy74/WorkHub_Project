@@ -21,6 +21,8 @@ import authRoutes from './src/modules/auth/authRoutes.js'
 import servicesRoutes from './src/modules/service/service.router.js'
 import reviewsRoutes from './src/modules/reviews/reviewRouter.js'
 import coursesRoutes from './src/modules/courses/coursesRoutes.js'
+import chatbotConversationRoutes from './src/modules/chatbotConversation/chatbotConversationRoutes.js'
+
 
 dotenv.config();
 
@@ -47,6 +49,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/services", servicesRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/courses", coursesRoutes);
+app.use("/api/chatbotConversationRoutes", chatbotConversationRoutes);
+
 
 // app.all("*", (req, res) => {
 //     return res.status(404).json({ success: false, message: "Page Not Found !!! :(" });
