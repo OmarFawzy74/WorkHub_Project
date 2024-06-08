@@ -17,7 +17,3 @@ router.put("/updateConversation/:id", validation(updateConversationSchema), vali
 router.delete("/deleteConversation/:id", validateParams(), asyncHandler(deleteConversation)); // auth(endPoints.allUsers),
 
 export default router;
-
-// Unfinished Tasks
-
-// Check the Roles of (Add Conversation, Update Conversation, Delete Conversation)

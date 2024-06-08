@@ -6,13 +6,17 @@ const chatbotConversation = new Schema({
         type: mongoose.Types.ObjectId,
         required: true,
     },
-    senderMessage: {
-        type: mongoose.Types.ObjectId,
+    senderType: {
+        type: String,
         required: true,
+    },
+    senderMessage: {
+        type: String,
+        required: false,
     },
     chatbotResponse: {
         type: String,
-        required: true,
+        required: false,
     }
 },{
     timestamps: true
