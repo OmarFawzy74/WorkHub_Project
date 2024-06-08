@@ -164,7 +164,9 @@ const Chatbot = () => {
                             <div className="write">
                                 <textarea required placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
                             </div>
-                            <button type="submit" className="sendButton"><img src="../img/uploading.png" alt="" /></button>
+                            <>
+                                <button type="submit" className="sendButtonChatbot"><img src="../img/uploading.png" alt="" /></button>
+                            </>
                         </div>
                     </div>
                 </div>
