@@ -11,7 +11,7 @@ function CatCard({ card }) {
   return (
     <Link reloadDocument to={"/gigsFilter/" + card.id}>
       <div className="catCard">
-        <img src={card.img} alt="" />
+        <img className="catCardImg" src={card.img} alt="" />
         <span className="desc">{card.desc}</span>
         <span className="title">{card.title}</span>
       </div>
