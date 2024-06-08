@@ -43,6 +43,8 @@ const Chatbot = () => {
 
         socket.emit("message", message);
         setIsThinking(true);
+        var elem = document.getElementById("chatScroll");
+        elem.scrollBy(0, 9000);
     }
 
     useEffect(() => {
@@ -160,7 +162,7 @@ const Chatbot = () => {
                         <hr />
                         <div className="sendContainer">
                             <div className="write">
-                                <input required placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
+                                <textarea required placeholder='Message our Chatbot' type="text" onChange={(e) => setMessage(e.target.value)} />
                             </div>
                             <button type="submit" className="sendButton"><img src="../img/uploading.png" alt="" /></button>
                         </div>

@@ -56,6 +56,7 @@ import AdminCommunity from './Pages/admin/AdminCommunity';
 import GigsFilter from './Pages/gigs/GigsFilter';
 
 import Chatbot from './components/chatbot/Chatbot';
+import FilterLearn from './Pages/learn/FilterLearn';
 let dashboardData;
 
 export function sidebarStatus() {
@@ -340,6 +341,10 @@ export default function App() {
         {
           path: "/learn",
           element: <Learn />
+        },
+        {
+          path: "/filterLearn/:id",
+          element: <FilterLearn />
         },
         {
           path: "/course/:id",

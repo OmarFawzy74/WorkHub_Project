@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthUser } from '../../localStorage/storage';
 import { sidebarStatus } from "../../App";
+import Alert from "@mui/material/Alert";
 
 function GigsFilter() {
 
@@ -31,7 +32,7 @@ function GigsFilter() {
       })
       .catch((err) => {
         console.log(err);
-        // setConversation({ ...conversation, loading: false, err: err.response.data.errors });
+        setFilterService({ ...filterService, loading: false, err: err.response.data.msg });
       });
   }, [filterService.reload]);
 
@@ -77,13 +78,13 @@ function GigsFilter() {
   return (
     <div className={pathname !== "/adminGigs" ? "gigs" : "adminGigs"}>
       <div className={sidebarStatus() ? "gigsContainer" : "allGigsContainer"}>
-       {categories.results.category &&  <span className="marketplaceTitle">MarketPlace</span>}
+        {categories.results.category && <span className="marketplaceTitle">MarketPlace</span>}
         <div className="breadcrumbs">
           {user == undefined ? <Link reloadDocument className="breadcrumbsLink" to={"/"}><img className="homeIconImg" src="../img/homeIcon.png" /> Home {'>'}</Link> : null}
         </div>
         {filterService !== undefined ?
           <>
-            {filterService.loading == false && filterService.err == null && 
+            {filterService.loading == false && filterService.err == null &&
               filterService.results && (
                 <>
                   <h1>{filterService.results[0].serviceCategoryId.categoryName}</h1>
@@ -95,33 +96,33 @@ function GigsFilter() {
             }
           </>
           : null}
-          {user && user.role !=="admin" &&
-            <div className="menu">
-              <div className="left">
-                <span>Budget</span>
-                <input ref={minRef} type="number" placeholder="min" />
-                <input ref={maxRef} type="number" placeholder="max" />
-                <button onClick={apply}>Apply</button>
-              </div>
-              <div className="right">
-                <span className="sortBy">Sort by</span>
-                <span className="sortType">
-                  {sort === "sales" ? "Best Selling" : "Newest"}
-                </span>
-                <img src="./img/down.png" alt="" onClick={() => setOpen(!open)} />
-                {open && (
-                  <div className="rightMenu">
-                    {sort === "sales" ? (
-                      <span onClick={() => reSort("createdAt")}>Newest</span>
-                    ) : (
-                      <span onClick={() => reSort("sales")}>Best Selling</span>
-                    )}
-                    <span onClick={() => reSort("sales")}>Popular</span>
-                  </div>
-                )}
-              </div>
+        {user && user.role !== "admin" &&
+          <div className="menu">
+            <div className="left">
+              <span>Budget</span>
+              <input ref={minRef} type="number" placeholder="min" />
+              <input ref={maxRef} type="number" placeholder="max" />
+              <button onClick={apply}>Apply</button>
             </div>
-          }
+            <div className="right">
+              <span className="sortBy">Sort by</span>
+              <span className="sortType">
+                {sort === "sales" ? "Best Selling" : "Newest"}
+              </span>
+              <img src="./img/down.png" alt="" onClick={() => setOpen(!open)} />
+              {open && (
+                <div className="rightMenu">
+                  {sort === "sales" ? (
+                    <span onClick={() => reSort("createdAt")}>Newest</span>
+                  ) : (
+                    <span onClick={() => reSort("sales")}>Best Selling</span>
+                  )}
+                  <span onClick={() => reSort("sales")}>Popular</span>
+                </div>
+              )}
+            </div>
+          </div>
+        }
         <div className={sidebarStatus() ? "gigsCards" : "allGigsCards"}>
           {filterService.loading == false &&
             filterService.err == null &&
@@ -131,6 +132,11 @@ function GigsFilter() {
               <GigCard key={service._id} item={service} />
             ))}
         </div>
+        {filterService.err !== null &&
+            <div className='serviceFilterAlert'>
+                <Alert severity="info">{filterService.err}</Alert>
+            </div>
+        }
       </div>
     </div>
   );

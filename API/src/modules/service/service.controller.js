@@ -40,8 +40,12 @@ export const getServicesByCategoryId = async (req, res, next) => {
         const categoryId = req.params.id;
 
         const services = await Service.find({serviceCategoryId: categoryId}).populate("freelancerId").populate("serviceCategoryId").populate("reviews").populate("orders");
-        if (services.length == 0) {
-            return next(new Error("No services found", { cause: 404 }));
+        // if (services.length == 0) {
+        //     return next(new Error("No services found", { cause: 404 }));
+        // }
+
+        if (!services[0]) {
+            return res.status(404).json({ msg: "No services Found!" });
         }
 
         const modifiedServices = services.map((service) => {

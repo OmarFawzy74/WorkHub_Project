@@ -52,7 +52,7 @@ export const getCoursesByCategoryId = async (req, res) => {
         const id = req.params.id;
         const coursesData = await course.find({ categoryId: id}).populate("categoryId");
 
-        if (!coursesData) {
+        if (!coursesData[0]) {
             return res.status(404).json({ msg: "No Courses Found!" });
         }
 

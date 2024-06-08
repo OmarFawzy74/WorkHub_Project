@@ -45,21 +45,21 @@
           align-items: center;
           justify-content: space-between;
   
-          input {
+          textarea {
             position: relative;
             right:  18px;
             width: 74%;
             height: 50px;
-            padding: 15px;
+            padding: 10px;
             border: 1px solid lightgray;
-            border-radius: 30px;
+            border-radius: 10px;
           }
   
-          input:hover{
+          textarea:hover{
               border: 1px solid #1dbf73 !important;
               transition: .2s ease-in-out;
           }
-          input:focus{
+          textarea:focus{
             outline: 0;
             border: 1px solid #1dbf73 !important;
             transition: .2s ease-in-out;
@@ -71,7 +71,7 @@
             // }
 
   
-        .sendButton {
+        .sendButtonChatbot {
           position: relative;
           top: 5px;
           right: 75px;
@@ -94,7 +94,7 @@
           }
         }
   
-        .sendButton:hover {
+        .sendButtonChatbot:hover {
           background-color: transparent;
         }
       }
@@ -173,6 +173,8 @@
               border-radius: 0px 20px 20px 20px;
               color: rgb(248, 248, 248);
               font-weight: 300;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
           }
         }
