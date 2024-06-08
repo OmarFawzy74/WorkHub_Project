@@ -11,17 +11,19 @@ const Navbar = () => {
 
   let { id } = useParams();
 
-  const [active, setActive] = useState(false)
-  const [activeMenu, setActiveMenu] = useState(false)
-  const [learnMenu, setLearnMenu] = useState(false)
+  const [active, setActive] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(false);
+  const [learnMenu, setLearnMenu] = useState(false);
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const [openExplore, setOpenExplore] = useState(false)
+  const [openExplore, setOpenExplore] = useState(false);
 
-  const [openCategoryList, setOpenCategoryList] = useState(false)
+  const [showMore, setShowMore] = useState(false);
 
-  const { pathname } = useLocation()
+  const [openCategoryList, setOpenCategoryList] = useState(false);
+
+  const { pathname } = useLocation();
 
   const isActive = () => {
     window.scrollY > 10 ? setActive(true) : setActive(false);
@@ -205,7 +207,7 @@ const Navbar = () => {
                 )
                 }
 
-
+                
                 {/* {openCategoryList && categories.loading == false && categories.err == null && (
                   categories.results.slice(0, categoriesLength).map((category => (
                     <>
@@ -301,7 +303,7 @@ const Navbar = () => {
 
             <ul className='menu'>
               {categories.loading == false && categories.err == null && (
-                categories.results.map((category => (
+                categories.results.slice(0, 8).map((category => (
                   <>
                     <li className='category'><Link reloadDocument className='menuLink' to="/gigs/:id">
                       {category.categoryName}</Link>
@@ -310,32 +312,27 @@ const Navbar = () => {
                 )))
               )
               }
+
+
+            <div className="showMoreContainer" onClick={() => setShowMore(!showMore)}>
+              <img className='downMenuStyle' src="./img/downMenu.png" alt="" />
+              {showMore && <div className="showMore">
+
+                {categories.loading == false && categories.err == null && (
+                categories.results.slice(8).map((category => (
+                  <>
+                    <Link reloadDocument className='menuLink' to="/gigsFilter/:id">
+                      {category.categoryName}
+                    </Link>
+                  </>
+                )))
+              )
+              }
+              </div>}
+            </div>
+
             </ul>
 
-            {/* <Link className='menuLink' to="/">
-            Video & Animation
-          </Link>
-          <Link className='menuLink' to="/">
-            Writing & Translation
-          </Link>
-          <Link className='menuLink' to="/">
-            AI Services
-          </Link>
-          <Link className='menuLink' to="/">
-            Digital Marketing
-          </Link>
-          <Link className='menuLink' to="/">
-            Music & Audio
-          </Link>
-          <Link className='menuLink' to="/">
-            Programming & Tech
-          </Link>
-          <Link className='menuLink' to="/">
-            Business
-          </Link>
-          <Link className='menuLink' to="/">
-            Lifestyle
-          </Link> */}
           </>
         )}
       </div>

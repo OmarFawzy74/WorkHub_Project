@@ -181,7 +181,6 @@ export const getServiceById = async (req, res, next) => {
 
         service.freelancerId.image_url = "http://" + req.hostname + ":3000/" + service.freelancerId.image_url;
 
-
         var images_url_array = [];
 
         service.serviceImages_url.map((image_url) => {
@@ -191,6 +190,9 @@ export const getServiceById = async (req, res, next) => {
         });
 
         service.serviceImages_url = images_url_array;
+
+        service.serviceCover_url = "http://" + req.hostname + ":3000/" + service.serviceCover_url;
+
     
         if (service) {
             return res.status(200).json(service);
@@ -267,17 +269,16 @@ export const uploadCoverImage = async (req, res, next) => {
 
 // Upload Images
 export const uploadImages = async (req, res, next) => {
-
     try {
 
         if (!req.files) {
-            return res.status(404).send({ success: false, message: "images are required" });
+            return res.status(404).json({ success: false, message: "images are required" });
         }
 
         const id = req.params.id;
 
         if (id == undefined) {
-            return res.status(404).send({ success: false, message: "id is required" });
+            return res.status(404).json({ success: false, message: "id is required" });
         }
 
         const images_url = [];
