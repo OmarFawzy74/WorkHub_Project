@@ -4,6 +4,7 @@ import client_model from "../../../DB/models/client_model.js";
 import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 import fs from "fs";
+import admin_model from "../../../DB/models/admin_model.js";
 
 // Get All Posts
 export const getAllPosts = async (req, res) => {
@@ -45,6 +46,10 @@ export const getAllPosts = async (req, res) => {
                     data = await client_model.findById(userId);
                 }
 
+                if(!data) {
+                    data = await admin_model.findById(userId);
+                }
+                
                 postComments[index].activityStatus = data.activityStatus;
 
                 commentsData.push(postComments[index]);
@@ -144,6 +149,68 @@ export const getCommunityPosts = async (req, res) => {
         } else {
             return res.status(404).json({ message: 'No posts found' });
         }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const getJoinedCommunityPosts = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const role = req.params.role;
+
+        let allCommunities = await community.find().populate("freelancerMembers").populate("clientMembers").populate("communityPosts");
+
+        let newPosts = []
+
+        if(role == "freelancer") {
+            for (let index = 0; index < allCommunities.length; index++) {
+                const members = allCommunities[0].freelancerMembers;
+
+                if(allCommunities[0].communityPosts)
+                for (let index = 0; index < members.length; index++) {
+                    if(members[0]._id.valueOf() == userId.valueOf()) {
+                        newPosts = [...allCommunities[0].communityPosts];
+                    }
+                }
+            }
+        }
+        
+        if(!newPosts[0]) {
+            return res.status(404).json({ message: 'No posts found' });
+        }
+
+        return res.status(200).json({ posts: newPosts });
+
+
+
+        // const posts = await Postmodel.find({communityId: communityId}).populate("communityId");
+        // const modifiedPosts = [];
+
+        // for (const post of posts) {
+        //     let modifiedPost = { ...post._doc };
+        //     let data;
+
+        //     if (modifiedPost.posterType === "freelancer") {
+        //         data = await freelancer_model.findById(modifiedPost.posterId);
+        //     } else if (modifiedPost.posterType === "client") {
+        //         data = await client_model.findById(modifiedPost.posterId);;
+        //     } else {
+        //         return res.status(404).json({ message: 'Invalid role' });
+        //     }
+
+        //     modifiedPost.posterId = { ...data._doc };
+        //     modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
+        //     modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
+        //     modifiedPosts.push(modifiedPost);
+        // }
+
+        // if (modifiedPosts.length > 0) {
+        //     return res.status(200).json({ posts: modifiedPosts });
+        // } else {
+        //     return res.status(404).json({ message: 'No posts found' });
+        // }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -318,6 +385,13 @@ export const removeLike = async (req, res) => {
             }
         }
 
+        if(role == "admin") {
+            userData = await admin_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Client Not Found" });
+            }
+        }
+
         const postToUpdate = await Postmodel.findById(postId);
 
         if (postToUpdate) {
@@ -371,6 +445,13 @@ export const addComment = async (req, res) => {
             userData = await client_model.findById(userId);
             if(!userData) {
                 return res.status(404).json({ msg: "Client Not Found" });
+            }
+        }
+
+        if(role == "admin") {
+            userData = await admin_model.findById(userId);
+            if(!userData) {
+                return res.status(404).json({ msg: "Admin Not Found" });
             }
         }
 
