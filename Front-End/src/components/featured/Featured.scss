@@ -77,22 +77,34 @@
             font-weight: 600;
 
             button{
-                color: #fff;
+                width: 140px;
+                // color: #fff;
                 background-color: transparent;
                 border: 1px solid white;
-                padding: 5px 10px;
+                padding: 5px 2px;
                 border-radius: 20px;
                 font-size: 14px;
                 cursor: pointer;
                 font-weight: 600;
                 transition: all ease 0.4s;
 
+                .popularCategoryLink{
+                    text-decoration: none;
+
+                    span{
+                        color: #fff;
+                    }
+                }
+
             }
 
             button:hover {
                 background-color: #fff;                
-                color: #000;
                 font-weight: 600;
+
+                span{
+                    color: #000;
+                }
             }
 
             button:focus{

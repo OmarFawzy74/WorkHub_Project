@@ -12,7 +12,7 @@ function UpdateProfile() {
         loading: false,
     });
     return (
-        <section className={sidebarStatus() ? 'adminProfilePage' : 'adminProfilePage sidebar-close-adminProfile'}>
+        <section className={sidebarStatus() ? 'adminProfilePageActive' : 'adminProfilePage sidebar-close-adminProfile'}>
             <h1>My Profile</h1>
             <div className="adminProfileContainer">
                 <div className="adminProfile">
@@ -22,11 +22,11 @@ function UpdateProfile() {
                     <div className="bottom">
                         <h2 htmlFor="">Name: <span>{user.name}</span></h2>
                         <h2 htmlFor="">Email: <span>{user.email}</span></h2>
-                        <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })} className="updateAdminProfilebtn">Update Pofile</button>
+                        {/* <button onClick={() => setCourseContainer({ ...courseContainer, loading: true })} className="updateAdminProfilebtn">Update Pofile</button> */}
                     </div>
                 </div>
             </div>
-            {courseContainer?.loading == true &&
+            {/* {courseContainer?.loading == true &&
                 <div className="updateAdminProfileContainer">
                     <div className="updateAdminProfile">
                         <div className="top">
@@ -66,7 +66,7 @@ function UpdateProfile() {
                         </div>
                     </div>
                 </div>
-            }
+            } */}
         </section>
     );
 }

@@ -49,7 +49,7 @@
         width: 500px;
         position: relative;
         bottom: 350px;
-        left: 500px;
+        left: 420px;
 
         .searchLearn {
             display: flex;
@@ -57,11 +57,13 @@
             justify-content: space-between;
             background-color: #fff;
             border-radius: 5px;
+            width: 670px;
+
 
             .searchInputLearn {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 10px;                
 
                 img {
                     width: 20px;
@@ -103,9 +105,10 @@
             margin-left: 5px;
             color: #fff;
             font-weight: 600;
+            width: 700px;
 
             button {
-                color: #ffffff;
+                // color: #ffffff;
                 background-color: transparent;
                 border: 1px solid white;
                 padding: 5px 10px;
@@ -114,12 +117,29 @@
                 cursor: pointer;
                 transition: all ease 0.4s;
                 font-weight: 600;
+
+                .popularCategoryLink{
+                    text-decoration: none;
+
+                    span{
+                        color: #fff;
+                    }
+                }
+
             }
 
             button:hover {
                 background-color: #fff;
                 color: #000;
                 font-weight: 600;
+
+                .popularCategoryLink{
+                    text-decoration: none;
+
+                    span{
+                        color: #000000;
+                    }
+                }
             }
 
             button:focus {
