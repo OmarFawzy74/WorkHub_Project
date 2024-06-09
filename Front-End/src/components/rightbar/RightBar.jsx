@@ -102,9 +102,9 @@ const RightBar = ({ profile, item }) => {
                   <span className="memberName">{member.name}</span>
                 </Link>
 
-                <Button variant="contained" className="blockBtn">
+                {/* <Button variant="contained" className="blockBtn">
                   Block
-                </Button>
+                </Button> */}
               </li>
             ))}
         </ul>
