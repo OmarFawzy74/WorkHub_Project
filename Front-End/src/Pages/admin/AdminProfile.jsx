@@ -12,7 +12,7 @@ function UpdateProfile() {
         loading: false,
     });
     return (
-        <section className={sidebarStatus() ? 'adminProfilePage' : 'adminProfilePage sidebar-close-adminProfile'}>
+        <section className={sidebarStatus() ? 'adminProfilePageActive' : 'adminProfilePage'}>
             <h1>My Profile</h1>
             <div className="adminProfileContainer">
                 <div className="adminProfile">

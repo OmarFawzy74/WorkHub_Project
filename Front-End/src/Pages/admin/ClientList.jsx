@@ -7,6 +7,8 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Alert from 'react-bootstrap/Alert';
 import { sidebarStatus } from "../../App";
+import Button from "@mui/material/Button";
+
 
 const ClientList = () => {
 
@@ -17,20 +19,62 @@ const ClientList = () => {
     reload: 0
   });
 
+  const [blockedClients, setBlockedClients] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+
   useEffect(() => {
-    setClients({ ...clients, loading: true })
-    axios.get("http://localhost:3000/api/clients/getAllClients")
-      .then(
-        resp => {
-          console.log(resp.data);
-          setClients({ results: resp.data, loading: false, err: null });
-          console.log(resp);
-        }
-      ).catch(err => {
+    setClients({ ...clients, loading: true });
+    axios.get("http://localhost:3000/api/clients/getBlockedAndFreeClients")
+      .then(resp => {
+        console.log(resp.data);
+        
+        // Set the blocked clients
+        setBlockedClients({ results: resp.data.blockedClients, loading: false, err: null });
+        
+        // Get the data for all clients and blocked clients
+        const clientsData = resp.data.allClients;
+        const blockedClientsData = resp.data.blockedClients;
+  
+        // Filter out the blocked clients from the list of all clients
+        const newClientsData = clientsData.filter(client => 
+          !blockedClientsData.some(blockedClient => client._id.valueOf() === blockedClient._id.valueOf())
+        );
+  
+        // Set the clients state with the filtered data
+        setClients({ results: newClientsData, loading: false, err: null });
+        console.log(resp);
+      })
+      .catch(err => {
         setClients({ ...clients, loading: false, err: err.response.data.msg });
         console.log(err);
-      })
+      });
   }, [clients.reload]);
+
+  const blockUser = (e) => {
+    const userId = e.target.attributes.value.nodeValue;
+    console.log(userId);
+
+    axios
+    .post(
+      "http://localhost:3000/api/blockedUsers/blockUser/" + userId
+    )
+    .then((resp) => {
+      console.log(resp);
+      setClients({ reload: clients.reload + 1 });
+      // console.log(resp.data);
+      // setRequests({ results: resp.data, loading: false, err: null });
+      // console.log(requests.results);
+      // console.log(resp.data.services);
+    })
+    .catch((err) => {
+      console.log(err);
+      // setRequests({ ...requests, loading: false, err: err.response.data.msg });
+    });
+  }
 
   return (
     <>
@@ -79,7 +123,36 @@ const ClientList = () => {
                       {client.country}
                     </td>
                     <td className="test">
-                      <img src='./img/block.png' className="button muted-button gl-block-btn" />
+                      {/* <img src='./img/block.png' className="button muted-button gl-block-btn" /> */}
+                      <Button value={client._id} onClick={blockUser} variant="contained" className="blockBtn">
+                          Block
+                        </Button>
+                    </td>
+                  </tr>
+                )))
+              )
+              }
+
+            {blockedClients.loading == false && blockedClients.err == null && (
+                blockedClients.results.map((client => (
+                  <tr>
+                    <td>
+                      <Link reloadDocument className='clientsProfilePage' to={"/usersProfile/" + client._id}>
+                          <img src={client.image_url} className="button muted-button gl-profile-btn" />
+                      </Link>
+                    </td>
+                    <td className="desc">
+                      {client.name}
+                    </td>
+                    <td className="desc">
+                      {client.email}
+                    </td>
+                    <td className="desc">
+                      {client.country}
+                    </td>
+                    <td className="test">
+                      {/* <img src='./img/block.png' className="button muted-button gl-block-btn" /> */}
+                      Blocked
                     </td>
                   </tr>
                 )))
@@ -102,13 +175,5 @@ const ClientList = () => {
   )
 }
 
-
-const clicked = () => {
-  $(".addCategoryButton").addClass("clicked");
-
-  setTimeout(() => {
-    $(".addCategoryButton").removeClass("clicked");
-  }, 0.05);
-}
 
 export default ClientList;

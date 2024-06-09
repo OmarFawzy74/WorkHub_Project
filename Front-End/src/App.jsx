@@ -57,6 +57,7 @@ import GigsFilter from './Pages/gigs/GigsFilter';
 
 import Chatbot from './components/chatbot/Chatbot';
 import FilterLearn from './Pages/learn/FilterLearn';
+import GigsSearch from './Pages/gigs/GigsSearch';
 let dashboardData;
 
 export function sidebarStatus() {
@@ -289,6 +290,10 @@ export default function App() {
         {
           path: "/gigs",
           element: <Gigs />
+        },
+        {
+          path: "/gigsSearch/:query",
+          element: <GigsSearch />
         },
         {
           path: "/gigsFilter/:id",

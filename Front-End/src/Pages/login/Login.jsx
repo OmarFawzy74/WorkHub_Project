@@ -6,6 +6,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { getAuthUser, setAuthUser } from '../../localStorage/storage';
 import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 
 function Login() {
@@ -34,7 +35,7 @@ function Login() {
     email: "",
     password: "",
     loading: false,
-    err: []
+    err: null
   });
 
 
@@ -47,12 +48,12 @@ function Login() {
 
   const userLoginFun = (e) => {
     e.preventDefault();
-    setUserLogin({ ...userLogin, loading: true, err: [] });
+    setUserLogin({ ...userLogin, loading: true, err: null });
     axios.post("http://localhost:3000/api/auth/login", {
       email: userLogin.email,
       password: userLogin.password,
     }).then((resp) => {
-        setUserLogin({ ...userLogin, loading: false, err: [] });
+        setUserLogin({ ...userLogin, loading: false, err: null });
         if(resp.data.userData.role == "freelancer") {
           resp.data.userData.skills = processData(resp.data.userData.skills);
           resp.data.userData.languages = processData(resp.data.userData.languages);
@@ -70,7 +71,7 @@ function Login() {
       }).catch((errors) => {
         console.log(errors.response);
         // swal(errors.response.data.msg, "", "error");
-        setUserLogin({ ...userLogin, loading: false, err: errors.response.data.errors });
+        setUserLogin({ ...userLogin, loading: false, err: errors.response.data.msg });
       })
   }
 
@@ -111,6 +112,11 @@ function Login() {
               value={userLogin.password}
               onChange={(e) => setUserLogin({ ...userLogin, password: e.target.value })}
             />
+            {userLogin.err !== null &&
+                <div className='communityFilterAlert'>
+                  <Alert severity="error">{userLogin.err}</Alert>
+                </div>
+            }
             <button type="submit">Login</button>
             <span className="alreadyHaveAccount">New to WorHub ?<Link reloadDocument to={"/register"} className="alreadyHaveAccountLink"> Sign Up</Link></span> 
             {error && error}

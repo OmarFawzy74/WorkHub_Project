@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import FreelancerModel from "../../../DB/models/freelancer_model.js";
 import { validatePassword } from '../../middleware/val.middleware.js';
 import bcrypt from 'bcrypt'
+import blockedUsers_model from "../../../DB/models/blockedUsers_model.js";
 
 // Get All Freelancers
 export const getAllFreelancers = async (req,res) => {
@@ -24,6 +25,41 @@ export const getAllFreelancers = async (req,res) => {
   catch (error) {
     res.status(500).json({msg:'Internal server error'});
     console.log(error);
+  }
+}
+
+export const getBlockedAndFreeFreelancers = async (req, res) => {
+  try {
+      var freelancers = await FreelancerModel.find();
+      const blockedusersdata = await blockedUsers_model.find();
+
+      if(!freelancers[0]) {
+        return res.status(404).json({ msg:"No freelancers found!"});
+      }
+
+      const blockedFreelancers = [];
+
+      const modifiedFreelancers = freelancers.map((freelancer) => {
+        const modifiedFreelancer = { ...freelancer._doc }; // Create a copy of the service object
+        modifiedFreelancer.image_url = "http://" + req.hostname + ":3000/" + modifiedFreelancer.image_url;
+
+        if(blockedusersdata[0]) {
+          blockedusersdata.filter((user) => {
+            if(user.userId.valueOf() == modifiedFreelancer._id.valueOf()) {
+              blockedFreelancers.push(modifiedFreelancer);
+            }
+          })
+        }
+
+        return modifiedFreelancer;
+      });
+
+      freelancers = modifiedFreelancers;
+
+      res.status(200).json({freelancers, blockedFreelancers});
+  } catch (error) {
+      console.log(error);
+      res.status(500).send("Somthing went wrong!");
   }
 }
 

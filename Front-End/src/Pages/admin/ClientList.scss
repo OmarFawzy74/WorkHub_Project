@@ -77,11 +77,13 @@
         }
     }
 
-    // .desc {
-    //     // inline-size: 10px;
-    // }
 
     .test {
+        .blockBtn {
+            background-color: #1dbf73;
+            text-transform: none;
+        }
+
         text-align: center;
     }
 
@@ -109,6 +111,11 @@
 
         td{
             text-align: center;
+
+            .blockBtn {
+                background-color: #1dbf73;
+                text-transform: none;
+            }    
         }
 
         tr{

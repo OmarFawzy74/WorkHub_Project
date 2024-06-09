@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import AdminModel from "../../../DB/models/admin_model.js";
 import ClientModel from "../../../DB/models/client_model.js";
 import FreelancerModel from "../../../DB/models/freelancer_model.js";
+import blockedUsers_model from "../../../DB/models/blockedUsers_model.js";
 
 const generateToken = async (userId, role) => {
   return jwt.sign({ userId, role }, process.env.TOKEN_SECRETkEY);
@@ -23,6 +24,14 @@ const login = async (req, res) => {
         if (!user) {
           return res.status(400).json({ msg: "Wrong email or password" });
         }
+      }
+    }
+
+    if(user) {
+      const blockeduserdata = await blockedUsers_model.find({userId: user._id});
+
+      if(blockeduserdata[0]) {
+          return res.status(401).json({msg:"You Are Blocked From Accessing Your Account For Violating Website's Policy."});
       }
     }
 
