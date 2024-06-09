@@ -325,6 +325,7 @@ const Navbar = () => {
 
           {(activeMenu ||
             pathname == '/gigs' ||
+            pathname == "/gigsFilter" ||
             pathname.startsWith('/gigsFilter/' + id)) && (
             <>
               <div className="search">
@@ -352,11 +353,11 @@ const Navbar = () => {
                 </div>
               )}
 
-              <ul className="menu">
+<ul className="menu">
                 {categories.loading == false &&
                   categories.err == null &&
                   categories.results
-                    .slice(0, categoriesLength)
+                    .slice(0, 8)
                     .map((category) => (
                       <li className="category">
                         <Link
@@ -369,27 +370,33 @@ const Navbar = () => {
                       </li>
                     ))}
 
-                {categories?.results.length > categoriesLength && (
-                  <>
-                    <div
-                      className="openCategoryListContainer"
-                      onClick={() =>
-                        setOpenCategoryList(!openCategoryList)
-                      }
-                    >
-                      <Link
-                        onClick={showMoreCategories}
-                        className="showMore"
-                      >
-                        <img
-                          className="downMenuImg"
-                          src="/img/downMenu.png"
-                        />
-                        {categories?.results.length - 8}
-                      </Link>
+                <div
+                  className="showMoreContainer"
+                  onClick={() => setShowMore(!showMore)}
+                >
+                  <img
+                    className="downMenuStyle"
+                    src="../img/downMenu.png"
+                    alt=""
+                  />
+                  {showMore && (
+                    <div className="showMore">
+                      {categories.loading == false &&
+                        categories.err == null &&
+                        categories.results
+                          .slice(8)
+                          .map((category) => (
+                            <Link
+                              reloadDocument
+                              className="menuLink"
+                              to={`/gigsFilter/${category._id}`}
+                            >
+                              {category.categoryName}
+                            </Link>
+                          ))}
                     </div>
-                  </>
-                )}
+                  )}
+                </div>
               </ul>
 
             </>
