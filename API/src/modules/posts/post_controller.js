@@ -5,6 +5,7 @@ import freelancer_model from "../../../DB/models/freelancer_model.js";
 import Postmodel from "../../../DB/models/post_model.js";
 import fs from "fs";
 import admin_model from "../../../DB/models/admin_model.js";
+import community_model from "../../../DB/models/community_model.js";
 
 // Get All Posts
 export const getAllPosts = async (req, res) => {
@@ -157,65 +158,66 @@ export const getCommunityPosts = async (req, res) => {
 
 export const getJoinedCommunityPosts = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const role = req.params.role;
+        const { id, role } = req.params;
 
-        let allCommunities = await community.find().populate("freelancerMembers").populate("clientMembers").populate("communityPosts");
+        // Find all communities and populate necessary fields
+        let allCommunities = await community_model.find()
+            .populate("freelancerMembers")
+            .populate("clientMembers")
+            .populate("communityPosts");
 
-        let newPosts = []
+        let joinedCommunityPosts = [];
 
-        if(role == "freelancer") {
-            for (let index = 0; index < allCommunities.length; index++) {
-                const members = allCommunities[0].freelancerMembers;
+        // Check membership and aggregate posts
+        for (let community of allCommunities) {
+            let isMember = false;
 
-                if(allCommunities[0].communityPosts)
-                for (let index = 0; index < members.length; index++) {
-                    if(members[0]._id.valueOf() == userId.valueOf()) {
-                        newPosts = [...allCommunities[0].communityPosts];
+            if (role === "freelancer") {
+                isMember = community.freelancerMembers.some(member => member._id.toString() === id);
+            } else if (role === "client") {
+                isMember = community.clientMembers.some(member => member._id.toString() === id);
+            }
+
+            if (isMember && community.communityPosts) {
+                const posts = community.communityPosts.map(post => ({ ...post._doc })); // Shallow copy of posts
+
+                for (let index = 0; index < posts.length; index++) {
+                    posts[index].media_url = "http://" + req.hostname + ":3000/" + posts[index].media_url;
+
+                    if (posts[index].posterType === "client") {
+                        const data = await client_model.findById(posts[index].posterId);
+                        if (data) {
+                            data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
+                            posts[index].posterId = data;
+                        }
+                    }
+
+                    if (posts[index].posterType === "freelancer") {
+                        const data = await freelancer_model.findById(posts[index].posterId);
+                        if (data) {
+                            data.image_url = "http://" + req.hostname + ":3000/" + data.image_url;
+                            posts[index].posterId = data;
+                        }
                     }
                 }
+
+                joinedCommunityPosts = [...joinedCommunityPosts, ...posts];
             }
         }
-        
-        if(!newPosts[0]) {
+
+        if (joinedCommunityPosts.length === 0) {
             return res.status(404).json({ message: 'No posts found' });
         }
 
-        return res.status(200).json({ posts: newPosts });
+        return res.status(200).json({ posts: joinedCommunityPosts });
 
-
-
-        // const posts = await Postmodel.find({communityId: communityId}).populate("communityId");
-        // const modifiedPosts = [];
-
-        // for (const post of posts) {
-        //     let modifiedPost = { ...post._doc };
-        //     let data;
-
-        //     if (modifiedPost.posterType === "freelancer") {
-        //         data = await freelancer_model.findById(modifiedPost.posterId);
-        //     } else if (modifiedPost.posterType === "client") {
-        //         data = await client_model.findById(modifiedPost.posterId);;
-        //     } else {
-        //         return res.status(404).json({ message: 'Invalid role' });
-        //     }
-
-        //     modifiedPost.posterId = { ...data._doc };
-        //     modifiedPost.posterId.image_url = "http://" + req.hostname + ":3000/" + modifiedPost.posterId.image_url;
-        //     modifiedPost.media_url = "http://" + req.hostname + ":3000/" + modifiedPost.media_url;
-        //     modifiedPosts.push(modifiedPost);
-        // }
-
-        // if (modifiedPosts.length > 0) {
-        //     return res.status(200).json({ posts: modifiedPosts });
-        // } else {
-        //     return res.status(404).json({ message: 'No posts found' });
-        // }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
 
 // Add Post
 export const addPost = async (req, res) => {
@@ -234,6 +236,17 @@ export const addPost = async (req, res) => {
         });
 
         const savePost = await newpost.save();
+
+        const communityToUpdate = await community_model.findById(communityId);
+
+        const newCommunityPosts = communityToUpdate.communityPosts;
+        newCommunityPosts.push(savePost._id);
+
+        const filter = { _id: communityId };
+        const update = { $set: { communityPosts: newCommunityPosts} };
+
+        await community_model.updateOne(filter, update);
+
 
         res.json({ message: 'Post created successfully', savePost });
     } catch (error) {

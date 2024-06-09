@@ -135,7 +135,7 @@ const Feed = (data) => {
 
   useEffect(() => {
     setPosts({ ...posts, loading: true })
-    axios.get("http://localhost:3000/api/posts/getAllPosts")
+    axios.get("http://localhost:3000/api/posts/getJoinedCommunityPosts/" + user._id + "/" + user.role)
       .then(
         resp => {
           console.log(resp);

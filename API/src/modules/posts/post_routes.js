@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/getAllPosts', getAllPosts); // auth(endPoints.admin)
 router.get('/getUserPosts/:id', getUserPosts); // auth(endPoints.admin)
 router.get('/getCommunityPosts/:id', getCommunityPosts); // auth(endPoints.admin)
-router.get('/getJoinedCommunityPosts/:id', getJoinedCommunityPosts); // auth(endPoints.admin)
+router.get('/getJoinedCommunityPosts/:id/:role', getJoinedCommunityPosts); // auth(endPoints.admin)
 router.get('/getPostlikesCount/:id', getPostlikesCount); // auth(endPoints.admin)
 router.post('/addPost', validation(postSchema), addPost); // auth(endPoints.allUsersExceptAdmin)
 router.put('/uploadPostMedia/:id', upload.single('media'), uploadPostMedia); // auth(endPoints.allUsersExceptAdmin)
