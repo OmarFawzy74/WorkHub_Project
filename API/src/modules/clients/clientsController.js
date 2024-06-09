@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { validatePassword } from "../../middleware/val.middleware.js";
 import ClientModel from "../../../DB/models/client_model.js"
 import mongoose from "mongoose";
+import blockedUsers_model from "../../../DB/models/blockedUsers_model.js";
 
 
 // Get All Clients
@@ -28,6 +29,43 @@ export const getAllClients = async (req, res) => {
         console.log(error);
         res.status(500).send("Somthing went wrong!");
     }
+}
+
+// Get All Clients
+export const getBlockedAndFreeClients = async (req, res) => {
+  try {
+      var allClients = await client.find();
+      const blockedusersdata = await blockedUsers_model.find();
+
+      if(!allClients[0]) {
+        return res.status(404).json({ msg:"No clients found!"});
+      }
+
+      const blockedClients = [];
+
+      const modifiedClients = allClients.map((client) => {
+        const modifiedClient = { ...client._doc }; // Create a copy of the service object
+        modifiedClient.image_url = "http://" + req.hostname + ":3000/" + modifiedClient.image_url;
+
+
+        if(blockedusersdata[0]) {
+          blockedusersdata.filter((user) => {
+            if(user.userId.valueOf() == modifiedClient._id.valueOf()) {
+              blockedClients.push(modifiedClient);
+            }
+          })
+        }
+
+        return modifiedClient;
+      });
+
+      allClients = modifiedClients;
+
+      res.status(200).json({allClients, blockedClients});
+  } catch (error) {
+      console.log(error);
+      res.status(500).send("Somthing went wrong!");
+  }
 }
 
 export const getClientById = async (req, res, next) => {

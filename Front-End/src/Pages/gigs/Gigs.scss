@@ -9,6 +9,24 @@
     gap: 15px;
     margin-right: 350px;
 
+    .title {
+      display: flex;
+      justify-content: space-between;
+      
+      h1{
+        font-size: 18px;
+      }
+
+      button {
+        background-color: #1dbf73;
+        color: white;
+        font-weight: 500;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+    }
+
     .marketplaceTitle{
       margin-left: 550px;
       // text-align: center;
@@ -152,6 +170,24 @@
   flex-direction: column;
   gap: 15px;
   margin-left: 100px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    
+    h1{
+      font-size: 18px;
+    }
+
+    button {
+      background-color: #1dbf73;
+      color: white;
+      font-weight: 500;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+  }
 
   .marketplaceTitle{
     margin-left: 250px;
@@ -310,6 +346,38 @@
       gap: 15px;
       margin-right: 350px;
 
+      .title {
+        display: flex;
+        justify-content: space-between;
+
+        .breadcrumbsLink{
+          text-decoration: none;
+          font-size: 18px;
+          line-height: 1;
+          color: #7e7e7e;
+          font-weight: 500;
+  
+          .homeIconImg{
+            width: 20px;
+            height: 20px;
+            margin-bottom: 4px;
+          }
+        }
+        
+        h1{
+          font-size: 18px;
+        }
+
+        button {
+          background-color: #1dbf73;
+          color: white;
+          font-weight: 500;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+        }
+      }
+
       .serviceFilterAlert{
         width: 1350px;
       }
@@ -460,6 +528,24 @@
     flex-direction: column;
     gap: 15px;
     margin-left: 15px;
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      
+      h1{
+        font-size: 18px;
+      }
+
+      button {
+        background-color: #1dbf73;
+        color: white;
+        font-weight: 500;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+    }
 
 
     .breadcrumbs{

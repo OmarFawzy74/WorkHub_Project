@@ -16,6 +16,11 @@
         width: 85%;   // commented out since you mentioned it's not currently used
         margin-left: 310px;
 
+        .blockBtn {
+            background-color: #1dbf73;
+            text-transform: none;
+        }
+
         td{
             text-align: center;
         }
@@ -30,9 +35,6 @@
 
     }
 
-    .clicked {
-        // opacity: 2%;
-    }
 
     .action {
         text-align: center;
@@ -78,14 +80,6 @@
             }
         }
     }
-
-    // .desc {
-    //     // inline-size: 10px;
-    // }
-
-    // .test {
-    //     // text-align: center;
-    // }
 
 }
 
@@ -110,6 +104,11 @@
         margin-left: 310px;
 
         td{
+            .blockBtn {
+                background-color: #1dbf73;
+                text-transform: none;
+            }
+    
             text-align: center;
         }
 
@@ -123,9 +122,6 @@
 
     }
 
-    .clicked {
-        // opacity: 2%;
-    }
 
     .action {
         text-align: center;
@@ -172,12 +168,5 @@
         }
     }
 
-    // .desc {
-    //     // inline-size: 10px;
-    // }
-
-    // .test {
-    //     // text-align: center;
-    // }
 
 }
